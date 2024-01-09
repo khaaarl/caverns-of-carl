@@ -8,8 +8,8 @@ UI Example Screenshot             |  In-TTS Example Screenshot
 
 ## How to Use
 
-1. Download by clicking the green Code button, then Download Zip.
-2. Install Python if you haven't already.
+1. [Download the Caverns of Carl zip archive](https://github.com/khaaarl/caverns-of-carl/zipball/main/) (or click the green Code button, then Download Zip), then unzip it.
+2. [Install Python](https://www.python.org/downloads/) if you haven't already.
 3. Run `caverns_of_carl.py`.
 4. Adjust the configuration fields on the left if desired.
 5. Click the Generate button in the bottom left, as many times as you want.
