@@ -2,7 +2,9 @@
 
 A (very inchoate) tool to generate random D&D 5e dungeons, and produce save games for Tabletop Simulator additive load.
 
-![UI Screenshot](https://raw.githubusercontent.com/khaaarl/caverns-of-carl/main/docs/screenshots/Screenshot-2024-01-09%20173040.jpg)
+UI Example Screenshot             |  In-TTS Example Screenshot
+:-------------------------:|:-------------------------:
+![UI Screenshot](https://raw.githubusercontent.com/khaaarl/caverns-of-carl/main/docs/screenshots/Screenshot-2024-01-09%20173040.jpg)  |  ![TTS Screenshot](https://raw.githubusercontent.com/khaaarl/caverns-of-carl/main/docs/screenshots/20240105213607_1.jpg)
 
 ## How to Use
 
