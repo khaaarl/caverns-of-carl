@@ -1,3 +1,3 @@
 # Caverns of Carl
 
-![UI Screenshot](/docs/screenshots/Screenshot-2024-01-09 173040.jpg?raw=true "UI Screenshot")
+![UI Screenshot](https://raw.githubusercontent.com/khaaarl/caverns-of-carl/main/docs/screenshots/Screenshot-2024-01-09%20173040.jpg)
