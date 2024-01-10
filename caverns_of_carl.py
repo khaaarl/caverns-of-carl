@@ -1247,6 +1247,9 @@ class ChestTrap(Trap):
         self.x = x
         self.y = y
 
+    def description(self):
+        return "Chest " + super().description()
+
     @staticmethod
     def create(config, x, y):
         trap = ChestTrap(config, x, y)
@@ -1265,6 +1268,9 @@ class RoomTrap(Trap):
     def __init__(self, config, roomix):
         super().__init__(config)
         self.roomix = roomix
+
+    def description(self):
+        return "Room " + super().description()
 
     @staticmethod
     def create(config, roomix):
@@ -1291,6 +1297,9 @@ class CorridorTrap(Trap):
     def __init__(self, config, corridorix):
         super().__init__(config)
         self.corridorix = corridorix
+
+    def description(self):
+        return "Corridor " + super().description()
 
     @staticmethod
     def create(config, corridorix):
@@ -1319,6 +1328,9 @@ class DoorTrap(Trap):
         self.doorix = doorix
         self.x = x
         self.y = y
+
+    def description(self):
+        return "Door " + super().description()
 
     @staticmethod
     def create(config, corridorix, x, y):
@@ -1377,7 +1389,11 @@ class Room:
             o.append(df.traps[trapix].description())
         if verbose:
             if self.encounter:
-                o.append("Encounter:\n" + self.encounter.description())
+                xp = self.encounter.total_xp()
+                pct = int(round(100.0 * xp / med_target_xp(df.config)))
+                s = [f"Monster encounter (~{xp} xp; ~{pct}% of Medium):"]
+                s.append(self.encounter.description())
+                o.append("\n".join(s))
             for doorix in self.doorixs:
                 door = df.doors[doorix]
                 corridor = df.corridors[door.corridorix]
@@ -1397,9 +1413,9 @@ class Room:
                     continue
                 elif not isinstance(tile, ChestTile):
                     continue
-                s = ["Chest:"]
+                s = ["Chest ($):"]
                 if isinstance(tile, BookshelfTile):
-                    s = ["Bookshelf:"]
+                    s = ["Bookshelf (B):"]
                 for trapix in tile.trapixs:
                     s.append(df.traps[trapix].description())
                 if tile.contents.strip() == "Nothing!":
@@ -1891,23 +1907,23 @@ class DungeonConfig:
         self.tk_is_long = {}
 
         self.add_var("width", 35)
-        self.add_var("height", 30)
+        self.add_var("height", 35)
         self.add_var("num_rooms", 12)
-        self.add_var("min_room_radius", 2)
-        self.add_var("num_room_embiggenings", 10)
-        self.add_var("num_room_wiggles", 10)
+        self.add_var("min_room_radius", 1)
+        self.add_var("num_room_embiggenings", 5)
+        self.add_var("num_room_wiggles", 5)
         self.add_var("prefer_full_connection", True)
         self.add_var("min_corridors_per_room", 1.1)
         self.add_var("corridor_width_1_ratio", 1.0)
-        self.add_var("corridor_width_2_ratio", 4.0)
-        self.add_var("corridor_width_3_ratio", 5.0)
+        self.add_var("corridor_width_2_ratio", 5.0)
+        self.add_var("corridor_width_3_ratio", 2.0)
         self.add_var("num_up_ladders", 1)
         self.add_var("num_down_ladders", 1)
         self.add_var("tts_fog_of_war", False)
         self.add_var("tts_hidden_zones", True)
         self.ui_ops.append(("next group", None))
-        self.add_var("target_character_level", 4)
-        self.add_var("num_player_characters", 3)
+        self.add_var("target_character_level", 7)
+        self.add_var("num_player_characters", 5)
         self.add_var("num_treasures", "2d4")
         self.add_var("num_mimics", "1d3-1")
         self.add_var("num_bookshelves", "1d4")
@@ -2318,13 +2334,19 @@ class Encounter:
         return sum([m.monster_info.diameter**2 for m in self.monsters])
 
     def description(self):
-        monster_counts = collections.defaultdict(int)
-        for monster in self.monsters:
-            monster_counts[monster.monster_info.name] += 1
-        o = []
-        for k in sorted(monster_counts.keys()):
-            o.append(f"{k} x{monster_counts[k]}")
-        return "\n".join(o)
+        return summarize_monsters(self.monsters)
+
+
+def summarize_monsters(monsters):
+    monster_counts = collections.defaultdict(int)
+    infos = {}
+    for monster in monsters:
+        infos[monster.monster_info.name] = monster.monster_info
+        monster_counts[monster.monster_info.name] += 1
+    o = []
+    for k in sorted(monster_counts.keys()):
+        o.append(f"{k} ({infos[k].ascii_char}) x{monster_counts[k]}")
+    return "\n".join(o)
 
 
 def build_encounter(
@@ -2679,12 +2701,8 @@ def run_ui():
             df = generate_random_dungeon(config)
             dungeon_history.append(df)
 
-            monster_counts = collections.defaultdict(int)
-            for m in df.monsters:
-                monster_counts[m.monster_info.name] += 1
             text_output.append("Floor monster counts:")
-            for k in sorted(monster_counts.keys()):
-                text_output.append(f"{k} x{monster_counts[k]}")
+            text_output.append(summarize_monsters(df.monsters))
             text_output.append("")
             for room in df.rooms:
                 text_output.append(f"***Room {room.ix}***")
