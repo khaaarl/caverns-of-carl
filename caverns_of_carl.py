@@ -15,13 +15,13 @@ Vague plan of cool things
 * notecards per room/corridor (done)
 * random traps in hallways or rooms (done)
 * monster filter expressions, e.g. undead or "flesh golem" (done)
+* UI in tkinter of some sort (done)
 * monster encounter constraint: Frontline
 * room lighting, denoted with floor tile tint & description
 * cavernous levels
-* UI in tkinter of some sort
 * DM toolpanel in TTS, including button to delete everything. Move health increment/decrement to this singleton object
 * Prepared wandering monster encounters in the DM hidden zone (also relevant for traps that summon)
-* GPT API integration
+* GPT API integration?
 * locked doors and keys?
 * secret doors?
 * themes and tilesets?
