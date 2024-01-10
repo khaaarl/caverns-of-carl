@@ -4,7 +4,7 @@
     {
       "name": "Skeleton",
       "keywords": ["Urban", "Undead"],
-      "ascii_char": "s",
+      "ascii_char": "[1;97ms",
       "challenge_rating": 0.25,
       "xp": 50,
       "health": 13,
@@ -20,7 +20,7 @@
     {
       "name": "Zombie",
       "keywords": ["Urban", "Undead"],
-      "ascii_char": "z",
+      "ascii_char": "[1;33mz",
       "challenge_rating": 0.25,
       "xp": 50,
       "health": 22,
@@ -36,7 +36,7 @@
     {
       "name": "Shadow",
       "keywords": ["Underdark", "Undead"],
-      "ascii_char": "s",
+      "ascii_char": "[1;37ms",
       "challenge_rating": 0.5,
       "xp": 100,
       "health": 16,
@@ -50,7 +50,7 @@
     {
       "name": "Ghoul",
       "keywords": ["Swamp", "Underdark", "Urban", "Undead"],
-      "ascii_char": "g",
+      "ascii_char": "[1;33mg",
       "challenge_rating": 1,
       "xp": 200,
       "health": 22,
@@ -65,7 +65,7 @@
     {
       "name": "Ghast",
       "keywords": ["Swamp", "Underdark", "Urban", "Undead"],
-      "ascii_char": "G",
+      "ascii_char": "[1;34mg",
       "challenge_rating": 2,
       "xp": 450,
       "health": 36,
@@ -80,7 +80,7 @@
     {
       "name": "Deathlock Wight",
       "keywords": ["Spellcaster", "Urban", "Undead"],
-      "ascii_char": "@",
+      "ascii_char": "[1;37m@",
       "challenge_rating": 3,
       "xp": 700,
       "health": 37,
@@ -95,7 +95,7 @@
     {
       "name": "Deathlock",
       "keywords": ["Backline", "Spellcaster", "Urban", "Undead"],
-      "ascii_char": "@",
+      "ascii_char": "[1;97m@",
       "challenge_rating": 4,
       "xp": 1100,
       "health": 36,
@@ -110,7 +110,7 @@
     {
       "name": "Deathlock Mastermind",
       "keywords": ["Backline", "Spellcaster", "Urban", "Undead"],
-      "ascii_char": "@",
+      "ascii_char": "[1;96m@",
       "challenge_rating": 8,
       "xp": 3900,
       "health": 110,
@@ -125,7 +125,7 @@
     {
       "name": "Banshee",
       "keywords": ["Coastal", "Forest", "Undead", "Homogenous"],
-      "ascii_char": "B",
+      "ascii_char": "[1;95mB",
       "challenge_rating": 4,
       "xp": 1100,
       "health": 58,
@@ -140,7 +140,7 @@
     {
       "name": "Sword Wraith Warrior",
       "keywords": ["Grassland", "Swamp", "Undead"],
-      "ascii_char": "w",
+      "ascii_char": "[1;96mw",
       "challenge_rating": 3,
       "xp": 700,
       "health": 45,
@@ -155,7 +155,7 @@
     {
       "name": "Sword Wraith Commander",
       "keywords": ["Grassland", "Swamp", "Undead"],
-      "ascii_char": "W",
+      "ascii_char": "[1;96mW",
       "challenge_rating": 8,
       "xp": 3900,
       "health": 127,
@@ -170,7 +170,7 @@
     {
       "name": "Specter",
       "keywords": ["Underdark", "Urban", "Undead"],
-      "ascii_char": "S",
+      "ascii_char": "[1;95ms",
       "challenge_rating": 1,
       "xp": 200,
       "health": 22,
@@ -184,7 +184,7 @@
     {
       "name": "Wraith",
       "keywords": ["Underdark", "Undead"],
-      "ascii_char": "G",
+      "ascii_char": "[1;96mG",
       "challenge_rating": 5,
       "xp": 1800,
       "health": 67,
@@ -198,7 +198,7 @@
     {
       "name": "Mummy",
       "keywords": ["Desert", "Undead"],
-      "ascii_char": "M",
+      "ascii_char": "[1;33mM",
       "challenge_rating": 3,
       "xp": 700,
       "health": 58,
@@ -213,7 +213,7 @@
     {
       "name": "Mummy Lord",
       "keywords": ["Desert", "Undead"],
-      "ascii_char": "M",
+      "ascii_char": "[1;93mM",
       "challenge_rating": 15,
       "xp": 13000,
       "health": 97,
@@ -228,7 +228,7 @@
     {
       "name": "Bodak",
       "keywords": ["Swamp", "Underdark", "Urban", "Undead"],
-      "ascii_char": "B",
+      "ascii_char": "[1;37mB",
       "challenge_rating": 6,
       "xp": 2300,
       "health": 58,
@@ -242,7 +242,7 @@
     {
       "name": "Death Knight",
       "keywords": ["Undead"],
-      "ascii_char": "S",
+      "ascii_char": "[1;97mS",
       "challenge_rating": 17,
       "xp": 18000,
       "health": 180,
@@ -256,7 +256,7 @@
     {
       "name": "Flameskull",
       "keywords": ["Underdark", "Undead"],
-      "ascii_char": "F",
+      "ascii_char": "[1;92mF",
       "challenge_rating": 4,
       "xp": 1100,
       "health": 40,
@@ -270,7 +270,7 @@
     {
       "name": "Lich",
       "keywords": ["Backline", "Spellcaster", "Undead"],
-      "ascii_char": "L",
+      "ascii_char": "[1;97mL",
       "challenge_rating": 21,
       "xp": 33000,
       "health": 135,
@@ -285,7 +285,7 @@
     {
       "name": "Mimic",
       "keywords": ["Underdark", "Urban", "Monstrosity", "Neutral"],
-      "ascii_char": "m",
+      "ascii_char": "[1;33mm",
       "challenge_rating": 2,
       "xp": 450,
       "health": 58,
@@ -299,7 +299,7 @@
     {
       "name": "Vampire",
       "keywords": ["Urban", "Undead", "Evil", "Lawful"],
-      "ascii_char": "V",
+      "ascii_char": "[1;97mV",
       "challenge_rating": 13,
       "xp": 10000,
       "health": 144,
@@ -313,7 +313,7 @@
     {
       "name": "Vampire Warrior",
       "keywords": ["Urban", "Undead", "Evil", "Lawful"],
-      "ascii_char": "V",
+      "ascii_char": "[1;91mV",
       "challenge_rating": 15,
       "xp": 13000,
       "health": 144,
@@ -327,7 +327,7 @@
     {
       "name": "Vampire Spellcaster",
       "keywords": ["Urban", "Undead", "Evil", "Lawful"],
-      "ascii_char": "V",
+      "ascii_char": "[1;96mV",
       "challenge_rating": 15,
       "xp": 13000,
       "health": 144,
@@ -341,7 +341,7 @@
     {
       "name": "Vampire Spawn",
       "keywords": ["Underdark", "Urban", "Undead", "Evil", "Lawful"],
-      "ascii_char": "v",
+      "ascii_char": "[1;97mv",
       "challenge_rating": 5,
       "xp": 1800,
       "health": 82,
@@ -356,7 +356,7 @@
     {
       "name": "Demilich",
       "keywords": ["Backline", "Spellcaster", "Urban", "Undead", "Evil"],
-      "ascii_char": "L",
+      "ascii_char": "[1;37mL",
       "challenge_rating": 18,
       "xp": 20000,
       "health": 80,
@@ -370,7 +370,7 @@
     {
       "name": "Gnoll Witherling",
       "keywords": ["Arctic", "Forest", "Grassland", "Hill", "Undead", "Chaotic", "Evil"],
-      "ascii_char": "g",
+      "ascii_char": "[1;33ms",
       "challenge_rating": 0.25,
       "xp": 50,
       "health": 11,
@@ -384,7 +384,7 @@
     {
       "name": "Skull Lord",
       "keywords": ["Spellcaster", "Urban", "Undead"],
-      "ascii_char": "@",
+      "ascii_char": "[1;97m@",
       "challenge_rating": 15,
       "xp": 13000,
       "health": 105,
@@ -398,7 +398,7 @@
     {
       "name": "Flesh Golem",
       "keywords": ["Undead", "Construct"],
-      "ascii_char": "G",
+      "ascii_char": "[1;33mG",
       "challenge_rating": 5,
       "xp": 1800,
       "health": 93,
@@ -413,7 +413,7 @@
     {
       "name": "Will-o'-Wisp",
       "keywords": ["Forest", "Swamp", "Urban", "Flying", "Undead"],
-      "ascii_char": "w",
+      "ascii_char": "[1;93mw",
       "challenge_rating": 2,
       "xp": 450,
       "health": 22,
@@ -427,7 +427,7 @@
     {
       "name": "Alhoon",
       "keywords": ["Spellcaster", "Underdark", "Flying", "Undead"],
-      "ascii_char": "@",
+      "ascii_char": "[1;37m@",
       "challenge_rating": 10,
       "xp": 5900,
       "health": 150,
@@ -441,7 +441,7 @@
     {
       "name": "Allip",
       "keywords": ["Swamp", "Urban", "Flying", "Undead"],
-      "ascii_char": "A",
+      "ascii_char": "[1;37mA",
       "challenge_rating": 5,
       "xp": 1800,
       "health": 40,
@@ -455,7 +455,7 @@
     {
       "name": "Minotaur Skeleton",
       "keywords": ["Underdark", "Undead", "Lawful", "Evil"],
-      "ascii_char": "S",
+      "ascii_char": "[1;97mS",
       "challenge_rating": 2,
       "xp": 450,
       "health": 67,
@@ -469,7 +469,7 @@
     {
       "name": "Death Tyrant",
       "keywords": ["Underdark", "Flying", "Undead", "Lawful", "Evil"],
-      "ascii_char": "B",
+      "ascii_char": "[1;37mB",
       "challenge_rating": 14,
       "xp": 11500,
       "health": 187,
@@ -483,7 +483,7 @@
     {
       "name": "Bone Naga (Guardian)",
       "keywords": ["Spellcaster", "Underdark", "Undead", "Lawful", "Evil"],
-      "ascii_char": "@",
+      "ascii_char": "[1;35m@",
       "challenge_rating": 4,
       "xp": 1100,
       "health": 58,
@@ -497,7 +497,7 @@
     {
       "name": "Bone Naga (Spirit)",
       "keywords": ["Spellcaster", "Underdark", "Undead", "Lawful", "Evil"],
-      "ascii_char": "@",
+      "ascii_char": "[1;34m@",
       "challenge_rating": 4,
       "xp": 1100,
       "health": 58,
@@ -511,7 +511,7 @@
     {
       "name": "Adult Blue Dracolich",
       "keywords": ["Flying", "Desert", "Undead", "Lawful", "Evil"],
-      "ascii_char": "D",
+      "ascii_char": "[1;34mD",
       "challenge_rating": 17,
       "xp": 18000,
       "health": 225,

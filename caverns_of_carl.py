@@ -62,6 +62,7 @@ except:
     raise
 
 import tkinter as tk
+import tkinter.font
 from tkinter import scrolledtext
 from tkinter import ttk
 
@@ -340,7 +341,7 @@ class WallTile(Tile):
         pass
 
     def to_char(self):
-        return "#"
+        return "[0;37m#"
 
     def tts_object(self, df, x, y):
         obj = tts_reference_object("Wall, Dungeon")
@@ -366,7 +367,7 @@ class RoomFloorTile(FloorTile):
         self.roomix = roomix
 
     def to_char(self):
-        return "."
+        return "[0;37m."
 
 
 class CorridorFloorTile(FloorTile):
@@ -375,7 +376,7 @@ class CorridorFloorTile(FloorTile):
         self.corridorix = corridorix
 
     def to_char(self):
-        return ","
+        return "[0;37m,"
 
 
 class DoorTile(CorridorFloorTile):
@@ -420,7 +421,7 @@ class DoorTile(CorridorFloorTile):
 
 class LadderUpTile(RoomFloorTile):
     def to_char(self):
-        return "<"
+        return "[1;97m<"
 
     def tts_object(self, df, x, y):
         obj = tts_reference_object("Ladder, Wood")
@@ -438,7 +439,7 @@ class LadderUpTile(RoomFloorTile):
 
 class LadderDownTile(RoomFloorTile):
     def to_char(self):
-        return ">"
+        return "[1;97m>"
 
     def tts_object(self, df, x, y):
         obj = tts_reference_object("Floor, Hatch")
@@ -468,7 +469,7 @@ class ChestTile(RoomFloorTile):
         self.contents = contents
 
     def to_char(self):
-        return "$"
+        return "[1;93m$"
 
     def tts_object(self, df, x, y):
         obj = tts_reference_object("Chest Closed Tile")
@@ -494,7 +495,7 @@ class BookshelfTile(ChestTile):
         return False
 
     def to_char(self):
-        return "B"
+        return "[1;93mB"
 
     def tts_object(self, df, x, y):
         obj = tts_reference_object("Bookshelf Tile")
@@ -1413,9 +1414,9 @@ class Room:
                     continue
                 elif not isinstance(tile, ChestTile):
                     continue
-                s = ["Chest ($):"]
+                s = ["Chest ([1;93m$$):"]
                 if isinstance(tile, BookshelfTile):
-                    s = ["Bookshelf (B):"]
+                    s = ["Bookshelf ([1;93m$B):"]
                 for trapix in tile.trapixs:
                     s.append(df.traps[trapix].description())
                 if tile.contents.strip() == "Nothing!":
@@ -1826,7 +1827,7 @@ class DungeonFloor:
         trap.ix = len(self.traps)
         self.traps.append(trap)
 
-    def ascii(self):
+    def ascii(self, colors=False):
         chars = [
             [self.tiles[x][y].to_char() for y in range(self.height)]
             for x in range(self.width)
@@ -1842,7 +1843,7 @@ class DungeonFloor:
             for tx, ty in room.tile_coords():
                 is_ok = True
                 for ix in range(len(num_s)):
-                    if chars[tx + ix][ty] != ".":
+                    if chars[tx + ix][ty].endswith("."):
                         is_ok = False
                         break
                 if is_ok:
@@ -1851,7 +1852,7 @@ class DungeonFloor:
                 ok_positions.sort(key=lambda p: abs(p[0] - x) + abs(p[1] - y))
                 x, y = ok_positions[0]
             for dx, c in enumerate(num_s):
-                chars[int(round(x)) + dx][y] = c
+                chars[int(round(x)) + dx][y] = "[1;97m" + c
         for corridor in self.corridors:
             if not corridor.name or not corridor.is_nontrivial(self):
                 continue
@@ -1859,7 +1860,11 @@ class DungeonFloor:
             x, y = corridor.middle_coords(self)
             x -= int(len(num_s) / 2.0)
             for dx, c in enumerate(num_s):
-                chars[x + dx][y] = c
+                chars[x + dx][y] = "[1;97m" + c
+        if not colors:
+            for x, l in enumerate(chars):
+                for y, c in enumerate(l):
+                    chars[x][y] = c[-1]
         return "\n".join(
             [
                 "".join([chars[x][y] for x in range(self.width)])
@@ -2664,6 +2669,83 @@ def save_tts_blob(blob):
     return filename
 
 
+def set_tk_text(tk_text, s, default_tag_kwargs={}, style_newlines=False):
+    tk_text.delete("1.0", tk.END)
+    for tag in tk_text.tag_names():
+        tk_text.tag_delete(tag)
+    font_info = tkinter.font.nametofont(tk_text.cget("font")).actual()
+    bold_font_info = dict(font_info)
+    bold_font_info["weight"] = "bold"
+    bold_font = tkinter.font.Font(**bold_font_info)
+    underline_font_info = dict(font_info)
+    underline_font_info["underline"] = True
+    underline_font = tkinter.font.Font(**bold_font_info)
+    tag_db = {}
+    if default_tag_kwargs:
+        tk_text.tag_configure("defaultish", **default_tag_kwargs)
+        tag_db[(-1, -1)] = "defaultish"
+    lines = s.split("\n")
+    for lineix, line in enumerate(lines):
+        ix = 0
+        colored_chars = []
+        while ix < len(line):
+            if ix + 6 < len(line):
+                possible_code = line[ix : ix + 6]
+                if re.match(r"^\[[0-9];[0-9][0-9]m$", possible_code):
+                    style = int(possible_code[1])
+                    color = int(possible_code[3:5])
+                    colored_chars.append((line[ix + 6], style, color))
+                    ix += 7
+                    continue
+            colored_chars.append((line[ix], None, None))
+            ix += 1
+        for ix, tup in enumerate(colored_chars):
+            c, style, color = tup
+            tk_text.insert(tk.END, c)
+            if style is None or color is None:
+                if not default_tag_kwargs:
+                    continue
+                style, color = -1, -1
+            tag_name = None
+            if (style, color) not in tag_db:
+                tag_name = f"s{style}c{color}"
+                color_hex = {
+                    30: "#000",
+                    31: "#b00",
+                    32: "#0b0",
+                    33: "#bb0",
+                    34: "#00c",
+                    35: "#b0c",
+                    36: "#0bc",
+                    37: "#bbc",
+                    90: "#000",
+                    91: "#f00",
+                    92: "#0f0",
+                    93: "#ff0",
+                    94: "#00f",
+                    95: "#f0f",
+                    96: "#0ff",
+                    97: "#fff",
+                }[color]
+                d = dict(default_tag_kwargs or {})
+                d["foreground"] = color_hex
+                d["background"] = "#000"
+                if style == 1:
+                    d["font"] = bold_font
+                if style == 4:
+                    d["font"] = underline_font
+                tk_text.tag_configure(tag_name, **d)
+                tag_db[(style, color)] = tag_name
+            tag_name = tag_db[(style, color)]
+            tk_text.tag_add(tag_name, f"{lineix+1}.{ix}", f"{lineix+1}.{ix+1}")
+
+        if lineix < len(lines) - 1:
+            tk_text.insert(tk.END, "\n")
+            if style_newlines:
+                tk_text.tag_add(tag_name, f"{lineix+1}.{ix}", tk.END)
+    pass
+
+
 def run_ui():
     config = DungeonConfig()
     dungeon_history = []
@@ -2691,8 +2773,8 @@ def run_ui():
     size_frame.pack()
 
     def new_preview(*args, **kwargs):
-        ascii_map_text.delete("1.0", tk.END)
-        chest_info_text.delete("1.0", tk.END)
+        set_tk_text(ascii_map_text, "")
+        set_tk_text(chest_info_text, "")
 
         text_output = []
         err = None
@@ -2719,8 +2801,17 @@ def run_ui():
         if err:
             text_output = [err]
         else:
-            ascii_map_text.insert("1.0", dungeon_history[-1].ascii())
-        chest_info_text.insert("1.0", "\n".join(text_output))
+            ascii = dungeon_history[-1].ascii(colors=True)
+            set_tk_text(
+                ascii_map_text,
+                ascii,
+                {"foreground": "#fff", "background": "#000"},
+            )
+        set_tk_text(
+            chest_info_text,
+            "\n".join(text_output),
+            {"foreground": "#fff", "background": "#000"},
+        )
 
     def save_dungeon(*args, **kwargs):
         if not dungeon_history:
@@ -2749,7 +2840,12 @@ def run_ui():
     ascii_map_label = tk.Label(middle_frame, text="ASCII Map")
     ascii_map_label.pack(pady=10)
     ascii_map_text = scrolledtext.ScrolledText(
-        middle_frame, wrap=tk.NONE, width=57, height=35
+        middle_frame,
+        wrap=tk.NONE,
+        width=57,
+        height=35,
+        foreground="#fff",
+        background="#000",
     )
     # Create a horizontal scrollbar and attach it to the ScrolledText widget
     hscrollbar = tk.Scrollbar(
@@ -2763,7 +2859,9 @@ def run_ui():
     chest_info_label = tk.Label(right_frame, text="Logs and Information")
     chest_info_label.pack(pady=10)
 
-    chest_info_text = scrolledtext.ScrolledText(right_frame)
+    chest_info_text = scrolledtext.ScrolledText(
+        right_frame, foreground="#fff", background="#000"
+    )
     chest_info_text.pack(expand=True, fill="both", padx=10, pady=10)
 
     new_preview()
