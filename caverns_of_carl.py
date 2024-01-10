@@ -901,6 +901,7 @@ class MonsterInfo:
         self.challenge_rating = blob.get("challenge_rating")
         self.xp = blob.get("xp")
         self.max_per_floor = blob.get("max_per_floor")
+        self.frequency = blob.get("frequency", 1.0)
 
     def to_blob(self):
         return self
@@ -1414,9 +1415,9 @@ class Room:
                     continue
                 elif not isinstance(tile, ChestTile):
                     continue
-                s = ["Chest ([1;93m$$):"]
+                s = ["Chest ([1;93m$):"]
                 if isinstance(tile, BookshelfTile):
-                    s = ["Bookshelf ([1;93m$B):"]
+                    s = ["Bookshelf ([1;93mB):"]
                 for trapix in tile.trapixs:
                     s.append(df.traps[trapix].description())
                 if tile.contents.strip() == "Nothing!":
@@ -1843,7 +1844,7 @@ class DungeonFloor:
             for tx, ty in room.tile_coords():
                 is_ok = True
                 for ix in range(len(num_s)):
-                    if chars[tx + ix][ty].endswith("."):
+                    if not chars[tx + ix][ty].endswith("."):
                         is_ok = False
                         break
                 if is_ok:
@@ -1851,8 +1852,8 @@ class DungeonFloor:
             if ok_positions:
                 ok_positions.sort(key=lambda p: abs(p[0] - x) + abs(p[1] - y))
                 x, y = ok_positions[0]
-            for dx, c in enumerate(num_s):
-                chars[int(round(x)) + dx][y] = "[1;97m" + c
+            for ix, c in enumerate(num_s):
+                chars[int(round(x)) + ix][y] = "[1;97m" + c
         for corridor in self.corridors:
             if not corridor.name or not corridor.is_nontrivial(self):
                 continue
@@ -2354,6 +2355,111 @@ def summarize_monsters(monsters):
     return "\n".join(o)
 
 
+def _build_encounter_single_attempt(
+    monster_infos, target_xp, variety, prev_monster_counts={}
+):
+    # TODO: there is some bug, I think, where it's not willing to
+    # generate a Banshee (homogenous, max 1 per floor)
+    used_infos = {}  # name -> info
+    encounter = Encounter()
+    prev_xp = -1000000
+    eligible_monsters = []
+    monster_counts = collections.defaultdict(int)
+    for _ in range(100):
+        if len(encounter.monsters) >= variety or len(used_infos) >= len(
+            monster_infos
+        ):
+            break
+        mi = random.choice(monster_infos)
+        if mi.name in used_infos:
+            continue
+        used_infos[mi.name] = mi
+        if mi.frequency <= 0.0:
+            continue
+        if variety != 1 and mi.has_keyword("Homogenous"):
+            continue
+        if mi.max_per_floor is not None:
+            if prev_monster_counts[mi.name] >= mi.max_per_floor:
+                continue
+        encounter.monsters.append(Monster(mi))
+        new_xp = encounter.total_xp()
+        if abs(target_xp - new_xp) < abs(target_xp - prev_xp):
+            eligible_monsters.append(mi.name)
+            prev_xp = new_xp
+            monster_counts[mi.name] += 1
+        else:
+            encounter.monsters.pop()
+    for _ in range(100):
+        if not eligible_monsters:
+            break
+        name = random.choice(eligible_monsters)
+        mi = used_infos[name]
+        encounter.monsters.append(Monster(mi))
+        new_xp = encounter.total_xp()
+        if abs(target_xp - new_xp) < abs(target_xp - prev_xp):
+            prev_xp = new_xp
+            monster_counts[name] += 1
+            if mi.max_per_floor is not None:
+                if (
+                    prev_monster_counts[name] + monster_counts[name]
+                    >= mi.max_per_floor
+                ):
+                    eligible_monsters = list(
+                        set(eligible_monsters) - set([name])
+                    )
+        else:
+            encounter.monsters.pop()
+            eligible_monsters = list(set(eligible_monsters) - set([name]))
+    return encounter
+
+
+def score_encounter(encounter, target_xp, prev_monster_counts):
+    xp = encounter.total_xp()
+    score = 1.0 - abs(xp - target_xp) / target_xp
+    monster_infos = {}  # name -> info
+    monster_counts = collections.defaultdict(int)
+    for m in encounter.monsters:
+        monster_infos[m.monster_info.name] = m.monster_info
+        monster_counts[m.monster_info.name] += 1
+    # get a poor score if it's all frontline or all backline.
+    all_backline = True
+    all_frontline = True
+    for mi in monster_infos.values():
+        if not mi.has_keyword("Backline"):
+            all_backline = False
+        if not mi.has_keyword("Frontline"):
+            all_frontline = False
+    if all_backline or all_frontline:
+        score /= 2.0
+    # improve or worsen score if you have or don't have synergistic
+    # buddies.
+    has_synergies = set()
+    found_synergies = set()
+    for mi in monster_infos.values():
+        if mi.synergies:
+            has_synergies.add(mi.name)
+            for s in mi.synergies:
+                if s in monster_infos:
+                    found_synergies.add(mi.name)
+    if len(has_synergies) > len(found_synergies):
+        score /= 2.0
+    else:
+        score *= 1.0 + len(has_synergies)
+    # frequency bonuses?
+    new_things = set()
+    for name, mi in monster_infos.items():
+        if name not in prev_monster_counts:
+            new_things.add(name)
+        if mi.max_per_floor is not None:
+            if (
+                monster_counts[name] + prev_monster_counts[name]
+                > mi.max_per_floor
+            ):
+                score /= 10.0
+    score *= 1.0 + len(new_things)
+    return score
+
+
 def build_encounter(
     monster_infos, target_xp, variety=None, prev_monster_counts={}
 ):
@@ -2364,78 +2470,17 @@ def build_encounter(
         mi for mi in monster_infos if mi.xp and mi.xp <= target_xp * 1.3
     ]
     variety = min(variety, len(monster_infos))
-    tmp_monster_infos = []
-    for mi in monster_infos:
-        if variety < 2 and (
-            mi.has_keyword("Backline") or mi.has_keyword("Homogenous")
-        ):
-            continue
-        if mi.max_per_floor is not None:
-            prev_n = prev_monster_counts.get(mi.name, 0)
-            if prev_n >= mi.max_per_floor:
-                continue  # skip if we're at or past the max
-            if (mi.max_per_floor - prev_n) * mi.xp < target_xp * 0.7:
-                continue  # skip if we couldn't get close to target xp with us
-        tmp_monster_infos.append(mi)
-    monster_infos = tmp_monster_infos
-    random.shuffle(monster_infos)
-    variety = min(variety, len(monster_infos))
-    # strongly prefer monster synergies
-    non_synergies = set(range(variety))
-    for ix in range(variety):
-        if monster_infos[ix].synergies:
-            for ix2 in range(ix + 1, len(monster_infos)):
-                if monster_infos[ix2].name in monster_infos[ix].synergies:
-                    if ix in non_synergies:
-                        non_synergies.remove(ix)
-                    if len(non_synergies) == 0:
-                        break
-                    other_ix = non_synergies.pop()
-                    tmp = monster_infos[other_ix]
-                    monster_infos[other_ix] = monster_infos[ix2]
-                    monster_infos[ix2] = tmp
-                    break
-    backliners = set(range(variety))
-    for ix in range(variety):
-        if not monster_infos[ix].has_keyword("Backliner"):
-            backliners.remove(ix)
-    if len(backliners) == variety and len(non_synergies) >= 1:
-        # grab a non-synergistic monster
-        ix = random.choice(non_synergies)
-        # replace it with a different non-synergistic monster
-        for ix2 in range(variety, len(monster_infos)):
-            if len(monster_infos[ix2].synergies) < 1:
-                tmp = monster_infos[ix2]
-                monster_infos[ix2] = monster_infos[ix]
-                monster_infos[ix] = tmp
-                break
-    monster_infos = monster_infos[:variety]
-    encounter = Encounter()
-    xp_history = [0]
-    num_undoes = 0
-    for _ in range(2000):
-        if len(monster_infos) < 1:
-            break
-        miix = random.randrange(len(monster_infos))
-        mi = monster_infos[miix]
-        if mi.max_per_floor is not None:
-            prev_n = prev_monster_counts.get(mi.name, 0)
-            cur_n = sum(
-                m.monster_info.name == mi.name for m in encounter.monsters
-            )
-            if prev_n + cur_n >= mi.max_per_floor:
-                del monster_infos[miix]
-                continue
-        m = Monster(monster_info=mi)
-        encounter.monsters.append(m)
-        xp_history.append(encounter.total_xp())
-        if abs(xp_history[-1] - target_xp) > abs(xp_history[-2] - target_xp):
-            encounter.monsters.pop()
-            xp_history.pop()
-            num_undoes += 1
-            if num_undoes >= 10:
-                break
-    return encounter
+    best_encounter = Encounter()
+    best_score = 0.0001
+    for _ in range(100):
+        encounter = _build_encounter_single_attempt(
+            monster_infos, target_xp, variety, prev_monster_counts
+        )
+        score = score_encounter(encounter, target_xp, prev_monster_counts)
+        if score > best_score:
+            best_encounter = encounter
+            best_score = score
+    return best_encounter
 
 
 def med_target_xp(config):
@@ -2500,6 +2545,8 @@ def place_monsters_in_dungeon(df):
         enc = build_encounter(
             monster_infos, target_xp, prev_monster_counts=monster_counts
         )
+        if not enc.monsters:
+            continue
         for m in enc.monsters:
             monster_counts[m.monster_info.name] += 1
         encounters.append(enc)

@@ -19,7 +19,7 @@
     },
     {
       "name": "Zombie",
-      "keywords": ["Urban", "Undead"],
+      "keywords": ["Urban", "Undead", "Frontline"],
       "ascii_char": "[1;33mz",
       "challenge_rating": 0.25,
       "xp": 50,
@@ -35,7 +35,7 @@
     },
     {
       "name": "Shadow",
-      "keywords": ["Underdark", "Undead"],
+      "keywords": ["Underdark", "Undead", "Frontline"],
       "ascii_char": "[1;37ms",
       "challenge_rating": 0.5,
       "xp": 100,
@@ -49,7 +49,7 @@
     },
     {
       "name": "Ghoul",
-      "keywords": ["Swamp", "Underdark", "Urban", "Undead"],
+      "keywords": ["Swamp", "Underdark", "Urban", "Undead", "Frontline"],
       "ascii_char": "[1;33mg",
       "challenge_rating": 1,
       "xp": 200,
@@ -64,7 +64,7 @@
     },
     {
       "name": "Ghast",
-      "keywords": ["Swamp", "Underdark", "Urban", "Undead"],
+      "keywords": ["Swamp", "Underdark", "Urban", "Undead", "Frontline"],
       "ascii_char": "[1;34mg",
       "challenge_rating": 2,
       "xp": 450,
@@ -183,7 +183,7 @@
     },
     {
       "name": "Wraith",
-      "keywords": ["Underdark", "Undead"],
+      "keywords": ["Underdark", "Undead", "Frontline"],
       "ascii_char": "[1;96mG",
       "challenge_rating": 5,
       "xp": 1800,
@@ -197,7 +197,7 @@
     },
     {
       "name": "Mummy",
-      "keywords": ["Desert", "Undead"],
+      "keywords": ["Desert", "Undead", "Frontline"],
       "ascii_char": "[1;33mM",
       "challenge_rating": 3,
       "xp": 700,
@@ -212,7 +212,7 @@
     },
     {
       "name": "Mummy Lord",
-      "keywords": ["Desert", "Undead"],
+      "keywords": ["Desert", "Undead", "Frontline"],
       "ascii_char": "[1;93mM",
       "challenge_rating": 15,
       "xp": 13000,
@@ -255,7 +255,7 @@
     },
     {
       "name": "Flameskull",
-      "keywords": ["Underdark", "Undead"],
+      "keywords": ["Underdark", "Undead", "Backline"],
       "ascii_char": "[1;92mF",
       "challenge_rating": 4,
       "xp": 1100,
@@ -284,7 +284,7 @@
     },
     {
       "name": "Mimic",
-      "keywords": ["Underdark", "Urban", "Monstrosity", "Neutral"],
+      "keywords": ["Underdark", "Urban", "Monstrosity", "Neutral", "Frontline"],
       "ascii_char": "[1;33mm",
       "challenge_rating": 2,
       "xp": 450,
@@ -292,13 +292,14 @@
       "hit_dice_formula": "9d8 + 18",
       "size": "medium",
       "diameter": 1,
+      "frequency": 0,
       "tts_reference_nicknames": [
         "Mimic A"
       ]
     },
     {
       "name": "Vampire",
-      "keywords": ["Urban", "Undead", "Evil", "Lawful"],
+      "keywords": ["Urban", "Undead", "Evil", "Lawful", "Frontline"],
       "ascii_char": "[1;97mV",
       "challenge_rating": 13,
       "xp": 10000,
@@ -312,7 +313,7 @@
     },
     {
       "name": "Vampire Warrior",
-      "keywords": ["Urban", "Undead", "Evil", "Lawful"],
+      "keywords": ["Urban", "Undead", "Evil", "Lawful", "Frontline"],
       "ascii_char": "[1;91mV",
       "challenge_rating": 15,
       "xp": 13000,
@@ -340,7 +341,7 @@
     },
     {
       "name": "Vampire Spawn",
-      "keywords": ["Underdark", "Urban", "Undead", "Evil", "Lawful"],
+      "keywords": ["Underdark", "Urban", "Undead", "Evil", "Lawful", "Frontline"],
       "ascii_char": "[1;97mv",
       "challenge_rating": 5,
       "xp": 1800,
@@ -369,7 +370,7 @@
     },
     {
       "name": "Gnoll Witherling",
-      "keywords": ["Arctic", "Forest", "Grassland", "Hill", "Undead", "Chaotic", "Evil"],
+      "keywords": ["Arctic", "Forest", "Grassland", "Hill", "Undead", "Chaotic", "Evil", "Frontline"],
       "ascii_char": "[1;33ms",
       "challenge_rating": 0.25,
       "xp": 50,
@@ -397,7 +398,7 @@
     },
     {
       "name": "Flesh Golem",
-      "keywords": ["Undead", "Construct"],
+      "keywords": ["Undead", "Construct", "Frontline"],
       "ascii_char": "[1;33mG",
       "challenge_rating": 5,
       "xp": 1800,
@@ -454,7 +455,7 @@
     },
     {
       "name": "Minotaur Skeleton",
-      "keywords": ["Underdark", "Undead", "Lawful", "Evil"],
+      "keywords": ["Underdark", "Undead", "Lawful", "Evil", "Frontline"],
       "ascii_char": "[1;97mS",
       "challenge_rating": 2,
       "xp": 450,
