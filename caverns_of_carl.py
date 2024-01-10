@@ -1821,13 +1821,23 @@ class DungeonFloor:
             chars[monster.x][monster.y] = monster.to_char()
         for room in self.rooms:
             num_s = str(room.ix)
-            # TODO: try to avoid locations that have stuff on them
-            # somehow; this currently can clobber the location of
-            # monsters etc
             x, y = room.x, room.y
-            x -= int(len(num_s) / 2.0)
+            x -= (len(num_s) - 1) / 2.0
+            # Try to avoid locations that have stuff on them
+            ok_positions = []
+            for tx, ty in room.tile_coords():
+                is_ok = True
+                for ix in range(len(num_s)):
+                    if chars[tx + ix][ty] != ".":
+                        is_ok = False
+                        break
+                if is_ok:
+                    ok_positions.append((tx, ty))
+            if ok_positions:
+                ok_positions.sort(key=lambda p: abs(p[0] - x) + abs(p[1] - y))
+                x, y = ok_positions[0]
             for dx, c in enumerate(num_s):
-                chars[x + dx][y] = c
+                chars[int(round(x)) + dx][y] = c
         for corridor in self.corridors:
             if not corridor.name or not corridor.is_nontrivial(self):
                 continue

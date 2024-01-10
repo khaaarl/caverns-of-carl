@@ -21,5 +21,4 @@ UI Example Screenshot             |  In-TTS Example Screenshot
 1. The set of monsters is currently extremely limited. Covering even a large minority of monster manual is very unlikely without some crowdsourced assistance.
 2. This can't handle Tabletop Simulator save directories in nonstandard locations.
 3. I'd like there to be more "biomes" than this kinda generic dungeon.
-4. Bug: the ASCII layout's room numbers currently can clobber room contents. That might be fixed in a near future update.
-5. ...and lots more
+4. ...and lots more
