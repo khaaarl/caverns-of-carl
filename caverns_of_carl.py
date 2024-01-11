@@ -16,9 +16,10 @@ Vague plan of cool things
 * random traps in hallways or rooms (done)
 * monster filter expressions, e.g. undead or "flesh golem" (done)
 * UI in tkinter of some sort (done)
-* monster encounter constraint: Frontline
+* monster encounter constraint: Frontline (done)
 * room lighting, denoted with floor tile tint & description
 * cavernous levels
+* ladder configurable bfs distance check
 * DM toolpanel in TTS, including button to delete everything. Move health increment/decrement to this singleton object
 * Prepared wandering monster encounters in the DM hidden zone (also relevant for traps that summon)
 * GPT API integration?
@@ -499,7 +500,6 @@ class BookshelfTile(ChestTile):
 
     def tts_object(self, df, x, y):
         obj = tts_reference_object("Bookshelf Tile")
-        # TODO: adjust to face away from wall if near wall
         obj["Transform"]["rotY"] += rotY_away_from_wall(df, x, y)
         obj["Nickname"] = "Bookshelf"
         obj["States"]["2"]["Nickname"] = "Examined Bookshelf"
