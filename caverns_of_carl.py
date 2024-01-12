@@ -2222,7 +2222,7 @@ class DungeonConfig:
         self.add_var("width", 35)
         self.add_var("height", 35)
         self.add_var("num_rooms", 12)
-        self.add_var("min_room_radius", 2)
+        self.add_var("min_room_radius", 1)
         self.add_var("num_room_embiggenings", 5)
         self.add_var("num_room_wiggles", 5)
         self.add_var("cavernous_room_percent", 50.0)
@@ -2549,7 +2549,8 @@ def place_doors_in_dungeon(df):
             continue  # caverns don't have doors
         room1 = df.rooms[corridor.room1ix]
         room2 = df.rooms[corridor.room2ix]
-        corridor_coords = list(corridor.walk())
+        corridor_coords = list(corridor.walk(max_width_iter=1))
+        new_door_locations = set()  # x, y, dx, dy
         for ix in range(1, len(corridor_coords) - 1):
             x, y = corridor_coords[ix]
             px, py = corridor_coords[ix - 1]
@@ -2557,24 +2558,33 @@ def place_doors_in_dungeon(df):
             tile = df.tiles[x][y]
             ptile = df.tiles[px][py]
             ntile = df.tiles[nx][ny]
-            # TODO: There is some bug in this where it does not
-            # complete the tiles in a wide door: a scenario where a
-            # relatively small room with a width=2 or 3 corridor that
-            # is aligned almost but not quite exactly with the room's
-            # center and thus turns during the wall maybe?
             if (
                 ptile.roomix == room1.ix
                 and room1.is_fully_enclosed_by_doors()
                 and isinstance(tile, CorridorFloorTile)
-            ):
-                df.set_tile(DoorTile(corridor.ix), x=x, y=y)
-            elif (
+            ) or (
                 not isinstance(ptile, DoorTile)
                 and isinstance(tile, CorridorFloorTile)
                 and ntile.roomix == room2.ix
                 and room2.is_fully_enclosed_by_doors()
             ):
                 df.set_tile(DoorTile(corridor.ix), x=x, y=y)
+                new_door_locations.add((x, y, x - px, y - py))
+        for x, y, dx, dy in new_door_locations:
+            rx, ry = x, y
+            lx, ly = x, y
+            if dx != 0:
+                ry += 1
+                ly -= 1
+            else:
+                rx += 1
+                lx -= 1
+            for tx, ty in [(rx, ry), (lx, ly)]:
+                tile = df.get_tile(tx, ty)
+                if isinstance(tile, DoorTile):
+                    continue
+                if isinstance(tile, CorridorFloorTile):
+                    df.set_tile(DoorTile(corridor.ix), x=tx, y=ty)
         for x, y in corridor.walk(max_width_iter=1):
             tile = df.tiles[x][y]
             if not isinstance(tile, DoorTile):
