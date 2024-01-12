@@ -319,11 +319,13 @@ class TTSFogBit:
 
 
 class Tile:
-    def __init__(self):
-        self.trapixs = set()
+    def __init__(self, x=None, y=None):
+        self.x = x
+        self.y = y
         self.tile_style = None
         self.roomix = None
         self.corridorix = None
+        self.trapixs = set()
         self.light_level = "bright"  # or "dim" or "dark"
         self.is_interior = False
 
@@ -392,11 +394,11 @@ class WallTile(Tile):
             return "[0;37m#"
         return " "
 
-    def tts_object(self, df, x, y):
+    def tts_object(self, df):
         if self.tile_style == "cavern":
             # use different wall bits if different adjacent walls
             def is_neighbor_wall(dx, dy):
-                tx, ty = x + dx, y + dy
+                tx, ty = self.x + dx, self.y + dy
                 if tx <= 0 or ty <= 0 or tx >= df.width or ty >= df.height:
                     return True
                 return isinstance(df.tiles[tx][ty], WallTile)
@@ -471,7 +473,7 @@ class WallTile(Tile):
 
 
 class FloorTile(Tile):
-    def tts_object(self, df, x, y):
+    def tts_object(self, df):
         obj = tts_reference_object("Floor, Dungeon")
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = ""
@@ -514,7 +516,7 @@ class DoorTile(CorridorFloorTile):
     def to_char(self):
         return "+"
 
-    def tts_object(self, df, x, y):
+    def tts_object(self, df):
         obj = None
         corridor = df.corridors[self.corridorix]
         door = df.doors[self.doorix]
@@ -522,23 +524,23 @@ class DoorTile(CorridorFloorTile):
             obj = tts_reference_object("Door, Metal")
             obj["Nickname"] = "Door"
         elif corridor.width == 2:
-            if isinstance(df.tiles[x + 1][y], DoorTile) or isinstance(
-                df.tiles[x][y - 1], DoorTile
+            if isinstance(df.tiles[self.x + 1][self.y], DoorTile) or isinstance(
+                df.tiles[self.x][self.y - 1], DoorTile
             ):
                 obj = tts_reference_object("Door, Double")
                 obj["Nickname"] = "Large Door"
         else:
             if (
-                isinstance(df.tiles[x + 1][y], DoorTile)
-                and isinstance(df.tiles[x - 1][y], DoorTile)
-                or isinstance(df.tiles[x][y + 1], DoorTile)
-                and isinstance(df.tiles[x][y - 1], DoorTile)
+                isinstance(df.tiles[self.x + 1][self.y], DoorTile)
+                and isinstance(df.tiles[self.x - 1][self.y], DoorTile)
+                or isinstance(df.tiles[self.x][self.y + 1], DoorTile)
+                and isinstance(df.tiles[self.x][self.y - 1], DoorTile)
             ):
                 obj = tts_reference_object("Door, Triple")
                 obj["Nickname"] = "Huge Door"
         if obj:
             for dx in [1, -1]:
-                if isinstance(df.tiles[x + dx][y], RoomFloorTile):
+                if isinstance(df.tiles[self.x + dx][self.y], RoomFloorTile):
                     obj["Transform"]["rotY"] = 90.0
             self._update_texture_style(obj, df)
             self._tts_light_mul(obj)
@@ -552,7 +554,7 @@ class LadderUpTile(RoomFloorTile):
     def to_char(self):
         return "[1;97m<"
 
-    def tts_object(self, df, x, y):
+    def tts_object(self, df):
         obj = tts_reference_object("Ladder, Wood")
         # TODO: adjust such that ladder is against the wall if a wall is near
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
@@ -572,7 +574,7 @@ class LadderDownTile(RoomFloorTile):
     def to_char(self):
         return "[1;97m>"
 
-    def tts_object(self, df, x, y):
+    def tts_object(self, df):
         obj = tts_reference_object("Floor, Hatch")
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = "Hatch down"
@@ -604,9 +606,9 @@ class ChestTile(RoomFloorTile):
     def to_char(self):
         return "[1;93m$"
 
-    def tts_object(self, df, x, y):
+    def tts_object(self, df):
         obj = tts_reference_object("Chest Closed Tile")
-        obj["Transform"]["rotY"] += rotY_away_from_wall(df, x, y)
+        obj["Transform"]["rotY"] += rotY_away_from_wall(df, self.x, self.y)
         obj["Nickname"] = "Chest"
         obj["States"]["2"]["Nickname"] = "Open Chest"
         if self.contents:
@@ -632,9 +634,9 @@ class BookshelfTile(ChestTile):
     def to_char(self):
         return "[1;93mB"
 
-    def tts_object(self, df, x, y):
+    def tts_object(self, df):
         obj = tts_reference_object("Bookshelf Tile")
-        obj["Transform"]["rotY"] += rotY_away_from_wall(df, x, y)
+        obj["Transform"]["rotY"] += rotY_away_from_wall(df, self.x, self.y)
         obj["Nickname"] = "Bookshelf"
         obj["States"]["2"]["Nickname"] = "Examined Bookshelf"
         if self.contents:
@@ -652,9 +654,9 @@ class MimicTile(ChestTile):
     def to_char(self):
         return "m"
 
-    def tts_object(self, df, x, y):
+    def tts_object(self, df):
         obj = tts_reference_object("Chest Closed Mimic Tile")
-        obj["Transform"]["rotY"] += rotY_away_from_wall(df, x, y)
+        obj["Transform"]["rotY"] += rotY_away_from_wall(df, self.x, self.y)
         obj["Nickname"] = "Chest"
         obj["States"]["2"]["Nickname"] = "It's a Mimic!"
         obj["States"]["2"]["ChildObjects"][0][
@@ -1526,13 +1528,13 @@ class Room:
         t.tile_style = "dungeon"
         return t
 
-    def apply_to_tiles(self, tiles):
+    def apply_to_tiles(self, df):
         for x, y in self.tile_coords():
-            tiles[x][y] = self.new_floor_tile()
+            df.set_tile(self.new_floor_tile(), x=x, y=y)
 
-    def remove_from_tiles(self, tiles):
+    def remove_from_tiles(self, df):
         for x, y in self.tile_coords():
-            tiles[x][y] = WallTile()
+            df.set_tile(WallTile(), x=x, y=y)
 
     def tile_coords(self):
         raise NotImplementedError()
@@ -1751,7 +1753,7 @@ class CavernousRoom(Room):
         for x, y in erodable:
             if random.random() < per_tile_chance:
                 self.explicit_tile_coords.append((x, y))
-                df.tiles[x][y] = self.new_floor_tile()
+                df.set_tile(self.new_floor_tile(), x=x, y=y)
 
 
 class CorridorWalker:
@@ -2022,7 +2024,8 @@ class DungeonFloor:
         self.height = config.height
         # tiles[x][y] points to a tile on the map. Indexed [0, width) and [0, height)
         self.tiles = [
-            [WallTile() for y in range(self.height)] for x in range(self.width)
+            [WallTile(x, y) for y in range(self.height)]
+            for x in range(self.width)
         ]
         self.rooms = []
         self.corridors = []
@@ -2055,10 +2058,33 @@ class DungeonFloor:
             rh=r,
         )
 
+    def tile_coords(self):
+        for y in range(self.height - 1, -1, -1):
+            for x in range(self.width):
+                tile = self.tiles[x][y]
+                yield (tile, x, y)
+
+    def set_tile(self, tile, x=None, y=None):
+        if x is not None:
+            tile.x = x
+        if y is not None:
+            tile.y = y
+        assert tile.x is not None and tile.y is not None
+        if tile.corridorix is None and tile.roomix is None:
+            prev_tile = self.tiles[x][y]
+            tile.roomix = prev_tile.roomix
+            tile.corridorix = prev_tile.corridorix
+        assert tile.x >= 0
+        assert tile.x < self.width
+        assert tile.y >= 0
+        assert tile.y <= self.height
+        self.tiles[x][y] = tile
+        return tile
+
     def add_room(self, room):
         room.ix = len(self.rooms)
         self.rooms.append(room)
-        room.apply_to_tiles(self.tiles)
+        room.apply_to_tiles(self)
 
     def add_corridor(self, corridor):
         corridor.ix = len(self.corridors)
@@ -2067,7 +2093,7 @@ class DungeonFloor:
         self.room_neighbors[corridor.room2ix].add(corridor.room1ix)
         for x, y in corridor.walk():
             if isinstance(self.tiles[x][y], WallTile):
-                self.tiles[x][y] = CorridorFloorTile(corridor.ix)
+                self.set_tile(CorridorFloorTile(corridor.ix), x=x, y=y)
 
     def add_door(self, door):
         door.ix = len(self.doors)
@@ -2531,14 +2557,14 @@ def place_doors_in_dungeon(df):
                 and room1.is_fully_enclosed_by_doors()
                 and isinstance(tile, CorridorFloorTile)
             ):
-                df.tiles[x][y] = DoorTile(tile.corridorix)
+                df.set_tile(DoorTile(tile.corridorix), x=x, y=y)
             elif (
                 not isinstance(ptile, DoorTile)
                 and isinstance(tile, CorridorFloorTile)
                 and isinstance(ntile, RoomFloorTile)
                 and room2.is_fully_enclosed_by_doors()
             ):
-                df.tiles[x][y] = DoorTile(tile.corridorix)
+                df.set_tile(DoorTile(tile.corridorix), x=x, y=y)
         for x, y in corridor.walk(max_width_iter=1):
             tile = df.tiles[x][y]
             if not isinstance(tile, DoorTile):
@@ -2598,11 +2624,11 @@ def place_ladders_in_dungeon(df):
         x, y = tile_coords
 
         if num_up_ladders < df.config.num_up_ladders:
-            df.tiles[x][y] = LadderUpTile(roomix)
+            df.set_tile(LadderUpTile(roomix), x=x, y=y)
             room.has_up_ladder = True
             num_up_ladders += 1
         else:
-            df.tiles[x][y] = LadderDownTile(roomix)
+            df.set_tile(LadderDownTile(roomix), x=x, y=y)
             room.has_down_ladder = True
             num_down_ladders += 1
 
@@ -2649,12 +2675,14 @@ def place_treasure_in_dungeon(df):
             )
             if not contents:
                 contents = ["Nothing!"]
-            df.tiles[x][y] = ChestTile(roomix, contents="\n".join(contents))
+            df.set_tile(
+                ChestTile(roomix, contents="\n".join(contents)), x=x, y=y
+            )
             num_treasures += 1
         elif num_mimics < target_num_mimics:
             monster = Monster(mimic_info)
             monster.adjust_cr(df.config.target_character_level)
-            df.tiles[x][y] = MimicTile(roomix, monster=monster)
+            df.set_tile(MimicTile(roomix, monster=monster), x=x, y=y)
             num_mimics += 1
         elif num_bookshelves < target_num_bookshelves:
             if isinstance(room, CavernousRoom):
@@ -2665,7 +2693,9 @@ def place_treasure_in_dungeon(df):
             )
             if not contents:
                 contents = ["Nothing!"]
-            df.tiles[x][y] = BookshelfTile(roomix, contents="\n".join(contents))
+            df.set_tile(
+                BookshelfTile(roomix, contents="\n".join(contents)), x=x, y=y
+            )
             num_bookshelves += 1
 
 
@@ -3106,14 +3136,12 @@ def dungeon_to_tts_blob(df):
     blob["SaveName"] = name
     blob["GameMode"] = name
     blob["ObjectStates"] = []
-    for x in range(df.width):
-        for y in range(df.height):
-            tile = df.tiles[x][y]
-            obj = tile.tts_object(df, x, y)
-            if obj is None:
-                continue
-            df.tts_xz(x, y, obj)
-            blob["ObjectStates"].append(obj)
+    for tile, x, y in df.tile_coords():
+        obj = tile.tts_object(df)
+        if obj is None:
+            continue
+        df.tts_xz(x, y, obj)
+        blob["ObjectStates"].append(obj)
     for light_source in df.light_sources:
         blob["ObjectStates"].append(light_source.tts_object(df))
     for monster in df.monsters:
