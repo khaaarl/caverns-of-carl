@@ -2382,25 +2382,15 @@ def place_rooms_in_dungeon(df, config):
         if is_room_valid(room2, df, rooms, ix):
             rooms[ix] = room2
     # apply light levels
-    total_lightness_ratio = (
-        config.room_bright_ratio
-        + config.room_dim_ratio
-        + config.room_dark_ratio
-    )
-    n_bright = int(
-        config.room_bright_ratio * len(rooms) * 1.01 / total_lightness_ratio
-    )
-    n_dim = int(
-        config.room_dim_ratio * len(rooms) * 1.01 / total_lightness_ratio
-    )
-    random.shuffle(rooms)
-    for room in rooms[:n_bright]:
-        room.light_level = "bright"
-    for room in rooms[n_bright : n_bright + n_dim]:
-        room.light_level = "dim"
-    for room in rooms[n_bright + n_dim :]:
-        room.light_level = "dark"
-    random.shuffle(rooms)
+    for room in rooms:
+        room.light_level = random.choices(
+            ["bright", "dim", "dark"],
+            weights=[
+                config.room_bright_ratio,
+                config.room_dim_ratio,
+                config.room_dark_ratio,
+            ],
+        )[0]
     # sort rooms from top to bottom so their indices are more human comprehensible maybe
     rooms.sort(key=lambda r: (-r.y, r.x))
     # add rooms to dungeon floor
@@ -2431,18 +2421,15 @@ def place_corridors_in_dungeon(df, config):
         if room2ix in (rooms_connected.get(room1ix) or set()):
             continue
         is_horizontal_first = random.randrange(2)
-        width_prefs = [
-            config.corridor_width_1_ratio,
-            config.corridor_width_2_ratio,
-            config.corridor_width_3_ratio,
-        ]
-        width_pref = random.random() * sum(width_prefs)
-        width = 1
-        for p in width_prefs:
-            if width_pref <= p:
-                break
-            width_pref -= p
-            width += 1
+
+        width = random.choices(
+            [1, 2, 3],
+            weights=[
+                config.corridor_width_1_ratio,
+                config.corridor_width_2_ratio,
+                config.corridor_width_3_ratio,
+            ],
+        )[0]
         signature = (room1ix, room2ix, width, is_horizontal_first)
         if signature in prev_attempts:
             continue
