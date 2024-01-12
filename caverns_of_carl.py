@@ -324,7 +324,23 @@ class Tile:
         self.tile_style = None
         self.roomix = None
         self.corridorix = None
+        self.light_level = "bright"  # or "dim" or "dark"
         self.is_interior = False
+
+    def _tts_light_mul(self, obj):
+        ref = tts_reference_object("Floor, Dungeon")
+        mesh_url = obj.get("CustomMesh", {}).get("MeshURL")
+        if mesh_url == ref["CustomMesh"]["MeshURL"]:
+            mul = 1.0
+            if self.light_level == "dim":
+                mul = 0.7
+            elif self.light_level == "dark":
+                mul = 0.3
+            obj["ColorDiffuse"] = {k: mul for k in "rgb"}
+        for other in obj.get("States", {}).values():
+            self._tts_light_mul(other)
+        for other in obj.get("ChildObjects", []):
+            self._tts_light_mul(other)
 
     def to_char(self):
         return "?"
@@ -460,6 +476,7 @@ class FloorTile(Tile):
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = ""
         self._update_texture_style(obj, df)
+        self._tts_light_mul(obj)
         return obj
 
     def is_move_blocking(self):
@@ -524,6 +541,7 @@ class DoorTile(CorridorFloorTile):
                 if isinstance(df.tiles[x + dx][y], RoomFloorTile):
                     obj["Transform"]["rotY"] = 90.0
             self._update_texture_style(obj, df)
+            self._tts_light_mul(obj)
         return obj
 
     def is_move_blocking(self):
@@ -540,6 +558,7 @@ class LadderUpTile(RoomFloorTile):
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = "Ladder up"
         self._update_texture_style(obj, df)
+        self._tts_light_mul(obj)
         return obj
 
     def is_move_blocking(self):
@@ -558,6 +577,7 @@ class LadderDownTile(RoomFloorTile):
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = "Hatch down"
         self._update_texture_style(obj, df)
+        self._tts_light_mul(obj)
         return obj
 
     def is_move_blocking(self):
@@ -592,6 +612,7 @@ class ChestTile(RoomFloorTile):
         if self.contents:
             obj["States"]["2"]["Description"] = "Contents:\n" + self.contents
         self._update_texture_style(obj, df)
+        self._tts_light_mul(obj)
         return obj
 
     def is_move_blocking(self):
@@ -619,6 +640,7 @@ class BookshelfTile(ChestTile):
         if self.contents:
             obj["States"]["2"]["Description"] = "Contents:\n" + self.contents
         self._update_texture_style(obj, df)
+        self._tts_light_mul(obj)
         return obj
 
 
@@ -639,6 +661,7 @@ class MimicTile(ChestTile):
             "Nickname"
         ] = self.monster.tts_nickname()
         self._update_texture_style(obj, df)
+        self._tts_light_mul(obj)
         return obj
 
 
@@ -1471,6 +1494,7 @@ class Room:
         self.y = y
         self.rw = int(max(rw, 1))
         self.rh = int(max(rh, 1))
+        self.light_level = "bright"  # or "dim" or "dark"
         self.has_up_ladder = False
         self.has_down_ladder = False
         self.ix = None
@@ -1796,6 +1820,7 @@ class Corridor:
         self.x1, self.y1, self.x2, self.y2 = x1, y1, x2, y2
         self.is_horizontal_first = is_horizontal_first
         self.width = width
+        self.light_level = "bright"  # or "dim" or "dark"
         self.ix = None
         self.doorixs = set()
         self.trapixs = set()
@@ -2159,6 +2184,9 @@ class DungeonConfig:
         self.add_var("num_room_embiggenings", 5)
         self.add_var("num_room_wiggles", 5)
         self.add_var("cavernous_room_percent", 50.0)
+        self.add_var("room_bright_ratio", 5.0)
+        self.add_var("room_dim_ratio", 2.0)
+        self.add_var("room_dark_ratio", 1.0)
         self.add_var("num_erosion_steps", 4)
         self.add_var("prefer_full_connection", True)
         self.add_var("min_corridors_per_room", 1.1)
@@ -2185,7 +2213,7 @@ class DungeonConfig:
         self.add_var("chest_trap_percent", 30.0)
         self.allow_corridor_intersection = False
         self.min_ladder_distance = 2
-        self.max_corridor_attempts = 20000
+        self.max_corridor_attempts = 30000
         self.max_room_attempts = 10000
 
     def add_var(self, k, v, tk_label=None, is_long=False):
@@ -2263,10 +2291,18 @@ class DungeonConfig:
 
 def generate_random_dungeon(config=None):
     config = config or DungeonConfig()
-    df = DungeonFloor(config)
-    place_rooms_in_dungeon(df, config)
-    erode_cavernous_rooms_in_dungeon(df)
-    place_corridors_in_dungeon(df, config)
+    df = None
+    for _ in range(100):
+        df = DungeonFloor(config)
+        place_rooms_in_dungeon(df, config)
+        erode_cavernous_rooms_in_dungeon(df)
+        place_corridors_in_dungeon(df, config)
+        # If we require full connection, and this didn't produce a
+        # fully connected map, retry.
+        if not config.prefer_full_connection or len(
+            dfs(df.room_neighbors, 0)
+        ) == len(df.rooms):
+            break
     place_doors_in_dungeon(df)
     place_ladders_in_dungeon(df)
     place_treasure_in_dungeon(df)
@@ -2308,6 +2344,26 @@ def place_rooms_in_dungeon(df, config):
             room2 = rooms[ix].wiggled()
         if is_room_valid(room2, df, rooms, ix):
             rooms[ix] = room2
+    # apply light levels
+    total_lightness_ratio = (
+        config.room_bright_ratio
+        + config.room_dim_ratio
+        + config.room_dark_ratio
+    )
+    n_bright = int(
+        config.room_bright_ratio * len(rooms) * 1.01 / total_lightness_ratio
+    )
+    n_dim = int(
+        config.room_dim_ratio * len(rooms) * 1.01 / total_lightness_ratio
+    )
+    random.shuffle(rooms)
+    for room in rooms[:n_bright]:
+        room.light_level = "bright"
+    for room in rooms[n_bright : n_bright + n_dim]:
+        room.light_level = "dim"
+    for room in rooms[n_bright + n_dim :]:
+        room.light_level = "dark"
+    random.shuffle(rooms)
     # sort rooms from top to bottom so their indices are more human comprehensible maybe
     rooms.sort(key=lambda r: (-r.y, r.x))
     # add rooms to dungeon floor
@@ -2431,6 +2487,11 @@ def place_corridors_in_dungeon(df, config):
                         found_problem = True
                         break
         if not found_problem:
+            # set light level to in between the two rooms
+            light_levels = sorted([room1.light_level, room2.light_level])
+            corridor.light_level = random.choice(light_levels)
+            if light_levels == ["bright", "dark"]:
+                corridor.light_level = "dim"
             s = rooms_connected.get(room1ix) or set()
             s.add(room2ix)
             rooms_connected[room1ix] = s
@@ -2455,6 +2516,8 @@ def place_doors_in_dungeon(df):
     for corridor in df.corridors:
         if isinstance(corridor, CavernousCorridor):
             continue  # caverns don't have doors
+        room1 = df.rooms[corridor.room1ix]
+        room2 = df.rooms[corridor.room2ix]
         corridor_coords = list(corridor.walk())
         for ix in range(1, len(corridor_coords) - 1):
             x, y = corridor_coords[ix]
@@ -2463,23 +2526,17 @@ def place_doors_in_dungeon(df):
             tile = df.tiles[x][y]
             ptile = df.tiles[px][py]
             ntile = df.tiles[nx][ny]
-            proom = None
-            if isinstance(ptile, RoomFloorTile):
-                proom = df.rooms[ptile.roomix]
-            nroom = None
-            if isinstance(ntile, RoomFloorTile):
-                nroom = df.rooms[ntile.roomix]
             if (
-                proom
-                and proom.is_fully_enclosed_by_doors()
+                isinstance(ptile, RoomFloorTile)
+                and room1.is_fully_enclosed_by_doors()
                 and isinstance(tile, CorridorFloorTile)
             ):
                 df.tiles[x][y] = DoorTile(tile.corridorix)
             elif (
                 not isinstance(ptile, DoorTile)
                 and isinstance(tile, CorridorFloorTile)
-                and nroom
-                and nroom.is_fully_enclosed_by_doors()
+                and isinstance(ntile, RoomFloorTile)
+                and room2.is_fully_enclosed_by_doors()
             ):
                 df.tiles[x][y] = DoorTile(tile.corridorix)
         for x, y in corridor.walk(max_width_iter=1):
@@ -2925,59 +2982,59 @@ def place_traps_in_dungeon(df):
 
 
 def place_lights_in_dungeon(df):
+    thing_tiles = []
     for room in df.rooms:
-        if isinstance(room, CavernousRoom):
-            cs = list(room.tile_coords())
+        l = []
+        for x, y in room.tile_coords():
+            tile = df.tiles[x][y]
+            l.append((tile, x, y))
+        thing_tiles.append((room, l))
+    for corridor in df.corridors:
+        l = []
+        for x, y in corridor.tile_coords(df, include_doors=True):
+            tile = df.tiles[x][y]
+            l.append((tile, x, y))
+        thing_tiles.append((corridor, l))
+    for thing, l in thing_tiles:
+        for tile, x, y in l:
+            tile.light_level = thing.light_level
+        if thing.light_level == "dark":
+            continue
+        thing_lights = []
+        if isinstance(thing, CavernousRoom) or isinstance(
+            thing, CavernousCorridor
+        ):
+            cs = [x for x in l if not isinstance(x[0], DoorTile)]
             random.shuffle(cs)
-            for x, y in cs[: max(1, int(len(cs) / 20.0))]:
-                light = GlowingMushrooms(x, y)
-                light.roomix = room.ix
-                df.light_sources.append(light)
+            denom = 20.0
+            if thing.light_level == "bright":
+                denom = 10.0
+            for tile, x, y in cs[: max(1, int(len(cs) / denom))]:
+                thing_lights.append(GlowingMushrooms(x, y))
         else:
             cs = []
-            for x, y in room.tile_coords():
+            for tile, x, y in l:
                 num_near_walls = 0
                 for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-                    tx, ty = x + dx, y + dy
-                    tile = df.tiles[tx][ty]
-                    if isinstance(tile, WallTile):
+                    if isinstance(df.tiles[x + dx][y + dy], WallTile):
                         num_near_walls += 1
-                if num_near_walls != 1:
+                if num_near_walls < 1 or isinstance(tile, DoorTile):
                     continue
-                tile = df.tiles[x][y]
                 if isinstance(room, BookshelfTile):
                     continue
-                cs.append((x, y))
+                cs.append((tile, x, y))
             random.shuffle(cs)
-            for x, y in cs[: max(1, int(len(cs) / 5.0))]:
-                light = WallSconce(x, y)
-                light.roomix = room.ix
-                df.light_sources.append(light)
-    for corridor in df.corridors:
-        if isinstance(corridor, CavernousCorridor):
-            cs = list(corridor.tile_coords(df, include_doors=False))
-            random.shuffle(cs)
-            for x, y in cs[: max(1, int(len(cs) / 20.0))]:
-                light = GlowingMushrooms(x, y)
-                light.corridorix = corridor.ix
-                df.light_sources.append(light)
-        else:
-            cs = []
-            for x, y in corridor.tile_coords(df, include_doors=False):
-                num_near_walls = 0
-                for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-                    tx, ty = x + dx, y + dy
-                    tile = df.tiles[tx][ty]
-                    if isinstance(tile, WallTile):
-                        num_near_walls += 1
-                if num_near_walls >= 1:
-                    cs.append((x, y))
-            random.shuffle(cs)
-            for x, y in cs[: max(1, int(len(cs) / 5.0))]:
-                light = WallSconce(x, y)
-                light.corridorix = corridor.ix
-                df.light_sources.append(light)
-    df.light_sources.append(light)
+            denom = 6.0
+            if thing.light_level == "bright":
+                denom = 3.0
+            for tile, x, y in cs[: max(1, int(len(cs) / denom))]:
+                thing_lights.append(WallSconce(x, y))
+        for light in thing_lights:
+            if isinstance(thing, Room):
+                light.roomix = thing.ix
+            else:
+                light.corridorix = thing.ix
+            df.light_sources.append(light)
 
 
 def stylize_tiles_in_dungeon(df):
