@@ -1,6 +1,6 @@
 # Caverns of Carl
 
-A (very inchoate) tool to generate random D&D 5e dungeons, and produce save games for Tabletop Simulator additive load.
+A (very inchoate) tool to generate random D&D 5e dungeons, and produce save games for Tabletop Simulator additive load. This is partially inspired by classic Roguelike games such as ADOM.
 
 UI Example Screenshot             |  In-TTS Example Screenshot
 :-------------------------:|:-------------------------:
