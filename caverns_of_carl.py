@@ -2222,7 +2222,7 @@ class DungeonConfig:
         self.add_var("width", 35)
         self.add_var("height", 35)
         self.add_var("num_rooms", 12)
-        self.add_var("min_room_radius", 1)
+        self.add_var("min_room_radius", 2)
         self.add_var("num_room_embiggenings", 5)
         self.add_var("num_room_wiggles", 5)
         self.add_var("cavernous_room_percent", 50.0)
@@ -2557,19 +2557,24 @@ def place_doors_in_dungeon(df):
             tile = df.tiles[x][y]
             ptile = df.tiles[px][py]
             ntile = df.tiles[nx][ny]
+            # TODO: There is some bug in this where it does not
+            # complete the tiles in a wide door: a scenario where a
+            # relatively small room with a width=2 or 3 corridor that
+            # is aligned almost but not quite exactly with the room's
+            # center and thus turns during the wall maybe?
             if (
-                isinstance(ptile, RoomFloorTile)
+                ptile.roomix == room1.ix
                 and room1.is_fully_enclosed_by_doors()
                 and isinstance(tile, CorridorFloorTile)
             ):
-                df.set_tile(DoorTile(tile.corridorix), x=x, y=y)
+                df.set_tile(DoorTile(corridor.ix), x=x, y=y)
             elif (
                 not isinstance(ptile, DoorTile)
                 and isinstance(tile, CorridorFloorTile)
-                and isinstance(ntile, RoomFloorTile)
+                and ntile.roomix == room2.ix
                 and room2.is_fully_enclosed_by_doors()
             ):
-                df.set_tile(DoorTile(tile.corridorix), x=x, y=y)
+                df.set_tile(DoorTile(corridor.ix), x=x, y=y)
         for x, y in corridor.walk(max_width_iter=1):
             tile = df.tiles[x][y]
             if not isinstance(tile, DoorTile):
