@@ -1580,6 +1580,9 @@ class Room:
                 return (x, y)
         return None
 
+    def is_trivial(self):
+        return False
+
     def total_space(self):
         return len(self.tile_coords())
 
@@ -2026,6 +2029,8 @@ class DungeonFloor:
         self.traps = []
         self.light_sources = []
         self.monster_locations = {}  # (x, y) -> monster
+        # a graph of rooms' neighbors, from room index to set of
+        # neighbors' room indices.
         self.room_neighbors = collections.defaultdict(set)
 
     def tts_xz(self, x, y, tts_transform=None, diameter=1):
@@ -2232,6 +2237,7 @@ class DungeonConfig:
         self.add_var("corridor_width_3_ratio", 2.0)
         self.add_var("num_up_ladders", 1)
         self.add_var("num_down_ladders", 1)
+        self.add_var("min_ladder_distance", 2)
         self.add_var("tts_fog_of_war", False)
         self.add_var("tts_hidden_zones", True)
         self.ui_ops.append(("next group", None))
@@ -2331,9 +2337,9 @@ def generate_random_dungeon(config=None):
     df = None
     for _ in range(100):
         df = DungeonFloor(config)
-        place_rooms_in_dungeon(df, config)
+        place_rooms_in_dungeon(df)
         erode_cavernous_rooms_in_dungeon(df)
-        place_corridors_in_dungeon(df, config)
+        place_corridors_in_dungeon(df)
         # If we require full connection, and this didn't produce a
         # fully connected map, retry.
         if not config.prefer_full_connection or len(
@@ -2350,10 +2356,9 @@ def generate_random_dungeon(config=None):
     return df
 
 
-def place_rooms_in_dungeon(df, config):
-    # rooms
+def place_rooms_in_dungeon(df):
+    config = df.config
     rooms = []
-    # generate some rooms in random locations
     for _ in range(config.max_room_attempts):
         if len(rooms) >= config.num_rooms:
             break
@@ -2404,11 +2409,12 @@ def erode_cavernous_rooms_in_dungeon(df):
             room.erode(df, num_iterations=df.config.num_erosion_steps)
 
 
-def place_corridors_in_dungeon(df, config):
+def place_corridors_in_dungeon(df):
+    config = df.config
     rooms_connected = {}
     is_fully_connected = False
     prev_attempts = set()
-    for corridor_iteration in range(config.max_corridor_attempts):
+    for _ in range(config.max_corridor_attempts):
         if (is_fully_connected or not config.prefer_full_connection) and len(
             df.corridors
         ) >= len(df.rooms) * config.min_corridors_per_room:
@@ -2504,10 +2510,6 @@ def place_corridors_in_dungeon(df, config):
                     reqd_walls += [(x + ndy, y + ndx), (x - ndy, y - ndx)]
                 else:
                     # we're in an elbow turn; ensure all are walls.
-                    # if not (isinstance(ptile, CorridorFloorTile) and isinstance(ntile, CorridorFloorTile) and isinstance(tile, CorridorFloorTile)):
-                    #    found_problem = True
-                    #    break
-                    # cl = [(x, y), (px, py), (nx, ny)]
                     for x2 in range(-1, 2):
                         for y2 in range(-1, 2):
                             reqd_walls.append((x + x2, y + y2))
@@ -2601,30 +2603,61 @@ def bfs(d, start, max_depth=None):
                     continue
                 next_layer.add(neighbor)
                 seen.add(neighbor)
+        if not next_layer:
+            break
         output.append(next_layer)
     return output
 
 
 def place_ladders_in_dungeon(df):
-    num_up_ladders = 0
-    num_down_ladders = 0
-    # TODO: BFS check on ladders to be a configurable distance apart
-    for _ in range(20000):
-        if (
-            num_up_ladders >= df.config.num_up_ladders
-            and num_down_ladders >= df.config.num_down_ladders
+    max_depth = df.config.min_ladder_distance - 1
+    target_n_ladders = df.config.num_up_ladders + df.config.num_down_ladders
+    ladder_room_ixs = set()
+    roomix_tile_coords = {}
+    rooms = [x for x in df.rooms if not x.is_trivial()]
+    random.shuffle(rooms)
+
+    # bias ourselves towards smallest rooms
+    rooms.sort(key=lambda x: x.total_space())
+    while len(rooms) < 2 * len(df.rooms) - 3:
+        rooms = rooms + rooms[: int((2 * len(df.rooms) - len(rooms)) / 2 + 1)]
+
+    max_attempts = 50
+    for attempt_ix in range(max_attempts):
+        if len(ladder_room_ixs) >= target_n_ladders:
+            break
+        ladder_room_ixs = set()
+        roomix_tile_coords = {}
+        for _ in range(
+            10 * (df.config.num_up_ladders + df.config.num_down_ladders)
         ):
-            return
-        roomix = random.randrange(len(df.rooms))
+            if len(ladder_room_ixs) >= target_n_ladders:
+                break
+            room = random.choice(rooms)
+            if room.ix in ladder_room_ixs:
+                continue
+            # BFS check on ladders to be a configurable distance
+            # apart. If it's a late attempt, ignore BFS.
+            found_problem = False
+            for layer in bfs(df.room_neighbors, room.ix, max_depth):
+                for otherix in layer:
+                    if otherix in ladder_room_ixs:
+                        found_problem = True
+            if found_problem and attempt_ix * 2 < max_attempts:
+                continue
+            tile_coords = room.pick_tile(
+                df, unoccupied=True, avoid_corridor=True, avoid_wall=True
+            )
+            if not tile_coords:
+                continue
+            ladder_room_ixs.add(room.ix)
+            roomix_tile_coords[room.ix] = tile_coords
+    ladder_room_ixs = list(ladder_room_ixs)
+    random.shuffle(ladder_room_ixs)
+    num_up_ladders = 0
+    for roomix in ladder_room_ixs:
         room = df.rooms[roomix]
-        if room.has_ladder():
-            continue
-        tile_coords = room.pick_tile(
-            df, unoccupied=True, avoid_corridor=True, avoid_wall=True
-        )
-        if not tile_coords:
-            continue
-        x, y = tile_coords
+        x, y = roomix_tile_coords[roomix]
 
         if num_up_ladders < df.config.num_up_ladders:
             df.set_tile(LadderUpTile(roomix), x=x, y=y)
@@ -2633,7 +2666,6 @@ def place_ladders_in_dungeon(df):
         else:
             df.set_tile(LadderDownTile(roomix), x=x, y=y)
             room.has_down_ladder = True
-            num_down_ladders += 1
 
 
 def place_treasure_in_dungeon(df):
