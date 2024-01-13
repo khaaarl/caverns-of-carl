@@ -1795,7 +1795,7 @@ class Room:
             if self.encounter:
                 xp = self.encounter.total_xp()
                 pct = int(round(100.0 * xp / med_target_xp(df.config)))
-                s = [f"Monster encounter (~{xp} xp; ~{pct}% of Medium):"]
+                s = [f"Monster encounter (~{xp:,} xp; ~{pct}% of Medium):"]
                 s.append(self.encounter.description())
                 o.append("\n".join(s))
             for doorix in self.doorixs:
@@ -3613,6 +3613,12 @@ def run_ui():
 
             text_output.append("Floor monster counts:")
             text_output.append(summarize_monsters(df.monsters))
+            text_output.append("")
+            total_xp = 0
+            for room in df.rooms:
+                if room.encounter:
+                    total_xp += room.encounter.total_xp()
+            text_output.append(f"Total floor encounter xp: ~{total_xp:,}")
             text_output.append("")
             for room in df.rooms:
                 text_output.append(f"***Room {room.ix}***")
