@@ -398,7 +398,7 @@
     },
     {
       "name": "Flesh Golem",
-      "keywords": ["Undead", "Construct", "Frontline"],
+      "keywords": ["Construct", "Frontline"],
       "ascii_char": "[1;33mG",
       "challenge_rating": 5,
       "xp": 1800,
