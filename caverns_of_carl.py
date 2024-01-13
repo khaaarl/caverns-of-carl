@@ -61,12 +61,14 @@ except:
         "Failed to load tcl/tk. You may need to install additional modules (e.g. python3-tk if you are on Ubuntu)\nPress enter to exit"
     )
     input()
-    raise
+    exit()
 
 import tkinter as tk
 import tkinter.font
 from tkinter import scrolledtext
 from tkinter import ttk
+
+from lib.utils import choice, samples
 
 _TTS_SPAWNED_TAG = "Terrain Object Spawned by Caverns of Carl"
 _SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -1535,9 +1537,6 @@ class SpecialFeature:
     def allows_traps(self):
         return False
 
-    def allowed_light_levels(self):
-        return ["bright"]
-
 
 class Blacksmith(SpecialFeature):
     def description(self, df):
@@ -1547,10 +1546,16 @@ class Blacksmith(SpecialFeature):
         output = {}
         for room in df.rooms:
             score = 1.0
+            # Prefer being in an enclosed dungeon room
             if room.tile_style() != "dungeon":
-                score *= 0.25
+                score *= 0.5
             if not room.is_fully_enclosed_by_doors():
-                score *= 0.25
+                score *= 0.4
+            # prefer being in a bright room
+            if room.light_level == "dark":
+                score *= 0.1
+            elif room.light_level == "dim":
+                score *= 0.3
             # prefer cozy rooms
             score *= 9.0 / room.total_space()
             if not self._thing_coords(df, room):
@@ -1698,14 +1703,6 @@ class Room:
             if not feature.allows_traps():
                 return False
         return True
-
-    def allowed_light_levels(self, df):
-        allowed_light_levels = set(["bright", "dim", "dark"])
-        for feature in self.special_features(df):
-            allowed_light_levels = allowed_light_levels.intersection(
-                set(feature.allowed_light_levels())
-            )
-        return allowed_light_levels
 
     def pick_tile(
         self,
@@ -2583,14 +2580,14 @@ def place_rooms_in_dungeon(df):
             rooms[ix] = room2
     # apply light levels
     for room in rooms:
-        room.light_level = random.choices(
+        room.light_level = choice(
             ["bright", "dim", "dark"],
             weights=[
                 config.room_bright_ratio,
                 config.room_dim_ratio,
                 config.room_dark_ratio,
             ],
-        )[0]
+        )
     # sort rooms from top to bottom so their indices are more human comprehensible maybe
     rooms.sort(key=lambda r: (-r.y, r.x))
     # add rooms to dungeon floor
@@ -2623,14 +2620,14 @@ def place_corridors_in_dungeon(df):
             continue
         is_horizontal_first = random.randrange(2)
 
-        width = random.choices(
+        width = choice(
             [1, 2, 3],
             weights=[
                 config.corridor_width_1_ratio,
                 config.corridor_width_2_ratio,
                 config.corridor_width_3_ratio,
             ],
-        )[0]
+        )
         signature = (room1ix, room2ix, width, is_horizontal_first)
         if signature in prev_attempts:
             continue
@@ -2910,7 +2907,7 @@ def place_special_features_in_dungeon(df):
             feature = features[fix]
             rixs, weights = transposed_feature_roomix_scores[fix]
             k = min(len(roomixs_used) + 1, len(rixs))
-            for rix in random.choices(rixs, weights, k=k):
+            for rix in samples(rixs, weights=weights, k=k):
                 if rix not in roomixs_used:
                     feature_room_choices[fix] = rix
                     score *= feature_roomix_scores[fix][rix]
@@ -2928,9 +2925,6 @@ def place_special_features_in_dungeon(df):
     for fix, roomix in enumerate(best_placement):
         room = df.rooms[roomix]
         room.special_featureixs.append(fix)
-        allowed_light_levels = room.allowed_light_levels(df)
-        if room.light_level not in allowed_light_levels:
-            room.light_level = list(allowed_light_levels)[0]
         features[fix].roomix = roomix
 
 
@@ -3618,7 +3612,10 @@ def run_ui():
             for room in df.rooms:
                 if room.encounter:
                     total_xp += room.encounter.total_xp()
-            text_output.append(f"Total floor encounter xp: ~{total_xp:,}")
+            xp_per_player = int(total_xp / config.num_player_characters)
+            text_output.append(
+                f"Total floor encounter xp: ~{total_xp:,} (~{xp_per_player:,} per player)"
+            )
             text_output.append("")
             for room in df.rooms:
                 text_output.append(f"***Room {room.ix}***")
