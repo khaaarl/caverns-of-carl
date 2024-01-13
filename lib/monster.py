@@ -1,5 +1,7 @@
+import collections
 import copy
 import json
+import math
 import os
 import random
 import re
@@ -257,3 +259,190 @@ class Monster:
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = self.tts_nickname()
         return obj
+
+
+class Encounter:
+    def __init__(self, monsters=None):
+        self.monsters = monsters or []
+
+    def total_xp(self):
+        tmp_sum = sum([m.monster_info.xp for m in self.monsters])
+        # sqrt approximates the table from the DMG for modifying
+        # difficulty with multiple monsters. This does not yet ignore
+        # monsters with substantially lowered CR.
+        return int(tmp_sum * math.sqrt(len(self.monsters)))
+
+    def total_space(self):
+        return sum([m.monster_info.diameter**2 for m in self.monsters])
+
+    def description(self, df):
+        xp = self.total_xp()
+        pct = int(round(100.0 * xp / med_target_xp(df.config)))
+        s = f"Monster encounter (~{xp:,} xp; ~{pct}% of Medium):"
+        return s + "\n" + summarize_monsters(self.monsters)
+
+
+def summarize_monsters(monsters):
+    monster_counts = collections.defaultdict(int)
+    infos = {}
+    for monster in monsters:
+        infos[monster.monster_info.name] = monster.monster_info
+        monster_counts[monster.monster_info.name] += 1
+    o = []
+    for k in sorted(monster_counts.keys()):
+        o.append(f"{k} ({infos[k].ascii_char}) x{monster_counts[k]}")
+    return "\n".join(o)
+
+
+def _build_encounter_single_attempt(
+    monster_infos, target_xp, variety, prev_monster_counts={}
+):
+    # TODO: there is some bug, I think, where it's not willing to
+    # generate a Banshee (homogenous, max 1 per floor)
+    used_infos = {}  # name -> info
+    encounter = Encounter()
+    prev_xp = -1000000
+    eligible_monsters = []
+    monster_counts = collections.defaultdict(int)
+    for _ in range(100):
+        if len(encounter.monsters) >= variety or len(used_infos) >= len(
+            monster_infos
+        ):
+            break
+        mi = random.choice(monster_infos)
+        if mi.name in used_infos:
+            continue
+        used_infos[mi.name] = mi
+        if mi.frequency <= 0.0:
+            continue
+        if variety != 1 and mi.has_keyword("Homogenous"):
+            continue
+        if mi.max_per_floor is not None:
+            if prev_monster_counts[mi.name] >= mi.max_per_floor:
+                continue
+        encounter.monsters.append(Monster(mi))
+        new_xp = encounter.total_xp()
+        if abs(target_xp - new_xp) < abs(target_xp - prev_xp):
+            eligible_monsters.append(mi.name)
+            prev_xp = new_xp
+            monster_counts[mi.name] += 1
+        else:
+            encounter.monsters.pop()
+    for _ in range(100):
+        if not eligible_monsters:
+            break
+        name = random.choice(eligible_monsters)
+        mi = used_infos[name]
+        encounter.monsters.append(Monster(mi))
+        new_xp = encounter.total_xp()
+        if abs(target_xp - new_xp) < abs(target_xp - prev_xp):
+            prev_xp = new_xp
+            monster_counts[name] += 1
+            if mi.max_per_floor is not None:
+                if (
+                    prev_monster_counts[name] + monster_counts[name]
+                    >= mi.max_per_floor
+                ):
+                    eligible_monsters = list(
+                        set(eligible_monsters) - set([name])
+                    )
+        else:
+            encounter.monsters.pop()
+            eligible_monsters = list(set(eligible_monsters) - set([name]))
+    return encounter
+
+
+def score_encounter(encounter, target_xp, prev_monster_counts):
+    xp = encounter.total_xp()
+    score = 1.0 - abs(xp - target_xp) / target_xp
+    monster_infos = {}  # name -> info
+    monster_counts = collections.defaultdict(int)
+    for m in encounter.monsters:
+        monster_infos[m.monster_info.name] = m.monster_info
+        monster_counts[m.monster_info.name] += 1
+    # get a poor score if it's all frontline or all backline.
+    all_backline = True
+    all_frontline = True
+    for mi in monster_infos.values():
+        if not mi.has_keyword("Backline"):
+            all_backline = False
+        if not mi.has_keyword("Frontline"):
+            all_frontline = False
+    if all_backline or all_frontline:
+        score /= 2.0
+    # improve or worsen score if you have or don't have synergistic
+    # buddies.
+    has_synergies = set()
+    found_synergies = set()
+    for mi in monster_infos.values():
+        if mi.synergies:
+            has_synergies.add(mi.name)
+            for s in mi.synergies:
+                if s in monster_infos:
+                    found_synergies.add(mi.name)
+    if len(has_synergies) > len(found_synergies):
+        score /= 2.0
+    else:
+        score *= 1.0 + len(has_synergies)
+    # frequency bonuses?
+    new_things = set()
+    for name, mi in monster_infos.items():
+        if name not in prev_monster_counts:
+            new_things.add(name)
+        if mi.max_per_floor is not None:
+            if (
+                monster_counts[name] + prev_monster_counts[name]
+                > mi.max_per_floor
+            ):
+                score /= 10.0
+    score *= 1.0 + len(new_things)
+    return score
+
+
+def build_encounter(
+    monster_infos, target_xp, variety=None, prev_monster_counts={}
+):
+    if not variety:
+        varieties = [1, 2, 2, 3, 3, 3, 4, 4]
+        variety = random.choice(varieties)
+    monster_infos = [
+        mi for mi in monster_infos if mi.xp and mi.xp <= target_xp * 1.3
+    ]
+    variety = min(variety, len(monster_infos))
+    best_encounter = Encounter()
+    best_score = 0.0001
+    for _ in range(100):
+        encounter = _build_encounter_single_attempt(
+            monster_infos, target_xp, variety, prev_monster_counts
+        )
+        score = score_encounter(encounter, target_xp, prev_monster_counts)
+        if score > best_score:
+            best_encounter = encounter
+            best_score = score
+    return best_encounter
+
+
+def med_target_xp(config):
+    med_xp_per_char = {
+        1: 50,
+        2: 100,
+        3: 150,
+        4: 250,
+        5: 500,
+        6: 600,
+        7: 750,
+        8: 900,
+        9: 1100,
+        10: 1200,
+        11: 1600,
+        12: 2000,
+        13: 2200,
+        14: 2500,
+        15: 2800,
+        16: 3200,
+        17: 3900,
+        18: 4200,
+        19: 4900,
+        20: 5700,
+    }[config.target_character_level]
+    return med_xp_per_char * config.num_player_characters
