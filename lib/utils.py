@@ -1,4 +1,3 @@
-
 import functools
 import re
 import random
@@ -28,7 +27,9 @@ class WeightTreeNode:
             self.left_weight -= dweight
             return (dweight, value)
         else:
-            dweight, value = self.right.find_and_remove(weight - self.left_weight)
+            dweight, value = self.right.find_and_remove(
+                weight - self.left_weight
+            )
             return (dweight, value)
 
     @staticmethod
@@ -170,6 +171,7 @@ def parse_keyword_expr(s):
     expr = AndExpr.from_tokens([expr])
     return expr
 
+
 def _expr_match_keywords(expr, keywords):
     if isinstance(expr, str):
         return expr in keywords
@@ -194,3 +196,56 @@ def expr_match_keywords(expr, keywords):
     if isinstance(expr, str):
         expr = parse_keyword_expr(expr)
     return _expr_match_keywords(expr, keywords)
+
+
+def eval_dice(e):
+    e = str(e).strip().replace("-", "+-")
+    l = [x.strip() for x in e.split("+") if x.strip()]
+    total = 0
+    for s in l:
+        subtract = False
+        if s.startswith("-"):
+            s = s[1:].strip()
+            subtract = True
+        tmp = 0
+        m = re.match("^([0-9]*)[dD]([0-9]+)$", s)
+        if m:
+            for _ in range(int(m.group(1) or "1")):
+                tmp += random.randrange(1, int(m.group(2)) + 1)
+        else:
+            tmp += int(s)
+        if subtract:
+            total -= tmp
+        else:
+            total += tmp
+    return total
+
+
+def bfs(d, start, max_depth=None):
+    if max_depth is not None and max_depth < 0:
+        return []
+    output = [set([start])]
+    seen = set([start])
+    while True:
+        if max_depth is not None and len(output) > max_depth:
+            break
+        next_layer = set()
+        for item in output[-1]:
+            for neighbor in d[item]:
+                if neighbor in seen:
+                    continue
+                next_layer.add(neighbor)
+                seen.add(neighbor)
+        if not next_layer:
+            break
+        output.append(next_layer)
+    return output
+
+
+def dfs(d, start, seen=None):
+    seen = seen or set()
+    seen.add(start)
+    for other in d[start]:
+        if other not in seen:
+            dfs(d, other, seen)
+    return seen

@@ -47,10 +47,8 @@ import datetime
 import json
 import math
 import os
-import pathlib
 import random
 import re
-import sys
 import traceback
 
 try:
@@ -67,256 +65,18 @@ import tkinter.font
 from tkinter import scrolledtext
 from tkinter import ttk
 
-from lib.utils import choice, expr_match_keywords, samples
+from lib.tts import (
+    TTSFogBit,
+    TTS_SPAWNED_TAG,
+    refresh_tts_guids,
+    tts_default_save_location,
+    tts_reference_save_json,
+    tts_reference_object,
+    tts_fog,
+)
+from lib.utils import bfs, choice, dfs, expr_match_keywords, eval_dice, samples
 
-_TTS_SPAWNED_TAG = "Terrain Object Spawned by Caverns of Carl"
 _SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-
-
-def tts_default_save_location():
-    if sys.platform == "linux" or sys.platform == "linux2":
-        return os.path.join(
-            str(pathlib.Path.home()),
-            ".local",
-            "share",
-            "Tabletop Simulator",
-            "Saves",
-        )
-    elif sys.platform == "darwin":  # mac osx
-        return os.path.join(
-            str(pathlib.Path.home()), "Library", "Tabletop Simulator", "Saves"
-        )
-    elif sys.platform == "win32":
-        return os.path.join(
-            os.environ["USERPROFILE"],
-            "Documents",
-            "My Games",
-            "Tabletop Simulator",
-            "Saves",
-        )
-    else:
-        return f"couldn't match platform {sys.platform}, so don't know save game location"
-
-
-def eval_dice(e):
-    e = str(e).strip().replace("-", "+-")
-    l = [x.strip() for x in e.split("+") if x.strip()]
-    total = 0
-    for s in l:
-        subtract = False
-        if s.startswith("-"):
-            s = s[1:].strip()
-            subtract = True
-        tmp = 0
-        m = re.match("^([0-9]*)[dD]([0-9]+)$", s)
-        if m:
-            for _ in range(int(m.group(1) or "1")):
-                tmp += random.randrange(1, int(m.group(2)) + 1)
-        else:
-            tmp += int(s)
-        if subtract:
-            total -= tmp
-        else:
-            total += tmp
-    return total
-
-
-_tts_reference_save_json_memoized = None
-_seen_tts_guids = set()
-_tts_reference_fog = None
-_tts_reference_hidden_zone = None
-
-
-def tts_reference_save_json():
-    global _tts_reference_save_json_memoized
-    if not _tts_reference_save_json_memoized:
-        filename = os.path.join(
-            _SCRIPT_DIR, "reference_info", "tts", "reference_save_file.json"
-        )
-        with open(filename) as f:
-            _tts_reference_save_json_memoized = json.load(f)
-            refresh_tts_guids(_tts_reference_save_json_memoized)
-    return _tts_reference_save_json_memoized
-
-
-def tts_reference_object_nicknames():
-    return [o["Nickname"] for o in tts_reference_save_json()["ObjectStates"]]
-
-
-def new_tts_guid():
-    global _seen_tts_guids
-    while True:
-        guid = hex(random.randrange(16**5, 16**6))[2:8]
-        if guid not in _seen_tts_guids:
-            _seen_tts_guids.add(guid)
-            return guid
-
-
-def refresh_tts_guids(d):
-    global _seen_tts_guids
-    for k in d:
-        v = k
-        if isinstance(d, dict):
-            v = d[k]
-            if k == "GUID":
-                if v not in _seen_tts_guids:
-                    _seen_tts_guids.add(k)
-                d[k] = new_tts_guid()
-        if isinstance(v, dict) or isinstance(v, list):
-            refresh_tts_guids(v)
-
-
-def tts_reference_object(nickname):
-    for o in tts_reference_save_json()["ObjectStates"]:
-        if o["Nickname"] == nickname:
-            return copy.deepcopy(o)
-    raise KeyError(
-        f"Could not find nickname '{nickname}' in tts reference game"
-    )
-
-
-def tts_fog(posX=0.0, posZ=0.0, scaleX=1.0, scaleZ=1.0, hidden_zone=False):
-    global _tts_reference_fog, _tts_reference_hidden_zone
-    if not _tts_reference_fog:
-        ref_objs = tts_reference_save_json()["ObjectStates"]
-        _tts_reference_fog = copy.deepcopy(
-            [o for o in ref_objs if o["Name"] == "FogOfWar"][0]
-        )
-        _tts_reference_fog["Transform"] = {
-            "posX": 0.0,
-            "posY": 2.5,
-            "posZ": 0.0,
-            "rotX": 0.0,
-            "rotY": 0.0,
-            "rotZ": 0.0,
-            "scaleX": 1.0,
-            "scaleY": 3.5,
-            "scaleZ": 1.0,
-        }
-        _tts_reference_fog["FogOfWar"]["Height"] = 1.0
-    if not _tts_reference_hidden_zone:
-        ref_objs = tts_reference_save_json()["ObjectStates"]
-        _tts_reference_hidden_zone = copy.deepcopy(
-            [o for o in ref_objs if o["Name"] == "FogOfWarTrigger"][0]
-        )
-        _tts_reference_hidden_zone["Transform"] = {
-            "posX": 0.0,
-            "posY": 2.5,
-            "posZ": 0.0,
-            "rotX": 0.0,
-            "rotY": 0.0,
-            "rotZ": 0.0,
-            "scaleX": 1.0,
-            "scaleY": 3.5,
-            "scaleZ": 1.0,
-        }
-    if hidden_zone:
-        fog = copy.deepcopy(_tts_reference_hidden_zone)
-    else:
-        fog = copy.deepcopy(_tts_reference_fog)
-    fog["Transform"]["posX"] = posX
-    fog["Transform"]["posZ"] = posZ
-    fog["Transform"]["scaleX"] = scaleX
-    fog["Transform"]["scaleZ"] = scaleZ
-    return fog
-
-
-class TTSFogBit:
-    def __init__(
-        self,
-        x1,
-        y1,
-        x2=None,
-        y2=None,
-        roomixs=None,
-        corridorixs=None,
-        priority=1,
-    ):
-        if x2 is None:
-            x2 = x1
-        if y2 is None:
-            y2 = y1
-        self.x1 = min(x1, x2)
-        self.y1 = min(y1, y2)
-        self.x2 = max(x1, x2)
-        self.y2 = max(y1, y2)
-        self.roomixs = set(roomixs or [])
-        self.corridorixs = set(corridorixs or [])
-        self.priority = priority
-        self.maximally_expanded = False
-
-    def num_parents(self):
-        return len(self.roomixs) + len(self.corridorixs)
-
-    def coord_tuple(self):
-        return (self.x1, self.y1, self.x2, self.y2)
-
-    def merge_from_other(self, other):
-        self.priority = max(self.priority, other.priority)
-        self.roomixs = self.roomixs.union(other.roomixs)
-        self.corridorixs = self.corridorixs.union(other.corridorixs)
-
-    def tts_fog(self, df):
-        x = (self.x1 + self.x2) / 2.0
-        y = (self.y1 + self.y2) / 2.0
-        posX = x - math.floor(df.width / 2.0) + 0.5
-        posZ = y - math.floor(df.height / 2.0) + 0.5
-        scaleX = 2 * (x - self.x1 + 0.5)
-        scaleZ = 2 * (y - self.y1 + 0.5)
-        return tts_fog(
-            hidden_zone=True, posX=posX, posZ=posZ, scaleX=scaleX, scaleZ=scaleZ
-        )
-
-    def room_corridor_signature(self):
-        return (tuple(sorted(self.roomixs)), tuple(sorted(self.corridorixs)))
-
-    @staticmethod
-    def merge_fog_bits(fog_bits):
-        # Better merging maybe: https://mathoverflow.net/a/80676
-
-        # room/corridor signature : list[bit]
-        groups = collections.defaultdict(list)
-        for bit in fog_bits:
-            groups[bit.room_corridor_signature()].append(bit)
-        output = []
-        for l in groups.values():
-            singletons = {(bit.x1, bit.y1): bit for bit in l}
-            while len(singletons) > 0:
-                # get the highest priority thing which isn't maximally expanded
-                bit = None
-                for x in singletons.values():
-                    if bit is None or x.priority > bit.priority:
-                        bit = x
-                del singletons[(bit.x1, bit.y1)]
-                for _ in range(500):
-                    annex_coords = []
-                    x1, x2, y1, y2 = bit.x1, bit.x2, bit.y1, bit.y2
-                    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-                    random.shuffle(dirs)
-                    for dx, dy in dirs:
-                        m = []
-                        if dx < 0:
-                            m = [(x1 + dx, y) for y in range(y1, y2 + 1)]
-                        elif dx > 0:
-                            m = [(x2 + dx, y) for y in range(y1, y2 + 1)]
-                        elif dy < 0:
-                            m = [(x, y1 + dy) for x in range(x1, x2 + 1)]
-                        elif dy > 0:
-                            m = [(x, y2 + dy) for x in range(x1, x2 + 1)]
-                        if len(m) > sum([c in singletons for c in m]):
-                            continue
-                        if len(m) > len(annex_coords):
-                            annex_coords = m
-                    if len(annex_coords) < 1:
-                        break
-                    for x, y in annex_coords:
-                        del singletons[(x, y)]
-                        bit.x1 = min(bit.x1, x)
-                        bit.x2 = max(bit.x2, x)
-                        bit.y1 = min(bit.y1, y)
-                        bit.y2 = max(bit.y2, y)
-                output.append(bit)
-        return output
 
 
 class Tile:
@@ -811,10 +571,6 @@ def get_monster_library(name):
         ml.load()
         _monster_library_cache[name] = ml
     return _monster_library_cache[name]
-
-
-
-
 
 
 class MonsterLibrary:
@@ -2253,15 +2009,6 @@ def is_room_valid(room, df, rooms, ix_to_ignore=None):
     return True
 
 
-def dfs(d, start, seen=None):
-    seen = seen or set()
-    seen.add(start)
-    for other in d[start]:
-        if other not in seen:
-            dfs(d, other, seen)
-    return seen
-
-
 class DungeonConfig:
     def __init__(self):
         self.ui_ops = []
@@ -2671,27 +2418,6 @@ def place_doors_in_dungeon(df):
             corridor.doorixs.add(door.ix)
             for roomix in door.roomixs:
                 df.rooms[roomix].doorixs.add(door.ix)
-
-
-def bfs(d, start, max_depth=None):
-    if max_depth is not None and max_depth < 0:
-        return []
-    output = [set([start])]
-    seen = set([start])
-    while True:
-        if max_depth is not None and len(output) > max_depth:
-            break
-        next_layer = set()
-        for item in output[-1]:
-            for neighbor in d[item]:
-                if neighbor in seen:
-                    continue
-                next_layer.add(neighbor)
-                seen.add(neighbor)
-        if not next_layer:
-            break
-        output.append(next_layer)
-    return output
 
 
 def place_ladders_in_dungeon(df):
@@ -3348,8 +3074,8 @@ def dungeon_to_tts_blob(df):
     for o1 in blob["ObjectStates"]:
         for o in [o1] + list(o1.get("States", {}).values()):
             tags = set(o.get("Tags", []))
-            tags.add(_TTS_SPAWNED_TAG)
-            tags.add(f"{_TTS_SPAWNED_TAG} '{name}'")
+            tags.add(TTS_SPAWNED_TAG)
+            tags.add(f"{TTS_SPAWNED_TAG} '{name}'")
             o["Tags"] = list(tags)
     return blob
 
@@ -3359,7 +3085,7 @@ def save_tts_blob(blob):
         tts_default_save_location(), blob["SaveName"] + ".json"
     )
     with open(filename, "w") as f:
-        json.dump(blob, f, indent=2)
+        json.dump(refresh_tts_guids(blob), f, indent=2)
     return filename
 
 
