@@ -1,3 +1,6 @@
+
+import functools
+import re
 import random
 
 
@@ -61,3 +64,133 @@ def samples(seq, k=1, weights=None):
         dweight, value = tree.find_and_remove(weight)
         total_weight -= dweight
         yield value
+
+
+class Expr:
+    pass
+
+
+class NestedExpr(Expr):
+    def __init__(self, exprs=None):
+        self.exprs = exprs or []
+
+    def __str__(self):
+        return f"{type(self).__name__}{self.exprs}"
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __iter__(self):
+        return self.exprs.__iter__()
+
+    def mutate(self, func):
+        for ix, item in enumerate(self.exprs):
+            if isinstance(item, NestedExpr):
+                item.mutate(func)
+            else:
+                self.exprs[ix] = func(item)
+
+
+class ParenExpr(NestedExpr):
+    @staticmethod
+    def from_tokens(tokens):
+        return ParenExpr._recursively_from_tokens(tokens, 0)[0]
+
+    @staticmethod
+    def _recursively_from_tokens(tokens, ix):
+        output = []
+        while ix < len(tokens):
+            token = tokens[ix]
+            ix += 1
+            if token == ")":
+                break
+            elif token == "(":
+                val, ix = ParenExpr._recursively_from_tokens(tokens, ix)
+                output.append(val)
+            else:
+                output.append(token)
+        return (ParenExpr(output), ix)
+
+
+class OrExpr(NestedExpr):
+    @staticmethod
+    def from_tokens(tokens):
+        or_groups = []
+        cur = []
+        for token in tokens:
+            if token == "OR":
+                if cur:
+                    or_groups.append(cur)
+                cur = []
+            elif isinstance(token, ParenExpr):
+                if "OR" in token.exprs:
+                    cur.append(OrExpr.from_tokens(token))
+                else:
+                    cur.append(token)
+            else:
+                cur.append(token)
+        if cur:
+            or_groups.append(cur)
+        return OrExpr(or_groups)
+
+
+class AndExpr(NestedExpr):
+    @staticmethod
+    def from_tokens(tokens):
+        if isinstance(tokens, str):
+            return tokens
+        and_groups = []
+        cur = []
+        for token in tokens:
+            if token == "AND":
+                and_groups.append(cur)
+                cur = []
+            elif isinstance(token, list):
+                cur.append([AndExpr.from_tokens(x) for x in token])
+            elif isinstance(token, ParenExpr):
+                if "AND" in token.exprs:
+                    cur.append(AndExpr.from_tokens(token))
+                else:
+                    cur.append(token)
+            elif isinstance(token, OrExpr):
+                o = [AndExpr.from_tokens(l) for l in token]
+                cur.append(OrExpr(o))
+            else:
+                cur.append(token)
+        and_groups.append(cur)
+        return AndExpr(and_groups)
+
+
+@functools.cache
+def parse_keyword_expr(s):
+    tokens = re.split("([()]| OR | AND )", s.upper())
+    tokens = [x.strip() for x in tokens if x.strip()]
+    expr = ParenExpr.from_tokens(tokens)
+    expr = OrExpr.from_tokens(expr)
+    expr = AndExpr.from_tokens([expr])
+    return expr
+
+def _expr_match_keywords(expr, keywords):
+    if isinstance(expr, str):
+        return expr in keywords
+    elif isinstance(expr, AndExpr) or isinstance(expr, list):
+        for item in expr:
+            if not _expr_match_keywords(item, keywords):
+                return False
+        return True
+    elif isinstance(expr, OrExpr):
+        for item in expr:
+            if _expr_match_keywords(item, keywords):
+                return True
+        return False
+    else:
+        raise ValueError(f"expr has weird type: {expr}")
+
+
+def expr_match_keywords(expr, keywords):
+    if not expr:
+        return True
+    keywords = {x.upper() for x in keywords}
+    if isinstance(expr, str):
+        expr = parse_keyword_expr(expr)
+    return _expr_match_keywords(expr, keywords)
