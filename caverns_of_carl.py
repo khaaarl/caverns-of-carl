@@ -65,18 +65,19 @@ import tkinter.font
 from tkinter import scrolledtext
 from tkinter import ttk
 
+from lib.monster import get_monster_library, Monster
+import lib.trap
+from lib.treasure import get_treasure_library
+import lib.tts as tts
 from lib.tts import (
     TTSFogBit,
     TTS_SPAWNED_TAG,
     refresh_tts_guids,
     tts_default_save_location,
     tts_reference_save_json,
-    tts_reference_object,
     tts_fog,
 )
 from lib.utils import bfs, choice, dfs, expr_match_keywords, eval_dice, samples
-
-_SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 class Tile:
@@ -91,7 +92,7 @@ class Tile:
         self.is_interior = False
 
     def _tts_light_mul(self, obj):
-        ref = tts_reference_object("Floor, Dungeon")
+        ref = tts.reference_object("Floor, Dungeon")
         mesh_url = obj.get("CustomMesh", {}).get("MeshURL")
         if mesh_url == ref["CustomMesh"]["MeshURL"]:
             mul = 1.0
@@ -139,9 +140,9 @@ class Tile:
             tile_style = df.corridors[self.corridorix].tile_style()
         new_floor = None
         if tile_style == "cavern":
-            new_floor = tts_reference_object("Floor, Cavern")
+            new_floor = tts.reference_object("Floor, Cavern")
         if new_floor:
-            ref_floor = tts_reference_object("Floor, Dungeon")
+            ref_floor = tts.reference_object("Floor, Dungeon")
             self._alter_tex(obj, ref_floor, new_floor)
 
 
@@ -170,10 +171,10 @@ class WallTile(Tile):
             num_neighbors = sum([west, east, north, south])
             rand = random.random()
             if num_neighbors == 0:
-                obj = tts_reference_object("Cavern Stalagmite Column")
+                obj = tts.reference_object("Cavern Stalagmite Column")
                 obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
             elif num_neighbors == 1:
-                obj = tts_reference_object("Cavern Wall 1 Connection")
+                obj = tts.reference_object("Cavern Wall 1 Connection")
                 if east:
                     obj["Transform"]["rotY"] = 180.0
                 elif north:
@@ -184,19 +185,19 @@ class WallTile(Tile):
                     obj["Transform"]["rotY"] = 0.0
             elif num_neighbors == 2 and rand < 0.7:
                 if west and east:
-                    obj = tts_reference_object(
+                    obj = tts.reference_object(
                         "Cavern Wall 2 Connections Through"
                     )
                     obj["Transform"]["rotY"] = 0.0 + 180.0 * random.randrange(2)
                 elif north and south:
-                    obj = tts_reference_object(
+                    obj = tts.reference_object(
                         "Cavern Wall 2 Connections Through"
                     )
                     obj["Transform"]["rotY"] = 90.0 + 180.0 * random.randrange(
                         2
                     )
                 else:
-                    obj = tts_reference_object(
+                    obj = tts.reference_object(
                         "Cavern Wall 2 Connections Corner"
                     )
                     if east and south:
@@ -210,7 +211,7 @@ class WallTile(Tile):
             elif num_neighbors == 3 and (
                 rand < 0.1 or num_diagonal_neighbors >= 3 and rand < 0.8
             ):
-                obj = tts_reference_object("Cavern Wall 3 Connections")
+                obj = tts.reference_object("Cavern Wall 3 Connections")
                 if not west:
                     obj["Transform"]["rotY"] = 0.0
                 if not north:
@@ -220,10 +221,10 @@ class WallTile(Tile):
                 if not south:
                     obj["Transform"]["rotY"] = 270.0
             else:
-                obj = tts_reference_object("Cavern Wall Ambiguous Connections")
+                obj = tts.reference_object("Cavern Wall Ambiguous Connections")
                 obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         else:
-            obj = tts_reference_object("Wall, Dungeon")
+            obj = tts.reference_object("Wall, Dungeon")
             obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = ""
         return [obj]
@@ -231,7 +232,7 @@ class WallTile(Tile):
 
 class FloorTile(Tile):
     def tts_objects(self, df):
-        obj = tts_reference_object("Floor, Dungeon")
+        obj = tts.reference_object("Floor, Dungeon")
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = ""
         self._update_texture_style(obj, df)
@@ -277,13 +278,13 @@ class DoorTile(CorridorFloorTile):
         corridor = df.corridors[self.corridorix]
         door = df.doors[self.doorix]
         if corridor.width == 1:
-            obj = tts_reference_object("Door, Metal")
+            obj = tts.reference_object("Door, Metal")
             obj["Nickname"] = "Door"
         elif corridor.width == 2:
             if isinstance(df.tiles[self.x + 1][self.y], DoorTile) or isinstance(
                 df.tiles[self.x][self.y - 1], DoorTile
             ):
-                obj = tts_reference_object("Door, Double")
+                obj = tts.reference_object("Door, Double")
                 obj["Nickname"] = "Large Door"
         else:
             if (
@@ -292,7 +293,7 @@ class DoorTile(CorridorFloorTile):
                 or isinstance(df.tiles[self.x][self.y + 1], DoorTile)
                 and isinstance(df.tiles[self.x][self.y - 1], DoorTile)
             ):
-                obj = tts_reference_object("Door, Triple")
+                obj = tts.reference_object("Door, Triple")
                 obj["Nickname"] = "Huge Door"
         if obj:
             for dx in [1, -1]:
@@ -312,7 +313,7 @@ class LadderUpTile(RoomFloorTile):
         return "[1;97m<"
 
     def tts_objects(self, df):
-        obj = tts_reference_object("Ladder, Wood")
+        obj = tts.reference_object("Ladder, Wood")
         # TODO: adjust such that ladder is against the wall if a wall is near
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = "Ladder up"
@@ -332,7 +333,7 @@ class LadderDownTile(RoomFloorTile):
         return "[1;97m>"
 
     def tts_objects(self, df):
-        obj = tts_reference_object("Floor, Hatch")
+        obj = tts.reference_object("Floor, Hatch")
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = "Hatch down"
         self._update_texture_style(obj, df)
@@ -364,7 +365,7 @@ class ChestTile(RoomFloorTile):
         return "[1;93m$"
 
     def tts_objects(self, df):
-        obj = tts_reference_object("Chest Closed Tile")
+        obj = tts.reference_object("Chest Closed Tile")
         obj["Transform"]["rotY"] += rotY_away_from_wall(df, self.x, self.y)
         obj["Nickname"] = "Chest"
         obj["States"]["2"]["Nickname"] = "Open Chest"
@@ -392,7 +393,7 @@ class BookshelfTile(ChestTile):
         return "[1;93mB"
 
     def tts_objects(self, df):
-        obj = tts_reference_object("Bookshelf Tile")
+        obj = tts.reference_object("Bookshelf Tile")
         obj["Transform"]["rotY"] += rotY_away_from_wall(df, self.x, self.y)
         obj["Nickname"] = "Bookshelf"
         obj["States"]["2"]["Nickname"] = "Examined Bookshelf"
@@ -412,7 +413,7 @@ class MimicTile(ChestTile):
         return "m"
 
     def tts_objects(self, df):
-        obj = tts_reference_object("Chest Closed Mimic Tile")
+        obj = tts.reference_object("Chest Closed Mimic Tile")
         obj["Transform"]["rotY"] += rotY_away_from_wall(df, self.x, self.y)
         obj["Nickname"] = "Chest"
         obj["States"]["2"]["Nickname"] = "It's a Mimic!"
@@ -422,693 +423,6 @@ class MimicTile(ChestTile):
         self._update_texture_style(obj, df)
         self._tts_light_mul(obj)
         return [obj]
-
-
-_monster_library_cache = {}
-_treasure_library_cache = {}
-
-
-def get_treasure_library(name):
-    if name not in _treasure_library_cache:
-        tl = TreasureLibrary(name=name)
-        tl.load()
-        _treasure_library_cache[name] = tl
-    return _treasure_library_cache[name]
-
-
-class TreasureLibrary:
-    def __init__(self, name):
-        self.name = name
-        self.tables = []
-        self.items = []
-        self.variants = []
-
-    def load(self):
-        filename = os.path.join(
-            _SCRIPT_DIR, "reference_info", "treasure", f"{self.name}.json"
-        )
-        with open(filename) as f:
-            blob = json.load(f)
-            self.tables = blob["tables"]
-            self.items = blob["items"]
-            self.variants = blob["variants"]
-
-    def to_blob(self):
-        return self
-
-    def save(self):
-        filename = os.path.join(
-            _SCRIPT_DIR, "reference_info", "treasure", f"{self.name}.json"
-        )
-        with open(filename, "w") as f:
-            json.dump(self.to_blob(), f, indent=2)
-
-    def gen_horde(self, level, num_player_characters):
-        table_use = [
-            ("A", 80),
-            ("B", min(20 + level * 5, 50)),
-            ("C", min(25 + level * 3, 70)),
-            ("D", min((level - 4) * 8, 108)),
-            ("E", min((level - 10) * 10, 77)),
-            ("F", 30),
-            ("G", min(level * 2, 10)),
-            ("H", min((level - 4) * 4, 25)),
-            ("I", min((level - 10) * 5, 50)),
-        ]
-        contents = []
-        contents_seen = set()
-        for c, p in table_use:
-            tmp = []
-            for _ in range(2 * num_player_characters):
-                if random.randrange(1000) < p:
-                    item = self.roll_on_table(f"Magic Item Table {c}")
-                    if item not in contents_seen:
-                        contents_seen.add(item)
-                        tmp.append(item)
-            tmp.sort()
-            contents = contents + tmp
-        contents = [x for x in contents if x]
-        return contents
-
-    def gen_bookshelf_horde(self, level, num_player_characters):
-        clvl = (level + 1) / 2
-        freq = 50
-        table_use = [
-            "Spell scroll (cantrip): {spell-lvl0}",
-            "Spell scroll (1st level): {spell-lvl1}",
-            "Spell scroll (2nd level): {spell-lvl2}",
-            "Spell scroll (3rd level): {spell-lvl3}",
-            "Spell scroll (4th level): {spell-lvl4}",
-            "Spell scroll (5th level): {spell-lvl5}",
-            "Spell scroll (6th level): {spell-lvl6}",
-            "Spell scroll (7th level): {spell-lvl7}",
-            "Spell scroll (8th level): {spell-lvl8}",
-            "Spell scroll (9th level): {spell-lvl9}",
-        ]
-        for lvl in range(10):
-            p = freq * min(1.0 + (clvl - lvl) / 2.0, 1.0)
-            table_use[lvl] = (table_use[lvl], p)
-        contents = []
-        contents_seen = set()
-        for c, p in table_use:
-            tmp = []
-            for _ in range(2 * num_player_characters):
-                if random.randrange(1000) < p:
-                    item = self.expand_item(c)
-                    if item not in contents_seen:
-                        contents_seen.add(item)
-                        tmp.append(item)
-            tmp.sort()
-            contents = contents + tmp
-        contents = [x for x in contents if x]
-        max_size = eval_dice("2d4")
-        contents = contents[-max_size:]
-        return contents
-
-    def roll_on_table(self, table_name, d=100):
-        table = None
-        for t in self.tables:
-            if t["name"].upper() == table_name.upper():
-                table = t
-        if table is None:
-            raise KeyError()
-        roll = random.randrange(d)
-        item = None
-        for d_range, value in table["table"]:
-            lo, hi = None, None
-            if "-" in d_range:
-                lo, hi = map(int, d_range.split("-"))
-            else:
-                lo, hi = int(d_range), int(d_range)
-            if roll >= lo and roll <= hi:
-                item = value
-        return self.expand_item(item or "")
-
-    def expand_item(self, item):
-        for i in self.items:
-            if i["name"].upper() != item.upper():
-                continue
-            if i.get("variants"):
-                item = random.choice(i["variants"])
-        return self.expand_variant(item)
-
-    def expand_variant(self, item):
-        o = []
-        for bit in re.split("({[^}]+})", item):
-            if bit.startswith("{") and bit.endswith("}"):
-                bit = bit[1:-1].strip()
-                for v in self.variants:
-                    if v["name"].upper() != bit.upper():
-                        continue
-                    bit = random.choice(v["variants"])
-            o.append(bit)
-        return "".join(o)
-
-
-def get_monster_library(name):
-    if name not in _monster_library_cache:
-        ml = MonsterLibrary(name=name)
-        ml.load()
-        _monster_library_cache[name] = ml
-    return _monster_library_cache[name]
-
-
-class MonsterLibrary:
-    def __init__(self, name):
-        self.name = name
-        self.monster_infos = []
-
-    def load(self):
-        filename = os.path.join(
-            _SCRIPT_DIR, "reference_info", "monsters", f"{self.name}.json"
-        )
-        with open(filename) as f:
-            blob = json.load(f)
-            for monster_blob in blob["monsters"]:
-                self.monster_infos.append(MonsterInfo(monster_blob))
-
-    def to_blob(self):
-        return {
-            "name": self.name,
-            "monsters": [x.to_blob() for x in self.monster_infos],
-        }
-
-    def save(self):
-        filename = os.path.join(
-            _SCRIPT_DIR, "reference_info", "monsters", f"{self.name}.json"
-        )
-        with open(filename, "w") as f:
-            json.dump(self.to_blob(), f, indent=2)
-
-    @staticmethod
-    def monster_matches_expr(expr, monster_info):
-        tokens = []
-        if isinstance(expr, list):
-            tokens = expr
-        else:
-            tokens = re.split("([()]| OR | AND )", expr.upper())
-            tokens = [x.strip() for x in tokens]
-            tokens = [x for x in tokens if x]
-        if "(" in tokens:  # gotta group up those parens
-            pass
-        re.split("(")
-        if "(" in expr:
-            cur = [None]  # parent, thing thing thing
-            root = cur
-            for ix, c in enumerate(expr):
-                if c == "(":
-                    deeper = []
-                    cur.append(deeper)
-                    cur = deeper
-
-        pass
-
-    def get_monster_infos(
-        self,
-        filter=None,
-        min_challenge_rating=None,
-        max_challenge_rating=None,
-        has_tts=False,
-    ):
-        output = []
-        for m in self.monster_infos:
-            if has_tts and len(m.tts_reference_nicknames) < 1:
-                continue
-            if filter is not None:
-                if not expr_match_keywords(filter, [m.name] + m.keywords):
-                    continue
-            if min_challenge_rating is not None:
-                if (
-                    m.challenge_rating is None
-                    or m.challenge_rating < min_challenge_rating
-                ):
-                    continue
-            if max_challenge_rating is not None:
-                if (
-                    m.challenge_rating is None
-                    or m.challenge_rating > max_challenge_rating
-                ):
-                    continue
-            output.append(m)
-        return output
-
-
-class MonsterInfo:
-    def __init__(self, blob={}):
-        self.name = blob.get("name", "Unnamed Monster")
-        self.keywords = blob.get("keywords", [])
-        self.tts_reference_nicknames = blob.get("tts_reference_nicknames", [])
-        self.ascii_char = blob.get("ascii_char", "e")
-        self.health = blob.get("health")
-        self.hit_dice_formula = blob.get("hit_dice_formula")
-        self.size = blob.get("size")
-        self.diameter = blob.get("diameter", 1)
-        self.synergies = blob.get("synergies", [])
-        self.challenge_rating = blob.get("challenge_rating")
-        self.xp = blob.get("xp")
-        self.max_per_floor = blob.get("max_per_floor")
-        self.frequency = blob.get("frequency", 1.0)
-
-    def to_blob(self):
-        return self
-
-    def has_keyword(self, k):
-        for k2 in self.keywords:
-            if k.upper() == k2.upper():
-                return True
-        return False
-
-    def has_keyword_or_name(self, kn):
-        return self.name.upper() == kn.upper() or self.has_keyword(kn)
-
-
-class Monster:
-    def __init__(
-        self, monster_info, name=None, health=None, x=0, y=0, roomix=None
-    ):
-        self.monster_info = monster_info
-        self.name = name or self.monster_info.name
-        self.health = health
-        if health:
-            self.health = health
-        elif monster_info.hit_dice_formula:
-            self.health = eval_dice(monster_info.hit_dice_formula)
-        else:
-            self.health = monster_info.health
-        self.x = x
-        self.y = y
-        self.roomix = roomix
-        self.ix = None
-
-    def to_char(self):
-        return self.monster_info.ascii_char
-
-    def adjust_cr(self, new_cr):
-        dmg_hps = {
-            0: 3.5,
-            0.125: 21.0,
-            0.25: 42.5,
-            0.5: 60.0,
-            1: 78.0,
-            2: 93.0,
-            3: 108.0,
-            4: 123.0,
-            5: 138.0,
-            6: 153.0,
-            7: 168.0,
-            8: 183.0,
-            9: 198.0,
-            10: 213.0,
-            11: 228.0,
-            12: 243.0,
-            13: 258.0,
-            14: 273.0,
-            15: 288.0,
-            16: 303.0,
-            17: 318.0,
-            18: 333.0,
-            19: 348.0,
-            20: 378.0,
-            21: 423.0,
-            22: 468.0,
-            23: 513.0,
-            24: 558.0,
-            25: 603.0,
-            26: 648.0,
-            27: 693.0,
-            28: 738.0,
-            29: 783.0,
-            30: 828.0,
-        }
-        xps = {
-            0: 10,
-            0.125: 25,
-            0.25: 50,
-            0.5: 100,
-            1: 200,
-            2: 450,
-            3: 700,
-            4: 1100,
-            5: 1800,
-            6: 2300,
-            7: 2900,
-            8: 3900,
-            9: 5000,
-            10: 5900,
-            11: 7200,
-            12: 8400,
-            13: 10000,
-            14: 11500,
-            15: 13000,
-            16: 15000,
-            17: 18000,
-            18: 20000,
-            19: 22000,
-            20: 25000,
-            21: 33000,
-            22: 41000,
-            23: 50000,
-            24: 62000,
-            25: 75000,
-            26: 90000,
-            27: 105000,
-            28: 120000,
-            29: 135000,
-            30: 155000,
-        }
-        old_cr = self.monster_info.challenge_rating
-        if new_cr == old_cr:
-            return
-        self.monster_info = copy.deepcopy(self.monster_info)
-        self.monster_info.challenge_rating = new_cr
-        self.monster_info.xp = round(
-            self.monster_info.xp * xps[new_cr] / xps[old_cr]
-        )
-        if self.health:
-            self.health = max(
-                1, round(self.health * dmg_hps[new_cr] / dmg_hps[old_cr])
-            )
-        if self.name:
-            self.name = re.sub(r" \(CR [0-9]+\)", "", self.name)
-            fractionator = {0.125: "1/8", 0.25: "1/4", 0.5: "1/2"}
-            new_cr = fractionator.get(new_cr, new_cr)
-            self.name = self.name + f" (CR {new_cr})"
-
-    def tts_nickname(self):
-        s = self.name or "Unnamed Monster"
-        if self.health:
-            s = f"{self.health}/{self.health} {s}"
-        return s
-
-    def tts_object(self, df):
-        ref_nick = self.monster_info.tts_reference_nicknames[
-            random.randrange(len(self.monster_info.tts_reference_nicknames))
-        ]
-        obj = tts_reference_object(ref_nick)
-        df.tts_xz(self.x, self.y, obj, diameter=self.monster_info.diameter)
-        obj["Transform"]["posY"] = 2.0
-        # TODO: adjust to not face wall if near wall?
-        obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
-        obj["Nickname"] = self.tts_nickname()
-        return obj
-
-
-_AREA_TRAP_TRIGGERS = [
-    "Scattered pressure plates",
-    "Magical chalk lines",
-    "Life-sensing runes",
-]
-_CORRIDOR_TRAP_TRIGGERS = [
-    "Tripwire by the door",
-    "Tripwire midway through",
-    "Pressure plates by the door",
-]
-_ONE_OFF_DAMAGE_TRAP_EFFECTS = [
-    "Swinging blade: {AB} to hit, {DAM:slashing}",
-    "Poison darts: {AB} to hit, {DAM:piercing} & {DAM:poison}",
-    "Extending spikes: {AB} to hit, {DAM:piercing}",
-    "Falling rocks: Dex {DC} for half, {DAM:bludgeoning}",
-    "Flame jet: Dex {DC} for half, {DAM:fire}",
-    "Fiery explosion, {AREA}: Dex {DC} for half, {DAM:fire}",
-    "Flash freeze, {AREA}: Con {DC} for half, {DAM:cold}",
-    "Acid spray, {AREA}: Dex {DC} for half, {DAM:acid}",
-    "Thunderous shockwave, {AREA}: Con {DC} for half, {DAM:thunder}",
-    "Life drain, {AREA}: Con {DC} for half, {DAM:necrotic}",
-    "Mind-shattering scream, {AREA}: Int {DC} for half, {DAM:psychic}",
-]
-_SLOW_DAMAGE_TRAP_EFFECTS = [
-    "Poison gas fills the area: Start turn, Con {DC} to resist, {DAM:poison,slow}",
-    "Acidic mist fills the area: Start turn, Con {DC} to resist, {DAM:acid,slow}",
-    "Electrified floor in the area: Start turn, Con {DC} to resist, {DAM:lightning,slow}",
-    "Oven-hot area: Start turn, Con {DC} to resist, {DAM:fire,slow}",
-]
-_MISC_TRAP_EFFECTS = [
-    "Thunderous Alarm: alerts nearby rooms' enemies",
-    # Future: summon monsters (once we get wanding monsters)
-]
-_MISC_ROOM_OR_CORRIDOR_TRAP_EFFECTS = [
-    "Reverse Gravity (PHB 272): Fills location. Dex {DC} to grab onto something. Ceiling spikes {DAM:piercing}",
-    "Various tiles collapse into quicksand: Dex {DC} to avoid. Start turn {DAM:bludgeoning,slow},  Str (Ath) {DC} to get out",
-]
-_ENCLOSED_DOORS_TRAP_EFFECTS = [
-    "Doors shut and lock: Str(Ath) or Arcana or Thieves' Tools {DC}. {SLOW_DAMAGE_TRAP_EFFECT}",
-    "Doors shut and lock: Str(Ath) or Arcana or Thieves' Tools {DC}. Repeated Con {DC-2}; fail 3 and get infected with {DISEASE}",
-]
-_MISC_CORRIDOR_TRAP_EFFECTS = [
-    "Doors open; Gust of wind, Str {DC} or {DAM:bludgeoning,slow} and be pushed 10' and prone (ideally towards danger)",
-    "Doors open; {SHORT_DEBUFF_TRAP_EFFECT} (only if nearby enemies)"
-    "Doors open; A Watery Sphere spell (XGE 170), Str {DC}, moves from one end of corridor to other (ideally towards danger)",
-    "Corridor filled with ever-swinging pendulum blades. Each turn moving through requires Dex (Acro) {DC} or take {DAM:slashing}, Dex {DC} for half. Must also save on forced movement. Disadvantage if you dash or move more than half speed. Can Int (Investigation) {DC} as an action to gain advantage on your next move.",
-]
-_SHORT_DEBUFF_TRAP_EFFECTS = [
-    "Blindness spell (PHB 219): {AREA}, Con {DC}",
-    "Confusion spell (PHB 224): {AREA}, Wis {DC}",
-    # "Divine Word spell (PHB 234): {AREA}, Wis {DC}",
-    "Evard's Black Tentacles (PHB 238): {AREA}, Dex/Str {DC}, {DAM:bludgeoning,slow}",
-    "Faerie Fire spell (PHB 239): {AREA}, Dex {DC}",
-    "Polymorph spell (PHB 287): {AREA}, Wis {DC-2}, Crab",
-    "Psychic Scream spell (XGE 163): {AREA}, Int {DC-2}, {DAM:psychic}",
-    "Slow spell (PHB 277): {AREA}, Wis {DC}",
-    "Web spell (PHB 287): {AREA}, Dex/Str {DC}",
-]
-_MEDIUM_DEBUFF_TRAP_EFFECTS = [
-    # "Curse: Wis {DC}, {CURSE}",
-    "Curse of Silence: Wis {DC}, can't talk for 1 hour",
-    "Reduce spell (PHB 237): Con {DC}, 1 hour",
-]
-_LONG_DEBUFF_TRAP_EFFECTS = [
-    # "Curse: Wis {DC}, {CURSE}",
-    "Contagion spell (PHB 227): Con {DC}, {DISEASE}",
-    # "Flesh to Stone spell (PHB 243): Con {DC} {MIN_LEVEL:11}",
-]
-_DISEASES = [
-    "Blinding Sickness (PHB 227)",
-    "Cackle Fever (DMG 257)",
-    "Filth Fever (PHB 227)",
-    "Flesh Rot (PHB 227)",
-    "Mindfire (PHB 227)",
-    "Seizure (PHB 227)",
-    "Sewer Plague (DMG 257)",
-    "Sight Rot (DMG 257)",
-    "Slimy Doom (PHB 227)",
-]
-_DAMAGE_TYPE_DEFAULT_DICE = collections.defaultdict(lambda: 6)
-_DAMAGE_TYPE_DEFAULT_DICE["acid"] = 4
-_DAMAGE_TYPE_DEFAULT_DICE["poison"] = 8
-_DAMAGE_TYPE_DEFAULT_DICE["cold"] = 8
-
-
-class Trap:
-    def __init__(self, config):
-        self.config = config
-        self.level = config.target_character_level
-        self.notice_dc = self.random_dc()
-        self.disarm_dc = self.random_dc()
-        self.trigger = ""
-        self.effect = ""
-        self.corridorix = None
-        self.roomIx = None
-
-    def description(self):
-        return f"Trap (find DC:{self.notice_dc}, disarm DC:{self.disarm_dc})\nTrigger: {self.trigger}\n{self.effect}"
-
-    def eval_trap_expr(self, s):
-        num_dams = len(re.findall("({DAM[^}]*})", s))
-        o = []
-        for bit in re.split("({[^}]+})", s):
-            if bit.startswith("{") and bit.endswith("}"):
-                bit = bit[1:-1].strip()
-                mods = set()
-                cmd = bit
-                if ":" in bit:
-                    cmd, mod_s = bit.split(":")
-                    mods = set(mod_s.split(","))
-                if cmd.upper() == "DISEASE":
-                    o.append(random.choice(_DISEASES))
-                elif cmd.upper().startswith("DC"):
-                    dc = self.random_dc()
-                    if len(cmd) > 2:
-                        dc = int(eval(f"({dc}){cmd[2:]}"))
-                    o.append(f"DC:{dc}")
-                elif cmd.upper().startswith("AB"):
-                    ab = self.random_hit_bonus()
-                    if len(cmd) > 2:
-                        ab = int(eval(f"({ab}){cmd[2:]}"))
-                    if ab >= 0:
-                        ab = f"+{ab}"
-                    else:
-                        ab = f"{ab}"
-                    o.append(ab)
-                elif cmd.upper() == "AREA":
-                    o.append(self.random_area())
-                elif cmd.upper() == "DAM":
-                    slow = False
-                    if "slow" in mods:
-                        slow = True
-                        mods.remove("slow")
-                    avg_dam = self.random_avg_damage(slow=slow) / num_dams
-                    dtype = "force"
-                    if mods:
-                        dtype = mods.pop()
-                    d = _DAMAGE_TYPE_DEFAULT_DICE[dtype]
-                    dice = self.random_damage_dice_expr(d, avg_dam)
-                    o.append(f"{dice} {dtype} damage")
-                elif cmd.upper() == "SHORT_DEBUFF_TRAP_EFFECT":
-                    n = random.randrange(len(_SHORT_DEBUFF_TRAP_EFFECTS))
-                    eff = _SHORT_DEBUFF_TRAP_EFFECTS[n]
-                    o.append(self.eval_trap_expr(eff))
-                elif cmd.upper() == "SLOW_DAMAGE_TRAP_EFFECT":
-                    n = random.randrange(len(_SLOW_DAMAGE_TRAP_EFFECTS))
-                    eff = _SLOW_DAMAGE_TRAP_EFFECTS[n]
-                    o.append(self.eval_trap_expr(eff))
-            else:
-                o.append(bit)
-        return "".join(o)
-
-    def random_area(self):
-        radius = 5 * random.randrange(1, int(self.level / 5) + 4)
-        return f"{radius}' radius"
-
-    def random_dc(self):
-        lo = int(math.floor(self.level * 0.7 + 8))
-        hi = int(math.ceil(self.level * 0.8 + 12))
-        return random.randrange(lo, hi)
-
-    def random_hit_bonus(self):
-        mid = self.level * 0.65 + 2.5
-        plusminus = 2 + self.level / 10.0
-        b = mid + random.random() * plusminus * 2 - plusminus
-        return int(round(b))
-
-    def random_avg_damage(self, slow=False):
-        lo = self.level * 3
-        hi = self.level * 8
-        if slow:
-            return random.randrange(lo, hi) / 4.0
-        return random.randrange(lo, hi)
-
-    def random_damage_dice_expr(self, d, target_avg=None):
-        if target_avg is None:
-            target_avg = self.random_avg_damage()
-        if target_avg < d / 2 - 1:
-            if target_avg <= 1:
-                return "1"
-            elif target_avg <= 3:
-                return "1d4"
-            elif target_avg <= 4:
-                return "1d6"
-            elif target_avg <= 5:
-                return "1d8"
-            elif target_avg <= 6:
-                return "1d10"
-            else:
-                return "1d12"
-        return f"{max(1, int(round(target_avg / (d/2.0+0.5))))}d{d}"
-
-
-class ChestTrap(Trap):
-    def __init__(self, config, x, y):
-        super().__init__(config)
-        self.x = x
-        self.y = y
-
-    def description(self):
-        return "Chest " + super().description()
-
-    @staticmethod
-    def create(config, x, y):
-        trap = ChestTrap(config, x, y)
-        trap.trigger = "Opening or tampering"
-        effs = (
-            _ONE_OFF_DAMAGE_TRAP_EFFECTS
-            + _MISC_TRAP_EFFECTS
-            + _MEDIUM_DEBUFF_TRAP_EFFECTS
-            + _LONG_DEBUFF_TRAP_EFFECTS
-        )
-        trap.effect = trap.eval_trap_expr(random.choice(effs))
-        return trap
-
-
-class RoomTrap(Trap):
-    def __init__(self, config, roomix):
-        super().__init__(config)
-        self.roomix = roomix
-
-    def description(self):
-        return "Room " + super().description()
-
-    @staticmethod
-    def create(config, room):
-        trap = RoomTrap(config, room.ix)
-        tgs = _AREA_TRAP_TRIGGERS
-        trap.trigger = random.choice(tgs)
-        effs = (
-            _ONE_OFF_DAMAGE_TRAP_EFFECTS
-            + _SLOW_DAMAGE_TRAP_EFFECTS
-            + _MISC_TRAP_EFFECTS
-            + _MISC_ROOM_OR_CORRIDOR_TRAP_EFFECTS
-        )
-        if room.is_fully_enclosed_by_doors():
-            effs += _ENCLOSED_DOORS_TRAP_EFFECTS
-        trap.effect = trap.eval_trap_expr(random.choice(effs))
-        return trap
-
-    def random_area(self):
-        if random.randrange(2):
-            return super().random_area()
-        else:
-            return "whole room"
-
-
-class CorridorTrap(Trap):
-    def __init__(self, config, corridorix):
-        super().__init__(config)
-        self.corridorix = corridorix
-
-    def description(self):
-        return "Corridor " + super().description()
-
-    @staticmethod
-    def create(config, corridor):
-        trap = CorridorTrap(config, corridor.ix)
-        tgs = _AREA_TRAP_TRIGGERS + _CORRIDOR_TRAP_TRIGGERS
-        trap.trigger = random.choice(tgs)
-        effs = (
-            _ONE_OFF_DAMAGE_TRAP_EFFECTS
-            + _MISC_TRAP_EFFECTS
-            + _MISC_ROOM_OR_CORRIDOR_TRAP_EFFECTS
-        )
-        if corridor.is_fully_enclosed_by_doors():
-            effs += _ENCLOSED_DOORS_TRAP_EFFECTS
-        if corridor.doorixs:
-            effs += _MISC_CORRIDOR_TRAP_EFFECTS
-        trap.effect = trap.eval_trap_expr(random.choice(effs))
-        return trap
-
-    def random_area(self):
-        if random.randrange(2):
-            return super().random_area()
-        else:
-            return "whole corridor"
-
-
-class DoorTrap(Trap):
-    def __init__(self, config, doorix, x, y):
-        super().__init__(config)
-        self.doorix = doorix
-        self.x = x
-        self.y = y
-
-    def description(self):
-        return "Door " + super().description()
-
-    @staticmethod
-    def create(config, corridorix, x, y):
-        trap = DoorTrap(config, corridorix, x, y)
-        trap.trigger = "Opening or tampering"
-        effs = _ONE_OFF_DAMAGE_TRAP_EFFECTS + _MISC_TRAP_EFFECTS
-        trap.effect = trap.eval_trap_expr(random.choice(effs))
-        return trap
 
 
 class RetriableDungeonographyException(Exception):
@@ -1230,13 +544,13 @@ class Blacksmith(SpecialFeature):
         thing_coords = self._thing_coords(df, room)
         sx, sy = thing_coords["smith_coords"]
         ax, ay = thing_coords["anvil_coords"]
-        monster = tts_reference_object("Lich A")
-        smith = tts_reference_object("Blacksmith on 1inch")
+        monster = tts.reference_object("Lich A")
+        smith = tts.reference_object("Blacksmith on 1inch")
         # smith["Transform"]["posY"] += 0.2
         # smith["Locked"] = True
         smith["LuaScript"] = monster["LuaScript"]
         smith["Nickname"] = "Blacksmith Andrus of Eastora"
-        anvil = tts_reference_object("Blacksmith's Anvil")
+        anvil = tts.reference_object("Blacksmith's Anvil")
         if sx > ax:
             smith["Transform"]["rotY"] += 90.0
             anvil["Transform"]["rotY"] += 90.0
@@ -1455,7 +769,7 @@ class Room:
         return "\n\n".join(o)
 
     def tts_notecard(self, df):
-        obj = tts_reference_object("Reference Notecard")
+        obj = tts.reference_object("Reference Notecard")
         obj["Nickname"] = f"DM/GM notes for room {self.ix}"
         obj["Description"] = self.description(df)
         obj["Transform"]["posY"] = 4.0
@@ -1663,7 +977,7 @@ class Corridor:
         return "\n\n".join(o)
 
     def tts_notecard(self, df):
-        obj = tts_reference_object("Reference Notecard")
+        obj = tts.reference_object("Reference Notecard")
         obj["Nickname"] = f"DM/GM notes for corridor {self.name}"
         obj["Description"] = self.description(df)
         obj["Transform"]["posY"] = 4.0
@@ -1762,7 +1076,7 @@ class LightSource:
 
 class WallSconce(LightSource):
     def tts_object(self, df):
-        obj = tts_reference_object("Horn Candle Sconce")
+        obj = tts.reference_object("Horn Candle Sconce")
         df.tts_xz(self.x, self.y, obj)
         obj["Transform"]["rotX"] = 0.0
         obj["Transform"]["rotY"] = 0.0
@@ -1788,7 +1102,7 @@ class WallSconce(LightSource):
 
 class GlowingMushrooms(LightSource):
     def tts_object(self, df):
-        obj = tts_reference_object("Blue Mushrooms for Glowing")
+        obj = tts.reference_object("Blue Mushrooms for Glowing")
         df.tts_xz(self.x, self.y, obj)
         obj["Transform"]["rotX"] = 0.0
         obj["Transform"]["rotY"] = random.randrange(360) * 1.0
@@ -2851,7 +2165,7 @@ def place_traps_in_dungeon(df):
     random.shuffle(roomixs_to_trap)
     for roomix in roomixs_to_trap[:target_num_room_traps]:
         room = df.rooms[roomix]
-        trap = RoomTrap.create(config, room)
+        trap = lib.trap.RoomTrap.create(config, room)
         df.add_trap(trap)
         df.rooms[roomix].trapixs.add(trap.ix)
 
@@ -2866,7 +2180,7 @@ def place_traps_in_dungeon(df):
     corridorixs_to_trap = corridorixs_to_trap[:target_num_corridor_traps]
     for corridorix in corridorixs_to_trap:
         corridor = df.corridors[corridorix]
-        trap = CorridorTrap.create(config, corridor)
+        trap = lib.trap.CorridorTrap.create(config, corridor)
         df.add_trap(trap)
         df.corridors[corridorix].trapixs.add(trap.ix)
     doors_to_trap = list(df.doors)
@@ -2881,7 +2195,7 @@ def place_traps_in_dungeon(df):
         if num_door_traps >= target_num_door_traps:
             break
         num_door_traps += 1
-        trap = DoorTrap.create(config, door.ix, door.x, door.y)
+        trap = lib.trap.DoorTrap.create(config, door.ix, door.x, door.y)
         df.add_trap(trap)
         door.trapixs.add(trap.ix)
 
@@ -2897,7 +2211,7 @@ def place_traps_in_dungeon(df):
     )
     random.shuffle(chest_coords)
     for x, y in chest_coords[:target_num_chest_traps]:
-        trap = ChestTrap.create(config, x, y)
+        trap = lib.trap.ChestTrap.create(config, x, y)
         df.add_trap(trap)
         df.tiles[x][y].trapixs.add(trap.ix)
 
@@ -3032,9 +2346,11 @@ def dungeon_to_tts_blob(df):
         if corridor.is_nontrivial(df):
             blob["ObjectStates"].append(corridor.tts_notecard(df))
     for trap in df.traps:
-        if isinstance(trap, RoomTrap) or isinstance(trap, CorridorTrap):
+        if isinstance(trap, lib.trap.RoomTrap) or isinstance(
+            trap, lib.trap.CorridorTrap
+        ):
             continue
-        obj = tts_reference_object("Reference Notecard")
+        obj = tts.reference_object("Reference Notecard")
         desc = trap.description()
         obj["Nickname"] = desc.split("\n")[0]
         obj["Description"] = "\n".join(desc.split("\n")[1:])

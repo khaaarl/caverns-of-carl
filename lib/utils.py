@@ -1,6 +1,9 @@
 import functools
+import os
 import re
 import random
+
+COC_ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 
 def choice(seq, weights=None, cum_weights=None):

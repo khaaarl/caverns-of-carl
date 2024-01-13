@@ -7,7 +7,8 @@ import pathlib
 import random
 import sys
 
-_COC_ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+from lib.utils import COC_ROOT_DIR
+
 TTS_SPAWNED_TAG = "Terrain Object Spawned by Caverns of Carl"
 
 
@@ -46,7 +47,7 @@ def tts_reference_save_json():
     global _tts_reference_save_json_memoized
     if not _tts_reference_save_json_memoized:
         filename = os.path.join(
-            _COC_ROOT_DIR, "reference_info", "tts", "reference_save_file.json"
+            COC_ROOT_DIR, "reference_info", "tts", "reference_save_file.json"
         )
         with open(filename) as f:
             _tts_reference_save_json_memoized = json.load(f)
@@ -81,7 +82,7 @@ def refresh_tts_guids(d):
     return d
 
 
-def tts_reference_object(nickname):
+def reference_object(nickname):
     for o in tts_reference_save_json()["ObjectStates"]:
         if o["Nickname"] == nickname:
             return copy.deepcopy(o)
