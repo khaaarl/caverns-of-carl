@@ -67,6 +67,7 @@ from tkinter import ttk
 
 import lib.config
 from lib.corridors import Corridor, CavernousCorridor, Door
+import lib.lights
 from lib.monster import get_monster_library, Monster
 from lib.tile import (
     BookshelfTile,
@@ -93,7 +94,7 @@ from lib.tts import (
     tts_reference_save_json,
     tts_fog,
 )
-from lib.utils import bfs, choice, dfs, eval_dice, samples
+from lib.utils import bfs, choice, dfs, eval_dice, neighbor_coords, samples
 
 
 class RetriableDungeonographyException(Exception):
@@ -110,70 +111,6 @@ class RetriableCorridorPlacementException(RetriableDungeonographyException):
 
 class RetriableFeaturePlacementException(RetriableDungeonographyException):
     pass
-
-
-class LightSource:
-    def __init__(self, x, y):
-        self.x, self.y = x, y
-        self.roomix = None
-        self.corridorix = None
-        self.ix = None
-
-    def tts_object(self, df):
-        raise NotImplementedError()
-
-
-class WallSconce(LightSource):
-    def tts_object(self, df):
-        obj = tts.reference_object("Horn Candle Sconce")
-        df.tts_xz(self.x, self.y, obj)
-        obj["Transform"]["rotX"] = 0.0
-        obj["Transform"]["rotY"] = 0.0
-        obj["Transform"]["rotZ"] = 0.0
-        obj["Transform"]["posY"] = 1.8
-        obj["Transform"]["scaleX"] = 0.7
-        obj["Transform"]["scaleY"] = 0.7
-        obj["Transform"]["scaleZ"] = 0.7
-        obj["Locked"] = True
-        # Rotate away from wall
-        posrots = [(0, 1, 90), (1, 0, 180), (0, -1, 270), (-1, 0, 0)]
-        random.shuffle(posrots)
-        for dx, dy, r in posrots:
-            if isinstance(df.tiles[self.x + dx][self.y + dy], WallTile):
-                obj["Transform"]["rotY"] += r
-                obj["Transform"]["posX"] += 0.5 * dx
-                obj["Transform"]["posZ"] += 0.5 * dy
-                break
-        # Currently the attached light ... doesn't look very good.
-        del obj["ChildObjects"]
-        return obj
-
-
-class GlowingMushrooms(LightSource):
-    def tts_object(self, df):
-        obj = tts.reference_object("Blue Mushrooms for Glowing")
-        df.tts_xz(self.x, self.y, obj)
-        obj["Transform"]["rotX"] = 0.0
-        obj["Transform"]["rotY"] = random.randrange(360) * 1.0
-        obj["Transform"]["rotZ"] = 0.0
-        obj["Transform"]["posY"] = 2.0
-        obj["Transform"]["scaleX"] = 0.5
-        obj["Transform"]["scaleY"] = 0.5
-        obj["Transform"]["scaleZ"] = 0.5
-        obj["Locked"] = True
-        # Currently the attached light ... doesn't look very good.
-        del obj["ChildObjects"]
-        return obj
-
-
-def neighbor_coords(x, y, cardinal=True, diagonal=False):
-    l = []
-    if cardinal:
-        l += [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    if diagonal:
-        l += [(-1, -1), (1, -1), (-1, 1), (1, 1)]
-    for dx, dy in l:
-        yield (x + dx, y + dy)
 
 
 class DungeonFloor:
@@ -1172,7 +1109,7 @@ def place_lights_in_dungeon(df):
             if thing.light_level == "bright":
                 denom = 10.0
             for tile, x, y in cs[: max(1, int(len(cs) / denom))]:
-                thing_lights.append(GlowingMushrooms(x, y))
+                thing_lights.append(lib.lights.GlowingMushrooms(x, y))
         else:
             cs = []
             for tile, x, y in l:
@@ -1190,7 +1127,7 @@ def place_lights_in_dungeon(df):
             if thing.light_level == "bright":
                 denom = 3.0
             for tile, x, y in cs[: max(1, int(len(cs) / denom))]:
-                thing_lights.append(WallSconce(x, y))
+                thing_lights.append(lib.lights.WallSconce(x, y))
         for light in thing_lights:
             if isinstance(thing, Room):
                 light.roomix = thing.ix

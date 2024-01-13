@@ -252,3 +252,13 @@ def dfs(d, start, seen=None):
         if other not in seen:
             dfs(d, other, seen)
     return seen
+
+
+def neighbor_coords(x, y, cardinal=True, diagonal=False):
+    l = []
+    if cardinal:
+        l += [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    if diagonal:
+        l += [(-1, -1), (1, -1), (-1, 1), (1, 1)]
+    for dx, dy in l:
+        yield (x + dx, y + dy)
