@@ -233,3 +233,12 @@ class TTSFogBit:
                         bit.y2 = max(bit.y2, y)
                 output.append(bit)
         return output
+
+
+def save_tts_blob(blob):
+    filename = os.path.join(
+        tts_default_save_location(), blob["SaveName"] + ".json"
+    )
+    with open(filename, "w") as f:
+        json.dump(refresh_tts_guids(blob), f, indent=2)
+    return filename
