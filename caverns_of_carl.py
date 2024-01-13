@@ -1481,6 +1481,143 @@ class DoorTrap(Trap):
         return trap
 
 
+class RetriableDungeonographyException(Exception):
+    pass
+
+
+class RetriableRoomPlacementException(RetriableDungeonographyException):
+    pass
+
+
+class RetriableCorridorPlacementException(RetriableDungeonographyException):
+    pass
+
+
+class RetriableFeaturePlacementException(RetriableDungeonographyException):
+    pass
+
+
+class SpecialFeature:
+    def __init__(self):
+        self.roomix = None
+
+    def description(self, df):
+        """A string description of the special feature.
+
+        This will show up in notes for its room."""
+        raise NotImplementedError()
+
+    def score_rooms(self, df):
+        """Helps decide which room in which to place this feature.
+
+        Returns a dict of room.ix : score. Score is a number (higher
+        is better), and must be > 0. This dict will only include rooms that allow valid
+        placement."""
+        return [1.0 for _ in df.rooms]
+
+    def tts_objects(self, df):
+        # return []
+        raise NotImplementedError()
+
+    def ascii_chars(self, df):
+        """Returns a list of (x, y, char) tuples."""
+        raise NotImplementedError()
+
+    def allows_enemies(self):
+        return False
+
+    def allows_other_features(self, other_features=[]):
+        return False
+
+    def allows_treasure(self):
+        return False
+
+    def allows_traps(self):
+        return False
+
+    def allowed_light_levels(self):
+        return ["bright"]
+
+
+class Blacksmith(SpecialFeature):
+    def description(self, df):
+        return "The blacksmith Andrus of Eastora has set up shop here."
+
+    def score_rooms(self, df):
+        output = {}
+        for room in df.rooms:
+            score = 1.0
+            if room.tile_style() != "dungeon":
+                score *= 0.25
+            if not room.is_fully_enclosed_by_doors():
+                score *= 0.25
+            # prefer cozy rooms
+            score *= 9.0 / room.total_space()
+            if not self._thing_coords(df, room):
+                score = -1  # couldn't find places for my things!
+            if score > 0.0:
+                output[room.ix] = score
+        return output
+
+    def _thing_coords(self, df, room):
+        for sx, sy in room.tile_coords():
+            stile = df.get_tile(sx, sy)
+            if stile.is_move_blocking():
+                continue
+            smith_near_wall = False
+            smith_near_corridor = False
+            ax, ay = None, None
+            for atile in df.neighbor_tiles(stile):
+                smith_near_wall |= isinstance(atile, WallTile)
+            for atile in df.neighbor_tiles(stile, diagonal=True):
+                smith_near_corridor |= isinstance(atile, CorridorFloorTile)
+            if smith_near_corridor or not smith_near_wall:
+                continue
+            for atile in df.neighbor_tiles(stile):
+                anvil_obstructed = atile.is_move_blocking()
+                for nt in df.neighbor_tiles(atile, diagonal=True):
+                    anvil_obstructed |= nt.is_move_blocking()
+                if not anvil_obstructed:
+                    ax, ay = atile.x, atile.y
+                    break
+            if ax:
+                return {"smith_coords": (sx, sy), "anvil_coords": (ax, ay)}
+        return None
+
+    def ascii_chars(self, df):
+        """Returns a list of (x, y, char) tuples."""
+        room = df.rooms[self.roomix]
+        thing_coords = self._thing_coords(df, room)
+        sx, sy = thing_coords["smith_coords"]
+        ax, ay = thing_coords["anvil_coords"]
+        return [(sx, sy, "[1;97m&"), (ax, ay, "[1;97m]")]
+
+    def tts_objects(self, df):
+        room = df.rooms[self.roomix]
+        thing_coords = self._thing_coords(df, room)
+        sx, sy = thing_coords["smith_coords"]
+        ax, ay = thing_coords["anvil_coords"]
+        monster = tts_reference_object("Lich A")
+        smith = tts_reference_object("Blacksmith on 1inch")
+        # smith["Transform"]["posY"] += 0.2
+        # smith["Locked"] = True
+        smith["LuaScript"] = monster["LuaScript"]
+        smith["Nickname"] = "Blacksmith Andrus of Eastora"
+        anvil = tts_reference_object("Blacksmith's Anvil")
+        if sx > ax:
+            smith["Transform"]["rotY"] += 90.0
+            anvil["Transform"]["rotY"] += 90.0
+        if sx < ax:
+            smith["Transform"]["rotY"] -= 90.0
+            anvil["Transform"]["rotY"] -= 90.0
+        if sy < ay:
+            smith["Transform"]["rotY"] += 180.0
+            anvil["Transform"]["rotY"] += 180.0
+        df.tts_xz(sx, sy, smith)
+        df.tts_xz(ax, ay, anvil)
+        return [smith, anvil]
+
+
 class Room:
     def __init__(self, x, y, rw=1, rh=1):
         self.x = x
@@ -1492,6 +1629,7 @@ class Room:
         self.has_down_ladder = False
         self.ix = None
         self.encounter = None
+        self.special_featureixs = []
         self.doorixs = set()
         self.trapixs = set()
 
@@ -1532,6 +1670,42 @@ class Room:
 
     def has_ladder(self):
         return self.has_up_ladder or self.has_down_ladder
+
+    def special_features(self, df):
+        for featureix in self.special_featureixs:
+            yield df.special_features[featureix]
+
+    def allows_treasure(self, df):
+        if self.has_ladder():
+            return False
+        for feature in self.special_features(df):
+            if not feature.allows_treasure():
+                return False
+        return True
+
+    def allows_enemies(self, df):
+        if self.has_ladder():
+            return False
+        for feature in self.special_features(df):
+            if not feature.allows_enemies():
+                return False
+        return True
+
+    def allows_traps(self, df):
+        if self.has_ladder():
+            return False
+        for feature in self.special_features(df):
+            if not feature.allows_traps():
+                return False
+        return True
+
+    def allowed_light_levels(self, df):
+        allowed_light_levels = set(["bright", "dim", "dark"])
+        for feature in self.special_features(df):
+            allowed_light_levels = allowed_light_levels.intersection(
+                set(feature.allowed_light_levels())
+            )
+        return allowed_light_levels
 
     def pick_tile(
         self,
@@ -1612,6 +1786,8 @@ class Room:
             o.append("Down ladder")
         if self.has_up_ladder:
             o.append("Up ladder")
+        for featureix in self.special_featureixs:
+            o.append(df.special_features[featureix].description(df))
         for trapix in self.trapixs:
             o.append(df.traps[trapix].description())
         o.append(f"Light level: {self.light_level.capitalize()}")
@@ -2025,6 +2201,7 @@ class DungeonFloor:
         self.rooms = []
         self.corridors = []
         self.doors = []
+        self.special_features = []
         self.monsters = []
         self.traps = []
         self.light_sources = []
@@ -2036,8 +2213,8 @@ class DungeonFloor:
     def tts_xz(self, x, y, tts_transform=None, diameter=1):
         tts_x = x - math.floor(self.width / 2.0) + 0.5
         tts_z = y - math.floor(self.height / 2.0) + 0.5
-        if diameter == 2:
-            # offset for wider models
+        if diameter % 2 == 0:
+            # offset for wider models that aren't centered
             tts_x += 0.5
             tts_z += 0.5
         if tts_transform:
@@ -2091,7 +2268,12 @@ class DungeonFloor:
                 return default(x=x, y=y)
         return self.tiles[x][y]
 
-    def neighbor_tiles(self, x, y, default=None, cardinal=True, diagonal=False):
+    def neighbor_tiles(
+        self, x, y=None, default=None, cardinal=True, diagonal=False
+    ):
+        if isinstance(x, Tile):
+            y = x.y
+            x = x.x
         for tx, ty in neighbor_coords(x, y, cardinal, diagonal):
             tile = self.get_tile(tx, ty, default)
             if tile:
@@ -2142,6 +2324,9 @@ class DungeonFloor:
         ]
         for monster in self.monsters:
             chars[monster.x][monster.y] = monster.to_char()
+        for feature in self.special_features:
+            for x, y, c in feature.ascii_chars(self):
+                chars[x][y] = c
         for room in self.rooms:
             num_s = str(room.ix)
             x, y = room.x, room.y
@@ -2254,10 +2439,11 @@ class DungeonConfig:
         self.add_var("corridor_trap_percent", 30.0)
         self.add_var("door_trap_percent", 15.0)
         self.add_var("chest_trap_percent", 30.0)
+        self.add_var("blacksmith_percent", 30.0)
         self.allow_corridor_intersection = False
         self.min_ladder_distance = 2
         self.max_corridor_attempts = 30000
-        self.max_room_attempts = 10000
+        self.max_room_attempts = 10
 
     def add_var(self, k, v, tk_label=None, is_long=False):
         assert k not in self.var_keys
@@ -2332,34 +2518,39 @@ class DungeonConfig:
             self.__dict__[k] = var.get()
 
 
-def generate_random_dungeon(config=None):
+def generate_random_dungeon(config=None, errors=None):
     config = config or DungeonConfig()
-    df = None
+    errors = errors or []
+    successful = False
     for _ in range(100):
-        df = DungeonFloor(config)
-        place_rooms_in_dungeon(df)
-        erode_cavernous_rooms_in_dungeon(df)
-        place_corridors_in_dungeon(df)
-        # If we require full connection, and this didn't produce a
-        # fully connected map, retry.
-        if not config.prefer_full_connection or len(
-            dfs(df.room_neighbors, 0)
-        ) == len(df.rooms):
+        try:
+            df = DungeonFloor(config)
+            place_rooms_in_dungeon(df)
+            erode_cavernous_rooms_in_dungeon(df)
+            place_corridors_in_dungeon(df)
+            place_doors_in_dungeon(df)
+            place_ladders_in_dungeon(df)
+            place_special_features_in_dungeon(df)
+            place_treasure_in_dungeon(df)
+            place_monsters_in_dungeon(df)
+            place_traps_in_dungeon(df)
+            place_lights_in_dungeon(df)
+            stylize_tiles_in_dungeon(df)
+        except RetriableDungeonographyException as err:
+            errors.append(err)
+        else:
+            successful = True
+        if successful:
             break
-    place_doors_in_dungeon(df)
-    place_ladders_in_dungeon(df)
-    place_treasure_in_dungeon(df)
-    place_monsters_in_dungeon(df)
-    place_traps_in_dungeon(df)
-    place_lights_in_dungeon(df)
-    stylize_tiles_in_dungeon(df)
-    return df
+    if successful:
+        return df
+    raise errors[-1]
 
 
 def place_rooms_in_dungeon(df):
     config = df.config
     rooms = []
-    for _ in range(config.max_room_attempts):
+    for _ in range(config.max_room_attempts * config.num_rooms):
         if len(rooms) >= config.num_rooms:
             break
         room = df.random_room()
@@ -2371,6 +2562,10 @@ def place_rooms_in_dungeon(df):
             room2 = rooms[ix].wiggled()
             if is_room_valid(room2, df, rooms, ix):
                 rooms[ix] = room2
+    if len(rooms) < config.num_rooms:
+        raise RetriableRoomPlacementException(
+            f"Failed to place all requested rooms ({len(rooms)} of {config.num_rooms})"
+        )
 
     # embiggen and wiggle rooms
     ews = ["e"] * config.num_room_embiggenings * config.num_rooms + [
@@ -2534,6 +2729,12 @@ def place_corridors_in_dungeon(df):
                 dfs(rooms_connected, room1ix)
             ) == len(df.rooms):
                 is_fully_connected = True
+    if config.prefer_full_connection and len(dfs(df.room_neighbors, 0)) < len(
+        df.rooms
+    ):
+        raise RetriableCorridorPlacementException(
+            "Failed to construct corridors with fully connected rooms."
+        )
     sorted_corridors = [
         (c, c.middle_coords(df)) for c in df.corridors if c.is_nontrivial(df)
     ]
@@ -2683,6 +2884,56 @@ def place_ladders_in_dungeon(df):
             room.has_down_ladder = True
 
 
+def place_special_features_in_dungeon(df):
+    features = []
+    if random.random() < df.config.blacksmith_percent / 99.9:
+        features.append(Blacksmith())
+    feature_roomix_scores = []
+    transposed_feature_roomix_scores = []
+    for feature in features:
+        scores = feature.score_rooms(df)
+        feature_roomix_scores.append(scores)
+        roomix_scores = sorted(scores.items())
+        if not roomix_scores:
+            raise RetriableFeaturePlacementException()
+        transposed_feature_roomix_scores.append(list(zip(*roomix_scores)))
+    feature_ixs = list(range(len(features)))
+    best_score = None
+    best_placement = []  # featureix -> roomix
+    for _ in range(100):
+        roomixs_used = set()
+        feature_ixs = list(range(len(features)))
+        random.shuffle(feature_ixs)
+        score = 1.0
+        feature_room_choices = [-1] * len(features)
+        for fix in feature_ixs:
+            feature = features[fix]
+            rixs, weights = transposed_feature_roomix_scores[fix]
+            k = min(len(roomixs_used) + 1, len(rixs))
+            for rix in random.choices(rixs, weights, k=k):
+                if rix not in roomixs_used:
+                    feature_room_choices[fix] = rix
+                    score *= feature_roomix_scores[fix][rix]
+                    roomixs_used.add(rix)
+                    break
+            if feature_room_choices[fix] < 0:
+                score = 0.0
+                break
+        if score > 0.0 and (best_score is None or score > best_score):
+            best_score = score
+            best_placement = feature_room_choices
+    if best_score is None:
+        raise RetriableFeaturePlacementException()
+    df.special_features = features
+    for fix, roomix in enumerate(best_placement):
+        room = df.rooms[roomix]
+        room.special_featureixs.append(fix)
+        allowed_light_levels = room.allowed_light_levels(df)
+        if room.light_level not in allowed_light_levels:
+            room.light_level = list(allowed_light_levels)[0]
+        features[fix].roomix = roomix
+
+
 def place_treasure_in_dungeon(df):
     lib = get_treasure_library("dnd 5e treasure")
     monster_infos = get_monster_library("dnd 5e monsters").get_monster_infos()
@@ -2709,7 +2960,7 @@ def place_treasure_in_dungeon(df):
             return
         roomix = random.choice(sized_roomixs)
         room = df.rooms[roomix]
-        if room.has_up_ladder:
+        if not room.allows_treasure(df):
             continue
         coords = room.pick_tile(
             df, unoccupied=True, avoid_corridor=True, prefer_wall=True
@@ -2949,10 +3200,9 @@ def place_monsters_in_dungeon(df):
         len(df.rooms) * config.room_encounter_percent / 100.0
     )
     roomixs = []
-    for roomix in range(len(df.rooms)):
-        if df.rooms[roomix].has_ladder():  # no monsters in ladder rooms
-            continue
-        roomixs.append(roomix)
+    for roomix, room in enumerate(df.rooms):
+        if room.allows_enemies(df):
+            roomixs.append(roomix)
     random.shuffle(roomixs)
     roomixs = roomixs[:target_monster_encounters]
     roomixs.sort(key=lambda ix: df.rooms[ix].total_space())
@@ -3004,9 +3254,8 @@ def place_traps_in_dungeon(df):
         len(df.rooms) * config.room_trap_percent / 100.0
     )
     for roomix, room in enumerate(df.rooms):
-        if room.has_ladder():
-            continue
-        roomixs_to_trap.append(roomix)
+        if room.allows_traps(df):
+            roomixs_to_trap.append(roomix)
     random.shuffle(roomixs_to_trap)
     for roomix in roomixs_to_trap[:target_num_room_traps]:
         room = df.rooms[roomix]
@@ -3184,6 +3433,8 @@ def dungeon_to_tts_blob(df):
         obj = monster.tts_object(df)
         blob["ObjectStates"].append(obj)
     for roomix, room in enumerate(df.rooms):
+        for feature in room.special_features(df):
+            blob["ObjectStates"] += feature.tts_objects(df)
         blob["ObjectStates"].append(room.tts_notecard(df))
     for corridorix, corridor in enumerate(df.corridors):
         if corridor.is_nontrivial(df):
