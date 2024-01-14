@@ -6,6 +6,7 @@ from lib.tile import (
     WallTile,
 )
 import lib.tts as tts
+from lib.utils import Doc, DocBookmark, DocLink
 
 
 class CorridorWalker:
@@ -120,16 +121,20 @@ class Corridor:
                 door = df.doors[doorix]
                 assert len(door.roomixs) == 1
                 roomix = list(door.roomixs)[0]
-                s = f"Door to Room {roomix}"
+                room_name = f"Room {roomix}"
+                line = Doc(["Door to", DocLink(room_name)], separator=" ")
+                door_l = [line]
                 for trapix in door.trapixs:
-                    s += "\n" + df.traps[trapix].description()
-                o.append(s)
-        return "\n\n".join(o)
+                    door_l.append(df.traps[trapix].description())
+                o.append(door_l)
+        name = f"Corridor {self.name}"
+        return Doc(DocBookmark(name, name), o)
 
     def tts_notecard(self, df):
         obj = tts.reference_object("Reference Notecard")
-        obj["Nickname"] = f"DM/GM notes for corridor {self.name}"
-        obj["Description"] = self.description(df)
+        doc = self.description(df)
+        obj["Nickname"] = doc.flat_header().unstyled()
+        obj["Description"] = doc.flat_body(separator="\n\n").unstyled()
         obj["Transform"]["posY"] = 4.0
         obj["Locked"] = True
         x, y = self.middle_coords(df)

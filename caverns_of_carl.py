@@ -26,6 +26,7 @@ Vague plan of cool things
 * Prepared wandering monster encounters in the DM hidden zone (also relevant for traps that summon)
 * More NPCs or special rooms
 * GPT API integration?
+* PDF output, and have this linked in the TTS game in the DM hidden zone.
 * locked doors and keys?
 * secret doors?
 * themes and tilesets?

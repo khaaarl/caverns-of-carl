@@ -1,4 +1,6 @@
+import datetime
 import re
+import random
 import traceback
 
 import tkinter as tk
@@ -9,7 +11,9 @@ from tkinter import ttk
 import lib.config
 import lib.dungeon
 import lib.monster
+import lib.pdf
 import lib.tts as tts
+from lib.utils import StyledString
 
 
 def set_tk_text(tk_text, s, default_tag_kwargs={}, style_newlines=False):
@@ -24,69 +28,34 @@ def set_tk_text(tk_text, s, default_tag_kwargs={}, style_newlines=False):
     underline_font_info["underline"] = True
     underline_font = tkinter.font.Font(**bold_font_info)
     tag_db = {}
-    if default_tag_kwargs:
-        tk_text.tag_configure("defaultish", **default_tag_kwargs)
-        tag_db[(-1, -1)] = "defaultish"
+    tk_text.tag_configure("defaultish", **default_tag_kwargs)
+    tag_db[None] = "defaultish"
+    tag_names = set()
+    s = StyledString(s)
     lines = s.split("\n")
     for lineix, line in enumerate(lines):
-        ix = 0
-        colored_chars = []
-        while ix < len(line):
-            if ix + 6 < len(line):
-                possible_code = line[ix : ix + 6]
-                if re.match(r"^\[[0-9];[0-9][0-9]m$", possible_code):
-                    style = int(possible_code[1])
-                    color = int(possible_code[3:5])
-                    colored_chars.append((line[ix + 6], style, color))
-                    ix += 7
-                    continue
-            colored_chars.append((line[ix], None, None))
-            ix += 1
-        for ix, tup in enumerate(colored_chars):
-            c, style, color = tup
-            tk_text.insert(tk.END, c)
-            if style is None or color is None:
-                if not default_tag_kwargs:
-                    continue
-                style, color = -1, -1
+        for ix, c in enumerate(line.chars):
+            tk_text.insert(tk.END, c.c)
             tag_name = None
-            if (style, color) not in tag_db:
-                tag_name = f"s{style}c{color}"
-                color_hex = {
-                    30: "#000",
-                    31: "#b00",
-                    32: "#0b0",
-                    33: "#bb0",
-                    34: "#00c",
-                    35: "#b0c",
-                    36: "#0bc",
-                    37: "#bbc",
-                    90: "#000",
-                    91: "#f00",
-                    92: "#0f0",
-                    93: "#ff0",
-                    94: "#00f",
-                    95: "#f0f",
-                    96: "#0ff",
-                    97: "#fff",
-                }[color]
+            if c.style not in tag_db:
+                while tag_name is None or tag_name in tag_names:
+                    tag_name = f"s{random.randrange(1000000)}"
+                tag_names.add(tag_name)
                 d = dict(default_tag_kwargs or {})
-                d["foreground"] = color_hex
-                d["background"] = "#000"
-                if style == 1:
+                d["foreground"] = c.style.color_hex()
+                d["background"] = "#000000"
+                if c.style.is_bold:
                     d["font"] = bold_font
-                if style == 4:
+                elif c.style.is_underline:
                     d["font"] = underline_font
                 tk_text.tag_configure(tag_name, **d)
-                tag_db[(style, color)] = tag_name
-            tag_name = tag_db[(style, color)]
+                tag_db[c.style] = tag_name
+            tag_name = tag_db[c.style]
             tk_text.tag_add(tag_name, f"{lineix+1}.{ix}", f"{lineix+1}.{ix+1}")
-
         if lineix < len(lines) - 1:
             tk_text.insert(tk.END, "\n")
             if style_newlines:
                 tk_text.tag_add(tag_name, f"{lineix+1}.{ix}", tk.END)
-    pass
 
 
 def run_ui():
@@ -139,14 +108,16 @@ def run_ui():
             )
             text_output.append("")
             for room in df.rooms:
-                text_output.append(f"***Room {room.ix}***")
-                text_output.append(room.description(df, verbose=True))
+                doc = room.description(df, verbose=True)
+                text_output.append(f"***{doc.flat_header()}***")
+                text_output.append(doc.flat_body(separator="\n\n"))
                 text_output.append("")
             for corridor in sorted(df.corridors, key=lambda x: x.name or ""):
                 if not corridor.is_nontrivial(df):
                     continue
-                text_output.append(f"***Corridor {corridor.name}***")
-                text_output.append(corridor.description(df, verbose=True))
+                doc = corridor.description(df, verbose=True)
+                text_output.append(f"***{doc.flat_header()}***")
+                text_output.append(doc.flat_body(separator="\n\n"))
                 text_output.append("")
         except Exception as e:
             err = traceback.format_exc()
@@ -161,21 +132,36 @@ def run_ui():
             )
         set_tk_text(
             chest_info_text,
-            "\n".join(text_output),
+            StyledString("\n").join(text_output),
             {"foreground": "#fff", "background": "#000"},
         )
 
     def save_dungeon(*args, **kwargs):
         if not dungeon_history:
             return
-        text_output = ""
+        text_output = ["\n"]
         try:
             df = dungeon_history[-1]
-            fn = tts.save_tts_blob(lib.dungeon.dungeon_to_tts_blob(df))
-            text_output = f"Saved to {fn}"
+            now = datetime.datetime.now()
+            name = f"Caverns of Carl {now:%Y-%m-%dT%H-%M-%S%z}"
+            pdf_filename = lib.pdf.produce_pdf_if_possible(df, name)
+            if pdf_filename:
+                text_output.append(
+                    f"Created PDF information document at {pdf_filename}"
+                )
+            else:
+                text_output.append(
+                    "The python library `pdflab` is not installed, so no PDF information document will be created."
+                )
+            blob = lib.dungeon.dungeon_to_tts_blob(
+                df, name, pdf_filename=pdf_filename
+            )
+            tts_filename = tts.save_tts_blob(blob)
+            text_output.append(f"Saved TTS file to {tts_filename}")
         except Exception as e:
-            text_output = traceback.format_exc()
-        chest_info_text.insert(tk.END, f"\n\n{text_output}")
+            text_output.append("\n")
+            text_output.append(traceback.format_exc())
+        chest_info_text.insert(tk.END, StyledString("\n").join(text_output))
         chest_info_text.see(tk.END)
 
     operation_frame = tk.Frame(left_frame)

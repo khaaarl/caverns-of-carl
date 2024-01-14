@@ -7,7 +7,7 @@ import random
 import re
 
 import lib.tts as tts
-from lib.utils import COC_ROOT_DIR, expr_match_keywords, eval_dice
+from lib.utils import COC_ROOT_DIR, Doc, expr_match_keywords, eval_dice
 
 
 _monster_library_cache = {}
@@ -278,8 +278,8 @@ class Encounter:
     def description(self, df):
         xp = self.total_xp()
         pct = int(round(100.0 * xp / med_target_xp(df.config)))
-        s = f"Monster encounter (~{xp:,} xp; ~{pct}% of Medium):"
-        return s + "\n" + summarize_monsters(self.monsters)
+        header = f"Monster encounter (~{xp:,} xp; ~{pct}% of Medium):"
+        return Doc(header, summarize_monsters(self.monsters))
 
 
 def summarize_monsters(monsters):

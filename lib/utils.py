@@ -262,3 +262,245 @@ def neighbor_coords(x, y, cardinal=True, diagonal=False):
         l += [(-1, -1), (1, -1), (-1, 1), (1, 1)]
     for dx, dy in l:
         yield (x + dx, y + dy)
+
+
+@functools.total_ordering
+class CharStyle:
+    def __init__(self, r, g, b, *, is_bold=False, is_underline=False):
+        self.r = r
+        self.g = g
+        self.b = b
+        self.is_bold = is_bold
+        self.is_underline = is_underline
+
+    def color_hex(self):
+        return f"#{self.r:02x}{self.g:02x}{self.b:02x}"
+
+    def __str__(self):
+        s = self.color_hex()
+        if self.is_bold:
+            s += " bold"
+        if self.is_underline:
+            s += " underline"
+        return s
+
+    @staticmethod
+    def from_ansi(possible_code):
+        m = re.match(r"^\[[0-9];[0-9][0-9]m$", possible_code)
+        if not m:
+            return None
+        style_code = int(possible_code[1])
+        color_code = int(possible_code[3:5])
+        color_hex = {
+            30: "#000",
+            31: "#b00",
+            32: "#0b0",
+            33: "#bb0",
+            34: "#00c",
+            35: "#b0c",
+            36: "#0bc",
+            37: "#bbc",
+            90: "#000",
+            91: "#f00",
+            92: "#0f0",
+            93: "#ff0",
+            94: "#00f",
+            95: "#f0f",
+            96: "#0ff",
+            97: "#fff",
+        }[color_code]
+        return CharStyle(
+            r=int(round(int(color_hex[1], 16) * 255 / 15.0)),
+            g=int(round(int(color_hex[2], 16) * 255 / 15.0)),
+            b=int(round(int(color_hex[3], 16) * 255 / 15.0)),
+            is_bold=style_code == 1,
+            is_underline=style_code == 4,
+        )
+
+    def tuple(self):
+        return (self.r, self.g, self.b, self.is_bold, self.is_underline)
+
+    def __lt__(self, other):
+        return self.tuple() < other.tuple()
+
+    def __eq__(self, other):
+        if other is None:
+            return False
+        return self.tuple() == other.tuple()
+
+    def __hash__(self):
+        return self.tuple().__hash__()
+
+
+class StyledChar:
+    def __init__(self, c, style=None):
+        if isinstance(c, StyledChar):
+            self.c = c.c
+            self.style = c.style
+            self.bookmark_name = c.bookmark_name
+            self.link_destination = c.link_destination
+            return
+        self.c = c
+        self.style = style
+        self.bookmark_name = None
+        self.link_destination = None
+
+    def __str__(self):
+        if not self.style:
+            return self.c
+        return "{" + self.c + " " + str(self.style) + "}"
+
+
+class StyledString:
+    def __init__(self, chars=None):
+        if isinstance(chars, StyledString):
+            self.chars = list(chars.chars)
+            return
+        if isinstance(chars, str):
+            self.chars = StyledString._list_from_ascii(chars)
+            return
+        if isinstance(chars, StyledChar):
+            self.chars = [chars]
+            return
+        self.chars = [StyledChar(x) for x in chars or []]
+
+    def unstyled(self):
+        l = []
+        for c in self.chars:
+            l.append(c.c)
+        return "".join(l)
+
+    def __str__(self):
+        return "".join([str(x) for x in self.chars])
+
+    def split_by_style(self):
+        output = []
+        accum = []
+        cur_style = None
+        for c in self.chars:
+            if c.style != cur_style:
+                if accum:
+                    output.append(StyledString(accum))
+                    accum = []
+                cur_style = c.style
+            accum.append(c)
+        if accum:
+            output.append(StyledString(accum))
+        return output
+
+    def join(self, seq):
+        seq = list(seq)
+        accum = []
+        for ix, item in enumerate(seq):
+            for c in StyledString(item).chars:
+                accum.append(c)
+            if ix + 1 < len(seq):
+                for c in self.chars:
+                    accum.append(c)
+        return StyledString(accum)
+
+    def split(self, separator):
+        # TODO: handle separators that aren't just len 1 strings
+        output = []
+        tmp = []
+        for c in self.chars:
+            if c.c == separator:
+                output.append(StyledString("").join(tmp))
+                tmp = []
+                continue
+            tmp.append(c)
+        if tmp:
+            output.append(StyledString("").join(tmp))
+        return output
+
+    @staticmethod
+    def _list_from_ascii(text):
+        output = []
+        ix = 0
+        while ix < len(text):
+            style = CharStyle.from_ansi(text[ix : ix + 6])
+            if style:
+                output.append(StyledChar(text[ix + 6], style))
+                ix += 7
+            else:
+                output.append(StyledChar(text[ix]))
+                ix += 1
+        return output
+
+
+class DocLink:
+    def __init__(self, *args, content=None, destination=None):
+        if len(args) == 2:
+            content = args[0]
+            destination = args[1]
+        elif len(args) == 1:
+            content = args[0]
+            destination = args[0]
+        self.content = content
+        self.destination = destination
+
+
+class DocBookmark:
+    def __init__(self, name, content):
+        self.name = name
+        self.content = content
+
+
+class Doc:
+    def __init__(self, *args, header=None, body=None, separator="\n"):
+        if len(args) == 2:
+            header = args[0]
+            body = args[1]
+        elif len(args) == 1:
+            body = args[0]
+        self.header = header
+        self.body = body
+        self.separator = separator
+
+    def __str__(self):
+        return self.flat_str()
+
+    def flat_str(self, *, separator=None):
+        if separator is None:
+            separator = self.separator
+        o = []
+        if self.header is not None:
+            o.append(self.flat_header(separator=separator))
+        if self.body is not None:
+            o.append(self.flat_body(separator=separator))
+        return StyledString(separator).join(o)
+
+    def flat_header(self, *, separator=None):
+        if separator is None:
+            separator = self.separator
+        return self._flat_thing(self.header, separator=separator)
+
+    def flat_body(self, *, separator=None):
+        if separator is None:
+            separator = self.separator
+        return self._flat_thing(self.body, separator=separator)
+
+    def _flat_thing(self, thing, *, separator="\n"):
+        if isinstance(thing, str):
+            return StyledString(thing)
+        if isinstance(thing, StyledString):
+            return thing
+        if isinstance(thing, Doc):
+            return thing.flat_str()
+        if isinstance(thing, DocLink):
+            tmp = self._flat_thing(thing.content)
+            if thing.destination:
+                for c in tmp.chars:
+                    c.link_destination = thing.destination
+            return tmp
+        if isinstance(thing, DocBookmark):
+            tmp = self._flat_thing(thing.content)
+            if thing.name:
+                for c in tmp.chars:
+                    c.bookmark_name = thing.name
+            return tmp
+        o = []
+        if isinstance(thing, list):
+            for x in thing:
+                o.append(self._flat_thing(x))
+        return StyledString(separator).join(o)

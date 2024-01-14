@@ -10,6 +10,7 @@ from lib.tile import (
 )
 import lib.tts as tts
 from lib.tts import TTSFogBit
+from lib.utils import Doc, DocBookmark, DocLink
 
 
 class Room:
@@ -180,18 +181,23 @@ class Room:
         if verbose:
             if self.encounter:
                 o.append(self.encounter.description(df))
+            # TODO: this should not just deal with doors, but all
+            # corridors going out of me (not all of these have doors)
             for doorix in self.doorixs:
                 door = df.doors[doorix]
                 corridor = df.corridors[door.corridorix]
                 other_roomix = (
                     set([corridor.room1ix, corridor.room2ix]) - set([self.ix])
                 ).pop()
-                s = f"Door to Room {other_roomix}"
+                line = Doc(["Door to"], separator=" ")
+                line.body.append(DocLink(f"Room {other_roomix}"))
                 if corridor.is_nontrivial(df):
-                    s += f" by way of Corridor {corridor.name}"
+                    line.body.append("by way of")
+                    line.body.append(DocLink(f"Corridor {corridor.name}"))
+                door_l = [line]
                 for trapix in door.trapixs:
-                    s += "\n" + df.traps[trapix].description()
-                o.append(s)
+                    door_l.append(df.traps[trapix].description())
+                o.append(door_l)
             for x, y in self.tile_coords():
                 tile = df.tiles[x][y]
                 if isinstance(tile, MimicTile):
@@ -209,16 +215,22 @@ class Room:
                 else:
                     s.append(tile.contents)
                 o.append("\n".join(s))
-        return "\n\n".join(o)
+        name = f"Room {self.ix}"
+        # header =
+        return Doc(DocBookmark(name, name), o)
 
     def tts_notecard(self, df):
         obj = tts.reference_object("Reference Notecard")
-        obj["Nickname"] = f"DM/GM notes for room {self.ix}"
-        obj["Description"] = self.description(df)
+        doc = self.description(df, verbose=False)
+        obj["Nickname"] = doc.flat_header().unstyled()
+        obj["Description"] = doc.flat_body().unstyled()
         obj["Transform"]["posY"] = 4.0
         obj["Locked"] = True
         df.tts_xz(self.x, self.y, obj)
         return obj
+
+    def name(self):
+        return f"Room {self.ix}"
 
     def is_fully_enclosed_by_doors(self):
         return NotImplementedError()

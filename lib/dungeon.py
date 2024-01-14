@@ -1,6 +1,7 @@
 import collections
 import copy
 import datetime
+import json
 import math
 import random
 
@@ -941,8 +942,7 @@ def stylize_tiles_in_dungeon(df):
                 unstyled.remove((x, y))
 
 
-def dungeon_to_tts_blob(df):
-    name = f"Caverns of Carl {datetime.datetime.now():%Y-%m-%dT%H-%M-%S%z}"
+def dungeon_to_tts_blob(df, name, pdf_filename=None):
     blob = copy.deepcopy(tts_reference_save_json())
     blob["SaveName"] = name
     blob["GameMode"] = name
@@ -1000,6 +1000,16 @@ def dungeon_to_tts_blob(df):
         merged_bits = TTSFogBit.merge_fog_bits(fog_bits.values())
         for bit in merged_bits:
             blob["ObjectStates"].append(bit.tts_fog(df))
+    # Informational PDF
+    if pdf_filename:
+        obj = tts.reference_object("Reference PDF Document")
+        obj["Nickname"] = "Dungeon floor information"
+        obj["Description"] = ""
+        obj["Transform"]["posY"] = 2.0
+        obj["Locked"] = False
+        obj["CustomPDF"]["PDFUrl"] = f"file:///{pdf_filename}"
+        df.tts_xz(0, -5, obj)
+        blob["ObjectStates"].append(obj)
     # DM's (hopefully) helpful hidden zone
     dm_fog = tts_fog(scaleX=df.width, scaleZ=20.0, hidden_zone=True)
     df.tts_xz(df.width / 2.0 - 0.5, -10.5, dm_fog)
