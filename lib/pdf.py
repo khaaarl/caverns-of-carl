@@ -1,3 +1,10 @@
+"""
+Reportlab documentation:
+https://www.reportlab.com/docs/reportlab-userguide.pdf
+https://docs.reportlab.com/reportlab/userguide/ch2_graphics/
+"""
+
+
 import os
 
 from lib.utils import COC_ROOT_DIR, CharStyle, StyledString
