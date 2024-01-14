@@ -19,10 +19,12 @@ Vague plan of cool things
 * monster encounter constraint: Frontline (done)
 * cavernous rooms (done)
 * room lighting, denoted with floor tile tint & description
-* ladder configurable bfs distance check
+* ladder configurable bfs distance check (done)
+* blacksmith npc (done)
 * cavernous corridors should have some erosion, and not be straight
 * DM toolpanel in TTS, including button to delete everything. Move health increment/decrement to this singleton object
 * Prepared wandering monster encounters in the DM hidden zone (also relevant for traps that summon)
+* More NPCs or special rooms
 * GPT API integration?
 * locked doors and keys?
 * secret doors?
