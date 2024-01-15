@@ -1,0 +1,352 @@
+{
+    "npcs": [
+        {
+            "Name": "Vaelin",
+            "Race": "Elf",
+            "Class": "Ranger",
+            "Appearance": "Tall, slender elf with piercing green eyes and long silver hair. Pale, luminescent skin. Wears leather armor in shades of green and brown, with a longbow, arrows, and short swords.",
+            "Voice": "Soft-spoken, melodic, deliberate, and thoughtful.",
+            "Personality": "Calm, introspective, cautious, observant, protective of nature, and ruthless in combat.",
+            "Quirks": [
+                "Converses with animals or plants, believing them to be sentient.",
+                "Collects interesting natural artifacts.",
+                "Often gets lost in thought, especially in natural surroundings."
+            ],
+            "Motivation": "Investigating a corrupted ancient tree causing disturbances in the forest. Seeks to understand and stop the corruption.",
+            "Activities": [
+                "Exploring and investigating the dungeon for signs of unnatural corruption.",
+                "Tracking and hunting unnatural creatures.",
+                "Forming alliances with adventurers who respect nature.",
+                "Documenting unique or mutated flora and fauna in the dungeon."
+            ]
+        },
+        {
+            "Name": "Grimm Hollowshade",
+            "Race": "Half-Orc",
+            "Class": "Bard",
+            "Appearance": "Tall and muscular with a slightly greenish tinge to his skin, Grimm has deep-set eyes under a heavy brow, sharp tusks protruding from his lower lip, and long, unkempt black hair. He dresses in a mix of fine bardic garments and rugged travel clothes.",
+            "Voice": "Deep and gravelly, with an unexpectedly melodious tone when he sings or recites poetry.",
+            "Personality": "Surprisingly eloquent and charming, Grimm defies the stereotypical image of a half-orc with his wit and love for the arts. He's empathetic and often meditates on the duality of his heritage.",
+            "Quirks": [
+                "Often hums or strums on his lute while thinking.",
+                "Has a habit of speaking in rhymes or lyrical prose.",
+                "Is fascinated by ancient love stories and epic poems."
+            ],
+            "Motivation": "Seeking inspiration for his magnum opus, a grand epic poem, Grimm explores the dungeon to experience adventure and uncover ancient lore.",
+            "Activities": [
+                "Composing songs and poems about his travels.",
+                "Entertaining fellow travelers or creatures in the dungeon with his bardic performances.",
+                "Collecting rare and ancient texts or artifacts of cultural significance."
+            ]
+        },
+        {
+            "Name": "Eldon Quickwhistle",
+            "Race": "Gnome",
+            "Class": "Rogue",
+            "Level": 5,
+            "Hit Points": 27,
+            "Armor Class": 15,
+            "Strength": 8,
+            "Constitution": 14,
+            "Dexterity": 17,
+            "Intelligence": 12,
+            "Wisdom": 10,
+            "Charisma": 13,
+            "Skills": [
+                "Stealth",
+                "Acrobatics",
+                "Sleight of Hand",
+                "Perception"
+            ],
+            "Abilities": [
+                "Evasion",
+                "Sneak Attack (3d6)",
+                "Cunning Action"
+            ],
+            "Spells": [],
+            "Attacks": [
+                "Dagger (melee) +5 to hit, 1d4+3 piercing damage"
+            ],
+            "Appearance": "Small stature, bright green eyes, messy brown hair, and a wide smile, wearing a leather vest and dark trousers.",
+            "Voice": "High-pitched and quick, often speaks with a playful tone.",
+            "Personality": "Curious, mischievous, and friendly, always looking for a bit of fun in every situation.",
+            "Quirks": [
+                "Obsessed with shiny objects",
+                "Always whistles a tune when nervous",
+                "Can't resist a good riddle or puzzle"
+            ],
+            "Motivation": "Seeking a legendary gem rumored to be hidden deep within the dungeon.",
+            "Activities": [
+                "Setting up and disarming traps",
+                "Deciphering ancient scripts",
+                "Exploring hidden passageways"
+            ]
+        },
+        {
+            "Name": "Eldranas Silvergleam",
+            "Race": "High Elf",
+            "Class": "Wizard",
+            "Level": 5,
+            "Hit Points": 27,
+            "Armor Class": 12,
+            "Strength": 8,
+            "Constitution": 14,
+            "Dexterity": 15,
+            "Intelligence": 18,
+            "Wisdom": 12,
+            "Charisma": 10,
+            "Skills": [
+                "Arcana",
+                "History",
+                "Insight"
+            ],
+            "Abilities": [
+                "Darkvision",
+                "Fey Ancestry",
+                "Trance"
+            ],
+            "Spells": [
+                "Mage Hand",
+                "Fire Bolt",
+                "Detect Magic",
+                "Magic Missile",
+                "Shield",
+                "Misty Step",
+                "Web",
+                "Counterspell"
+            ],
+            "Attacks": [
+                "Quarterstaff",
+                "Dagger"
+            ],
+            "Appearance": "Tall and slender with long silver hair, piercing blue eyes, and wearing a robe adorned with arcane symbols.",
+            "Voice": "Calm, with a hint of arrogance. Speaks slowly, emphasizing each word.",
+            "Personality": "Intelligent and curious, yet slightly detached and condescending.",
+            "Quirks": [
+                "Obsessively organizes items",
+                "Frequently consults a small, mysterious book",
+                "Has a habit of talking to himself"
+            ],
+            "Motivation": "Seeking ancient magical knowledge believed to be hidden within the dungeon.",
+            "Activities": [
+                "Deciphering old texts",
+                "Studying magical artifacts",
+                "Observing magical phenomena"
+            ]
+        },
+        {
+            "Name": "Grimtuck Ironheart",
+            "Race": "Dwarf",
+            "Class": "Barbarian",
+            "Level": 4,
+            "Hit Points": 45,
+            "Armor Class": 16,
+            "Strength": 17,
+            "Constitution": 16,
+            "Dexterity": 12,
+            "Intelligence": 10,
+            "Wisdom": 11,
+            "Charisma": 8,
+            "Skills": [
+                "Athletics",
+                "Intimidation",
+                "Survival"
+            ],
+            "Abilities": [
+                "Darkvision",
+                "Dwarven Resilience",
+                "Stonecunning"
+            ],
+            "Spells": [],
+            "Attacks": [
+                "Greataxe",
+                "Handaxe"
+            ],
+            "Appearance": "Stocky and muscular with a thick beard braided with iron rings, battle scars across his face.",
+            "Voice": "Gruff and loud, with a strong dwarven accent.",
+            "Personality": "Brave and straightforward, but can be stubborn and quick to anger.",
+            "Quirks": [
+                "Always polishing his axe",
+                "Tells tall tales of past battles",
+                "Superstitious about certain symbols"
+            ],
+            "Motivation": "Looking for a legendary weapon said to be hidden in the dungeon.",
+            "Activities": [
+                "Sharpening weapons",
+                "Arm-wrestling with companions",
+                "Studying ancient dwarven runes"
+            ]
+        },
+        {
+            "Name": "Seraphina Lightfeather",
+            "Race": "Aasimar",
+            "Class": "Cleric",
+            "Level": 6,
+            "Hit Points": 38,
+            "Armor Class": 17,
+            "Strength": 12,
+            "Constitution": 14,
+            "Dexterity": 10,
+            "Intelligence": 13,
+            "Wisdom": 18,
+            "Charisma": 16,
+            "Skills": [
+                "Healing",
+                "Religion",
+                "Persuasion"
+            ],
+            "Abilities": [
+                "Darkvision",
+                "Celestial Resistance",
+                "Healing Hands"
+            ],
+            "Spells": [
+                {
+                    "Name": "Guiding Bolt",
+                    "Attack Bonus": "+7",
+                    "Damage": "4d6 Radiant"
+                },
+                {
+                    "Name": "Cure Wounds",
+                    "DC": "15"
+                },
+                {
+                    "Name": "Shield of Faith",
+                    "Bonus": "+2 AC"
+                }
+            ],
+            "Attacks": [
+                {
+                    "Name": "Mace",
+                    "Hit Bonus": "+4",
+                    "Damage": "1d6 Bludgeoning"
+                }
+            ],
+            "Appearance": "Tall and elegant with golden hair and eyes that shimmer like stars. Radiates a gentle, ethereal light.",
+            "Voice": "Soft and melodious, with a calming presence.",
+            "Personality": "Compassionate and wise, yet fiercely protective of those in need.",
+            "Quirks": [
+                "Prays quietly when anxious",
+                "Has an affinity for birds",
+                "Often lost in thought"
+            ],
+            "Motivation": "On a divine mission to cleanse the dungeon of an ancient evil.",
+            "Activities": [
+                "Healing wounded creatures",
+                "Meditating",
+                "Studying ancient texts"
+            ]
+        },
+        {
+            "Name": "Borin Shadowstep",
+            "Race": "Halfling",
+            "Class": "Rogue",
+            "Level": 3,
+            "Hit Points": 24,
+            "Armor Class": 15,
+            "Strength": 10,
+            "Constitution": 14,
+            "Dexterity": 17,
+            "Intelligence": 12,
+            "Wisdom": 11,
+            "Charisma": 13,
+            "Skills": [
+                "Stealth",
+                "Acrobatics",
+                "Sleight of Hand"
+            ],
+            "Abilities": [
+                "Lucky",
+                "Brave",
+                "Halfling Nimbleness"
+            ],
+            "Spells": [],
+            "Attacks": [
+                {
+                    "Name": "Short Sword",
+                    "Hit Bonus": "+5",
+                    "Damage": "1d6+3 Piercing"
+                },
+                {
+                    "Name": "Dagger",
+                    "Hit Bonus": "+5",
+                    "Damage": "1d4+3 Piercing"
+                }
+            ],
+            "Appearance": "Short and agile, with mischievous green eyes and dark hair. Wears light leather armor and a cloak.",
+            "Voice": "Quick and witty, often with a playful tone.",
+            "Personality": "Clever and resourceful, but also a bit overconfident.",
+            "Quirks": [
+                "Always flipping a coin",
+                "Whistles in tense situations",
+                "Obsessed with shiny objects"
+            ],
+            "Motivation": "Seeking a legendary hidden treasure within the dungeon.",
+            "Activities": [
+                "Disarming traps",
+                "Exploring hidden passages",
+                "Gathering information"
+            ]
+        },
+        {
+            "Name": "Thalassa Wavecrest",
+            "Race": "Triton",
+            "Class": "Druid",
+            "Level": 5,
+            "Hit Points": 32,
+            "Armor Class": 14,
+            "Strength": 13,
+            "Constitution": 15,
+            "Dexterity": 12,
+            "Intelligence": 14,
+            "Wisdom": 17,
+            "Charisma": 11,
+            "Skills": [
+                "Nature",
+                "Animal Handling",
+                "Perception"
+            ],
+            "Abilities": [
+                "Amphibious",
+                "Control Air and Water",
+                "Emissary of the Sea"
+            ],
+            "Spells": [
+                {
+                    "Name": "Produce Flame",
+                    "Attack Bonus": "+6",
+                    "Damage": "1d8 Fire"
+                },
+                {
+                    "Name": "Entangle",
+                    "DC": "14"
+                },
+                {
+                    "Name": "Water Breathing",
+                    "Effect": "Up to 10 creatures can breathe underwater"
+                }
+            ],
+            "Attacks": [
+                {
+                    "Name": "Quarterstaff",
+                    "Hit Bonus": "+4",
+                    "Damage": "1d6 Bludgeoning"
+                }
+            ],
+            "Appearance": "Blue-green skin, long flowing hair like seaweed, and eyes like the ocean depths. Wears a cloak made of kelp.",
+            "Voice": "Melodic and soothing, like the sound of waves.",
+            "Personality": "Calm and wise, yet fiercely protective of the natural world.",
+            "Quirks": [
+                "Speaks to sea creatures",
+                "Collects seashells",
+                "Always damp, leaving wet footprints"
+            ],
+            "Motivation": "Protecting an ancient underwater relic from falling into the wrong hands.",
+            "Activities": [
+                "Casting water-related spells",
+                "Meditating near water sources",
+                "Exploring underwater passages"
+            ]
+        }
+    ]
+}
