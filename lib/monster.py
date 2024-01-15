@@ -295,10 +295,8 @@ def summarize_monsters(monsters):
 
 
 def _build_encounter_single_attempt(
-    monster_infos, target_xp, variety, prev_monster_counts={}
+    monster_infos, target_xp, variety, prev_monster_counts={}, max_space=None
 ):
-    # TODO: there is some bug, I think, where it's not willing to
-    # generate a Banshee (homogenous, max 1 per floor)
     used_infos = {}  # name -> info
     encounter = Encounter()
     prev_xp = -1000000
@@ -320,6 +318,9 @@ def _build_encounter_single_attempt(
         if mi.max_per_floor is not None:
             if prev_monster_counts[mi.name] >= mi.max_per_floor:
                 continue
+        if max_space is not None:
+            if encounter.total_space() + mi.diameter**2 > max_space:
+                continue
         encounter.monsters.append(Monster(mi))
         new_xp = encounter.total_xp()
         if abs(target_xp - new_xp) < abs(target_xp - prev_xp):
@@ -335,17 +336,17 @@ def _build_encounter_single_attempt(
         mi = used_infos[name]
         encounter.monsters.append(Monster(mi))
         new_xp = encounter.total_xp()
-        if abs(target_xp - new_xp) < abs(target_xp - prev_xp):
+        is_improved = abs(target_xp - new_xp) < abs(target_xp - prev_xp)
+        if max_space is not None:
+            if encounter.total_space() > max_space:
+                is_improved = False
+        if mi.max_per_floor is not None:
+            new_count = prev_monster_counts[name] + monster_counts[name]
+            if new_count > mi.max_per_floor:
+                is_improved = False
+        if is_improved:
             prev_xp = new_xp
             monster_counts[name] += 1
-            if mi.max_per_floor is not None:
-                if (
-                    prev_monster_counts[name] + monster_counts[name]
-                    >= mi.max_per_floor
-                ):
-                    eligible_monsters = list(
-                        set(eligible_monsters) - set([name])
-                    )
         else:
             encounter.monsters.pop()
             eligible_monsters = list(set(eligible_monsters) - set([name]))
@@ -400,7 +401,11 @@ def score_encounter(encounter, target_xp, prev_monster_counts):
 
 
 def build_encounter(
-    monster_infos, target_xp, variety=None, prev_monster_counts={}
+    monster_infos,
+    target_xp,
+    variety=None,
+    prev_monster_counts={},
+    max_space=None,
 ):
     if not variety:
         varieties = [1, 2, 2, 3, 3, 3, 4, 4]
@@ -413,7 +418,7 @@ def build_encounter(
     best_score = 0.0001
     for _ in range(100):
         encounter = _build_encounter_single_attempt(
-            monster_infos, target_xp, variety, prev_monster_counts
+            monster_infos, target_xp, variety, prev_monster_counts, max_space
         )
         score = score_encounter(encounter, target_xp, prev_monster_counts)
         if score > best_score:

@@ -731,7 +731,7 @@ def place_monsters_in_dungeon(df):
     roomixs.sort(key=lambda ix: df.rooms[ix].total_space())
     encounters = []
     monster_counts = collections.defaultdict(int)
-    for _ in roomixs:
+    for roomix in roomixs:
         lo = config.encounter_xp_low_percent
         hi = config.encounter_xp_high_percent
         xp_percent_of_medium = lo + random.random() * abs(hi - lo)
@@ -742,7 +742,10 @@ def place_monsters_in_dungeon(df):
             lowest_monster_xp,
         )
         enc = lib.monster.build_encounter(
-            monster_infos, target_xp, prev_monster_counts=monster_counts
+            monster_infos,
+            target_xp,
+            prev_monster_counts=monster_counts,
+            max_space=df.rooms[roomix].total_space(),
         )
         if not enc.monsters:
             continue
