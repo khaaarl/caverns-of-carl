@@ -153,9 +153,7 @@ def run_ui():
                 text_output.append(
                     "The python library `pdflab` is not installed, so no PDF information document will be created."
                 )
-            blob = lib.dungeon.dungeon_to_tts_blob(
-                df, name, pdf_filename=pdf_filename
-            )
+            blob = tts.dungeon_to_tts_blob(df, name, pdf_filename=pdf_filename)
             tts_filename = tts.save_tts_blob(blob)
             text_output.append(f"Saved TTS file to {tts_filename}")
         except Exception as e:

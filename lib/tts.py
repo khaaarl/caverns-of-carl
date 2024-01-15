@@ -7,6 +7,7 @@ import pathlib
 import random
 import sys
 
+import lib.trap
 from lib.utils import COC_ROOT_DIR
 
 TTS_SPAWNED_TAG = "Terrain Object Spawned by Caverns of Carl"
@@ -233,6 +234,88 @@ class TTSFogBit:
                         bit.y2 = max(bit.y2, y)
                 output.append(bit)
         return output
+
+
+def dungeon_to_tts_blob(df, name, pdf_filename=None):
+    blob = copy.deepcopy(tts_reference_save_json())
+    blob["SaveName"] = name
+    blob["GameMode"] = name
+    blob["ObjectStates"] = []
+    for tile in df.tile_iter():
+        for obj in tile.tts_objects(df):
+            df.tts_xz(tile.x, tile.y, obj)
+            blob["ObjectStates"].append(obj)
+    for light_source in df.light_sources:
+        blob["ObjectStates"].append(light_source.tts_object(df))
+    for monster in df.monsters:
+        obj = monster.tts_object(df)
+        blob["ObjectStates"].append(obj)
+    for roomix, room in enumerate(df.rooms):
+        for feature in room.special_features(df):
+            blob["ObjectStates"] += feature.tts_objects(df)
+        blob["ObjectStates"].append(room.tts_notecard(df))
+    for corridorix, corridor in enumerate(df.corridors):
+        if corridor.is_nontrivial(df):
+            blob["ObjectStates"].append(corridor.tts_notecard(df))
+    for trap in df.traps:
+        if isinstance(trap, lib.trap.RoomTrap) or isinstance(
+            trap, lib.trap.CorridorTrap
+        ):
+            continue
+        obj = reference_object("Reference Notecard")
+        desc = trap.description()
+        obj["Nickname"] = desc.split("\n")[0]
+        obj["Description"] = "\n".join(desc.split("\n")[1:])
+        obj["Transform"]["posY"] = 4.0
+        obj["Locked"] = True
+        df.tts_xz(trap.x, trap.y, obj)
+        blob["ObjectStates"].append(obj)
+    if df.config.tts_fog_of_war:
+        fog = tts_fog(scaleX=df.width + 2.0, scaleZ=df.height + 2.0)
+        blob["ObjectStates"].append(fog)
+    if df.config.tts_hidden_zones:
+        fog_bits = {}  # TTSFogBit.coord_tuple():TTSFogBit
+        tmp_fog_bit_list = []
+        for roomix, room in enumerate(df.rooms):
+            for bit in room.tts_fog_bits():
+                tmp_fog_bit_list.append(bit)
+        for corridorix, corridor in enumerate(df.corridors):
+            for bit in corridor.tts_fog_bits(df):
+                tmp_fog_bit_list.append(bit)
+        for x in range(df.width):
+            for y in range(df.height):
+                tmp_fog_bit_list.append(TTSFogBit(x, y))
+        for bit in tmp_fog_bit_list:
+            coords = bit.coord_tuple()
+            other_bit = fog_bits.get(coords)
+            if other_bit:
+                bit.merge_from_other(other_bit)
+            fog_bits[coords] = bit
+        merged_bits = TTSFogBit.merge_fog_bits(fog_bits.values())
+        for bit in merged_bits:
+            blob["ObjectStates"].append(bit.tts_fog(df))
+    # Informational PDF
+    if pdf_filename:
+        obj = reference_object("Reference PDF Document")
+        obj["Nickname"] = "Dungeon floor information"
+        obj["Description"] = ""
+        obj["Transform"]["posY"] = 2.0
+        obj["Locked"] = False
+        obj["CustomPDF"]["PDFUrl"] = f"file:///{pdf_filename}"
+        df.tts_xz(0, -5, obj)
+        blob["ObjectStates"].append(obj)
+    # DM's (hopefully) helpful hidden zone
+    dm_fog = tts_fog(scaleX=df.width, scaleZ=20.0, hidden_zone=True)
+    df.tts_xz(df.width / 2.0 - 0.5, -10.5, dm_fog)
+    blob["ObjectStates"].append(dm_fog)
+    # Add tags for easy mass deletion.
+    for o1 in blob["ObjectStates"]:
+        for o in [o1] + list(o1.get("States", {}).values()):
+            tags = set(o.get("Tags", []))
+            tags.add(TTS_SPAWNED_TAG)
+            tags.add(f"{TTS_SPAWNED_TAG} '{name}'")
+            o["Tags"] = list(tags)
+    return blob
 
 
 def save_tts_blob(blob):
