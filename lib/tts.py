@@ -5,12 +5,13 @@ import math
 import os
 import pathlib
 import random
+import re
 import sys
 
 import lib.trap
 from lib.utils import COC_ROOT_DIR
 
-TTS_SPAWNED_TAG = "Terrain Object Spawned by Caverns of Carl"
+TTS_SPAWNED_TAG = "Spawned by Caverns of Carl"
 
 
 def tts_default_save_location():
@@ -236,6 +237,52 @@ class TTSFogBit:
         return output
 
 
+def recurse_object(obj):
+    if obj is None:
+        return
+    yield obj
+    for o in obj.get("States", {}).values():
+        for o2 in recurse_object(o):
+            yield o2
+    for o in obj.get("ChildObjects", []):
+        for o2 in recurse_object(o):
+            yield o2
+
+
+_LUA_SCRIPT = """
+function changeModelWoundCount(mod, target)
+    local name = target.getName()
+    local _,_, current, total = name:find("([0-9]+)/([0-9]+)")
+    local newName
+
+    if current == nil then return end
+
+    current = math.max(tonumber(current) + mod, 0)
+    total = tonumber(total)
+    newName = string.gsub(name, "([0-9]+)/([0-9]+)", current.."/"..total, 1)
+    
+    target.setName(newName)
+end
+
+
+function onScriptingButtonDown(index, playerColor)
+    if index ~= 2 and index ~= 3 then return end
+
+    local player = Player[playerColor]
+    local hoveredObject = player.getHoverObject()
+
+    if not hoveredObject.hasTag("REPLACE ME") then return end
+    
+    if index == 2 then
+      changeModelWoundCount(-1, hoveredObject)
+    end
+    if index == 3 then
+      changeModelWoundCount(1, hoveredObject)
+    end
+end
+""".strip()
+
+
 def dungeon_to_tts_blob(df, name, pdf_filename=None):
     blob = copy.deepcopy(tts_reference_save_json())
     blob["SaveName"] = name
@@ -302,19 +349,35 @@ def dungeon_to_tts_blob(df, name, pdf_filename=None):
         obj["Transform"]["posY"] = 2.0
         obj["Locked"] = False
         obj["CustomPDF"]["PDFUrl"] = f"file:///{pdf_filename}"
-        df.tts_xz(0, -5, obj)
+        df.tts_xz(10, -5, obj)
         blob["ObjectStates"].append(obj)
     # DM's (hopefully) helpful hidden zone
     dm_fog = tts_fog(scaleX=df.width, scaleZ=20.0, hidden_zone=True)
     df.tts_xz(df.width / 2.0 - 0.5, -10.5, dm_fog)
     blob["ObjectStates"].append(dm_fog)
+    # Clear scripts if any.
+    name_tag = f"{TTS_SPAWNED_TAG} '{name}'"
+    for _obj in blob["ObjectStates"]:
+        for obj in recurse_object(_obj):
+            obj["LuaScript"] = ""
+            obj["LuaScriptState"] = ""
+            obj["XmlUI"] = ""
+    name_tag = f"{TTS_SPAWNED_TAG} '{name}'"
+    # Add HP script carrier.
+    script_carrier = reference_object("Reference Notecard")
+    script_carrier["LuaScript"] = re.sub("REPLACE ME", name_tag, _LUA_SCRIPT)
+    script_carrier["Nickname"] = "Caverns of Carl Script Carrier"
+    script_carrier["Description"] = f"Associated with dungeon '{name}'"
+    script_carrier["Transform"]["posY"] = 2.0
+    df.tts_xz(5, -5, script_carrier)
+    blob["ObjectStates"].append(script_carrier)
     # Add tags for easy mass deletion.
-    for o1 in blob["ObjectStates"]:
-        for o in [o1] + list(o1.get("States", {}).values()):
-            tags = set(o.get("Tags", []))
+    for _obj in blob["ObjectStates"]:
+        for obj in recurse_object(_obj):
+            tags = set(obj.get("Tags", []))
             tags.add(TTS_SPAWNED_TAG)
-            tags.add(f"{TTS_SPAWNED_TAG} '{name}'")
-            o["Tags"] = list(tags)
+            tags.add(name_tag)
+            obj["Tags"] = list(tags)
     return blob
 
 
