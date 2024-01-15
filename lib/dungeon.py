@@ -1,10 +1,6 @@
 import collections
-import copy
-import datetime
-import json
 import math
 import random
-
 
 import lib.config
 from lib.corridors import Corridor, CavernousCorridor, Door
@@ -27,13 +23,6 @@ from lib.room import Room, RectRoom, CavernousRoom
 import lib.features
 import lib.trap
 from lib.treasure import get_treasure_library
-import lib.tts as tts
-from lib.tts import (
-    TTSFogBit,
-    TTS_SPAWNED_TAG,
-    tts_reference_save_json,
-    tts_fog,
-)
 from lib.utils import bfs, choice, dfs, eval_dice, neighbor_coords, samples
 
 
