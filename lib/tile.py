@@ -349,13 +349,7 @@ class BookshelfTile(ChestTile):
                 if m:
                     title = m.groups()[0].strip()
                     book = treasure.book_library()[title]
-                    skin = chr(random.randrange(ord("A"), ord("K")))
-                    if "Humor" in book.get("Keywords", []):
-                        skin = "Comedy"
-                    item = tts.reference_object("Reference Book " + skin)
-                    item["Nickname"] = book["Title"] + " by " + book["Author"]
-                    item["Description"] = book["Description"] + "\n\n" + book["Synopsis"] + "\n\n[i]" + book["Excerpt"] + "[/i]\n\n" + book["AuthorBackground"]
-                    opened["ContainedObjects"].append(item)
+                    opened["ContainedObjects"].append(book.tts_object())
 
         self._update_texture_style(obj, df)
         self._tts_light_mul(obj)

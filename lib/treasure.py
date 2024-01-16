@@ -4,6 +4,7 @@ import os
 import random
 import re
 
+import lib.tts as tts
 from lib.utils import COC_ROOT_DIR, eval_dice
 
 
@@ -22,15 +23,64 @@ def book_library():
     books = {}
     with open(filename) as f:
         blob = json.load(f)
-        for book in blob["books"]:
-            book["Keywords"] = book.get("Keywords", [])
-            books[book["Title"]] = book
+        for book_obj in blob["books"]:
+            book = Book(book_obj)
+            if not book.title:
+                continue
+            books[book.title] = book
     return books
 
 
 @functools.cache
 def book_title_list():
     return sorted(book_library().keys())
+
+
+@functools.cache
+def book_list():
+    return [book_library()[k] for k in sorted(book_library().keys())]
+
+
+class Book:
+    def __init__(self, obj):
+        self.title = obj.get("Title")
+        self.author = obj.get("Author")
+        self.description = obj.get("Description")
+        self.synopsis = obj.get("Synopsis")
+        self.excerpt = obj.get("Excerpt")
+        self.author_background = obj.get("AuthorBackground")
+        self.keywords = set(obj.get("Keywords") or [])
+
+    def tts_nickname(self):
+        s = f"[u]{self.title}[/u]"
+        if self.author:
+            s += f" by {self.author}"
+        return s
+
+    def tts_description(self):
+        o = []
+        if self.description:
+            o.append(self.description)
+        if self.synopsis:
+            o.append(self.synopsis)
+        if self.excerpt:
+            o.append("[i]" + self.excerpt + "[/i]")
+        if self.author_background:
+            o.append(self.author_background)
+        return "\n\n".join(o)
+
+    def tts_reference_nickname(self):
+        if "Humor" in self.keywords:
+            skin = "Comedy"
+        else:
+            skin = chr(random.randrange(ord("A"), ord("K")))
+        return "Reference Book " + skin
+
+    def tts_object(self):
+        item = tts.reference_object(self.tts_reference_nickname())
+        item["Nickname"] = self.tts_nickname()
+        item["Description"] = self.tts_description()
+        return item
 
 
 class TreasureLibrary:
