@@ -109,7 +109,9 @@ class Blacksmith(SpecialFeature):
         smith = tts.reference_object("Blacksmith on 1inch")
         smith["LuaScript"] = monster["LuaScript"]
         smith["Nickname"] = "Blacksmith Andrus of Eastora"
+        smith["Locked"] = False
         anvil = tts.reference_object("Blacksmith's Anvil")
+        anvil["Locked"] = True
         if sx > ax:
             smith["Transform"]["rotY"] += 90.0
             anvil["Transform"]["rotY"] += 90.0

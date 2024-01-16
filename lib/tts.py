@@ -1,5 +1,6 @@
 import collections
 import copy
+import functools
 import json
 import math
 import os
@@ -39,26 +40,59 @@ def tts_default_save_location():
         return f"couldn't match platform {sys.platform}, so don't know save game location"
 
 
-_tts_reference_save_json_memoized = None
 _seen_tts_guids = set()
 _tts_reference_fog = None
 _tts_reference_hidden_zone = None
 
 
-def tts_reference_save_json():
-    global _tts_reference_save_json_memoized
-    if not _tts_reference_save_json_memoized:
-        filename = os.path.join(
-            COC_ROOT_DIR, "reference_info", "tts", "reference_save_file.json"
-        )
-        with open(filename) as f:
-            _tts_reference_save_json_memoized = json.load(f)
-            refresh_tts_guids(_tts_reference_save_json_memoized)
-    return _tts_reference_save_json_memoized
+def recurse_object(obj):
+    if obj is None:
+        return
+    yield obj
+    for o in obj.get("States", {}).values():
+        for o2 in recurse_object(o):
+            yield o2
+    for o in obj.get("ChildObjects", []):
+        for o2 in recurse_object(o):
+            yield o2
+    for o in obj.get("ContainedObjects", []):
+        for o2 in recurse_object(o):
+            yield o2
 
 
-def tts_reference_object_nicknames():
-    return [o["Nickname"] for o in tts_reference_save_json()["ObjectStates"]]
+def recurse_bag(obj):
+    if obj is None:
+        return
+    yield obj
+    for o in obj.get("ContainedObjects", []):
+        for o2 in recurse_bag(o):
+            yield o2
+
+
+@functools.cache
+def reference_save_json():
+    filename = os.path.join(
+        COC_ROOT_DIR, "reference_info", "tts", "reference_save_file.json"
+    )
+    with open(filename) as f:
+        blob = json.load(f)
+    refresh_tts_guids(blob)
+    return blob
+
+
+@functools.cache
+def reference_objects():
+    d = {}
+    for obj in reference_save_json()["ObjectStates"]:
+        name = obj.get("Nickname")
+        if not name:
+            continue
+        d[name] = obj
+        if name.startswith("Reference Bag"):
+            for o2 in recurse_bag(obj):
+                if o2.get("Nickname"):
+                    d[o2["Nickname"]] = o2
+    return d
 
 
 def new_tts_guid():
@@ -85,18 +119,19 @@ def refresh_tts_guids(d):
 
 
 def reference_object(nickname):
-    for o in tts_reference_save_json()["ObjectStates"]:
-        if o["Nickname"] == nickname:
-            return copy.deepcopy(o)
-    raise KeyError(
-        f"Could not find nickname '{nickname}' in tts reference game"
-    )
+    if nickname not in reference_objects():
+        raise KeyError(
+            f"Could not find nickname '{nickname}' in tts reference game"
+        )
+    o = copy.deepcopy(reference_objects()[nickname])
+    refresh_tts_guids(o)
+    return o
 
 
 def tts_fog(posX=0.0, posZ=0.0, scaleX=1.0, scaleZ=1.0, hidden_zone=False):
     global _tts_reference_fog, _tts_reference_hidden_zone
     if not _tts_reference_fog:
-        ref_objs = tts_reference_save_json()["ObjectStates"]
+        ref_objs = reference_save_json()["ObjectStates"]
         _tts_reference_fog = copy.deepcopy(
             [o for o in ref_objs if o["Name"] == "FogOfWar"][0]
         )
@@ -113,7 +148,7 @@ def tts_fog(posX=0.0, posZ=0.0, scaleX=1.0, scaleZ=1.0, hidden_zone=False):
         }
         _tts_reference_fog["FogOfWar"]["Height"] = 1.0
     if not _tts_reference_hidden_zone:
-        ref_objs = tts_reference_save_json()["ObjectStates"]
+        ref_objs = reference_save_json()["ObjectStates"]
         _tts_reference_hidden_zone = copy.deepcopy(
             [o for o in ref_objs if o["Name"] == "FogOfWarTrigger"][0]
         )
@@ -237,18 +272,6 @@ class TTSFogBit:
         return output
 
 
-def recurse_object(obj):
-    if obj is None:
-        return
-    yield obj
-    for o in obj.get("States", {}).values():
-        for o2 in recurse_object(o):
-            yield o2
-    for o in obj.get("ChildObjects", []):
-        for o2 in recurse_object(o):
-            yield o2
-
-
 _LUA_SCRIPT = """
 function changeModelWoundCount(mod, target)
     local name = target.getName()
@@ -284,7 +307,7 @@ end
 
 
 def dungeon_to_tts_blob(df, name, pdf_filename=None):
-    blob = copy.deepcopy(tts_reference_save_json())
+    blob = copy.deepcopy(reference_save_json())
     blob["SaveName"] = name
     blob["GameMode"] = name
     blob["ObjectStates"] = []
@@ -369,6 +392,7 @@ def dungeon_to_tts_blob(df, name, pdf_filename=None):
     script_carrier["Nickname"] = "Caverns of Carl Script Carrier"
     script_carrier["Description"] = f"Associated with dungeon '{name}'"
     script_carrier["Transform"]["posY"] = 2.0
+    script_carrier["Locked"] = False
     df.tts_xz(5, -5, script_carrier)
     blob["ObjectStates"].append(script_carrier)
     # Add tags for easy mass deletion.
