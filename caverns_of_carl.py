@@ -18,7 +18,7 @@ Vague plan of cool things
 * UI in tkinter of some sort (done)
 * monster encounter constraint: Frontline (done)
 * cavernous rooms (done)
-* room lighting, denoted with floor tile tint & description
+* room lighting, denoted with floor tile tint (done)
 * ladder configurable bfs distance check (done)
 * blacksmith npc (done)
 * PDF output, and have this linked in the TTS game in the DM hidden zone (done)
