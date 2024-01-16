@@ -21,18 +21,21 @@ Vague plan of cool things
 * room lighting, denoted with floor tile tint & description
 * ladder configurable bfs distance check (done)
 * blacksmith npc (done)
+* PDF output, and have this linked in the TTS game in the DM hidden zone (done)
 * cavernous corridors should have some erosion, and not be straight
 * DM toolpanel in TTS, including button to delete everything. Move health increment/decrement to this singleton object
 * Prepared wandering monster encounters in the DM hidden zone (also relevant for traps that summon)
-* More NPCs or special rooms
+* More NPCs
+* More special rooms, such as with altars
 * GPT API integration?
-* PDF output, and have this linked in the TTS game in the DM hidden zone.
 * locked doors and keys?
 * secret doors?
 * themes and tilesets?
 * rivers?
-* altars?
 * cosmetic doodads like wall sconces and bloodstains
+* multiple biomes, e.g. caverns with kobolds in the northwest, dungeon with something else in the southeast.
+* Map side exits
+* Maze levels (if this is a thing that can interact with biomes, a maze biome would probably want to be mostly rectangular for simplicity's sake)
 
 
 TTS Dungeon or monster resources used:
