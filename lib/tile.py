@@ -1,6 +1,7 @@
 import random
+import re
 
-
+import lib.treasure as treasure
 import lib.tts as tts
 
 
@@ -317,12 +318,45 @@ class BookshelfTile(ChestTile):
         return "[1;93mB"
 
     def tts_objects(self, df):
+        scroll_re = r"^[sS]pell [sS]croll \((\d.. [lL]evel|cantrip)\).*$"
+        book_re = r"^[bB]ook: (.+)$"
         obj = tts.reference_object("Bookshelf Tile")
         obj["Transform"]["rotY"] += rotY_away_from_wall(df, self.x, self.y)
         obj["Nickname"] = "Bookshelf"
         obj["States"]["2"]["Nickname"] = "Examined Bookshelf"
         if self.contents:
-            obj["States"]["2"]["Description"] = "Contents:\n" + self.contents
+            opened = obj["States"]["2"]
+            opened["Description"] = "Contents:\n" + self.contents
+            opened["ContainedObjects"] = opened.get("ContainedObjects", [])
+            for line in self.contents.split("\n"):
+                m = re.match(scroll_re, line)
+                if m:
+                    if m.groups()[0] == "cantrip":
+                        scroll_level = 0
+                    else:
+                        scroll_level = int(m.groups()[0][0])
+                    if scroll_level < 3:
+                        scroll_reference = "Reference Scroll Low"
+                    elif scroll_level < 6:
+                        scroll_reference = "Reference Scroll Medium"
+                    else:
+                        scroll_reference = "Reference Scroll High"
+                    item = tts.reference_object(scroll_reference)
+                    item["Nickname"] = line
+                    item["Description"] = ""
+                    opened["ContainedObjects"].append(item)
+                m = re.match(book_re, line)
+                if m:
+                    title = m.groups()[0].strip()
+                    book = treasure.book_library()[title]
+                    skin = chr(random.randrange(ord("A"), ord("K")))
+                    if "Humor" in book.get("Keywords", []):
+                        skin = "Comedy"
+                    item = tts.reference_object("Reference Book " + skin)
+                    item["Nickname"] = book["Title"] + " by " + book["Author"]
+                    item["Description"] = book["Description"] + "\n\n" + book["Synopsis"] + "\n\n[i]" + book["Excerpt"] + "[/i]\n\n" + book["AuthorBackground"]
+                    opened["ContainedObjects"].append(item)
+
         self._update_texture_style(obj, df)
         self._tts_light_mul(obj)
         return [obj]

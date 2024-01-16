@@ -1,3 +1,4 @@
+import functools
 import json
 import os
 import random
@@ -5,15 +6,31 @@ import re
 
 from lib.utils import COC_ROOT_DIR, eval_dice
 
-_treasure_library_cache = {}
 
-
+@functools.cache
 def get_treasure_library(name):
-    if name not in _treasure_library_cache:
-        tl = TreasureLibrary(name=name)
-        tl.load()
-        _treasure_library_cache[name] = tl
-    return _treasure_library_cache[name]
+    tl = TreasureLibrary(name=name)
+    tl.load()
+    return tl
+
+
+@functools.cache
+def book_library():
+    filename = os.path.join(
+        COC_ROOT_DIR, "reference_info", "misc", "books.json"
+    )
+    books = {}
+    with open(filename) as f:
+        blob = json.load(f)
+        for book in blob["books"]:
+            book["Keywords"] = book.get("Keywords", [])
+            books[book["Title"]] = book
+    return books
+
+
+@functools.cache
+def book_title_list():
+    return sorted(book_library().keys())
 
 
 class TreasureLibrary:
@@ -103,6 +120,12 @@ class TreasureLibrary:
         contents = [x for x in contents if x]
         max_size = eval_dice("2d4")
         contents = contents[-max_size:]
+        for _ in range(eval_dice("1d4-1")):
+            title = random.choice(book_title_list())
+            line = f"Book: {title}"
+            if line not in contents_seen:
+                contents.append(line)
+                contents_seen.add(line)
         return contents
 
     def roll_on_table(self, table_name, d=100):
