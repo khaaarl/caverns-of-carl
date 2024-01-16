@@ -63,10 +63,16 @@ def recurse_object(obj):
 def recurse_bag(obj):
     if obj is None:
         return
+    elif isinstance(obj, list):
+        for o in obj:
+            for o2 in recurse_bag(o):
+                yield o2
+        return
     yield obj
-    for o in obj.get("ContainedObjects", []):
-        for o2 in recurse_bag(o):
-            yield o2
+    l = list(obj.get("ContainedObjects", []))
+    l.sort(key=lambda x: x.get("Nickname") or chr(255) * 30)
+    for o in recurse_bag(l):
+        yield o
 
 
 @functools.cache
@@ -83,15 +89,18 @@ def reference_save_json():
 @functools.cache
 def reference_objects():
     d = {}
-    for obj in reference_save_json()["ObjectStates"]:
+    l = list(reference_save_json()["ObjectStates"])
+    l.sort(key=lambda x: x.get("Nickname") or chr(255) * 30)
+    for obj in l:
         name = obj.get("Nickname")
-        if not name:
-            continue
-        d[name] = obj
-        if name.startswith("Reference Bag"):
+        if name and name not in d:
+            d[name] = obj
+    for obj in l:
+        if obj.get("Nickname", "").startswith("Reference Bag"):
             for o2 in recurse_bag(obj):
-                if o2.get("Nickname"):
-                    d[o2["Nickname"]] = o2
+                name = o2.get("Nickname")
+                if name and name not in d:
+                    d[name] = o2
     return d
 
 
