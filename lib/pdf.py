@@ -249,6 +249,8 @@ def produce_pdf(df, name):
         if not corridor.is_nontrivial(df):
             continue
         docs.append(corridor.description(df, verbose=True))
+    for npc in sorted(df.npcs, key=lambda x: x.name):
+        docs.append(npc.doc())
     draw_map_page(canvas, df, 1)
     accumulated_bookmark_names = set()
     for page in docs_to_pages(docs, 2):

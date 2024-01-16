@@ -119,6 +119,11 @@ def run_ui():
                 text_output.append(f"***{doc.flat_header()}***")
                 text_output.append(doc.flat_body(separator="\n\n"))
                 text_output.append("")
+            for npc in sorted(df.npcs, key=lambda x: x.name):
+                doc = npc.doc()
+                text_output.append(f"***{doc.flat_header()}***")
+                text_output.append(doc.flat_body(separator="\n\n"))
+                text_output.append("")
         except Exception as e:
             err = traceback.format_exc()
         if err:

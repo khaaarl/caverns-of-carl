@@ -7,6 +7,7 @@ from lib.corridors import Corridor, CavernousCorridor, Door
 import lib.lights
 import lib.monster
 from lib.monster import get_monster_library, Monster
+import lib.npcs
 from lib.tile import (
     BookshelfTile,
     ChestTile,
@@ -59,6 +60,7 @@ class DungeonFloor:
         self.monsters = []
         self.traps = []
         self.light_sources = []
+        self.npcs = []
         self.monster_locations = {}  # (x, y) -> monster
         # a graph of rooms' neighbors, from room index to set of
         # neighbors' room indices.
@@ -256,6 +258,7 @@ def generate_random_dungeon(config=None, errors=None):
             place_traps_in_dungeon(df)
             place_lights_in_dungeon(df)
             stylize_tiles_in_dungeon(df)
+            add_npcs_to_dungeon(df)
         except RetriableDungeonographyException as err:
             errors.append(err)
         else:
@@ -932,3 +935,9 @@ def stylize_tiles_in_dungeon(df):
             if tile.tile_style is not None:
                 tile.is_interior = True
                 unstyled.remove((x, y))
+
+def add_npcs_to_dungeon(df):
+    num_npcs = eval_dice(df.config.num_misc_NPCs)
+    npc_list = list(lib.npcs.npc_library().values())
+    num_npcs = min(num_npcs, len(npc_list))
+    df.npcs += samples(npc_list, num_npcs)

@@ -329,6 +329,13 @@ def dungeon_to_tts_blob(df, name, pdf_filename=None):
     for monster in df.monsters:
         obj = monster.tts_object(df)
         blob["ObjectStates"].append(obj)
+    for ix, npc in enumerate(df.npcs):
+        x, y = npc.x, npc.y
+        if True or x is None or y is None:
+            y = -3
+            x = int(df.width/2) + ix
+        obj = npc.tts_object(df, x, y)
+        blob["ObjectStates"].append(obj)
     for roomix, room in enumerate(df.rooms):
         for feature in room.special_features(df):
             blob["ObjectStates"] += feature.tts_objects(df)

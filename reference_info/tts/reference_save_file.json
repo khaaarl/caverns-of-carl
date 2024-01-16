@@ -1,7 +1,7 @@
 {
   "SaveName": "Minimalist Test Game",
-  "EpochTime": 1705363549,
-  "Date": "1/15/2024 7:05:49 PM",
+  "EpochTime": 1705427723,
+  "Date": "1/16/2024 12:55:23 PM",
   "VersionNumber": "v13.2.2",
   "GameMode": "Minimalist Test Game",
   "GameType": "Game",
@@ -565,7 +565,7 @@
         "posZ": -3.499999,
         "rotX": -1.47390156E-05,
         "rotY": 179.95462,
-        "rotZ": -5.59158179E-05,
+        "rotZ": -5.59157925E-05,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -1004,7 +1004,7 @@
       "GUID": "da74a9",
       "Name": "3DText",
       "Transform": {
-        "posX": 34.53806,
+        "posX": 34.53809,
         "posY": 0.961123765,
         "posZ": -21.3240623,
         "rotX": 90.0,
@@ -1114,7 +1114,7 @@
         "posZ": -17.95668,
         "rotX": 8.16436E-05,
         "rotY": 180.027237,
-        "rotZ": -2.60745255E-05,
+        "rotZ": -2.60745328E-05,
         "scaleX": 1.99723673,
         "scaleY": 1.0,
         "scaleZ": 1.99723673
@@ -1169,7 +1169,7 @@
         "posX": -17.95164,
         "posY": 0.9600002,
         "posZ": -17.9591675,
-        "rotX": 2.82149517E-06,
+        "rotX": 2.82149676E-06,
         "rotY": 180.032745,
         "rotZ": 0.000171528183,
         "scaleX": 1.99723673,
@@ -1853,7 +1853,7 @@
         "posX": -21.9438858,
         "posY": 0.9600043,
         "posZ": -9.96589851,
-        "rotX": -0.0009577893,
+        "rotX": -0.000957788841,
         "rotY": 179.911163,
         "rotZ": 0.000290249183,
         "scaleX": 1.99723673,
@@ -1910,7 +1910,7 @@
         "posX": -25.93852,
         "posY": 0.9600141,
         "posZ": -9.965653,
-        "rotX": -0.0006271647,
+        "rotX": -0.0006271652,
         "rotY": 179.936951,
         "rotZ": 0.000171475578,
         "scaleX": 1.99723673,
@@ -1967,7 +1967,7 @@
         "posX": -29.9340458,
         "posY": 0.9600015,
         "posZ": -9.955429,
-        "rotX": 1.89754337E-05,
+        "rotX": 1.89754464E-05,
         "rotY": 179.905609,
         "rotZ": -6.80506055E-05,
         "scaleX": 1.99723673,
@@ -2081,7 +2081,7 @@
         "posX": -25.9458942,
         "posY": 0.9600016,
         "posZ": -21.9521885,
-        "rotX": 6.033691E-05,
+        "rotX": 6.03369372E-05,
         "rotY": 180.102676,
         "rotZ": 8.323856E-06,
         "scaleX": 1.99723673,
@@ -2140,7 +2140,7 @@
         "posZ": -21.9491158,
         "rotX": 0.0006297373,
         "rotY": 180.1745,
-        "rotZ": -0.0008715195,
+        "rotZ": -0.000871519733,
         "scaleX": 1.99723673,
         "scaleY": 1.0,
         "scaleZ": 1.99723673
@@ -2197,7 +2197,7 @@
         "posZ": -21.9561386,
         "rotX": 0.2997707,
         "rotY": 180.126,
-        "rotZ": 0.0009707266,
+        "rotZ": 0.000970727,
         "scaleX": 1.99723673,
         "scaleY": 1.0,
         "scaleZ": 1.99723673
@@ -2478,7 +2478,7 @@
         "posX": 15.50706,
         "posY": 0.774966061,
         "posZ": 11.5140619,
-        "rotX": -2.26881639E-05,
+        "rotX": -2.268816E-05,
         "rotY": 359.9652,
         "rotZ": 6.405504E-07,
         "scaleX": 1.0,
@@ -2496,7 +2496,7 @@
       "ColorDiffuse": {
         "r": 1.0,
         "g": 0.557261169,
-        "b": 0.365737766
+        "b": 0.3657377
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -3552,7 +3552,7 @@
         "posZ": 17.9690056,
         "rotX": 8.457469E-06,
         "rotY": 359.280029,
-        "rotZ": -5.9342824E-07,
+        "rotZ": -5.93428467E-07,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -3566,8 +3566,8 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.309887618,
-        "g": 0.2544329,
+        "r": 0.309887558,
+        "g": 0.254432827,
         "b": 1.0
       },
       "LayoutGroupSortIndex": 0,
@@ -4999,7 +4999,7 @@
       "ColorDiffuse": {
         "r": 1.0,
         "g": 0.557261169,
-        "b": 0.3657378
+        "b": 0.365737736
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -5554,7 +5554,7 @@
       },
       "ColorDiffuse": {
         "r": 1.0,
-        "g": 0.0595081672,
+        "g": 0.0595081225,
         "b": 0.0
       },
       "LayoutGroupSortIndex": 0,
@@ -16570,9 +16570,9 @@
         "posX": 19.5000076,
         "posY": 1.95999885,
         "posZ": -9.500004,
-        "rotX": -4.670939E-06,
+        "rotX": -4.6709406E-06,
         "rotY": 359.9843,
-        "rotZ": -1.51948871E-06,
+        "rotZ": -1.51948916E-06,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -16803,9 +16803,9 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.2980386,
-        "g": 0.2980386,
-        "b": 0.2980386
+        "r": 0.298038542,
+        "g": 0.298038542,
+        "b": 0.298038542
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -16887,7 +16887,7 @@
         "posX": -4.49999857,
         "posY": 1.99999964,
         "posZ": -30.5,
-        "rotX": -8.462337E-06,
+        "rotX": -8.462341E-06,
         "rotY": 180.029953,
         "rotZ": -1.39607664E-05,
         "scaleX": 0.450000525,
@@ -17024,8 +17024,8 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.363948,
-        "g": 0.379634261,
+        "r": 0.363947928,
+        "g": 0.3796342,
         "b": 1.0
       },
       "LayoutGroupSortIndex": 0,
@@ -23967,7 +23967,7 @@
       "ColorDiffuse": {
         "r": 0.6862746,
         "g": 0.6827757,
-        "b": 0.2156826
+        "b": 0.215682536
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -28673,7 +28673,7 @@
         "posX": 5.99999475,
         "posY": 2.002863,
         "posZ": -31.9999981,
-        "rotX": 3.9778908E-07,
+        "rotX": 3.977892E-07,
         "rotY": 359.973053,
         "rotZ": -3.65419965E-07,
         "scaleX": 1.0,
@@ -28744,9 +28744,9 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.383698851,
-        "g": 0.2542294,
-        "b": 0.395468831
+        "r": 0.383698732,
+        "g": 0.254229277,
+        "b": 0.3954687
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -28785,7 +28785,7 @@
         "posZ": -30.9999962,
         "rotX": -9.627958E-07,
         "rotY": 179.975021,
-        "rotZ": -2.66921745E-07,
+        "rotZ": -2.66921859E-07,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -28893,9 +28893,9 @@
         "posX": -3.00000787,
         "posY": 2.0,
         "posZ": -32.9999962,
-        "rotX": -2.77976E-07,
+        "rotX": -2.779761E-07,
         "rotY": 180.025467,
-        "rotZ": 9.553357E-08,
+        "rotZ": 9.55336E-08,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -29054,7 +29054,7 @@
         "posZ": -27.5,
         "rotX": -4.33051177E-08,
         "rotY": 30.0005684,
-        "rotZ": -3.760701E-08,
+        "rotZ": -3.76070268E-08,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -29295,7 +29295,7 @@
         "posZ": -27.4999943,
         "rotX": -5.705093E-07,
         "rotY": 359.978271,
-        "rotZ": 2.26415935E-07,
+        "rotZ": 2.26416034E-07,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -29415,8 +29415,8 @@
         "posX": -1.50000167,
         "posY": 2.0,
         "posZ": -27.4999943,
-        "rotX": -4.06594E-06,
-        "rotY": 0.0305634122,
+        "rotX": -4.06594154E-06,
+        "rotY": 0.0305634253,
         "rotZ": 5.834261E-07,
         "scaleX": 1.0,
         "scaleY": 1.0,
@@ -30238,9 +30238,9 @@
         "posX": 17.5000019,
         "posY": 1.844447,
         "posZ": -31.4999981,
-        "rotX": 0.000103478778,
+        "rotX": 0.000103478807,
         "rotY": 179.924454,
-        "rotZ": -5.198376E-05,
+        "rotZ": -5.19837376E-05,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -30295,7 +30295,7 @@
         "posZ": -31.5,
         "rotX": -1.76038952E-06,
         "rotY": 359.972443,
-        "rotZ": -1.519222E-08,
+        "rotZ": -1.51922279E-08,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -30348,9 +30348,9 @@
         "posX": 11.5,
         "posY": 2.00049829,
         "posZ": -48.5,
-        "rotX": -3.08081253E-05,
+        "rotX": -3.080814E-05,
         "rotY": 14.9969234,
-        "rotZ": -1.232658E-05,
+        "rotZ": -1.23265827E-05,
         "scaleX": 0.2,
         "scaleY": 0.2,
         "scaleZ": 0.2
@@ -30401,9 +30401,9 @@
         "posX": 56.39011,
         "posY": 2.07,
         "posZ": -89.49536,
-        "rotX": 1.81274817E-08,
-        "rotY": 3.40285133E-08,
-        "rotZ": 1.3327714E-07,
+        "rotX": 1.0965109E-07,
+        "rotY": 3.7639488E-08,
+        "rotZ": -3.82364256E-08,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -32200,7 +32200,7 @@
         "posX": 36.0,
         "posY": 2.01437664,
         "posZ": -35.0,
-        "rotX": 2.19179256E-07,
+        "rotX": 2.19179356E-07,
         "rotY": 359.968,
         "rotZ": 2.02966547E-07,
         "scaleX": 0.5,
@@ -32724,9 +32724,9 @@
         "posX": 41.0,
         "posY": 2.3217032,
         "posZ": -34.0,
-        "rotX": 4.444556E-07,
+        "rotX": 4.444558E-07,
         "rotY": 178.220215,
-        "rotZ": -1.3889811E-06,
+        "rotZ": -1.38898156E-06,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -32740,7 +32740,7 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.184013456,
+        "r": 0.184013337,
         "g": 0.0,
         "b": 1.0
       },
@@ -32779,9 +32779,9 @@
         "posX": 39.9913673,
         "posY": 1.75223482,
         "posZ": -32.9968452,
-        "rotX": -3.1073962E-06,
+        "rotX": -3.107397E-06,
         "rotY": 176.849716,
-        "rotZ": -7.58433225E-06,
+        "rotZ": -7.58433544E-06,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -32797,7 +32797,7 @@
       "ColorDiffuse": {
         "r": 0.926762342,
         "g": 1.0,
-        "b": 0.3224804
+        "b": 0.322480261
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -32971,7 +32971,7 @@
       },
       "ColorDiffuse": {
         "r": 0.914634,
-        "g": 0.339402318,
+        "g": 0.339402258,
         "b": 0.7050705
       },
       "LayoutGroupSortIndex": 0,
@@ -33516,7 +33516,7 @@
         "posX": 35.0,
         "posY": 2.01437664,
         "posZ": -34.0,
-        "rotX": -1.5324448E-06,
+        "rotX": -1.53244525E-06,
         "rotY": 359.968,
         "rotZ": 1.89147812E-07,
         "scaleX": 0.5,
@@ -33850,7 +33850,7 @@
       },
       "ColorDiffuse": {
         "r": 0.627,
-        "g": 0.124999769,
+        "g": 0.124999695,
         "b": 0.941
       },
       "LayoutGroupSortIndex": 0,
@@ -43853,6 +43853,1231 @@
               "FresnelStrength": 0.0
             },
             "CastShadows": true
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        }
+      ]
+    },
+    {
+      "GUID": "dd6f96",
+      "Name": "Bag",
+      "Transform": {
+        "posX": -26.5000134,
+        "posY": 0.8749768,
+        "posZ": -9.500009,
+        "rotX": 0.000635275734,
+        "rotY": -0.0001242516,
+        "rotZ": -0.0001576003,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "scaleZ": 1.0
+      },
+      "Nickname": "Reference Bag of NPCs A",
+      "Description": "",
+      "GMNotes": "",
+      "AltLookAngle": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "ColorDiffuse": {
+        "r": 0.7058823,
+        "g": 0.366520882,
+        "b": 0.0
+      },
+      "LayoutGroupSortIndex": 0,
+      "Value": 0,
+      "Locked": true,
+      "Grid": true,
+      "Snap": true,
+      "IgnoreFoW": false,
+      "MeasureMovement": false,
+      "DragSelectable": true,
+      "Autoraise": true,
+      "Sticky": true,
+      "Tooltip": true,
+      "GridProjection": false,
+      "HideWhenFaceDown": false,
+      "Hands": false,
+      "MaterialIndex": -1,
+      "MeshIndex": -1,
+      "Bag": {
+        "Order": 0
+      },
+      "LuaScript": "",
+      "LuaScriptState": "",
+      "XmlUI": "",
+      "ContainedObjects": [
+        {
+          "GUID": "3d9a52",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -23.4998035,
+            "posY": 3.16773844,
+            "posZ": -16.50009,
+            "rotX": 2.335507,
+            "rotY": 179.9382,
+            "rotZ": 2.13201332,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Gorath the Merryfist",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335617415/800915B2B62DF29ECD4B9711B796AC2F347B36D1/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "ff86d9",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -22.5,
+            "posY": 3.14998,
+            "posZ": -19.5,
+            "rotX": 6.06716021E-05,
+            "rotY": 180.000137,
+            "rotZ": 8.217648E-06,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Lady Elara Duskwood",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335598089/E49AB81AFC9C01A3F8979A00D4DE424062EDE738/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "389099",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -23.5,
+            "posY": 3.14999676,
+            "posZ": -19.5,
+            "rotX": 0.0006270271,
+            "rotY": 180.000122,
+            "rotZ": -0.0008744769,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Isabella Greenvale Unveiled",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335598923/9BF78F43870A242249063C4309FCCE70F5BA2A9C/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "3186bf",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -17.5,
+            "posY": 3.14995,
+            "posZ": -18.5,
+            "rotX": -0.000230887046,
+            "rotY": 180.029083,
+            "rotZ": -0.0006150957,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Isabella Greenvale",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335599763/99BA043F1F8FC9A8C85AEA2CB6833CC3899AB118/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "82f274",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -18.5,
+            "posY": 3.149931,
+            "posZ": -18.5,
+            "rotX": -0.00055270904,
+            "rotY": 179.999954,
+            "rotZ": -0.0014688106,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Eldranas Silvergleam",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335600677/F05927EF731AE7AF4553BEA8219C8258CE494867/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "b2e2e3",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -19.5,
+            "posY": 3.14998055,
+            "posZ": -18.5,
+            "rotX": 6.06191461E-05,
+            "rotY": 179.999954,
+            "rotZ": 8.324267E-06,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Grimtuck Ironheart",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335601474/E31827EEEF136FA6CA6D98D8C8EA77D439064F7A/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "b2d3da",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -20.5,
+            "posY": 3.14998055,
+            "posZ": -18.5,
+            "rotX": 6.07268848E-05,
+            "rotY": 179.999908,
+            "rotZ": 8.110801E-06,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Serafina Lightfeather",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335602190/82A53CD87317BCCA18869B224CEEF7A0109C747F/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "7546de",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -21.5,
+            "posY": 3.14998055,
+            "posZ": -18.5,
+            "rotX": 6.07952134E-05,
+            "rotY": 179.999954,
+            "rotZ": 8.110821E-06,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Borin Shadowstep",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335603063/E3E85E4C968A0257C8F79D68156F370F59830030/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "758d09",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -22.5,
+            "posY": 3.149981,
+            "posZ": -18.5,
+            "rotX": 6.04772322E-05,
+            "rotY": 180.000275,
+            "rotZ": 8.11099653E-06,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Thalassa Wavecrest",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335603985/E801CCF7CB1013317374E02E8EF6811D0BE17C3F/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "00b28e",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -23.5,
+            "posY": 3.15000725,
+            "posZ": -18.5,
+            "rotX": 0.000627017,
+            "rotY": 180.000183,
+            "rotZ": -0.0008750102,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Varric Stormbinder",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335604931/AB3A6A8167E7B2877C8AEB40C05DB56B8DB1BA5C/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "e4a2a0",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -17.5,
+            "posY": 3.14994717,
+            "posZ": -17.5,
+            "rotX": -0.000557284045,
+            "rotY": 179.999878,
+            "rotZ": -0.00147564046,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Zirithian Vrinn",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335605958/5D6B4D2351134FB7237B25618F6D0604FFCC3932/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "343192",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -18.5,
+            "posY": 3.14992142,
+            "posZ": -17.5,
+            "rotX": -0.000557276653,
+            "rotY": 179.999908,
+            "rotZ": -0.00147564069,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Alaric Brewblend",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335606988/747511150895A2E206FC45157F3970C5C7FECF2D/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "685b83",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -19.5,
+            "posY": 3.1499815,
+            "posZ": -17.5,
+            "rotX": 6.07467919E-05,
+            "rotY": 179.977829,
+            "rotZ": 8.312545E-06,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Zar'ek the Planewalker",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335607790/C795F5477C3E8A31A363AD66099EB69A9BF57F8E/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "702669",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -20.5,
+            "posY": 3.1499815,
+            "posZ": -17.5,
+            "rotX": 6.069063E-05,
+            "rotY": 179.999908,
+            "rotZ": 7.897343E-06,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Xalthar, the Knowledge Seeker",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335608607/28AF6F3963721E305CEBCEDA005650A3A9FFE66A/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "bd2cf4",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -21.5,
+            "posY": 3.149982,
+            "posZ": -17.5,
+            "rotX": 6.06138274E-05,
+            "rotY": 179.999863,
+            "rotZ": 8.110751E-06,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Grash the Gentle",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335609449/55C9E11A9E5F897B1690FD3D8C90292D57F9FE50/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "f4438c",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -22.5,
+            "posY": 3.149982,
+            "posZ": -17.5,
+            "rotX": 6.065306E-05,
+            "rotY": 179.99971,
+            "rotZ": 8.110678E-06,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Eldris the Forlorn",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335610303/1D590F1E0430EE49522FB3DEEEB9E487CA5B2C74/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "827573",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -23.5,
+            "posY": 3.15001869,
+            "posZ": -17.5,
+            "rotX": 0.000627660542,
+            "rotY": 179.971634,
+            "rotZ": -0.0008803962,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Kryx the Whisperer",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335611192/ABBE992C63A3B6D746186A11552F4C2C0CBD13F3/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "a81b64",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -17.5,
+            "posY": 3.14997959,
+            "posZ": -16.5,
+            "rotX": 8.22560542E-05,
+            "rotY": 179.999878,
+            "rotZ": -2.5933472E-05,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Ghivashel, the Lost Wraith",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335612134/5BADFCBA07C0CDD7B971A0B9EFC51BB0560CE4A6/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "a1941d",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -18.5,
+            "posY": 3.149979,
+            "posZ": -16.5,
+            "rotX": 8.210248E-05,
+            "rotY": 179.999924,
+            "rotZ": -2.657376E-05,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Yelena the Shrouded",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335613023/633BD5CE9DE4AED58A2AD8756BBE99F421CC1F12/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "ae9f54",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -19.5,
+            "posY": 3.14995885,
+            "posZ": -16.5,
+            "rotX": 0.00102403411,
+            "rotY": 179.977966,
+            "rotZ": 0.000113675072,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Tobin Lightfeather",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335613993/84A1D2422C7BBEEDFEBE28D50CD4387A17488FC7/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "84262c",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -20.5,
+            "posY": 3.14996171,
+            "posZ": -16.5,
+            "rotX": 0.0010466635,
+            "rotY": 179.999878,
+            "rotZ": 0.000126357321,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Rumblebelly Ironhorn",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335614869/5F8C6880E89A0AA512AB79CA04A297D2E47ABE25/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "6e4f15",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -21.5,
+            "posY": 3.149964,
+            "posZ": -16.5,
+            "rotX": 0.00104664115,
+            "rotY": 179.999817,
+            "rotZ": 0.000126356827,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Perrin Swiftshadow",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335615808/7394F7F0C93209828C9DDC5F1643DEBF39510351/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": ""
+        },
+        {
+          "GUID": "04bea2",
+          "Name": "Figurine_Custom",
+          "Transform": {
+            "posX": -22.5,
+            "posY": 3.14996648,
+            "posZ": -16.5,
+            "rotX": 0.00104649679,
+            "rotY": 179.999664,
+            "rotZ": 0.000126355444,
+            "scaleX": 0.5,
+            "scaleY": 0.5,
+            "scaleZ": 0.5
+          },
+          "Nickname": "Sylvana Moonwhisper",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": true,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": false,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "CustomImage": {
+            "ImageURL": "http://cloud-3.steamusercontent.com/ugc/2276073240335616710/A3FF51F07E12AE6FDD458D379BAA686BB5BCCD49/",
+            "ImageSecondaryURL": "",
+            "ImageScalar": 1.0,
+            "WidthScale": 0.0
           },
           "LuaScript": "",
           "LuaScriptState": "",
