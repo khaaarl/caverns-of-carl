@@ -45,6 +45,8 @@ class DungeonConfig:
         self.add_var("encounter_xp_low_percent", 50.0)
         self.add_var("encounter_xp_high_percent", 200.0)
         self.add_var("monster_filter", "Undead or Flesh Golem", is_long=True)
+        self.add_var("trap_damage_low_multiplier", 3)
+        self.add_var("trap_damage_high_multiplier", 5)
         self.add_var("room_trap_percent", 30.0)
         self.add_var("corridor_trap_percent", 30.0)
         self.add_var("door_trap_percent", 15.0)
@@ -64,6 +66,7 @@ class DungeonConfig:
         if not tk_label:
             tk_label = re.sub("num", "#", k)
             tk_label = re.sub("percent", "%", tk_label)
+            tk_label = re.sub("multiplier", "x", tk_label)
             tk_label = re.sub("_", " ", tk_label)
             tk_label = re.sub("tts", "TTS", tk_label)
             tk_label = " ".join(

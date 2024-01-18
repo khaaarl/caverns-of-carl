@@ -53,10 +53,12 @@ _ENCLOSED_DOORS_TRAP_EFFECTS = [
     "Doors shut and lock: Str(Ath) or Arcana or Thieves' Tools {DC}. Repeated Con {DC-2}; fail 3 and get infected with {DISEASE}",
 ]
 _MISC_CORRIDOR_TRAP_EFFECTS = [
-    "Doors open; Gust of wind, Str {DC} or {DAM:bludgeoning,slow} and be pushed 10' and prone (ideally towards danger)",
-    "Doors open; {SHORT_DEBUFF_TRAP_EFFECT} (only if nearby enemies)"
-    "Doors open; A Watery Sphere spell (XGE 170), Str {DC}, moves from one end of corridor to other (ideally towards danger)",
     "Corridor filled with ever-swinging pendulum blades. Each turn moving through requires Dex (Acro) {DC} or take {DAM:slashing}, Dex {DC} for half. Must also save on forced movement. Disadvantage if you dash or move more than half speed. Can Int (Investigation) {DC} as an action to gain advantage on your next move.",
+]
+_ENEMY_CORRIDOR_TRAP_EFFECTS = [
+    "Doors open (if any); Gust of wind, Str {DC} or {DAM:bludgeoning,slow} and be pushed 10' and prone (ideally towards danger)",
+    "Doors open (if any); {SHORT_DEBUFF_TRAP_EFFECT} (only if nearby enemies)",
+    "Doors open (if any); A Watery Sphere spell (XGE 170), Str {DC}, moves from one end of corridor to other (ideally towards danger)",
 ]
 _SHORT_DEBUFF_TRAP_EFFECTS = [
     "Blindness spell (PHB 219): {AREA}, Con {DC}",
@@ -179,8 +181,8 @@ class Trap:
         return int(round(b))
 
     def random_avg_damage(self, slow=False):
-        lo = self.level * 3
-        hi = self.level * 8
+        lo = self.level * self.config.trap_damage_low_multiplier
+        hi = self.level * self.config.trap_damage_high_multiplier
         if slow:
             return random.randrange(lo, hi) / 4.0
         return random.randrange(lo, hi)
@@ -267,7 +269,7 @@ class CorridorTrap(Trap):
         return "Corridor " + super().description()
 
     @staticmethod
-    def create(config, corridor):
+    def create(config, corridor, num_nearby_encounters=0):
         trap = CorridorTrap(config, corridor.ix)
         tgs = _AREA_TRAP_TRIGGERS + _CORRIDOR_TRAP_TRIGGERS
         trap.trigger = random.choice(tgs)
@@ -275,11 +277,12 @@ class CorridorTrap(Trap):
             _ONE_OFF_DAMAGE_TRAP_EFFECTS
             + _MISC_TRAP_EFFECTS
             + _MISC_ROOM_OR_CORRIDOR_TRAP_EFFECTS
+            + _MISC_CORRIDOR_TRAP_EFFECTS
         )
         if corridor.is_fully_enclosed_by_doors():
             effs += _ENCLOSED_DOORS_TRAP_EFFECTS
-        if corridor.doorixs:
-            effs += _MISC_CORRIDOR_TRAP_EFFECTS
+        if num_nearby_encounters >= 2:
+            effs += _ENEMY_CORRIDOR_TRAP_EFFECTS
         trap.effect = trap.eval_trap_expr(random.choice(effs))
         return trap
 

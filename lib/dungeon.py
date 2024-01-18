@@ -817,7 +817,12 @@ def place_traps_in_dungeon(df):
     corridorixs_to_trap = corridorixs_to_trap[:target_num_corridor_traps]
     for corridorix in corridorixs_to_trap:
         corridor = df.corridors[corridorix]
-        trap = lib.trap.CorridorTrap.create(config, corridor)
+        num_nearby_encounters = 0
+        for roomix in [corridor.room1ix, corridor.room2ix]:
+            room = df.rooms[roomix]
+            if room.encounter:
+                num_nearby_encounters += 1
+        trap = lib.trap.CorridorTrap.create(config, corridor, num_nearby_encounters=num_nearby_encounters)
         df.add_trap(trap)
         df.corridors[corridorix].trapixs.add(trap.ix)
     doors_to_trap = list(df.doors)
