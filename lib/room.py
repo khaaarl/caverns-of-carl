@@ -174,7 +174,9 @@ class Room:
         if self.has_up_ladder:
             o.append("Up ladder")
         for featureix in self.special_featureixs:
-            o.append(df.special_features[featureix].description(df))
+            o.append(
+                df.special_features[featureix].description(df, verbose=verbose)
+            )
         for trapix in self.trapixs:
             o.append(df.traps[trapix].description())
         o.append(f"Light level: {self.light_level.capitalize()}")

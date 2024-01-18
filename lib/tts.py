@@ -333,12 +333,14 @@ def dungeon_to_tts_blob(df, name, pdf_filename=None):
         x, y = npc.x, npc.y
         if True or x is None or y is None:
             y = -3
-            x = int(df.width/2) + ix
+            x = int(df.width / 2) + ix
         obj = npc.tts_object(df, x, y)
         blob["ObjectStates"].append(obj)
+    handouts = []
     for roomix, room in enumerate(df.rooms):
         for feature in room.special_features(df):
             blob["ObjectStates"] += feature.tts_objects(df)
+            handouts += feature.tts_handouts()
         blob["ObjectStates"].append(room.tts_notecard(df))
     for corridorix, corridor in enumerate(df.corridors):
         if corridor.is_nontrivial(df):
@@ -356,6 +358,11 @@ def dungeon_to_tts_blob(df, name, pdf_filename=None):
         obj["Locked"] = True
         df.tts_xz(trap.x, trap.y, obj)
         blob["ObjectStates"].append(obj)
+    for ix, handout in enumerate(handouts):
+        y = -5
+        x = int(df.width / 2) + ix
+        df.tts_xz(x, y, handout)
+        blob["ObjectStates"].append(handout)
     if df.config.tts_fog_of_war:
         fog = tts_fog(scaleX=df.width + 2.0, scaleZ=df.height + 2.0)
         blob["ObjectStates"].append(fog)

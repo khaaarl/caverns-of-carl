@@ -70,6 +70,14 @@ class Tile:
             ref_floor = tts.reference_object("Floor, Dungeon")
             self._alter_tex(obj, ref_floor, new_floor)
 
+    def _update_tile_for_features(self, obj, df):
+        if self.roomix is None:
+            return
+        room = df.rooms[self.roomix]
+        for featureix in room.special_featureixs:
+            feature = df.special_features[featureix]
+            feature.mod_tts_room_tile(obj)
+
 
 class WallTile(Tile):
     def to_char(self):
@@ -162,6 +170,7 @@ class FloorTile(Tile):
         obj["Nickname"] = ""
         self._update_texture_style(obj, df)
         self._tts_light_mul(obj)
+        self._update_tile_for_features(obj, df)
         return [obj]
 
     def is_move_blocking(self):
@@ -226,6 +235,7 @@ class DoorTile(CorridorFloorTile):
                     obj["Transform"]["rotY"] = 90.0
             self._update_texture_style(obj, df)
             self._tts_light_mul(obj)
+            self._update_tile_for_features(obj, df)
             return [obj]
         return []
 
@@ -244,6 +254,7 @@ class LadderUpTile(RoomFloorTile):
         obj["Nickname"] = "Ladder up"
         self._update_texture_style(obj, df)
         self._tts_light_mul(obj)
+        self._update_tile_for_features(obj, df)
         return [obj]
 
     def is_move_blocking(self):
@@ -263,6 +274,7 @@ class LadderDownTile(RoomFloorTile):
         obj["Nickname"] = "Hatch down"
         self._update_texture_style(obj, df)
         self._tts_light_mul(obj)
+        self._update_tile_for_features(obj, df)
         return [obj]
 
     def is_move_blocking(self):
@@ -298,6 +310,7 @@ class ChestTile(RoomFloorTile):
             obj["States"]["2"]["Description"] = "Contents:\n" + self.contents
         self._update_texture_style(obj, df)
         self._tts_light_mul(obj)
+        self._update_tile_for_features(obj, df)
         return [obj]
 
     def is_move_blocking(self):
@@ -353,6 +366,7 @@ class BookshelfTile(ChestTile):
 
         self._update_texture_style(obj, df)
         self._tts_light_mul(obj)
+        self._update_tile_for_features(obj, df)
         return [obj]
 
 
@@ -374,4 +388,5 @@ class MimicTile(ChestTile):
         ] = self.monster.tts_nickname()
         self._update_texture_style(obj, df)
         self._tts_light_mul(obj)
+        self._update_tile_for_features(obj, df)
         return [obj]

@@ -1,0 +1,55 @@
+{
+    "Deities": [
+        {
+            "Name": "Kryxix",
+            "FullTitle": "Kryxix, The Abyssal Maw",
+            "TTSAltarNickname": "Dark Maw Altar",
+            "AltarDescriptions": [
+                "As you cautiously step into the dimly lit chamber, a sense of oppressive dread washes over you. The air feels thick, almost suffocating, as if the very essence of the room is imbued with a hungering darkness. Your torches flicker wildly, casting eerie shadows that seem to dance and twist along the walls.\n\nThe chamber is small, the stone walls etched with unsettling, abyssal motifs: tentacles, teeth, and gaping maws that seem to almost pulse with a life of their own. At the far end of the room stands an altar, carved from a dark, glossy stone that absorbs light. It's shaped like a monstrous mouth, its maw wide open as if ready to devour anything in its path.\n\nAs you draw closer, the air grows colder, and a low, rumbling sound, like the growl of some immense beast, echoes from the depths of the altar. The very ground beneath your feet seems to vibrate with a sinister energy."
+            ],
+            "Requests": [
+                "Seeker of the abyssal pact, thou hast awakened the hungering void. To sate my endless craving, a meal must be offered unto the abyss. The sacrifice must be sapient, aware of its fate, willingly given or taken by force. Only through this act of ultimate dominion can my power be channeled. Choose, mortal, and let the depths witness your resolve."
+            ],
+            "Boons": [
+                {
+                    "TTSHandoutReferenceObject": "Black Sapphire",
+                    "SuccessDescription": "After the sacrifice is made, a deep, resonating chuckle fills the chamber, emanating from the altar itself. The voice of Kryxix booms through the room, filled with a sinister satisfaction:\n\n\"Well done, seeker. You have fed the abyssal hunger. Now, place your hand within the maw and receive my dark blessing.\"\n\nThe stone jaws of the altar's maw gape ominously, waiting. Should a brave or foolhardy character place their hand inside, the jaws snap shut with a terrifying force, causing sharp pain but no lasting physical damage. After a moment, the jaws reopen, and the voice of Kryxix speaks again:\n\n\"Thou art now marked by the abyss. May your hunger be as endless as the depths.\"",
+                    "BoonHeader": "Curse of Endless Hunger",
+                    "BoonBody": "Your body's need for sustenance has grown insatiable, requiring ten times the normal amount of food. However, you gain an unnatural ability to consume as much as you desire without ill effect and are immune to diseases caused by spoilage.\n\nFurthermore, if you consume the entirety of a corpse, and the creature had any innate resistance or immunity to a damage type (other than bludgeoning, piercing, and slashing), you may gain resistance to one of those damage types, selected at random by the DM. This resistance can be swapped at the end of any long rest, choosing from any damage type you have previously unlocked through consumption.\n\nIf targeted by the spell Remove Curse, you may opt to keep this curse."
+                }
+            ],
+            "AsciiColor": "[1;95m",
+            "TTSTileTint": {
+                "r": 1.0,
+                "g": 0.2,
+                "b": 1.0
+            },
+            "PreferDark": true
+        },
+        {
+            "Name": "Ssarthaxx",
+            "FullTitle": "Ssarthaxx, The Eternal Flame",
+            "TTSAltarNickname": "Blazing Altar",
+            "AltarDescriptions": [
+                "You enter a chamber that radiates intense heat. The air shimmers and the temperature rises with each step forward. The walls of this cavernous room are lined with basalt and obsidian, and rivulets of molten lava flow in intricate patterns, casting a fiery glow that dances across the chamber.\n\nIn the room stands a grand altar, crafted from blackened stone carved with a scale motif and adorned with ruby inlays that seem to pulse with an inner light. Flames dance along its edges, never consuming the altar but lending it an aura of living fire.\n\nThe heat in the room is almost unbearable, a testament to the deity's raw power. The flickering shadows cast by the flames form mesmerizing, yet ominous patterns on the walls, creating an ambiance of both awe and trepidation.\n\n(Every time a creature enters or starts its turn in the room, it takes 1 fire damage, and unprotected flammable items will begin to burn)\n\nIntelligence (Religion) DC 10: This is the domain of Sarthax, The Eternal Flame, a deity of fire, destruction, and rebirth."
+            ],
+            "Requests": [
+                "Brave or foolish are those who seek my blessing. To prove your worth, you must walk through my flame, unshielded and unaided. Embrace my altar, and let the fire test your resolve.\n\n(The character takes 1d6 fire damage each turn until zero, at which point they will be healed completely)"
+            ],
+            "Boons": [
+                {
+                    "TTSHandoutReferenceObject": "Garnet",
+                    "SuccessDescription": "Brave soul, you have walked through the heart of my flame and emerged tempered, not consumed. Your courage burns bright, a beacon amidst the darkness. Such fearlessness shall not go unrewarded.",
+                    "BoonHeader": "Curse of Infernal Humours",
+                    "BoonBody": "Your humours are now greatly imbalanced in favor of the element of fire. You gain resistance to fire damage and vulnerability to cold damage.\n\nAs an action or bonus action, you may spend 1d4 HP to belch forth a 15' cone of fire. Each creature in the area of the exhalation must make a dexterity saving throw. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The HP cost, damage, and range increase to 1d6/3d6/20' at 6th level, 1d8/4d6/25' at 11th level, and 1d10/5d6/30' at 16th level.\nYou may use your breath weapon a number of times equal to your proficiency bonus + your Constitution modifier. When you finish a short or long rest, you regain all expended uses.\n\nIf targeted by the spell Remove Curse, you may opt to keep this curse."
+                }
+            ],
+            "AsciiColor": "[1;91m",
+            "TTSTileTint": {
+                "r": 1.0,
+                "g": 0.4,
+                "b": 0.4
+            }
+        }
+    ]
+}

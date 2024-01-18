@@ -1,7 +1,7 @@
 {
   "SaveName": "Minimalist Test Game",
-  "EpochTime": 1705427723,
-  "Date": "1/16/2024 12:55:23 PM",
+  "EpochTime": 1705600046,
+  "Date": "1/18/2024 12:47:26 PM",
   "VersionNumber": "v13.2.2",
   "GameMode": "Minimalist Test Game",
   "GameType": "Game",
@@ -565,7 +565,7 @@
         "posZ": -3.499999,
         "rotX": -1.47390156E-05,
         "rotY": 179.95462,
-        "rotZ": -5.59157925E-05,
+        "rotZ": -5.59157525E-05,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -1004,7 +1004,7 @@
       "GUID": "da74a9",
       "Name": "3DText",
       "Transform": {
-        "posX": 34.53809,
+        "posX": 34.5381126,
         "posY": 0.961123765,
         "posZ": -21.3240623,
         "rotX": 90.0,
@@ -1114,7 +1114,7 @@
         "posZ": -17.95668,
         "rotX": 8.16436E-05,
         "rotY": 180.027237,
-        "rotZ": -2.60745328E-05,
+        "rotZ": -2.60745437E-05,
         "scaleX": 1.99723673,
         "scaleY": 1.0,
         "scaleZ": 1.99723673
@@ -1169,7 +1169,7 @@
         "posX": -17.95164,
         "posY": 0.9600002,
         "posZ": -17.9591675,
-        "rotX": 2.82149676E-06,
+        "rotX": 2.82149949E-06,
         "rotY": 180.032745,
         "rotZ": 0.000171528183,
         "scaleX": 1.99723673,
@@ -1853,7 +1853,7 @@
         "posX": -21.9438858,
         "posY": 0.9600043,
         "posZ": -9.96589851,
-        "rotX": -0.000957788841,
+        "rotX": -0.000957788259,
         "rotY": 179.911163,
         "rotZ": 0.000290249183,
         "scaleX": 1.99723673,
@@ -1910,7 +1910,7 @@
         "posX": -25.93852,
         "posY": 0.9600141,
         "posZ": -9.965653,
-        "rotX": -0.0006271652,
+        "rotX": -0.000627165835,
         "rotY": 179.936951,
         "rotZ": 0.000171475578,
         "scaleX": 1.99723673,
@@ -1967,7 +1967,7 @@
         "posX": -29.9340458,
         "posY": 0.9600015,
         "posZ": -9.955429,
-        "rotX": 1.89754464E-05,
+        "rotX": 1.89754683E-05,
         "rotY": 179.905609,
         "rotZ": -6.80506055E-05,
         "scaleX": 1.99723673,
@@ -2081,7 +2081,7 @@
         "posX": -25.9458942,
         "posY": 0.9600016,
         "posZ": -21.9521885,
-        "rotX": 6.03369372E-05,
+        "rotX": 6.03369772E-05,
         "rotY": 180.102676,
         "rotZ": 8.323856E-06,
         "scaleX": 1.99723673,
@@ -2140,7 +2140,7 @@
         "posZ": -21.9491158,
         "rotX": 0.0006297373,
         "rotY": 180.1745,
-        "rotZ": -0.000871519733,
+        "rotZ": -0.0008715201,
         "scaleX": 1.99723673,
         "scaleY": 1.0,
         "scaleZ": 1.99723673
@@ -2197,7 +2197,7 @@
         "posZ": -21.9561386,
         "rotX": 0.2997707,
         "rotY": 180.126,
-        "rotZ": 0.000970727,
+        "rotZ": 0.000970727648,
         "scaleX": 1.99723673,
         "scaleY": 1.0,
         "scaleZ": 1.99723673
@@ -2496,7 +2496,7 @@
       "ColorDiffuse": {
         "r": 1.0,
         "g": 0.557261169,
-        "b": 0.3657377
+        "b": 0.365737617
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -3552,7 +3552,7 @@
         "posZ": 17.9690056,
         "rotX": 8.457469E-06,
         "rotY": 359.280029,
-        "rotZ": -5.93428467E-07,
+        "rotZ": -5.934288E-07,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -3566,8 +3566,8 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.309887558,
-        "g": 0.254432827,
+        "r": 0.309887469,
+        "g": 0.254432738,
         "b": 1.0
       },
       "LayoutGroupSortIndex": 0,
@@ -4999,7 +4999,7 @@
       "ColorDiffuse": {
         "r": 1.0,
         "g": 0.557261169,
-        "b": 0.365737736
+        "b": 0.365737647
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -5554,7 +5554,7 @@
       },
       "ColorDiffuse": {
         "r": 1.0,
-        "g": 0.0595081225,
+        "g": 0.059508048,
         "b": 0.0
       },
       "LayoutGroupSortIndex": 0,
@@ -16570,9 +16570,9 @@
         "posX": 19.5000076,
         "posY": 1.95999885,
         "posZ": -9.500004,
-        "rotX": -4.6709406E-06,
+        "rotX": -4.67094333E-06,
         "rotY": 359.9843,
-        "rotZ": -1.51948916E-06,
+        "rotZ": -1.51948984E-06,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -16755,8 +16755,7 @@
       "ColorDiffuse": {
         "r": 0.24999997,
         "g": 0.24999997,
-        "b": 0.24999997,
-        "a": 0.25
+        "b": 0.24999997
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -16803,9 +16802,9 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.298038542,
-        "g": 0.298038542,
-        "b": 0.298038542
+        "r": 0.298038453,
+        "g": 0.298038453,
+        "b": 0.298038453
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -16887,7 +16886,7 @@
         "posX": -4.49999857,
         "posY": 1.99999964,
         "posZ": -30.5,
-        "rotX": -8.462341E-06,
+        "rotX": -8.462346E-06,
         "rotY": 180.029953,
         "rotZ": -1.39607664E-05,
         "scaleX": 0.450000525,
@@ -17024,8 +17023,8 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.363947928,
-        "g": 0.3796342,
+        "r": 0.363947839,
+        "g": 0.379634082,
         "b": 1.0
       },
       "LayoutGroupSortIndex": 0,
@@ -23967,7 +23966,7 @@
       "ColorDiffuse": {
         "r": 0.6862746,
         "g": 0.6827757,
-        "b": 0.215682536
+        "b": 0.215682447
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -28673,7 +28672,7 @@
         "posX": 5.99999475,
         "posY": 2.002863,
         "posZ": -31.9999981,
-        "rotX": 3.977892E-07,
+        "rotX": 3.97789364E-07,
         "rotY": 359.973053,
         "rotZ": -3.65419965E-07,
         "scaleX": 1.0,
@@ -28744,9 +28743,9 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.383698732,
-        "g": 0.254229277,
-        "b": 0.3954687
+        "r": 0.383698523,
+        "g": 0.2542291,
+        "b": 0.3954685
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -28785,7 +28784,7 @@
         "posZ": -30.9999962,
         "rotX": -9.627958E-07,
         "rotY": 179.975021,
-        "rotZ": -2.66921859E-07,
+        "rotZ": -2.66922029E-07,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -28893,9 +28892,9 @@
         "posX": -3.00000787,
         "posY": 2.0,
         "posZ": -32.9999962,
-        "rotX": -2.779761E-07,
+        "rotX": -2.77976284E-07,
         "rotY": 180.025467,
-        "rotZ": 9.55336E-08,
+        "rotZ": 9.553364E-08,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -29054,7 +29053,7 @@
         "posZ": -27.5,
         "rotX": -4.33051177E-08,
         "rotY": 30.0005684,
-        "rotZ": -3.76070268E-08,
+        "rotZ": -3.760703E-08,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -29295,7 +29294,7 @@
         "posZ": -27.4999943,
         "rotX": -5.705093E-07,
         "rotY": 359.978271,
-        "rotZ": 2.26416034E-07,
+        "rotZ": 2.26416191E-07,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -29416,7 +29415,7 @@
         "posY": 2.0,
         "posZ": -27.4999943,
         "rotX": -4.06594154E-06,
-        "rotY": 0.0305634253,
+        "rotY": 0.0305634458,
         "rotZ": 5.834261E-07,
         "scaleX": 1.0,
         "scaleY": 1.0,
@@ -30238,9 +30237,9 @@
         "posX": 17.5000019,
         "posY": 1.844447,
         "posZ": -31.4999981,
-        "rotX": 0.000103478807,
+        "rotX": 0.000103478851,
         "rotY": 179.924454,
-        "rotZ": -5.19837376E-05,
+        "rotZ": -5.19837158E-05,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -30295,7 +30294,7 @@
         "posZ": -31.5,
         "rotX": -1.76038952E-06,
         "rotY": 359.972443,
-        "rotZ": -1.51922279E-08,
+        "rotZ": -1.51922368E-08,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -30348,9 +30347,9 @@
         "posX": 11.5,
         "posY": 2.00049829,
         "posZ": -48.5,
-        "rotX": -3.080814E-05,
+        "rotX": -3.080816E-05,
         "rotY": 14.9969234,
-        "rotZ": -1.23265827E-05,
+        "rotZ": -1.23265881E-05,
         "scaleX": 0.2,
         "scaleY": 0.2,
         "scaleZ": 0.2
@@ -30401,9 +30400,9 @@
         "posX": 56.39011,
         "posY": 2.07,
         "posZ": -89.49536,
-        "rotX": 1.0965109E-07,
-        "rotY": 3.7639488E-08,
-        "rotZ": -3.82364256E-08,
+        "rotX": -2.15107376E-09,
+        "rotY": 4.328089E-08,
+        "rotZ": 1.56107987E-07,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -32200,7 +32199,7 @@
         "posX": 36.0,
         "posY": 2.01437664,
         "posZ": -35.0,
-        "rotX": 2.19179356E-07,
+        "rotX": 2.19179512E-07,
         "rotY": 359.968,
         "rotZ": 2.02966547E-07,
         "scaleX": 0.5,
@@ -32724,9 +32723,9 @@
         "posX": 41.0,
         "posY": 2.3217032,
         "posZ": -34.0,
-        "rotX": 4.444558E-07,
+        "rotX": 4.4445602E-07,
         "rotY": 178.220215,
-        "rotZ": -1.38898156E-06,
+        "rotZ": -1.38898224E-06,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -32740,7 +32739,7 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.184013337,
+        "r": 0.184013158,
         "g": 0.0,
         "b": 1.0
       },
@@ -32779,9 +32778,9 @@
         "posX": 39.9913673,
         "posY": 1.75223482,
         "posZ": -32.9968452,
-        "rotX": -3.107397E-06,
+        "rotX": -3.10739779E-06,
         "rotY": 176.849716,
-        "rotZ": -7.58433544E-06,
+        "rotZ": -7.58434044E-06,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -32797,7 +32796,7 @@
       "ColorDiffuse": {
         "r": 0.926762342,
         "g": 1.0,
-        "b": 0.322480261
+        "b": 0.322480083
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -32971,7 +32970,7 @@
       },
       "ColorDiffuse": {
         "r": 0.914634,
-        "g": 0.339402258,
+        "g": 0.339402139,
         "b": 0.7050705
       },
       "LayoutGroupSortIndex": 0,
@@ -33516,7 +33515,7 @@
         "posX": 35.0,
         "posY": 2.01437664,
         "posZ": -34.0,
-        "rotX": -1.53244525E-06,
+        "rotX": -1.53244594E-06,
         "rotY": 359.968,
         "rotZ": 1.89147812E-07,
         "scaleX": 0.5,
@@ -33850,7 +33849,7 @@
       },
       "ColorDiffuse": {
         "r": 0.627,
-        "g": 0.124999695,
+        "g": 0.124999605,
         "b": 0.941
       },
       "LayoutGroupSortIndex": 0,
@@ -42389,6 +42388,188 @@
           "LuaScript": "",
           "LuaScriptState": "",
           "XmlUI": ""
+        },
+        {
+          "GUID": "8e7ba9",
+          "Name": "Bag",
+          "Transform": {
+            "posX": -22.5001831,
+            "posY": 2.9391818,
+            "posZ": -10.4824657,
+            "rotX": 358.975433,
+            "rotY": 0.0107964557,
+            "rotZ": 359.9894,
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "scaleZ": 1.0
+          },
+          "Nickname": "Gems",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.7058823,
+            "g": 0.366520882,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": false,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": true,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "MaterialIndex": -1,
+          "MeshIndex": -1,
+          "Bag": {
+            "Order": 0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": "",
+          "ContainedObjects": [
+            {
+              "GUID": "13bf91",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": -30.582531,
+                "posY": 3.28300452,
+                "posZ": -14.3829317,
+                "rotX": 357.70697,
+                "rotY": 180.028824,
+                "rotZ": 356.855652,
+                "scaleX": 0.375,
+                "scaleY": 0.375,
+                "scaleZ": 0.375
+              },
+              "Nickname": "Garnet",
+              "Description": "",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": false,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/2276073780749582842/F5BF69DBEF1720B5CDD2A64C6D96A6EA95DC7C9C/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/2276073780749583822/E41030B0E3607DCD75AA8B28F451EEA263428FC0/",
+                "NormalURL": "",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/2276073780749582842/F5BF69DBEF1720B5CDD2A64C6D96A6EA95DC7C9C/",
+                "Convex": true,
+                "MaterialIndex": 4,
+                "TypeIndex": 0,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0
+                  },
+                  "SpecularIntensity": 0.2,
+                  "SpecularSharpness": 7.5,
+                  "FresnelStrength": 0.2
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "d9545c",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": -30.0325317,
+                "posY": 3.27019,
+                "posZ": -14.3829317,
+                "rotX": 1.90693354E-05,
+                "rotY": 179.9728,
+                "rotZ": -6.945273E-05,
+                "scaleX": 0.375,
+                "scaleY": 0.375,
+                "scaleZ": 0.375
+              },
+              "Nickname": "Black Sapphire",
+              "Description": "",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": false,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/2276073780749582842/F5BF69DBEF1720B5CDD2A64C6D96A6EA95DC7C9C/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/2276073780749584881/1A1508ECBB2839F06AF92C59C6DD6D1612111756/",
+                "NormalURL": "",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/2276073780749582842/F5BF69DBEF1720B5CDD2A64C6D96A6EA95DC7C9C/",
+                "Convex": true,
+                "MaterialIndex": 4,
+                "TypeIndex": 0,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0
+                  },
+                  "SpecularIntensity": 0.2,
+                  "SpecularSharpness": 7.5,
+                  "FresnelStrength": 0.2
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            }
+          ]
         }
       ]
     },
@@ -45084,6 +45265,58 @@
           "XmlUI": ""
         }
       ]
+    },
+    {
+      "GUID": "49fb84",
+      "Name": "Custom_Assetbundle",
+      "Transform": {
+        "posX": -29.5,
+        "posY": 1.65,
+        "posZ": -9.5,
+        "rotX": 0.0,
+        "rotY": 0.0,
+        "rotZ": 0.0,
+        "scaleX": 0.45,
+        "scaleY": 0.45,
+        "scaleZ": 0.45
+      },
+      "Nickname": "Generic Altar",
+      "Description": "",
+      "GMNotes": "",
+      "AltLookAngle": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "ColorDiffuse": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0
+      },
+      "LayoutGroupSortIndex": 0,
+      "Value": 0,
+      "Locked": true,
+      "Grid": true,
+      "Snap": true,
+      "IgnoreFoW": false,
+      "MeasureMovement": false,
+      "DragSelectable": true,
+      "Autoraise": true,
+      "Sticky": true,
+      "Tooltip": true,
+      "GridProjection": false,
+      "HideWhenFaceDown": false,
+      "Hands": false,
+      "CustomAssetbundle": {
+        "AssetbundleURL": "http://cloud-3.steamusercontent.com/ugc/795360658844826138/CAE16CF2432A94E35D4F1E9DF7DA19EBCE43D930/",
+        "AssetbundleSecondaryURL": "",
+        "MaterialIndex": 0,
+        "TypeIndex": 1,
+        "LoopingEffectIndex": 0
+      },
+      "LuaScript": "",
+      "LuaScriptState": "",
+      "XmlUI": ""
     }
   ]
 }

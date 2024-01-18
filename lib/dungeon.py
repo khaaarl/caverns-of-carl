@@ -590,6 +590,10 @@ def place_special_features_in_dungeon(df):
     features = []
     if random.random() < df.config.blacksmith_percent / 99.9:
         features.append(lib.features.Blacksmith())
+    if random.random() < df.config.kryxix_altar_percent / 99.9:
+        features.append(lib.features.Altar(deity_name="Kryxix"))
+    if random.random() < df.config.ssarthaxx_altar_percent / 99.9:
+        features.append(lib.features.Altar(deity_name="Ssarthaxx"))
     feature_roomix_scores = []
     transposed_feature_roomix_scores = []
     for feature in features:
@@ -935,6 +939,7 @@ def stylize_tiles_in_dungeon(df):
             if tile.tile_style is not None:
                 tile.is_interior = True
                 unstyled.remove((x, y))
+
 
 def add_npcs_to_dungeon(df):
     num_npcs = eval_dice(df.config.num_misc_NPCs)
