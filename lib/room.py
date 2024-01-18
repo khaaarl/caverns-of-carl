@@ -200,7 +200,7 @@ class Room:
                 ).pop()
                 way = "Passage to"
                 if door:
-                    way = "Door to"
+                    way = f"{door.door_type} to"
                 line = Doc([way], separator=" ")
                 line.body.append(DocLink(f"Room {other_roomix}"))
                 if corridor.is_nontrivial(df):

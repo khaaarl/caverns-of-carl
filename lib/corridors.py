@@ -6,7 +6,7 @@ from lib.tile import (
     WallTile,
 )
 import lib.tts as tts
-from lib.utils import Doc, DocBookmark, DocLink
+from lib.utils import Doc, DocBookmark, DocLink, eval_dice
 
 
 class CorridorWalker:
@@ -125,7 +125,7 @@ class Corridor:
             for roomix, door in roomix_doors.items():
                 way = "Passage to"
                 if door:
-                    way = "Door to"
+                    way = f"{door.door_type} to"
                 room_name = f"Room {roomix}"
                 line = Doc([way, DocLink(room_name)], separator=" ")
                 door_l = [line]
@@ -216,9 +216,43 @@ class CavernousCorridor(Corridor):
 
 
 class Door:
-    def __init__(self, x, y, corridorix, roomixs=None):
+    def __init__(self, door_type, x, y, corridorix, roomixs=None, lock_dc=None):
+        self.door_type = door_type
         self.x, self.y = x, y
         self.corridorix = corridorix
         self.roomixs = set(roomixs or [])
         self.trapixs = set()
         self.ix = None
+        self.lock_dc = lock_dc
+        self.thickness = Door.door_type_dict[self.door_type]["thickness"]
+        self.damage_threshold = Door.door_type_dict[self.door_type]["threshold"]
+        self.armor_class = Door.door_type_dict[self.door_type]["ac"]
+        self.health = Door.door_type_dict[self.door_type]["hp"]
+
+    # name, thickness, damage threshold, armor class, hit points
+    door_type_table = [
+        ("Simple Wooden Door", 1, 0, 15, 10),
+        ("Wooden Door", 2, 0, 15, 15),
+        ("Heavy Wooden Door", 4, 10, 15, 25),
+        ("Reinforced Wooden Door", 4, 15, 17, 40),
+        ("Stone Door", 4, 25, 17, 60),
+        ("Iron Door", 2, 30, 19, 100),
+    ]
+    door_type_dict = {
+        t[0]: {
+            "name": t[0],
+            "thickness": t[1],
+            "threshold": t[2],
+            "ac": t[3],
+            "hp": t[4],
+        }
+        for t in door_type_table
+    }
+
+    @staticmethod
+    def pick_type(config):
+        lvl = config.target_character_level - 5 + eval_dice("1d20")
+        max_ix = len(Door.door_type_table) - 1
+        ix = min(int(lvl * max_ix / 30.0), max_ix)
+        t = Door.door_type_table[ix]
+        return t[0]

@@ -210,16 +210,15 @@ class DoorTile(CorridorFloorTile):
     def tts_objects(self, df):
         obj = None
         corridor = df.corridors[self.corridorix]
-        door = df.doors[self.doorix]
+        size_prefix = ""
         if corridor.width == 1:
             obj = tts.reference_object("Door, Metal")
-            obj["Nickname"] = "Door"
         elif corridor.width == 2:
             if isinstance(df.tiles[self.x + 1][self.y], DoorTile) or isinstance(
                 df.tiles[self.x][self.y - 1], DoorTile
             ):
                 obj = tts.reference_object("Door, Double")
-                obj["Nickname"] = "Large Door"
+                size_prefix = "Large "
         else:
             if (
                 isinstance(df.tiles[self.x + 1][self.y], DoorTile)
@@ -228,7 +227,7 @@ class DoorTile(CorridorFloorTile):
                 and isinstance(df.tiles[self.x][self.y - 1], DoorTile)
             ):
                 obj = tts.reference_object("Door, Triple")
-                obj["Nickname"] = "Huge Door"
+                size_prefix = "Huge "
         if obj:
             for dx in [1, -1]:
                 if isinstance(df.tiles[self.x + dx][self.y], RoomFloorTile):
@@ -236,6 +235,16 @@ class DoorTile(CorridorFloorTile):
             self._update_texture_style(obj, df)
             self._tts_light_mul(obj)
             self._update_tile_for_features(obj, df)
+            door = df.doors[self.doorix]
+            obj["Nickname"] = f"{door.health}/{door.health} "
+            if door.lock_dc is not None:
+                obj["Nickname"] += "Locked "
+            obj["Nickname"] += f"{size_prefix}{door.door_type}"
+            obj["Description"] = f"Armor Class: {door.armor_class}\n"
+            obj["Description"] += f"Damage Threshold: {door.damage_threshold}"
+            obj["GMNotes"] = ""
+            if door.lock_dc is not None:
+                obj["GMNotes"] += f"Lock DC: {door.lock_dc}"
             return [obj]
         return []
 

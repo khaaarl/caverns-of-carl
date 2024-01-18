@@ -515,7 +515,7 @@ def place_doors_in_dungeon(df):
             tile = df.tiles[x][y]
             if not isinstance(tile, DoorTile):
                 continue
-            door = Door(x, y, corridor.ix)
+            door = Door(Door.pick_type(df.config), x, y, corridor.ix)
             df.add_door(door)
             for dx in [-1, 0, 1]:
                 for dy in [-1, 0, 1]:
@@ -822,7 +822,9 @@ def place_traps_in_dungeon(df):
             room = df.rooms[roomix]
             if room.encounter:
                 num_nearby_encounters += 1
-        trap = lib.trap.CorridorTrap.create(config, corridor, num_nearby_encounters=num_nearby_encounters)
+        trap = lib.trap.CorridorTrap.create(
+            config, corridor, num_nearby_encounters=num_nearby_encounters
+        )
         df.add_trap(trap)
         df.corridors[corridorix].trapixs.add(trap.ix)
     doors_to_trap = list(df.doors)
