@@ -25,6 +25,7 @@ class Room:
         self.ix = None
         self.encounter = None
         self.special_featureixs = []
+        self.corridorixs = set()
         self.doorixs = set()
         self.trapixs = set()
 
@@ -76,6 +77,9 @@ class Room:
         for feature in self.special_features(df):
             if not feature.allows_treasure():
                 return False
+        return True
+
+    def allows_bookshelf(self, df):
         return True
 
     def allows_enemies(self, df):
@@ -185,20 +189,27 @@ class Room:
                 o.append(self.encounter.description(df))
             # TODO: this should not just deal with doors, but all
             # corridors going out of me (not all of these have doors)
+            corridorix_doors = {k: None for k in self.corridorixs}
             for doorix in self.doorixs:
                 door = df.doors[doorix]
-                corridor = df.corridors[door.corridorix]
+                corridorix_doors[door.corridorix] = door
+            for corridorix, door in corridorix_doors.items():
+                corridor = df.corridors[corridorix]
                 other_roomix = (
                     set([corridor.room1ix, corridor.room2ix]) - set([self.ix])
                 ).pop()
-                line = Doc(["Door to"], separator=" ")
+                way = "Passage to"
+                if door:
+                    way = "Door to"
+                line = Doc([way], separator=" ")
                 line.body.append(DocLink(f"Room {other_roomix}"))
                 if corridor.is_nontrivial(df):
                     line.body.append("by way of")
                     line.body.append(DocLink(f"Corridor {corridor.name}"))
                 door_l = [line]
-                for trapix in door.trapixs:
-                    door_l.append(df.traps[trapix].description())
+                if door:
+                    for trapix in door.trapixs:
+                        door_l.append(df.traps[trapix].description())
                 o.append(door_l)
             for x, y in self.tile_coords():
                 tile = df.tiles[x][y]
@@ -276,6 +287,9 @@ class CavernousRoom(Room):
         return self.explicit_tile_coords
 
     def is_fully_enclosed_by_doors(self):
+        return False
+
+    def allows_bookshelf(self, df):
         return False
 
     def erode(self, df, num_iterations=5, per_tile_chance=0.25):

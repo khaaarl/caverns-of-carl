@@ -48,29 +48,6 @@ class MonsterLibrary:
         with open(filename, "w") as f:
             json.dump(self.to_blob(), f, indent=2)
 
-    @staticmethod
-    def monster_matches_expr(expr, monster_info):
-        tokens = []
-        if isinstance(expr, list):
-            tokens = expr
-        else:
-            tokens = re.split("([()]| OR | AND )", expr.upper())
-            tokens = [x.strip() for x in tokens]
-            tokens = [x for x in tokens if x]
-        if "(" in tokens:  # gotta group up those parens
-            pass
-        re.split("(")
-        if "(" in expr:
-            cur = [None]  # parent, thing thing thing
-            root = cur
-            for ix, c in enumerate(expr):
-                if c == "(":
-                    deeper = []
-                    cur.append(deeper)
-                    cur = deeper
-
-        pass
-
     def get_monster_infos(
         self,
         filter=None,

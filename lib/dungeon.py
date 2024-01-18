@@ -448,6 +448,8 @@ def place_corridors_in_dungeon(df):
             s.add(room1ix)
             rooms_connected[room2ix] = s
             df.add_corridor(corridor)
+            df.rooms[corridor.room1ix].corridorixs.add(corridor.ix)
+            df.rooms[corridor.room2ix].corridorixs.add(corridor.ix)
             if not is_fully_connected and len(
                 dfs(rooms_connected, room1ix)
             ) == len(df.rooms):
@@ -639,68 +641,85 @@ def place_special_features_in_dungeon(df):
 
 def place_treasure_in_dungeon(df):
     lib = get_treasure_library("dnd 5e treasure")
-    monster_infos = get_monster_library("dnd 5e monsters").get_monster_infos()
-    mimic_info = [i for i in monster_infos if i.name == "Mimic"][0]
+    mimic_info = get_monster_library("dnd 5e monsters").get_monster_infos(
+        "Mimic"
+    )[0]
     num_treasures = 0
     target_num_treasures = eval_dice(df.config.num_treasures)
     num_mimics = 0
     target_num_mimics = eval_dice(df.config.num_mimics)
     num_bookshelves = 0
     target_num_bookshelves = eval_dice(df.config.num_bookshelves)
-    sized_roomixs = []
-    for roomix, room in enumerate(df.rooms):
-        for _ in range(room.total_space()):
-            sized_roomixs.append(roomix)
-    max_attempts = (
-        target_num_treasures + target_num_bookshelves + target_num_mimics
-    ) * 10
-    for _ in range(max_attempts):
-        if (
-            num_treasures >= target_num_treasures
-            and num_bookshelves >= target_num_bookshelves
-            and num_mimics >= target_num_mimics
-        ):
-            return
-        roomix = random.choice(sized_roomixs)
-        room = df.rooms[roomix]
+    eligible_rooms = []
+    eligible_room_weights = []
+    bookshelf_rooms = []
+    bookshelf_room_weights = []
+    for room in df.rooms:
         if not room.allows_treasure(df):
             continue
+        if not room.corridorixs:
+            continue
+        weight = 1
+        if len(room.corridorixs) == 1:
+            weight *= 5
+        weight *= math.sqrt(room.total_space())
+        eligible_rooms.append(room)
+        eligible_room_weights.append(weight)
+        if room.allows_bookshelf(df):
+            bookshelf_rooms.append(room)
+            bookshelf_room_weights.append(weight)
+    for _ in range(target_num_treasures * 10):
+        if not eligible_rooms or num_treasures >= target_num_treasures:
+            break
+        room = random.choices(eligible_rooms, eligible_room_weights)[0]
         coords = room.pick_tile(
             df, unoccupied=True, avoid_corridor=True, prefer_wall=True
         )
         if not coords:
             continue
         x, y = coords
-
-        if num_treasures < target_num_treasures:
-            contents = lib.gen_horde(
-                df.config.target_character_level,
-                df.config.num_player_characters,
-            )
-            if not contents:
-                contents = ["Nothing!"]
-            df.set_tile(
-                ChestTile(roomix, contents="\n".join(contents)), x=x, y=y
-            )
-            num_treasures += 1
-        elif num_mimics < target_num_mimics:
-            monster = Monster(mimic_info)
-            monster.adjust_cr(df.config.target_character_level)
-            df.set_tile(MimicTile(roomix, monster=monster), x=x, y=y)
-            num_mimics += 1
-        elif num_bookshelves < target_num_bookshelves:
-            if isinstance(room, CavernousRoom):
-                continue  # caverns don't have bookshelves
-            contents = lib.gen_bookshelf_horde(
-                df.config.target_character_level,
-                df.config.num_player_characters,
-            )
-            if not contents:
-                contents = ["Nothing!"]
-            df.set_tile(
-                BookshelfTile(roomix, contents="\n".join(contents)), x=x, y=y
-            )
-            num_bookshelves += 1
+        contents = lib.gen_horde(
+            df.config.target_character_level,
+            df.config.num_player_characters,
+        )
+        if not contents:
+            contents = ["Nothing!"]
+        df.set_tile(ChestTile(room.ix, contents="\n".join(contents)), x=x, y=y)
+        num_treasures += 1
+    for _ in range(target_num_mimics * 10):
+        if not eligible_rooms or num_mimics >= target_num_mimics:
+            break
+        room = random.choices(eligible_rooms, eligible_room_weights)[0]
+        coords = room.pick_tile(
+            df, unoccupied=True, avoid_corridor=True, prefer_wall=True
+        )
+        if not coords:
+            continue
+        x, y = coords
+        monster = Monster(mimic_info)
+        monster.adjust_cr(df.config.target_character_level)
+        df.set_tile(MimicTile(room.ix, monster=monster), x=x, y=y)
+        num_mimics += 1
+    for _ in range(target_num_bookshelves * 10):
+        if not bookshelf_rooms or num_bookshelves >= target_num_bookshelves:
+            break
+        room = random.choices(bookshelf_rooms, bookshelf_room_weights)[0]
+        coords = room.pick_tile(
+            df, unoccupied=True, avoid_corridor=True, prefer_wall=True
+        )
+        if not coords:
+            continue
+        x, y = coords
+        contents = lib.gen_bookshelf_horde(
+            df.config.target_character_level,
+            df.config.num_player_characters,
+        )
+        if not contents:
+            contents = ["Nothing!"]
+        df.set_tile(
+            BookshelfTile(room.ix, contents="\n".join(contents)), x=x, y=y
+        )
+        num_bookshelves += 1
 
 
 def place_monsters_in_dungeon(df):

@@ -117,15 +117,21 @@ class Corridor:
             o.append(df.traps[trapix].description())
         o.append(f"Light level: {self.light_level.capitalize()}")
         if verbose:
+            roomix_doors = {self.room1ix: None, self.room2ix: None}
             for doorix in self.doorixs:
                 door = df.doors[doorix]
                 assert len(door.roomixs) == 1
-                roomix = list(door.roomixs)[0]
+                roomix_doors[list(door.roomixs)[0]] = door
+            for roomix, door in roomix_doors.items():
+                way = "Passage to"
+                if door:
+                    way = "Door to"
                 room_name = f"Room {roomix}"
-                line = Doc(["Door to", DocLink(room_name)], separator=" ")
+                line = Doc([way, DocLink(room_name)], separator=" ")
                 door_l = [line]
-                for trapix in door.trapixs:
-                    door_l.append(df.traps[trapix].description())
+                if door:
+                    for trapix in door.trapixs:
+                        door_l.append(df.traps[trapix].description())
                 o.append(door_l)
         name = f"Corridor {self.name}"
         return Doc(DocBookmark(name, name), o)
