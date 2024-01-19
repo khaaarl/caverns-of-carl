@@ -418,13 +418,14 @@ def dungeon_to_tts_blob(df, name, pdf_filename=None):
     script_carrier["Locked"] = False
     df.tts_xz(5, -5, script_carrier)
     blob["ObjectStates"].append(script_carrier)
-    # Add tags for easy mass deletion.
+    # Add annotations for future easy mass deletion.
     for _obj in blob["ObjectStates"]:
         for obj in recurse_object(_obj):
-            tags = set(obj.get("Tags", []))
-            tags.add(TTS_SPAWNED_TAG)
-            tags.add(name_tag)
-            obj["Tags"] = list(tags)
+            gmnotes = obj.get("GMNotes", "")
+            if gmnotes:
+                gmnotes += "\n\n"
+            gmnotes += name_tag
+            obj["GMNotes"] = gmnotes
     return blob
 
 
