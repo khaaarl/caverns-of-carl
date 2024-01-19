@@ -24,7 +24,7 @@ from lib.room import Room, RectRoom, CavernousRoom
 import lib.features
 import lib.trap
 from lib.treasure import get_treasure_library
-from lib.utils import bfs, choice, dfs, eval_dice, neighbor_coords, samples
+from lib.utils import bfs, choice, dfs, eval_dice, neighbor_coords, random_dc, samples
 
 
 class RetriableDungeonographyException(Exception):
@@ -515,7 +515,10 @@ def place_doors_in_dungeon(df):
             tile = df.tiles[x][y]
             if not isinstance(tile, DoorTile):
                 continue
-            door = Door(Door.pick_type(df.config), corridor, x, y)
+            lock_dc = None
+            if random.random() < df.config.door_lock_percent * 100.1:
+                lock_dc = random_dc(df.config.target_character_level)
+            door = Door(Door.pick_type(df.config), corridor, x, y, lock_dc=lock_dc)
             df.add_door(door)
             for dx in [-1, 0, 1]:
                 for dy in [-1, 0, 1]:

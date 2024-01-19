@@ -1,4 +1,5 @@
 import functools
+import math
 import os
 import re
 import random
@@ -504,3 +505,9 @@ class Doc:
             for x in thing:
                 o.append(self._flat_thing(x))
         return StyledString(separator).join(o)
+
+
+def random_dc(level):
+    lo = int(math.floor(level * 0.7 + 8))
+    hi = int(math.ceil(level * 0.8 + 12))
+    return random.randrange(lo, hi + 1)

@@ -1,14 +1,8 @@
 import collections
-import copy
-import datetime
-import json
-import math
-import os
 import random
 import re
-import traceback
 
-from lib.utils import bfs, choice, dfs, expr_match_keywords, eval_dice, samples
+from lib.utils import random_dc
 
 
 _AREA_TRAP_TRIGGERS = [
@@ -170,9 +164,7 @@ class Trap:
         return f"{radius}' radius"
 
     def random_dc(self):
-        lo = int(math.floor(self.level * 0.7 + 8))
-        hi = int(math.ceil(self.level * 0.8 + 12))
-        return random.randrange(lo, hi)
+        return random_dc(self.level)
 
     def random_hit_bonus(self):
         mid = self.level * 0.65 + 2.5
