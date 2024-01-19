@@ -515,7 +515,7 @@ def place_doors_in_dungeon(df):
             tile = df.tiles[x][y]
             if not isinstance(tile, DoorTile):
                 continue
-            door = Door(Door.pick_type(df.config), x, y, corridor.ix)
+            door = Door(Door.pick_type(df.config), corridor, x, y)
             df.add_door(door)
             for dx in [-1, 0, 1]:
                 for dy in [-1, 0, 1]:

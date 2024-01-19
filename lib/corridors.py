@@ -125,7 +125,7 @@ class Corridor:
             for roomix, door in roomix_doors.items():
                 way = "Passage to"
                 if door:
-                    way = f"{door.door_type} to"
+                    way = f"{door.nickname()} to"
                 room_name = f"Room {roomix}"
                 line = Doc([way, DocLink(room_name)], separator=" ")
                 door_l = [line]
@@ -216,23 +216,57 @@ class CavernousCorridor(Corridor):
 
 
 class Door:
-    def __init__(self, door_type, x, y, corridorix, roomixs=None, lock_dc=None):
+    def __init__(self, door_type, corridor, x, y, roomixs=None, lock_dc=None):
         self.door_type = door_type
         self.x, self.y = x, y
-        self.corridorix = corridorix
+        self.corridorix = corridor.ix
+        self.width = corridor.width
         self.roomixs = set(roomixs or [])
         self.trapixs = set()
         self.ix = None
         self.lock_dc = lock_dc
-        self.thickness = Door.door_type_dict[self.door_type]["thickness"]
-        self.damage_threshold = Door.door_type_dict[self.door_type]["threshold"]
-        self.armor_class = Door.door_type_dict[self.door_type]["ac"]
-        self.health = Door.door_type_dict[self.door_type]["hp"]
+
+    def thickness(self):
+        return Door.door_type_dict[self.door_type]["thickness"]
+
+    def damage_threshold(self):
+        return Door.door_type_dict[self.door_type]["threshold"]
+
+    def armor_class(self):
+        return Door.door_type_dict[self.door_type]["ac"]
+
+    def health(self):
+        return Door.door_type_dict[self.door_type]["hp"]
+
+    def nickname(self):
+        nick = ""
+        if self.lock_dc is not None:
+            nick += "Locked "
+        size_prefix = {1: "Small", 2: "Large", 3: "Huge"}[self.width]
+        nick += f"{size_prefix} {self.door_type}"
+        return nick
+
+    def tts_nickname(self):
+        nick = f"{self.health()}/{self.health()} "
+        return nick + self.nickname()
+
+    def tts_description(self):
+        return "\n".join(
+            [
+                f"Armor Class: {self.armor_class()}",
+                f"Damage Threshold: {self.damage_threshold()}",
+            ]
+        )
+
+    def tts_gmnotes(self):
+        if self.lock_dc is not None:
+            return f"Lock DC: {self.lock_dc}"
+        return ""
 
     # name, thickness, damage threshold, armor class, hit points
     door_type_table = [
-        ("Simple Wooden Door", 1, 0, 15, 10),
-        ("Wooden Door", 2, 0, 15, 15),
+        ("Crude Wooden Door", 1, 0, 15, 10),
+        ("Simple Wooden Door", 2, 0, 15, 15),
         ("Heavy Wooden Door", 4, 10, 15, 25),
         ("Reinforced Wooden Door", 4, 15, 17, 40),
         ("Stone Door", 4, 25, 17, 60),
