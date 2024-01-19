@@ -637,6 +637,8 @@ def place_special_features_in_dungeon(df):
         room = df.rooms[roomix]
         room.special_featureixs.append(fix)
         features[fix].roomix = roomix
+    for feature in features:
+        feature.post_process(df)
 
 
 def place_treasure_in_dungeon(df):

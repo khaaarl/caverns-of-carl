@@ -226,6 +226,17 @@ class Door:
         self.ix = None
         self.lock_dc = lock_dc
 
+    def apply_minimum_door_strength(self, min_door_type):
+        min_row_ix = 0
+        cur_row_ix = 0
+        for rowix, row in enumerate(Door.door_type_table):
+            if row[0] == min_door_type:
+                min_row_ix = rowix
+            if row[0] == self.door_type:
+                cur_row_ix = rowix
+        if cur_row_ix < min_row_ix:
+            self.door_type = Door.door_type_table[min_row_ix][0]
+
     def thickness(self):
         return Door.door_type_dict[self.door_type]["thickness"]
 

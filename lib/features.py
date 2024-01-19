@@ -61,6 +61,9 @@ class SpecialFeature:
     def tts_handouts(self):
         return []
 
+    def post_process(self, df):
+        return
+
 
 class Blacksmith(SpecialFeature):
     def description(self, df, verbose=False):
@@ -164,6 +167,7 @@ class Deity:
         self.name = blob["Name"]
         self.full_title = blob.get("FullTitle", self.name)
         self.tts_altar_nickname = blob["TTSAltarNickname"]
+        self.minimum_door_strength = blob.get("MinimumDoorStrength")
         self.altar_descriptions = blob["AltarDescriptions"]
         self.requests = blob["Requests"]
         self.boons = blob["Boons"]
@@ -279,3 +283,11 @@ class Altar(SpecialFeature):
             if o.get("CustomMesh", {}).get("MeshURL") == ref_mesh:
                 for k in "rgb":
                     o["ColorDiffuse"][k] *= color_muls[k]
+
+    def post_process(self, df):
+        if self.deity.minimum_door_strength:
+            room = df.rooms[self.roomix]
+            for doorix in room.doorixs:
+                df.doors[doorix].apply_minimum_door_strength(
+                    self.deity.minimum_door_strength
+                )

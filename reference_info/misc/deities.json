@@ -30,6 +30,7 @@
             "Name": "Ssarthaxx",
             "FullTitle": "Ssarthaxx, The Eternal Flame",
             "TTSAltarNickname": "Blazing Altar",
+            "MinimumDoorStrength": "Stone Door",
             "AltarDescriptions": [
                 "You enter a chamber that radiates intense heat. The air shimmers and the temperature rises with each step forward. The walls of this cavernous room are lined with basalt and obsidian, and rivulets of molten lava flow in intricate patterns, casting a fiery glow that dances across the chamber.\n\nIn the room stands a grand altar, crafted from blackened stone carved with a scale motif and adorned with ruby inlays that seem to pulse with an inner light. Flames dance along its edges, never consuming the altar but lending it an aura of living fire.\n\nThe heat in the room is almost unbearable, a testament to the deity's raw power. The flickering shadows cast by the flames form mesmerizing, yet ominous patterns on the walls, creating an ambiance of both awe and trepidation.\n\n(Every time a creature enters or starts its turn in the room, it takes 1 fire damage, and unprotected flammable items will begin to burn)\n\nIntelligence (Religion) DC 10: This is the domain of Sarthax, The Eternal Flame, a deity of fire, destruction, and rebirth."
             ],
