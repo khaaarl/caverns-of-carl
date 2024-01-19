@@ -215,11 +215,11 @@
         ["37", "Daern's instant fortress"],
         ["38", "Dagger of venom"],
         ["39", "Dimensional shackles"],
-        ["40", "Dragon slayer"],
+        ["40", "Dragon slayer {sword}"],
         ["41", "Elven chain"],
         ["42", "Flame Tongue {sword}"],
         ["43", "Gem of seeing"],
-        ["44", "Giant slayer"],
+        ["44", "Giant slayer {sword}"],
         ["45", "Glamoured studded leather"],
         ["46", "Helm of teleportation"],
         ["47", "Horn of blasting"],
@@ -263,10 +263,10 @@
         ["85", "Staff of withering"],
         ["86", "Stone of controlling earth elementals"],
         ["87", "Sun blade"],
-        ["88", "Sword of life stealing"],
-        ["89", "Sword of wounding"],
+        ["88", "{sword} of life stealing"],
+        ["89", "{sword} of wounding"],
         ["90", "Tentacle rod"],
-        ["91", "Vicious weapon"],
+        ["91", "Vicious {weapon}"],
         ["92", "Wand of binding"],
         ["93", "Wand of enemy detection"],
         ["94", "Wand of fear"],
@@ -443,7 +443,7 @@
     },
     {
       "name": "weapon",
-      "variants": ["Battleaxe", "Blowgun", "Club", "Dagger", "Dart", "Flail", "Glaive", "Greataxe", "Greatclub", "Greatsword", "Halberd", "Hand Crossbow", "Handaxe", "Heavy", "Crossbow", "Javelin", "Lance", "Light Crossbow", "Light Hammer", "Longbow", "Longsword", "Mace", "Maul", "Morningstar", "Pike", "Quarterstaff", "Rapier", "Scimitar", "Shortbow", "Shortsword", "Sickle", "Sling", "Spear", "Trident", "War", "Pick", "Warhammer", "Whip"]
+      "variants": ["Battleaxe", "Blowgun", "Club", "Dagger", "Dart", "Flail", "Glaive", "Greataxe", "Greatclub", "Greatsword", "Halberd", "Hand Crossbow", "Handaxe", "Heavy", "Crossbow", "Javelin", "Lance", "Light Crossbow", "Light Hammer", "Longbow", "Longsword", "Mace", "Maul", "Morningstar", "Pike", "Quarterstaff", "Rapier", "Scimitar", "Shortbow", "Shortsword", "Sickle", "Sling", "Spear", "Trident", "War Pick", "Warhammer", "Whip"]
     },
     {
       "name": "ammunition",
