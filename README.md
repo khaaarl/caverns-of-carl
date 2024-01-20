@@ -2,9 +2,9 @@
 
 A (very inchoate) tool to generate random D&D 5e dungeons, and produce save games for Tabletop Simulator additive load. This is partially inspired by classic Roguelike games such as ADOM.
 
-UI Example Screenshot             |  In-TTS Example Screenshot
-:-------------------------:|:-------------------------:
-![UI Screenshot](https://raw.githubusercontent.com/khaaarl/caverns-of-carl/main/docs/screenshots/Screenshot-2024-01-09%20173040.jpg)  |  ![TTS Screenshot](https://raw.githubusercontent.com/khaaarl/caverns-of-carl/main/docs/screenshots/20240105213607_1.jpg)
+UI Example Screenshot  |  In-TTS Player Screenshot  |  In-TTS DM Screenshot
+:-------------------------:|:-------------------------:|:-------------------------:
+![UI Screenshot](https://raw.githubusercontent.com/khaaarl/caverns-of-carl/screenshots/docs/screenshots/Screenshot%202024-01-12%20202845.jpg)  |  ![TTS Player Screenshot](https://raw.githubusercontent.com/khaaarl/caverns-of-carl/screenshots/docs/screenshots/20240105213607_1.jpg)  |  ![TTS DM Screenshot](https://raw.githubusercontent.com/khaaarl/caverns-of-carl/screenshots/docs/screenshots/20240111154709_1.jpg)
 
 ## How to Use
 
