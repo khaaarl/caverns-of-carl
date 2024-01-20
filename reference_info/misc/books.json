@@ -632,8 +632,8 @@
         {
             "Title": "The Bold Barbarian and the Baker's Daughter",
             "Author": "Brogar Ironfist",
-            "Description": "A humorous book with a cover showing a muscular barbarian and a coy baker’s daughter. The story is filled with amusing situations and double entendres.",
-            "Synopsis": "This lighthearted tale recounts the adventures of a naive but heart-of-gold barbarian who falls in love with a witty baker’s daughter in a small village. Their courtship is full of comedic misunderstandings and playful exchanges, often revolving around baking metaphors.",
+            "Description": "A humorous book with a cover showing a muscular barbarian and a coy baker's daughter. The story is filled with amusing situations and double entendres.",
+            "Synopsis": "This lighthearted tale recounts the adventures of a naive but heart-of-gold barbarian who falls in love with a witty baker's daughter in a small village. Their courtship is full of comedic misunderstandings and playful exchanges, often revolving around baking metaphors.",
             "Excerpt": "'Your muscles are as well-kneaded as my dough, brave barbarian, but can your heart withstand the heat of my oven?' - Chapter 6",
             "AuthorBackground": "Brogar Ironfist, a retired adventurer-turned-writer, is known for his humorous storytelling that often pokes fun at classic adventure tropes.",
             "Keywords": [
@@ -812,10 +812,10 @@
         {
             "Title": "Lolth's Web: The Intricacies of Power",
             "Author": "Priestess Syluné Vrinn",
-            "Description": "An ornate book adorned with imagery of spiders and webs, symbolizing the goddess Lolth. The pages discuss the religious, political, and social structures under Lolth’s influence.",
+            "Description": "An ornate book adorned with imagery of spiders and webs, symbolizing the goddess Lolth. The pages discuss the religious, political, and social structures under Lolth's influence.",
             "Synopsis": "Priestess Syluné Vrinn, a devoted follower of Lolth, provides an in-depth analysis of the drow deity's influence on drow society. She explores the intricate power dynamics within drow cities, the role of priestesses, and the spiritual and political significance of Lolth's worship. The book is both a religious text and a guide to understanding the complex hierarchy of the drow.",
             "Excerpt": "'In the divine web of Lolth, each strand plays its part in the grand design, and to understand this is to master the art of power and survival.' - Chapter 6",
-            "AuthorBackground": "Syluné Vrinn, a high-ranking priestess, is a respected figure in drow society, known for her deep understanding of Lolth’s teachings and her manipulation of political power.",
+            "AuthorBackground": "Syluné Vrinn, a high-ranking priestess, is a respected figure in drow society, known for her deep understanding of Lolth's teachings and her manipulation of political power.",
             "Keywords": [
                 "Drow Religion",
                 "Lolth",
@@ -948,7 +948,7 @@
             "Title": "Sigil's Secrets: A Cutter's Guide to the City of Doors",
             "Author": "Jaris Quickfoot",
             "Description": "A practical and well-worn guidebook with a map of Sigil on its cover. The pages are filled with insider tips, local slang, and hidden gems known only to long-time residents.",
-            "Synopsis": "Jaris Quickfoot, a native rogue of Sigil, compiles a guide to the city's less-known locales and secrets. This book isn’t about grand landmarks; instead, it covers the back alleys, secret meeting places, and hidden portals only familiar to true Sigilites. It includes advice on navigating the city's complex politics and avoiding common pitfalls in the Cage.",
+            "Synopsis": "Jaris Quickfoot, a native rogue of Sigil, compiles a guide to the city's less-known locales and secrets. This book isn't about grand landmarks; instead, it covers the back alleys, secret meeting places, and hidden portals only familiar to true Sigilites. It includes advice on navigating the city's complex politics and avoiding common pitfalls in the Cage.",
             "Excerpt": "'In Sigil, the right shortcut can save your neck, but the wrong turn could land you in the dead-book. Know your burrows like you know your own bone-box.' - Chapter 2",
             "AuthorBackground": "A seasoned rogue and guide, Jaris Quickfoot has spent his life navigating the winding streets and complex social labyrinths of Sigil.",
             "Keywords": [
@@ -1460,7 +1460,7 @@
             "Race": "Gnome",
             "Description": "An imaginative book showcasing the intricate and whimsical art of gnomish puppetry, featuring detailed diagrams and colorful illustrations.",
             "Synopsis": "Tinkerbell Whizzlebang delves into the world of gnomish puppetry, a unique form of storytelling combining artistry, engineering, and magic. The book covers the history of puppetry among gnomes, puppet-making techniques, and famous puppeteers and their shows.",
-            "Excerpt": "Strings that dance, and wood that sings,\nIn every puppet’s heart, a tale it brings.\nCrafted with care, a story's delight,\nUnder moon’s soft glare, they come to life each night.",
+            "Excerpt": "Strings that dance, and wood that sings,\nIn every puppet's heart, a tale it brings.\nCrafted with care, a story's delight,\nUnder moon's soft glare, they come to life each night.",
             "Keywords": [
                 "Gnomish Puppetry",
                 "Storytelling",
@@ -1475,7 +1475,7 @@
             "Race": "Dragonborn",
             "Description": "An awe-inspiring book with a cover depicting dragonborn choirs and dragons. It explores the majestic and powerful form of choral music that is deeply rooted in dragonborn culture.",
             "Synopsis": "Syrathax Flamecrest, a renowned dragonborn maestro, captures the essence of draconic choirs. These choral performances are not only musical expressions but also a homage to their draconic heritage, featuring complex harmonies and melodies that emulate dragon roars and whispers. The book includes compositions, performance practices, and the cultural importance of these choirs.",
-            "Excerpt": "With voice as fire, with tone as scale,\nOur choir soars, our songs prevail.\nIn dragon’s cry, in ancient lore,\nOur hymns fly high, forevermore.",
+            "Excerpt": "With voice as fire, with tone as scale,\nOur choir soars, our songs prevail.\nIn dragon's cry, in ancient lore,\nOur hymns fly high, forevermore.",
             "Keywords": [
                 "Draconic Choirs",
                 "Dragonborn Culture",
