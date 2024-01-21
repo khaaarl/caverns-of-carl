@@ -93,14 +93,14 @@ def reference_objects():
     l.sort(key=lambda x: x.get("Nickname") or chr(255) * 30)
     for obj in l:
         name = obj.get("Nickname")
-        if name and name not in d:
-            d[name] = obj
+        if name and name.upper() not in d:
+            d[name.upper()] = obj
     for obj in l:
         if obj.get("Nickname", "").startswith("Reference Bag"):
             for o2 in recurse_bag(obj):
                 name = o2.get("Nickname")
-                if name and name not in d:
-                    d[name] = o2
+                if name and name.upper() not in d:
+                    d[name.upper()] = o2
     return d
 
 
@@ -128,6 +128,7 @@ def refresh_tts_guids(d):
 
 
 def reference_object(nickname):
+    nickname = nickname.upper()
     if nickname not in reference_objects():
         raise KeyError(
             f"Could not find nickname '{nickname}' in tts reference game"
