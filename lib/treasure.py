@@ -134,6 +134,16 @@ class TreasureLibrary:
                         tmp.append(item)
             tmp.sort()
             contents = contents + tmp
+        for _ in range(random.randrange(1, 5)):
+            if random.random() < 0.25:
+                contents.append(
+                    "Adventuring Gear: "
+                    + self.roll_on_table(f"PHB Adventuring Gear")
+                )
+        if random.random() < 0.1:
+            contents.append("Trinket: " + self.roll_on_table(f"PHB Trinkets"))
+        if random.random() < 0.1:
+            contents.append("Trinket: " + self.roll_on_table(f"EE Trinkets"))
         contents = [x for x in contents if x]
         return contents
 
