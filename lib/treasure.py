@@ -179,7 +179,6 @@ class TreasureLibrary:
                 k_lo = k
             if k >= gp and abs(k - gp) <= abs(k_hi - gp):
                 k_hi = k
-        print(lowest_key, highest_key, k_lo, k_hi, gp)
         if gp < k_lo:
             if random.random() < (gp / k_lo):
                 l.append(k_lo)
@@ -198,7 +197,6 @@ class TreasureLibrary:
                 l.append(k_hi)
             else:
                 l.append(k_lo)
-        print(l)
         l = [f"{treasure_type} ({k} gp): {random.choice(d[k])}" for k in l]
         return sorted(l)
 

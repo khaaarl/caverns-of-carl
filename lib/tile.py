@@ -305,9 +305,11 @@ class ChestTile(RoomFloorTile):
         obj = tts.reference_object("Chest Closed Tile")
         obj["Transform"]["rotY"] += rotY_away_from_wall(df, self.x, self.y)
         obj["Nickname"] = "Chest"
-        obj["States"]["2"]["Nickname"] = "Open Chest"
+        opened = obj["States"]["2"]
+        opened["Nickname"] = "Open Chest"
         if self.contents:
-            obj["States"]["2"]["Description"] = "Contents:\n" + self.contents
+            opened["Description"] = "Contents:\n" + self.contents
+            opened["ContainedObjects"] = self.tts_contained_objects()
         self._update_texture_style(obj, df)
         self._tts_light_mul(obj)
         self._update_tile_for_features(obj, df)
@@ -322,6 +324,51 @@ class ChestTile(RoomFloorTile):
     def is_chest(self):
         return True
 
+    def tts_contained_objects(self):
+        if self.contents == "Nothing!":
+            return []
+        return [
+            self.tts_object_from_one_contents(line)
+            for line in self.contents.split("\n")
+        ]
+
+    def tts_object_from_one_contents(self, line):
+        SCROLL_RE = r"^[sS]pell [sS]croll \((\d.. [lL]evel|cantrip)\).*$"
+        BOOK_RE = r"^[bB]ook: (.+)$"
+        GEM_RE = r"^Gemstone \((\d+) gp\): (.*)$"
+        tts_reference_name = None
+        nickname = None
+        description = None
+        m = re.match(BOOK_RE, line)
+        if m:
+            title = m.groups()[0].strip()
+            book = treasure.book_library()[title]
+            return book.tts_object()
+        m = re.match(SCROLL_RE, line)
+        if m:
+            if m.groups()[0] == "cantrip":
+                scroll_level = 0
+            else:
+                scroll_level = int(m.groups()[0][0])
+            if scroll_level < 3:
+                tts_reference_name = "Reference Scroll Low"
+            elif scroll_level < 6:
+                tts_reference_name = "Reference Scroll Medium"
+            else:
+                tts_reference_name = "Reference Scroll High"
+        m = re.match(GEM_RE, line)
+        if m:
+            gp, gem = m.groups()
+            tts_reference_name = f"{gem.strip().title()} ({int(gp):,}gp)"
+        try:
+            item = tts.reference_object(tts_reference_name or line)
+        except KeyError:
+            item = tts.reference_object("Unknown Object Token")
+        item["Nickname"] = nickname or line
+        if description:
+            item["Description"] = description
+        return item
+
 
 class BookshelfTile(ChestTile):
     def is_move_blocking(self):
@@ -331,39 +378,15 @@ class BookshelfTile(ChestTile):
         return "[1;93mB"
 
     def tts_objects(self, df):
-        scroll_re = r"^[sS]pell [sS]croll \((\d.. [lL]evel|cantrip)\).*$"
-        book_re = r"^[bB]ook: (.+)$"
         obj = tts.reference_object("Bookshelf Tile")
         obj["Transform"]["rotY"] += rotY_away_from_wall(df, self.x, self.y)
         obj["Nickname"] = "Bookshelf"
-        obj["States"]["2"]["Nickname"] = "Examined Bookshelf"
+        opened = obj["States"]["2"]
+        opened["Nickname"] = "Examined Bookshelf"
         if self.contents:
             opened = obj["States"]["2"]
             opened["Description"] = "Contents:\n" + self.contents
-            opened["ContainedObjects"] = opened.get("ContainedObjects", [])
-            for line in self.contents.split("\n"):
-                m = re.match(scroll_re, line)
-                if m:
-                    if m.groups()[0] == "cantrip":
-                        scroll_level = 0
-                    else:
-                        scroll_level = int(m.groups()[0][0])
-                    if scroll_level < 3:
-                        scroll_reference = "Reference Scroll Low"
-                    elif scroll_level < 6:
-                        scroll_reference = "Reference Scroll Medium"
-                    else:
-                        scroll_reference = "Reference Scroll High"
-                    item = tts.reference_object(scroll_reference)
-                    item["Nickname"] = line
-                    item["Description"] = ""
-                    opened["ContainedObjects"].append(item)
-                m = re.match(book_re, line)
-                if m:
-                    title = m.groups()[0].strip()
-                    book = treasure.book_library()[title]
-                    opened["ContainedObjects"].append(book.tts_object())
-
+            opened["ContainedObjects"] = self.tts_contained_objects()
         self._update_texture_style(obj, df)
         self._tts_light_mul(obj)
         self._update_tile_for_features(obj, df)
