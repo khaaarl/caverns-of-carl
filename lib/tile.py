@@ -344,6 +344,8 @@ class ChestTile(RoomFloorTile):
             title = m.groups()[0].strip()
             book = treasure.book_library()[title]
             return book.tts_object()
+        if re.match("^Scroll of Protection", line):
+            tts_reference_name = "Reference Scroll Low"
         m = re.match(SCROLL_RE, line)
         if m:
             if m.groups()[0] == "cantrip":
