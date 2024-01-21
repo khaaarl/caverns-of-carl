@@ -479,7 +479,7 @@
       "table": [
         ["01-15", "Potion of greater healing"],
         ["16-22", "Potion of fire breath"],
-        ["23-29", "Potion of resistance"],
+        ["23-29", "Potion of {resistance-damage-type} resistance"],
         ["30-34", "+1 {ammunition}"],
         ["35-39", "Potion of animal friendship"],
         ["40-44", "Potion of hill giant strength"],
@@ -891,6 +891,21 @@
     }
   ],
   "variants": [
+    {
+      "name": "resistance-damage-type",
+      "variants": [
+        "Acid",
+        "Cold",
+        "Fire",
+        "Force",
+        "Lightning",
+        "Necrotic",
+        "Poison",
+        "Psychic",
+        "Radiant",
+        "Thunder"
+      ]
+    },
     {
       "name": "sword",
       "variants": [

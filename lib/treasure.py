@@ -157,7 +157,7 @@ class TreasureLibrary:
                 * random.random()
                 * random.random()
             )
-        contents = [x for x in contents if x]
+        contents = [x.strip() for x in contents if x]
         return contents
 
     def gold_to_treasure(self, gp):

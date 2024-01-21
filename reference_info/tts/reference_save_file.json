@@ -1,7 +1,7 @@
 {
   "SaveName": "Minimalist Test Game",
-  "EpochTime": 1705858825,
-  "Date": "1/21/2024 12:40:25 PM",
+  "EpochTime": 1705860822,
+  "Date": "1/21/2024 1:13:42 PM",
   "VersionNumber": "v13.2.2",
   "GameMode": "Minimalist Test Game",
   "GameType": "Game",
@@ -565,7 +565,7 @@
         "posZ": -3.499999,
         "rotX": -1.47390156E-05,
         "rotY": 179.95462,
-        "rotZ": -5.59157124E-05,
+        "rotZ": -5.59157E-05,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -1114,7 +1114,7 @@
         "posZ": -17.95668,
         "rotX": 8.16436E-05,
         "rotY": 180.027237,
-        "rotZ": -2.60745546E-05,
+        "rotZ": -2.60745583E-05,
         "scaleX": 1.99723673,
         "scaleY": 1.0,
         "scaleZ": 1.99723673
@@ -1169,7 +1169,7 @@
         "posX": -17.95164,
         "posY": 0.9600002,
         "posZ": -17.9591675,
-        "rotX": 2.821502E-06,
+        "rotX": 2.821503E-06,
         "rotY": 180.032745,
         "rotZ": 0.000171528183,
         "scaleX": 1.99723673,
@@ -1853,7 +1853,7 @@
         "posX": -21.9438858,
         "posY": 0.9600043,
         "posZ": -9.96589851,
-        "rotX": -0.0009577876,
+        "rotX": -0.0009577874,
         "rotY": 179.911163,
         "rotZ": 0.000290249183,
         "scaleX": 1.99723673,
@@ -1910,7 +1910,7 @@
         "posX": -25.93852,
         "posY": 0.9600141,
         "posZ": -9.965653,
-        "rotX": -0.0006271665,
+        "rotX": -0.0006271667,
         "rotY": 179.936951,
         "rotZ": 0.000171475578,
         "scaleX": 1.99723673,
@@ -1967,7 +1967,7 @@
         "posX": -29.9340458,
         "posY": 0.9600015,
         "posZ": -9.955429,
-        "rotX": 1.89754883E-05,
+        "rotX": 1.89754955E-05,
         "rotY": 179.905609,
         "rotZ": -6.80506055E-05,
         "scaleX": 1.99723673,
@@ -2081,7 +2081,7 @@
         "posX": -25.9458942,
         "posY": 0.9600016,
         "posZ": -21.9521885,
-        "rotX": 6.03370172E-05,
+        "rotX": 6.03370281E-05,
         "rotY": 180.102676,
         "rotZ": 8.323856E-06,
         "scaleX": 1.99723673,
@@ -2140,7 +2140,7 @@
         "posZ": -21.9491158,
         "rotX": 0.0006297373,
         "rotY": 180.1745,
-        "rotZ": -0.000871520431,
+        "rotZ": -0.000871520548,
         "scaleX": 1.99723673,
         "scaleY": 1.0,
         "scaleZ": 1.99723673
@@ -2197,7 +2197,7 @@
         "posZ": -21.9561386,
         "rotX": 0.2997707,
         "rotY": 180.126,
-        "rotZ": 0.00097072823,
+        "rotZ": 0.000970728463,
         "scaleX": 1.99723673,
         "scaleY": 1.0,
         "scaleZ": 1.99723673
@@ -2496,7 +2496,7 @@
       "ColorDiffuse": {
         "r": 1.0,
         "g": 0.557261169,
-        "b": 0.3657375
+        "b": 0.365737468
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -3566,8 +3566,8 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.309887379,
-        "g": 0.254432648,
+        "r": 0.30988735,
+        "g": 0.254432619,
         "b": 1.0
       },
       "LayoutGroupSortIndex": 0,
@@ -4999,7 +4999,7 @@
       "ColorDiffuse": {
         "r": 1.0,
         "g": 0.557261169,
-        "b": 0.365737528
+        "b": 0.3657375
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -5554,7 +5554,7 @@
       },
       "ColorDiffuse": {
         "r": 1.0,
-        "g": 0.05950798,
+        "g": 0.05950796,
         "b": 0.0
       },
       "LayoutGroupSortIndex": 0,
@@ -16570,9 +16570,9 @@
         "posX": 19.5000076,
         "posY": 1.95999885,
         "posZ": -9.500004,
-        "rotX": -4.670946E-06,
+        "rotX": -4.670947E-06,
         "rotY": 359.9843,
-        "rotZ": -1.51949052E-06,
+        "rotZ": -1.51949075E-06,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -16755,7 +16755,8 @@
       "ColorDiffuse": {
         "r": 0.24999997,
         "g": 0.24999997,
-        "b": 0.24999997
+        "b": 0.24999997,
+        "a": 0.25
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -16802,9 +16803,9 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.298038363,
-        "g": 0.298038363,
-        "b": 0.298038363
+        "r": 0.2980383,
+        "g": 0.2980383,
+        "b": 0.2980383
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -16886,7 +16887,7 @@
         "posX": -4.49999857,
         "posY": 1.99999964,
         "posZ": -30.5,
-        "rotX": -8.462352E-06,
+        "rotX": -8.462353E-06,
         "rotY": 180.029953,
         "rotZ": -1.39607664E-05,
         "scaleX": 0.450000525,
@@ -17023,8 +17024,8 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.363947749,
-        "g": 0.379634,
+        "r": 0.363947719,
+        "g": 0.379633963,
         "b": 1.0
       },
       "LayoutGroupSortIndex": 0,
@@ -23966,7 +23967,7 @@
       "ColorDiffuse": {
         "r": 0.6862746,
         "g": 0.6827757,
-        "b": 0.215682358
+        "b": 0.215682328
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -28672,7 +28673,7 @@
         "posX": 5.99999475,
         "posY": 2.002863,
         "posZ": -31.9999981,
-        "rotX": 3.97789535E-07,
+        "rotX": 3.977896E-07,
         "rotY": 359.973053,
         "rotZ": -3.65419965E-07,
         "scaleX": 1.0,
@@ -28743,9 +28744,9 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.383698344,
-        "g": 0.2542289,
-        "b": 0.395468324
+        "r": 0.383698285,
+        "g": 0.25422883,
+        "b": 0.395468265
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -28784,7 +28785,7 @@
         "posZ": -30.9999962,
         "rotX": -9.627958E-07,
         "rotY": 179.975021,
-        "rotZ": -2.669222E-07,
+        "rotZ": -2.66922257E-07,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -28894,7 +28895,7 @@
         "posZ": -32.9999962,
         "rotX": -2.779764E-07,
         "rotY": 180.025467,
-        "rotZ": 9.55336859E-08,
+        "rotZ": 9.55337E-08,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -29294,7 +29295,7 @@
         "posZ": -27.4999943,
         "rotX": -5.705093E-07,
         "rotY": 359.978271,
-        "rotZ": 2.26416333E-07,
+        "rotZ": 2.2641639E-07,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -29415,7 +29416,7 @@
         "posY": 2.0,
         "posZ": -27.4999943,
         "rotX": -4.06594154E-06,
-        "rotY": 0.0305634663,
+        "rotY": 0.0305634718,
         "rotZ": 5.834261E-07,
         "scaleX": 1.0,
         "scaleY": 1.0,
@@ -30237,7 +30238,7 @@
         "posX": 17.5000019,
         "posY": 1.844447,
         "posZ": -31.4999981,
-        "rotX": 0.000103478895,
+        "rotX": 0.000103478909,
         "rotY": 179.924454,
         "rotZ": -5.19837158E-05,
         "scaleX": 1.0,
@@ -30347,9 +30348,9 @@
         "posX": 11.5,
         "posY": 2.00049829,
         "posZ": -48.5,
-        "rotX": -3.08081981E-05,
+        "rotX": -3.08082053E-05,
         "rotY": 14.9969234,
-        "rotZ": -1.23265936E-05,
+        "rotZ": -1.23265954E-05,
         "scaleX": 0.2,
         "scaleY": 0.2,
         "scaleZ": 0.2
@@ -30400,9 +30401,9 @@
         "posX": 56.39011,
         "posY": 2.07,
         "posZ": -89.49536,
-        "rotX": -9.833914E-10,
-        "rotY": 4.90423169E-08,
-        "rotZ": 1.16018064E-07,
+        "rotX": 3.06842445E-08,
+        "rotY": 5.07745419E-08,
+        "rotZ": 1.397155E-08,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -32199,7 +32200,7 @@
         "posX": 36.0,
         "posY": 2.01437664,
         "posZ": -35.0,
-        "rotX": 2.19179654E-07,
+        "rotX": 2.19179711E-07,
         "rotY": 359.968,
         "rotZ": 2.02966547E-07,
         "scaleX": 0.5,
@@ -32723,9 +32724,9 @@
         "posX": 41.0,
         "posY": 2.3217032,
         "posZ": -34.0,
-        "rotX": 4.444561E-07,
+        "rotX": 4.44456219E-07,
         "rotY": 178.220215,
-        "rotZ": -1.38898292E-06,
+        "rotZ": -1.38898315E-06,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -32739,7 +32740,7 @@
         "z": 0.0
       },
       "ColorDiffuse": {
-        "r": 0.184012979,
+        "r": 0.18401292,
         "g": 0.0,
         "b": 1.0
       },
@@ -32778,9 +32779,9 @@
         "posX": 39.9913673,
         "posY": 1.75223482,
         "posZ": -32.9968452,
-        "rotX": -3.10739847E-06,
+        "rotX": -3.1073987E-06,
         "rotY": 176.849716,
-        "rotZ": -7.58434544E-06,
+        "rotZ": -7.584347E-06,
         "scaleX": 1.0,
         "scaleY": 1.0,
         "scaleZ": 1.0
@@ -32796,7 +32797,7 @@
       "ColorDiffuse": {
         "r": 0.926762342,
         "g": 1.0,
-        "b": 0.3224799
+        "b": 0.322479844
       },
       "LayoutGroupSortIndex": 0,
       "Value": 0,
@@ -32970,7 +32971,7 @@
       },
       "ColorDiffuse": {
         "r": 0.914634,
-        "g": 0.33940205,
+        "g": 0.33940202,
         "b": 0.7050705
       },
       "LayoutGroupSortIndex": 0,
@@ -33515,7 +33516,7 @@
         "posX": 35.0,
         "posY": 2.01437664,
         "posZ": -34.0,
-        "rotX": -1.53244662E-06,
+        "rotX": -1.53244684E-06,
         "rotY": 359.968,
         "rotZ": 1.89147812E-07,
         "scaleX": 0.5,
@@ -33849,7 +33850,7 @@
       },
       "ColorDiffuse": {
         "r": 0.627,
-        "g": 0.124999516,
+        "g": 0.124999486,
         "b": 0.941
       },
       "LayoutGroupSortIndex": 0,
@@ -48746,6 +48747,2801 @@
           "LuaScript": "",
           "LuaScriptState": "",
           "XmlUI": ""
+        }
+      ]
+    },
+    {
+      "GUID": "cdc96e",
+      "Name": "Bag",
+      "Transform": {
+        "posX": -29.5,
+        "posY": 0.874987364,
+        "posZ": -12.4999971,
+        "rotX": 9.36136348E-05,
+        "rotY": -0.000215517633,
+        "rotZ": 0.000192570777,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "scaleZ": 1.0
+      },
+      "Nickname": "Reference Bag of Potions",
+      "Description": "",
+      "GMNotes": "",
+      "AltLookAngle": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "ColorDiffuse": {
+        "r": 0.7058823,
+        "g": 0.366520882,
+        "b": 0.0
+      },
+      "LayoutGroupSortIndex": 0,
+      "Value": 0,
+      "Locked": true,
+      "Grid": true,
+      "Snap": true,
+      "IgnoreFoW": false,
+      "MeasureMovement": false,
+      "DragSelectable": true,
+      "Autoraise": true,
+      "Sticky": true,
+      "Tooltip": true,
+      "GridProjection": false,
+      "HideWhenFaceDown": false,
+      "Hands": false,
+      "MaterialIndex": -1,
+      "MeshIndex": -1,
+      "Bag": {
+        "Order": 0
+      },
+      "LuaScript": "",
+      "LuaScriptState": "",
+      "XmlUI": "",
+      "ContainedObjects": [
+        {
+          "GUID": "24c45a",
+          "Name": "Bag",
+          "Transform": {
+            "posX": 67.70254,
+            "posY": -2.04389572,
+            "posZ": 21.6082783,
+            "rotX": -4.53566685E-07,
+            "rotY": -0.000105140869,
+            "rotZ": 5.002583E-07,
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "scaleZ": 1.0
+          },
+          "Nickname": "Misc Potions",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.7058823,
+            "g": 0.366520882,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": false,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": true,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "MaterialIndex": -1,
+          "MeshIndex": -1,
+          "Bag": {
+            "Order": 0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": "",
+          "ContainedObjects": [
+            {
+              "GUID": "e7da6f",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 71.66714,
+                "posY": -1.89972126,
+                "posZ": 15.7621965,
+                "rotX": -1.65144211E-05,
+                "rotY": 0.0341594778,
+                "rotZ": -1.35934852E-06,
+                "scaleX": 0.750000656,
+                "scaleY": 0.750000656,
+                "scaleZ": 0.750000656
+              },
+              "Nickname": "Potion of Invisibility",
+              "Description": "This potion's container looks empty but feels as though it holds liquid. When you drink it, you become invisible for 1 hour. Anything you wear or carry is invisible with you. The effect ends early if you attack or cast a spell.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.5487805,
+                "g": 0.5487805,
+                "b": 0.5487805
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090167465868910/A729AE81F6CFFE590A9F66F776B6085F683F4408/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090167465869226/63189D0B5E1253A9E162B7D26F67A30F5FBC4C9F/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5388889
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "b346fa",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 66.56284,
+                "posY": -2.13884878,
+                "posZ": 15.7621918,
+                "rotX": -5.25100659E-05,
+                "rotY": 0.02714579,
+                "rotZ": -2.415066E-05,
+                "scaleX": 0.450000942,
+                "scaleY": 0.450000942,
+                "scaleZ": 0.450000942
+              },
+              "Nickname": "Potion of Remove Disease",
+              "Description": "Drinking this potion cures all diseases that the subject is suffering from.  Certain special diseases may not be affected by this potion.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.420232922,
+                "g": 0.7857142,
+                "b": 0.785714269
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662254/85B0E9A56360F99CE41C7A9A68E439F8ABC21263/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662710/880F4FDA2FB0C4433DA9E7920D923E8C58D78C47/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5055555
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "a49514",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 66.56284,
+                "posY": -2.20868063,
+                "posZ": 13.97835,
+                "rotX": 1.64009612E-06,
+                "rotY": 0.0311217569,
+                "rotZ": 7.76821651E-07,
+                "scaleX": 0.475000829,
+                "scaleY": 0.475000829,
+                "scaleZ": 0.475000829
+              },
+              "Nickname": "Potion of Water Breathing",
+              "Description": "You can breathe underwater for 1 hour after drinking this potion. Its cloudy green fluid smells of the sea and has a jellyfish-like bubble floating in it.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.3765393,
+                "g": 0.83449465,
+                "b": 0.764529467
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394664611/27D9FA9A71A53CCEEA1C3C5B640961A0FF43906B/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394664918/0CF1D389F6D0E2BAC4A09972D21E9D7F4BE0424D/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.488888383
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "b107a8",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 64.8605,
+                "posY": -1.94579709,
+                "posZ": 15.7624283,
+                "rotX": 359.991943,
+                "rotY": 0.0218874179,
+                "rotZ": 0.0218790043,
+                "scaleX": 0.250000715,
+                "scaleY": 0.250000715,
+                "scaleZ": 0.250000715
+              },
+              "Nickname": "Potion of Climbing",
+              "Description": "When you drink this potion, you gain a climbing speed equal to your walking speed for 1 hour. During this time, you have advantage on Strength (Athletics) checks you make to climb. The potion is separated into brown, silver, and gray layers resembling bands of stone. Shaking the bottle fails to mix the colors.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.691637754,
+                "g": 0.500051737,
+                "b": 0.372326732
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394663948/4708E199C0C4C45CF35B75A1F3589A1B3E142CF0/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394664339/96C2E3951F8064313F2C1A0D93D78ED9BFA46762/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 0,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5055554
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "25229b",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 76.77144,
+                "posY": -2.20868039,
+                "posZ": 15.7621937,
+                "rotX": 2.09256041E-06,
+                "rotY": 359.9767,
+                "rotZ": 1.908018E-06,
+                "scaleX": 0.475000829,
+                "scaleY": 0.475000829,
+                "scaleZ": 0.475000829
+              },
+              "Nickname": "Potion of Fire Breath",
+              "Description": "After drinking this potion, you can use a bonus action to exhale fire at a target within 30 feet of you. The target must make a DC 13 Dexterity saving throw, taking 4d6 fire damage on a failed save, or half as much damage on a successful one. The effect ends after you exhale the fire three times or when 1 hour has passed. This potion's orange liquid flickers, and smoke fills the top of the container and wafts out whenever it is opened.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 1.0,
+                "g": 0.0,
+                "b": 0.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394664611/27D9FA9A71A53CCEEA1C3C5B640961A0FF43906B/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394664918/0CF1D389F6D0E2BAC4A09972D21E9D7F4BE0424D/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.488888383
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "925919",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 63.15998,
+                "posY": -2.08862829,
+                "posZ": 15.7621918,
+                "rotX": -5.43329043E-06,
+                "rotY": -0.002946675,
+                "rotZ": -5.56689474E-06,
+                "scaleX": 0.875000536,
+                "scaleY": 0.875000536,
+                "scaleZ": 0.875000536
+              },
+              "Nickname": "Potion of Animal Friendship",
+              "Description": "When you drink this potion, you can cast the animal friendship spell (save DC 13) for 1 hour at will. Agitating this muddy liquid brings little bits into view: a fish scale, a hummingbird tongue, a cat claw, or a squirrel hair.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.231706351,
+                "g": 0.11762888,
+                "b": 0.04157749
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090167465917462/2B59A016683F18507D47E61E4914E37112AC1E52/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090167465917758/14A9C0A2C0BB7E8FEBEE27407A853E8B6B47A285/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5388889
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "811f27",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 76.77144,
+                "posY": -2.065319,
+                "posZ": 13.9783468,
+                "rotX": -3.71926035E-05,
+                "rotY": -0.00259146234,
+                "rotZ": -3.37900346E-05,
+                "scaleX": 0.625000358,
+                "scaleY": 0.625000358,
+                "scaleZ": 0.625000358
+              },
+              "Nickname": "Potion of Hill Giant Strength",
+              "Description": "When you drink this potion, your strength score changes to 21 for 1 hour. The potion has no effect on you if your strength is equal to or greater than that score.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.608014047,
+                "g": 0.400186718,
+                "b": 0.261635751
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662254/85B0E9A56360F99CE41C7A9A68E439F8ABC21263/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662710/880F4FDA2FB0C4433DA9E7920D923E8C58D78C47/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5055555
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "db2597",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 75.07001,
+                "posY": -2.17492771,
+                "posZ": 13.9783478,
+                "rotX": 4.750327E-05,
+                "rotY": 0.009272143,
+                "rotZ": 4.91144874E-06,
+                "scaleX": 0.250001,
+                "scaleY": 0.250001,
+                "scaleZ": 0.250001
+              },
+              "Nickname": "Potion of Growth",
+              "Description": "When you drink this potion, you gain the \"enlarge\" effect of the enlarge/reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously expands from a tiny bead to color the clear liquid around it and then contracts. Shaking the bottle fails to interrupt this process.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.8117647,
+                "g": 0.352940142,
+                "b": 0.352940142
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394663047/016E352542D3A19EE0C1C33668AE1B1BCEC77173/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394663346/3527BB98F13E9F8A18EF7C29D81ABC936AFDE5C1/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.505555034
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "73ec1e",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 73.37218,
+                "posY": -1.99051833,
+                "posZ": 13.97602,
+                "rotX": -0.000386081432,
+                "rotY": -5.46393057E-05,
+                "rotZ": -0.00059708854,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Poison",
+              "Description": "When you drink this potion, you take 3d6 poison damage, and you must succeed on a DC 13 Constitution saving throw or be poisoned. At the start of each of your turns while you are poisoned in this way, you take 3d6 poison damage. At the end of each of your turns, you can repeat the saving throw. On a successful save, the poison damage you take on your subsequent turns decreases by 1d6.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.0,
+                "g": 0.8784314,
+                "b": 0.03529412
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090167464228131/76C5F85564B8A456A485208928B83C9A61974E9C/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090167464228446/E101F6E84E464401B7613AE725CE0C541CFEE23C/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5388889
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "e71086",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 75.07,
+                "posY": -1.985362,
+                "posZ": 15.7621946,
+                "rotX": -3.456679E-05,
+                "rotY": -0.000103814964,
+                "rotZ": -4.83317272E-05,
+                "scaleX": 0.6000011,
+                "scaleY": 0.6000011,
+                "scaleZ": 0.6000011
+              },
+              "Nickname": "Potion of Clairvoyance",
+              "Description": "When you drink this potion, you gain the effect of the clairvoyance spell.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.93554014,
+                "g": 0.9297768,
+                "b": 0.376496881
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090167466592409/EDA1F4632BF3C29A265AA95DD0EE4BC931E3D313/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090167466592854/8E4DB2A1A3FE6AD82C65A7BBE05B0875D2C0DE1C/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5388889
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "226a51",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 71.66714,
+                "posY": -2.12965059,
+                "posZ": 13.9783516,
+                "rotX": -1.80451053E-07,
+                "rotY": 359.978638,
+                "rotZ": -3.26430632E-06,
+                "scaleX": 0.7250007,
+                "scaleY": 0.7250007,
+                "scaleZ": 0.7250007
+              },
+              "Nickname": "Potion of Diminution",
+              "Description": "When you drink this potion, you gain the \"reduce\" effect of the enlarge/reduce spell for 1d4 hours (no concentration required). The red in the potion's liquid continuously contracts to a tiny bead and then expands to color the clear liquid around it. Shaking the bottle fails to interrupt this process.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.813589,
+                "g": 0.355767,
+                "b": 0.355767
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090167465963435/E0250E91FAF2E8E0A01096E77BE9B9AC745DAB0F/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090167465963751/2365B0CA26AA8C2B4826D94302A3853DFBA2B70A/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5388889
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "543a1c",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 64.86141,
+                "posY": -2.09546518,
+                "posZ": 13.9783478,
+                "rotX": 4.42106966E-07,
+                "rotY": -0.000196790235,
+                "rotZ": -1.48234892E-06,
+                "scaleX": 0.85000056,
+                "scaleY": 0.85000056,
+                "scaleZ": 0.85000056
+              },
+              "Nickname": "Potion Gaseous Form",
+              "Description": "When you drink this potion, you gain the effect of the gaseous form spell for 1 hour (no concentration required) or until you end the effect as a bonus action.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.752239943,
+                "g": 0.8059713,
+                "b": 0.8101045
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090167465917462/2B59A016683F18507D47E61E4914E37112AC1E52/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090167465917758/14A9C0A2C0BB7E8FEBEE27407A853E8B6B47A285/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5388889
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "5fc9ae",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 73.368576,
+                "posY": -2.01512337,
+                "posZ": 15.7621946,
+                "rotX": -6.252203E-05,
+                "rotY": 0.009109575,
+                "rotZ": 2.96059716E-05,
+                "scaleX": 0.7250007,
+                "scaleY": 0.7250007,
+                "scaleZ": 0.7250007
+              },
+              "Nickname": "Potion of Heroism",
+              "Description": "For 1 hour after drinking it, you gain 10 temporary hit points that last for 1 hour. For the same duration, you are under the effect of the bless spell (no concentration required).",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.160207868,
+                "g": 0.414558828,
+                "b": 0.7996516
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394665255/AB9F5DDF7190538E787D4965A963D40BCBE8B3C4/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394665571/E3AF398E96D82932781A9DF8E344B622F87E3F7C/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5000002
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "ca2215",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 68.2642746,
+                "posY": -1.9710747,
+                "posZ": 15.7621994,
+                "rotX": -0.000159018164,
+                "rotY": 0.0149082141,
+                "rotZ": 9.484275E-06,
+                "scaleX": 0.625000834,
+                "scaleY": 0.625000834,
+                "scaleZ": 0.625000834
+              },
+              "Nickname": "Potion of Mind Reading",
+              "Description": "When you drink this potion, you gain the effect of the detect thoughts spell (save DC 13).",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.69415313,
+                "g": 0.238058776,
+                "b": 0.7229966
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090167466593298/EBB3B379C77326E0C583F8182F20EE5C1117C010/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090167466593613/90516364E37CCE24BC4D0BC4AD1F3BBA231A8135/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5388889
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "779aa5",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 69.96623,
+                "posY": -1.94579852,
+                "posZ": 15.7629871,
+                "rotX": 0.02158472,
+                "rotY": 359.980377,
+                "rotZ": -0.000407496875,
+                "scaleX": 0.250000715,
+                "scaleY": 0.250000715,
+                "scaleZ": 0.250000715
+              },
+              "Nickname": "Potion of Speed",
+              "Description": "When you drink this potion, you gain the effect of the haste spell for 1 minute (no concentration required). The potion's yellow fluid is streaked with black and swirls on its own.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.8186532,
+                "g": 0.831010461,
+                "b": 0.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394663948/4708E199C0C4C45CF35B75A1F3589A1B3E142CF0/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394664339/96C2E3951F8064313F2C1A0D93D78ED9BFA46762/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 0,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5055554
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "07751f",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 69.9657059,
+                "posY": -2.06272149,
+                "posZ": 13.9783516,
+                "rotX": 2.47089065E-05,
+                "rotY": 0.00139046484,
+                "rotZ": 1.92383553E-07,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Flying",
+              "Description": "When you drink this potion, you gain a flying speed equal to your walking speed for 1 hour and can hover. If you're in the air when the potion wears off, you fall unless you have some other means of staying aloft. This potion's clear liquid floats at the top of its container and has cloudy white impurities drifting in it.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.7995939,
+                "g": 0.846676946,
+                "b": 0.9912892
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661650/9A54C94C2D6DCD0388F2525583AFC1B9A6F44A7D/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661920/E1314A3E63D7F519071697148D85FB552FF2CF6B/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.499999821
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "ae9a4e",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 63.15998,
+                "posY": -2.33701038,
+                "posZ": 13.9783478,
+                "rotX": 1.7221595E-05,
+                "rotY": 0.0108661987,
+                "rotZ": -6.607161E-06,
+                "scaleX": 0.5950004,
+                "scaleY": 0.5950004,
+                "scaleZ": 0.5950004
+              },
+              "Nickname": "Potion of Longevity",
+              "Description": "When you drink this potion, your physical age is reduced by 1d6 + 6 years, to a minimum of 13 years. Each time you subsequently drink a potion of longevity, there is a 10 percent cumulative chance that you instead age by 1d6 + 6 years. Suspended in this amber liquid are a scorpion's tail, an adder's fang, a dead spider, and a tiny heart that, against all reason, is still beating. These ingredients vanish when the potion is opened.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.9912892,
+                "g": 0.0051808483,
+                "b": 0.8079983
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/779602816759274557/D88FA10D4E991082ECFEFDFA064DAFDA5E6BC3CF/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/779602816759275398/886F440368A5A2D1810924663538FBDCD364B679/",
+                "NormalURL": "",
+                "ColliderURL": "",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0
+                  },
+                  "SpecularIntensity": 10.0,
+                  "SpecularSharpness": 7.499999,
+                  "FresnelStrength": 0.9166665
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "491fd1",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 68.26348,
+                "posY": -1.75474393,
+                "posZ": 13.9790182,
+                "rotX": 0.0102771083,
+                "rotY": 359.974121,
+                "rotZ": 359.989044,
+                "scaleX": 0.375000745,
+                "scaleY": 0.375000745,
+                "scaleZ": 0.375000745
+              },
+              "Nickname": "Potion of Vitality",
+              "Description": "When you drink this potion, it removes any exhaustion you are suffering and cures any disease or poison affecting you. For the next 24 hours, you regain the maximum number of hit points for any Hit Die you spend. The potion's crimson liquid regularly pulses with dull light, calling to mind a heartbeat.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.4498148,
+                "g": 0.0,
+                "b": 1.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394663948/4708E199C0C4C45CF35B75A1F3589A1B3E142CF0/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394664339/96C2E3951F8064313F2C1A0D93D78ED9BFA46762/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 0,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5055554
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            }
+          ]
+        },
+        {
+          "GUID": "dcf7a6",
+          "Name": "Bag",
+          "Transform": {
+            "posX": 75.70262,
+            "posY": 0.8182433,
+            "posZ": 11.60831,
+            "rotX": 2.50462131E-06,
+            "rotY": -7.296425E-05,
+            "rotZ": -3.68856854E-06,
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "scaleZ": 1.0
+          },
+          "Nickname": "Healing Potions",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.7058823,
+            "g": 0.366520882,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": false,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": true,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "MaterialIndex": -1,
+          "MeshIndex": -1,
+          "Bag": {
+            "Order": 0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": "",
+          "ContainedObjects": [
+            {
+              "GUID": "0ba271",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 79.2126846,
+                "posY": -1.51261389,
+                "posZ": 4.5205307,
+                "rotX": 359.1359,
+                "rotY": 359.45993,
+                "rotZ": 358.783966,
+                "scaleX": 0.900000751,
+                "scaleY": 0.900000751,
+                "scaleZ": 0.900000751
+              },
+              "Nickname": "Potion of Supreme Healing",
+              "Description": "When you drink this potion you heal for 10d4+20 Health",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 1.0,
+                "g": 0.0,
+                "b": 0.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394660800/1D54B9ACB52B7FBA5DF262124F7B89FDC7B4781F/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661331/22733E70A3F1E2D56CC5056C77934C867837EB79/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.49999997
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "caf191",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 76.57354,
+                "posY": -1.57897115,
+                "posZ": 6.510873,
+                "rotX": 0.0005689676,
+                "rotY": 345.0005,
+                "rotZ": 0.0149685312,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Healing",
+              "Description": "When you drink this potion you heal for 2d4+2 Health",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.5499999,
+                "g": 0.0,
+                "b": 0.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090167464228131/76C5F85564B8A456A485208928B83C9A61974E9C/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090167464228446/E101F6E84E464401B7613AE725CE0C541CFEE23C/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5388889
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "394611",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 77.30496,
+                "posY": -1.64390838,
+                "posZ": 4.952947,
+                "rotX": -0.005482107,
+                "rotY": 104.99485,
+                "rotZ": 359.981079,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Greater Healing",
+              "Description": "When you drink this potion you heal for 4d4+4 Health",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.7,
+                "g": 0.0,
+                "b": 0.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394659842/8F29A37CF1165527079DC55379510D3602BF2BD9/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394660532/6F9BBD72007E0B8C52D5B60FE5E4B33FD231692A/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.511111259
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "10eb80",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 79.99258,
+                "posY": -1.61750615,
+                "posZ": 6.45403528,
+                "rotX": 0.00737866061,
+                "rotY": 330.013245,
+                "rotZ": 359.980469,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Superior Healing",
+              "Description": "When you drink this potion you heal for 8d4+8 Health",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.85,
+                "g": 0.0,
+                "b": 0.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394656103/ECC0BDFD14736593ACFAD7A24D1383D4A2788DF7/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394659420/FF4ACE59D3DD2BCECE875A2C5FC01EA05F413568/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5388889
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            }
+          ]
+        },
+        {
+          "GUID": "d716f9",
+          "Name": "Bag",
+          "Transform": {
+            "posX": 71.70262,
+            "posY": 0.818242133,
+            "posZ": 11.60831,
+            "rotX": 1.068884E-06,
+            "rotY": -3.781948E-05,
+            "rotZ": -9.33817859E-08,
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "scaleZ": 1.0
+          },
+          "Nickname": "Strength Potions",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.7058823,
+            "g": 0.366520882,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": false,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": true,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "MaterialIndex": -1,
+          "MeshIndex": -1,
+          "Bag": {
+            "Order": 0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": "",
+          "ContainedObjects": [
+            {
+              "GUID": "8ed4a0",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 74.69385,
+                "posY": -1.636362,
+                "posZ": 4.434273,
+                "rotX": 358.290863,
+                "rotY": 0.429399,
+                "rotZ": 1.59817791,
+                "scaleX": 0.625000358,
+                "scaleY": 0.625000358,
+                "scaleZ": 0.625000358
+              },
+              "Nickname": "Potion of Storm Giant Strength",
+              "Description": "When you drink this potion, your strength score changes to 29 for 1 hour. The potion has no effect on you if your strength is equal to or greater than that score.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.791291,
+                "g": 0.3153302,
+                "b": 1.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662254/85B0E9A56360F99CE41C7A9A68E439F8ABC21263/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662710/880F4FDA2FB0C4433DA9E7920D923E8C58D78C47/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5055555
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "bf838c",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 74.69288,
+                "posY": -1.65377164,
+                "posZ": 5.883281,
+                "rotX": -2.43176619E-05,
+                "rotY": 359.991882,
+                "rotZ": -3.24608081E-05,
+                "scaleX": 0.625000358,
+                "scaleY": 0.625000358,
+                "scaleZ": 0.625000358
+              },
+              "Nickname": "Potion of Hill Giant Strength",
+              "Description": "When you drink this potion, your strength score changes to 21 for 1 hour. The potion has no effect on you if your strength is equal to or greater than that score.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.608014047,
+                "g": 0.400186777,
+                "b": 0.2616358
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662254/85B0E9A56360F99CE41C7A9A68E439F8ABC21263/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662710/880F4FDA2FB0C4433DA9E7920D923E8C58D78C47/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5055555
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "bc4405",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 73.31174,
+                "posY": -1.6537714,
+                "posZ": 5.883285,
+                "rotX": -4.84371449E-05,
+                "rotY": -0.00071985973,
+                "rotZ": 4.0660987E-05,
+                "scaleX": 0.625000358,
+                "scaleY": 0.625000358,
+                "scaleZ": 0.625000358
+              },
+              "Nickname": "Potion of Stone Giant Strength",
+              "Description": "When you drink this potion, your strength score changes to 23 for 1 hour. The potion has no effect on you if your strength is equal to or greater than that score.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.6149825,
+                "g": 0.6149825,
+                "b": 0.6149825
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662254/85B0E9A56360F99CE41C7A9A68E439F8ABC21263/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662710/880F4FDA2FB0C4433DA9E7920D923E8C58D78C47/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5055555
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "ba52d4",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 76.07402,
+                "posY": -1.65377164,
+                "posZ": 4.43620825,
+                "rotX": -2.73123369E-05,
+                "rotY": -0.00246700365,
+                "rotZ": 2.86623053E-05,
+                "scaleX": 0.625000358,
+                "scaleY": 0.625000358,
+                "scaleZ": 0.625000358
+              },
+              "Nickname": "Potion of Frost Giant Strength",
+              "Description": "When you drink this potion, your strength score changes to 23 for 1 hour. The potion has no effect on you if your strength is equal to or greater than that score.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.420232981,
+                "g": 0.7857142,
+                "b": 0.785714269
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662254/85B0E9A56360F99CE41C7A9A68E439F8ABC21263/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662710/880F4FDA2FB0C4433DA9E7920D923E8C58D78C47/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5055555
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "c7ff0b",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 76.07402,
+                "posY": -1.6537714,
+                "posZ": 5.883283,
+                "rotX": -4.77122048E-05,
+                "rotY": -0.0008369466,
+                "rotZ": 3.65004562E-05,
+                "scaleX": 0.625000358,
+                "scaleY": 0.625000358,
+                "scaleZ": 0.625000358
+              },
+              "Nickname": "Potion of Cloud Giant Strength",
+              "Description": "When you drink this potion, your strength score changes to 27 for 1 hour. The potion has no effect on you if your strength is equal to or greater than that score.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.6745098,
+                "g": 0.8620601,
+                "b": 1.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662254/85B0E9A56360F99CE41C7A9A68E439F8ABC21263/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662710/880F4FDA2FB0C4433DA9E7920D923E8C58D78C47/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5055555
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "63a417",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 73.31174,
+                "posY": -1.6537714,
+                "posZ": 4.43620634,
+                "rotX": -7.314534E-05,
+                "rotY": 359.9894,
+                "rotZ": 2.51045112E-05,
+                "scaleX": 0.625000358,
+                "scaleY": 0.625000358,
+                "scaleZ": 0.625000358
+              },
+              "Nickname": "Potion of Fire Giant Strength",
+              "Description": "When you drink this potion, your strength score changes to 25 for 1 hour. The potion has no effect on you if your strength is equal to or greater than that score.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.8235294,
+                "g": 0.28235212,
+                "b": 0.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662254/85B0E9A56360F99CE41C7A9A68E439F8ABC21263/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394662710/880F4FDA2FB0C4433DA9E7920D923E8C58D78C47/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.5055555
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            }
+          ]
+        },
+        {
+          "GUID": "0e3eee",
+          "Name": "Bag",
+          "Transform": {
+            "posX": 67.70262,
+            "posY": 0.818242669,
+            "posZ": 13.6083107,
+            "rotX": -4.935881E-07,
+            "rotY": -5.80432352E-05,
+            "rotZ": -9.688322E-07,
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "scaleZ": 1.0
+          },
+          "Nickname": "Resistance Potions",
+          "Description": "",
+          "GMNotes": "",
+          "AltLookAngle": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "ColorDiffuse": {
+            "r": 0.7058823,
+            "g": 0.366520882,
+            "b": 0.0
+          },
+          "LayoutGroupSortIndex": 0,
+          "Value": 0,
+          "Locked": false,
+          "Grid": true,
+          "Snap": true,
+          "IgnoreFoW": false,
+          "MeasureMovement": false,
+          "DragSelectable": true,
+          "Autoraise": true,
+          "Sticky": true,
+          "Tooltip": true,
+          "GridProjection": false,
+          "HideWhenFaceDown": false,
+          "Hands": false,
+          "MaterialIndex": -1,
+          "MeshIndex": -1,
+          "Bag": {
+            "Order": 0
+          },
+          "LuaScript": "",
+          "LuaScriptState": "",
+          "XmlUI": "",
+          "ContainedObjects": [
+            {
+              "GUID": "1b3654",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 70.56299,
+                "posY": -1.61310875,
+                "posZ": 7.10013771,
+                "rotX": 0.9264004,
+                "rotY": 0.43306756,
+                "rotZ": 1.8677609,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Fire Resistance",
+              "Description": "When you drink this potion, you gain resistance to fire damage for 1 hour.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.8235294,
+                "g": 0.2847138,
+                "b": 0.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661650/9A54C94C2D6DCD0388F2525583AFC1B9A6F44A7D/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661920/E1314A3E63D7F519071697148D85FB552FF2CF6B/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.499999821
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "714092",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 71.6365,
+                "posY": -1.651174,
+                "posZ": 7.10202932,
+                "rotX": 2.14654278E-06,
+                "rotY": 359.979462,
+                "rotZ": 7.80232E-06,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Psychic Resistance",
+              "Description": "When you drink this potion, you gain resistance to psychic damage for 1 hour.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.6505585,
+                "g": 0.0,
+                "b": 1.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661650/9A54C94C2D6DCD0388F2525583AFC1B9A6F44A7D/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661920/E1314A3E63D7F519071697148D85FB552FF2CF6B/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.499999821
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "1489dd",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 69.49283,
+                "posY": -1.65117419,
+                "posZ": 7.10202932,
+                "rotX": -1.81770247E-05,
+                "rotY": 359.991638,
+                "rotZ": -4.551117E-06,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Posion Resistance",
+              "Description": "When you drink this potion, you gain resistance to poison damage for 1 hour.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.0,
+                "g": 0.8797909,
+                "b": 0.03597673
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661650/9A54C94C2D6DCD0388F2525583AFC1B9A6F44A7D/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661920/E1314A3E63D7F519071697148D85FB552FF2CF6B/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.499999821
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "4fab4f",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 68.421,
+                "posY": -1.65117419,
+                "posZ": 5.98017836,
+                "rotX": 1.47469973E-05,
+                "rotY": -0.0005841753,
+                "rotZ": -1.21343883E-05,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Radiance Resistance",
+              "Description": "When you drink this potion, you gain resistance to radiant damage for 1 hour.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 1.0,
+                "g": 0.9945777,
+                "b": 0.493031144
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661650/9A54C94C2D6DCD0388F2525583AFC1B9A6F44A7D/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661920/E1314A3E63D7F519071697148D85FB552FF2CF6B/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.499999821
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "aa478f",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 72.70833,
+                "posY": -1.65117419,
+                "posZ": 7.10202932,
+                "rotX": 4.075115E-06,
+                "rotY": -0.004682976,
+                "rotZ": -8.947832E-06,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Force Resistance",
+              "Description": "When you drink this potion, you gain resistance to force damage for 1 hour.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.414685,
+                "g": 0.492544472,
+                "b": 0.7369339
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661650/9A54C94C2D6DCD0388F2525583AFC1B9A6F44A7D/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661920/E1314A3E63D7F519071697148D85FB552FF2CF6B/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.499999821
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "3b3d85",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 69.49283,
+                "posY": -1.65117419,
+                "posZ": 5.98018026,
+                "rotX": -2.168795E-05,
+                "rotY": 359.987,
+                "rotZ": -1.848928E-05,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Cold Resistance",
+              "Description": "When you drink this potion, you gain resistance to cold damage for 1 hour.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.583623648,
+                "g": 0.897293866,
+                "b": 1.0
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661650/9A54C94C2D6DCD0388F2525583AFC1B9A6F44A7D/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661920/E1314A3E63D7F519071697148D85FB552FF2CF6B/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.499999821
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "f2bf4f",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 68.421,
+                "posY": -1.65117419,
+                "posZ": 7.10202932,
+                "rotX": -6.04345723E-06,
+                "rotY": 0.00354396366,
+                "rotZ": 3.80793426E-05,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Acid Resistance",
+              "Description": "When you drink this potion, you gain resistance to acid damage for 1 hour.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.0583212078,
+                "g": 0.513937235,
+                "b": 0.0116397608
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661650/9A54C94C2D6DCD0388F2525583AFC1B9A6F44A7D/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661920/E1314A3E63D7F519071697148D85FB552FF2CF6B/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.499999821
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "5e5b11",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 72.70833,
+                "posY": -1.65117419,
+                "posZ": 5.98017645,
+                "rotX": -2.28422086E-05,
+                "rotY": 0.0114387581,
+                "rotZ": 5.66112476E-06,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Thunder Resistance",
+              "Description": "When you drink this potion, you gain resistance to thunder damage for 1 hour.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.398953855,
+                "g": 0.218937665,
+                "b": 0.218937665
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661650/9A54C94C2D6DCD0388F2525583AFC1B9A6F44A7D/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661920/E1314A3E63D7F519071697148D85FB552FF2CF6B/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.499999821
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "575aa4",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 71.6365,
+                "posY": -1.65117419,
+                "posZ": 5.98018026,
+                "rotX": 2.48342076E-06,
+                "rotY": 0.0163294952,
+                "rotZ": -2.79640585E-06,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Necrotic Resistance",
+              "Description": "When you drink this potion, you gain resistance to necrotic damage for 1 hour.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.193379015,
+                "g": 0.193379015,
+                "b": 0.193379015
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661650/9A54C94C2D6DCD0388F2525583AFC1B9A6F44A7D/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661920/E1314A3E63D7F519071697148D85FB552FF2CF6B/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.499999821
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "f2a503",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 70.56467,
+                "posY": -1.65117419,
+                "posZ": 5.98017836,
+                "rotX": -9.304084E-06,
+                "rotY": 0.004055797,
+                "rotZ": 7.07297568E-06,
+                "scaleX": 0.7750009,
+                "scaleY": 0.7750009,
+                "scaleZ": 0.7750009
+              },
+              "Nickname": "Potion of Lightning Resistance",
+              "Description": "When you drink this potion, you gain resistance to lightning damage for 1 hour.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.869912863,
+                "g": 0.632844269,
+                "b": 0.9738676
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661650/9A54C94C2D6DCD0388F2525583AFC1B9A6F44A7D/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/847090096393946534/8BD285101EDAD727BB1B61573F8EB738F91C390A/",
+                "NormalURL": "http://cloud-3.steamusercontent.com/ugc/847090096394002812/03E3EC12199976FAA3645C498C8FCF8B2CD86D25/",
+                "ColliderURL": "http://cloud-3.steamusercontent.com/ugc/847090096394661920/E1314A3E63D7F519071697148D85FB552FF2CF6B/",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 0.7372549,
+                    "g": 0.7372549,
+                    "b": 0.7372549
+                  },
+                  "SpecularIntensity": 0.9,
+                  "SpecularSharpness": 7.0,
+                  "FresnelStrength": 0.499999821
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            },
+            {
+              "GUID": "4ad839",
+              "Name": "Custom_Model",
+              "Transform": {
+                "posX": 66.9448,
+                "posY": -1.89039087,
+                "posZ": 6.448343,
+                "rotX": 356.18927,
+                "rotY": 0.174467519,
+                "rotZ": 0.8236332,
+                "scaleX": 0.5950004,
+                "scaleY": 0.5950004,
+                "scaleZ": 0.5950004
+              },
+              "Nickname": "Potion of Invulnerability",
+              "Description": "For 1 minute after you drink this potion, you have resistance to all damage. The potion's syrupy liquid looks like liquefied iron.",
+              "GMNotes": "",
+              "AltLookAngle": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "ColorDiffuse": {
+                "r": 0.557813942,
+                "g": 0.480021536,
+                "b": 0.44166562
+              },
+              "LayoutGroupSortIndex": 0,
+              "Value": 0,
+              "Locked": false,
+              "Grid": false,
+              "Snap": true,
+              "IgnoreFoW": false,
+              "MeasureMovement": false,
+              "DragSelectable": true,
+              "Autoraise": true,
+              "Sticky": false,
+              "Tooltip": true,
+              "GridProjection": false,
+              "HideWhenFaceDown": false,
+              "Hands": false,
+              "CustomMesh": {
+                "MeshURL": "http://cloud-3.steamusercontent.com/ugc/779602816759274557/D88FA10D4E991082ECFEFDFA064DAFDA5E6BC3CF/",
+                "DiffuseURL": "http://cloud-3.steamusercontent.com/ugc/779602816759275398/886F440368A5A2D1810924663538FBDCD364B679/",
+                "NormalURL": "",
+                "ColliderURL": "",
+                "Convex": true,
+                "MaterialIndex": 2,
+                "TypeIndex": 1,
+                "CustomShader": {
+                  "SpecularColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0
+                  },
+                  "SpecularIntensity": 10.0,
+                  "SpecularSharpness": 7.499999,
+                  "FresnelStrength": 0.9166665
+                },
+                "CastShadows": true
+              },
+              "LuaScript": "",
+              "LuaScriptState": "",
+              "XmlUI": ""
+            }
+          ]
         }
       ]
     }
