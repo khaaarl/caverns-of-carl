@@ -25,7 +25,6 @@ Vague plan of cool things
 * cavernous corridors should have some erosion, and not be straight
 * DM toolpanel in TTS, including button to delete everything. Move health increment/decrement to this singleton object
 * Prepared wandering monster encounters in the DM hidden zone (also relevant for traps that summon)
-* More NPCs
 * More special rooms, such as with altars
 * GPT API integration?
 * locked doors and keys?
@@ -45,6 +44,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2917302184
 https://steamcommunity.com/sharedfiles/filedetails/?id=2903159179
 https://steamcommunity.com/sharedfiles/filedetails/?id=2300627680
 https://steamcommunity.com/sharedfiles/filedetails/?id=3053085917
+https://steamcommunity.com/sharedfiles/filedetails/?id=2756679033
 https://aos-tts.github.io/Stormvault/
 """
 
