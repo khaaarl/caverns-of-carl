@@ -1,5 +1,6 @@
 import functools
 import json
+import math
 import os
 import random
 import re
@@ -89,6 +90,8 @@ class TreasureLibrary:
         self.tables = []
         self.items = []
         self.variants = []
+        self.art_objects = {}
+        self.gemstones = {}
 
     def load(self):
         filename = os.path.join(
@@ -99,6 +102,10 @@ class TreasureLibrary:
             self.tables = blob["tables"]
             self.items = blob["items"]
             self.variants = blob["variants"]
+            for d in blob["art objects"]:
+                self.art_objects[int(d["gold"])] = d["names"]
+            for d in blob["gemstones"]:
+                self.gemstones[int(d["gold"])] = d["names"]
 
     def to_blob(self):
         return self
@@ -144,8 +151,63 @@ class TreasureLibrary:
             contents.append("Trinket: " + self.roll_on_table(f"PHB Trinkets"))
         if random.random() < 0.1:
             contents.append("Trinket: " + self.roll_on_table(f"EE Trinkets"))
+        if random.random() < 0.7:
+            contents += self.gold_to_treasure(
+                self._hoard_gp_quantity(level, num_player_characters)
+                * random.random()
+                * random.random()
+            )
         contents = [x for x in contents if x]
         return contents
+
+    def gold_to_treasure(self, gp):
+        l = []
+        treasure_type, d = random.choice(
+            [("Gemstone", self.gemstones), ("Art Object", self.art_objects)]
+        )
+        lowest_key = None
+        highest_key = None
+        for k in d:
+            if lowest_key is None or k < lowest_key:
+                lowest_key = k
+            if highest_key is None or k > highest_key:
+                highest_key = k
+        k_lo = lowest_key
+        k_hi = highest_key
+        for k in d:
+            if k <= gp and abs(k - gp) <= abs(k_lo - gp):
+                k_lo = k
+            if k >= gp and abs(k - gp) <= abs(k_hi - gp):
+                k_hi = k
+        print(lowest_key, highest_key, k_lo, k_hi, gp)
+        if gp < k_lo:
+            if random.random() < (gp / k_lo):
+                l.append(k_lo)
+        elif gp > k_hi:
+            n = int(math.floor(gp / k_hi))
+            if random.random() < (gp % k_hi) / k_hi:
+                n += 1
+            for _ in range(n):
+                l.append(k_hi)
+        elif gp == k_lo:
+            l.append(k_lo)
+        elif gp == k_hi:
+            l.append(k_hi)
+        else:
+            if random.random() < (k_hi - k_lo) / (gp - k_lo):
+                l.append(k_hi)
+            else:
+                l.append(k_lo)
+        print(l)
+        l = [f"{treasure_type} ({k} gp): {random.choice(d[k])}" for k in l]
+        return sorted(l)
+
+    def _hoard_gp_quantity(
+        self, level, num_player_characters, level_plus_minus=3.0
+    ):
+        level += level_plus_minus * (random.random() * 2.0 - 1)
+        # loosely based on hoard numbers?
+        return 2 ** (level / 2.5) * 15.0 * num_player_characters
 
     def gen_bookshelf_horde(self, level, num_player_characters):
         clvl = (level + 1) / 2
