@@ -582,9 +582,7 @@ def place_doors_in_dungeon(df):
 
 def place_ladders_in_dungeon(df):
     max_depth = df.config.min_ladder_distance - 1
-    target_n_ladders = df.config.num_up_ladders + df.config.num_down_ladders
     ladder_room_ixs = set()
-    roomix_tile_coords = {}
     rooms = [x for x in df.rooms if not x.is_trivial()]
     random.shuffle(rooms)
 
@@ -623,7 +621,6 @@ def place_ladders_in_dungeon(df):
         if all_satisfied():
             break
         ladder_room_ixs = set()
-        roomix_tile_coords = {}
         biome_up_ladders = collections.defaultdict(list)
         biome_down_ladders = collections.defaultdict(list)
         for _ in range(20):
@@ -667,7 +664,6 @@ def place_ladders_in_dungeon(df):
                 if biome_name is not None:
                     biome_down_ladders[None].append(tup)
             ladder_room_ixs.add(room.ix)
-            roomix_tile_coords[room.ix] = tile_coords
     tups_seen = set()
     for l in biome_up_ladders.values():
         for tup in l:
@@ -695,12 +691,28 @@ def place_ladders_in_dungeon(df):
 
 def place_special_features_in_dungeon(df):
     features = []
-    if random.random() < df.config.blacksmith_percent / 99.9:
-        features.append(lib.features.Blacksmith())
-    if random.random() < df.config.kryxix_altar_percent / 99.9:
-        features.append(lib.features.Altar(deity_name="Kryxix"))
-    if random.random() < df.config.ssarthaxx_altar_percent / 99.9:
-        features.append(lib.features.Altar(deity_name="Ssarthaxx"))
+    for biome in df.config.biomes + [df.config]:
+        if random.random() * 100 < biome.blacksmith_percent:
+            features.append(
+                lib.features.Blacksmith(biome_name=biome.biome_name)
+            )
+            break
+    for biome in df.config.biomes + [df.config]:
+        if random.random() * 100 < biome.kryxix_altar_percent:
+            features.append(
+                lib.features.Altar(
+                    deity_name="Kryxix", biome_name=biome.biome_name
+                )
+            )
+            break
+    for biome in df.config.biomes + [df.config]:
+        if random.random() * 100 < biome.ssarthaxx_altar_percent:
+            features.append(
+                lib.features.Altar(
+                    deity_name="Ssarthaxx", biome_name=biome.biome_name
+                )
+            )
+            break
     feature_roomix_scores = []
     transposed_feature_roomix_scores = []
     for feature in features:

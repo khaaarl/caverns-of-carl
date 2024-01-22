@@ -97,6 +97,9 @@ def run_ui():
         biome_config.biome_eastness = float(random.randrange(1, 10))
         biome_config.num_up_ladders = 0
         biome_config.num_down_ladders = 0
+        biome_config.blacksmith_percent = 0
+        biome_config.kryxix_altar_percent = 0
+        biome_config.ssarthaxx_altar_percent = 0
         biome_config_frame = ttk.Frame(config_notebook)
         config_notebook.add(biome_config_frame, text=biome_name)
         biome_config.make_tk_labels_and_entries(biome_config_frame)

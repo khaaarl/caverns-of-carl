@@ -9,9 +9,10 @@ from lib.utils import COC_ROOT_DIR, Doc
 
 
 class SpecialFeature:
-    def __init__(self):
+    def __init__(self, biome_name=None):
         self.roomix = None
         self.rand = random.random()
+        self.biome_name = biome_name
 
     def description(self, df, verbose=False):
         """A string description of the special feature.
@@ -27,6 +28,8 @@ class SpecialFeature:
         placement."""
         output = {}
         for room in df.rooms:
+            if self.biome_name and room.biome_name != self.biome_name:
+                continue
             score = self.score_room(df, room)
             if score > 0.0:
                 output[room.ix] = score
@@ -177,8 +180,8 @@ class Deity:
 
 
 class Altar(SpecialFeature):
-    def __init__(self, deity_name):
-        super().__init__()
+    def __init__(self, deity_name, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.deity_name = deity_name
         self.deity = deity_library()[deity_name]
         self.altar_description = self.deity.altar_descriptions[0]
