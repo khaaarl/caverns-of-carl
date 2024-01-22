@@ -691,21 +691,6 @@ def place_ladders_in_dungeon(df):
                 LadderDownTile(roomix, biome_name=room.biome_name), x=x, y=y
             )
             room.has_down_ladder = True
-    return
-    ladder_room_ixs = list(ladder_room_ixs)
-    random.shuffle(ladder_room_ixs)
-    num_up_ladders = 0
-    for roomix in ladder_room_ixs:
-        room = df.rooms[roomix]
-        x, y = roomix_tile_coords[roomix]
-
-        if num_up_ladders < df.config.num_up_ladders:
-            df.set_tile(LadderUpTile(roomix), x=x, y=y)
-            room.has_up_ladder = True
-            num_up_ladders += 1
-        else:
-            df.set_tile(LadderDownTile(roomix), x=x, y=y)
-            room.has_down_ladder = True
 
 
 def place_special_features_in_dungeon(df):
