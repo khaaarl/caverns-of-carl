@@ -90,17 +90,18 @@ def reference_save_json():
 def reference_objects():
     d = {}
     l = list(reference_save_json()["ObjectStates"])
-    l.sort(key=lambda x: x.get("Nickname") or chr(255) * 30)
+    l = [x for x in l if x.get("Nickname")]
+    l.sort(key=lambda x: x["Nickname"])
     for obj in l:
-        name = obj.get("Nickname")
-        if name and name.upper() not in d:
-            d[name.upper()] = obj
+        name = obj["Nickname"].strip().upper()
+        if name and name not in d:
+            d[name] = obj
     for obj in l:
-        if obj.get("Nickname", "").startswith("Reference Bag"):
+        if obj["Nickname"].startswith("Reference Bag"):
             for o2 in recurse_bag(obj):
-                name = o2.get("Nickname")
-                if name and name.upper() not in d:
-                    d[name.upper()] = o2
+                name = o2.get("Nickname", "").strip().upper()
+                if name and name not in d:
+                    d[name] = o2
     return d
 
 
@@ -127,8 +128,13 @@ def refresh_tts_guids(d):
     return d
 
 
+def has_reference_object(nickname):
+    nickname = nickname.strip().upper()
+    return nickname in reference_objects()
+
+
 def reference_object(nickname):
-    nickname = nickname.upper()
+    nickname = nickname.strip().upper()
     if nickname not in reference_objects():
         raise KeyError(
             f"Could not find nickname '{nickname}' in tts reference game"

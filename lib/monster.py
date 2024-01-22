@@ -57,7 +57,9 @@ class MonsterLibrary:
     ):
         output = []
         for m in self.monster_infos:
-            if has_tts and len(m.tts_reference_nicknames) < 1:
+            if has_tts and not (
+                m.tts_reference_nicknames or tts.has_reference_object(m.name)
+            ):
                 continue
             if filter is not None:
                 if not expr_match_keywords(filter, [m.name] + m.keywords):
@@ -226,12 +228,14 @@ class Monster:
         return s
 
     def tts_object(self, df):
-        ref_nick = self.monster_info.tts_reference_nicknames[
-            random.randrange(len(self.monster_info.tts_reference_nicknames))
-        ]
+        ref_nick = self.monster_info.name
+        if self.monster_info.tts_reference_nicknames:
+            ref_nick = random.choice(self.monster_info.tts_reference_nicknames)
         obj = tts.reference_object(ref_nick)
         df.tts_xz(self.x, self.y, obj, diameter=self.monster_info.diameter)
         obj["Transform"]["posY"] = 2.0
+        if obj["Name"] == "Figurine_Custom":
+            obj["Transform"]["posY"] = 2.06
         # TODO: adjust to not face wall if near wall?
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = self.tts_nickname()

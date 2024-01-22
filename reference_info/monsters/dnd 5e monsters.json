@@ -522,6 +522,87 @@
       "tts_reference_nicknames": [
         "Adult Blue Dracolich A"
       ]
+    },
+    {
+      "name": "Bugbear",
+      "keywords": ["Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;33mg",
+      "challenge_rating": 1,
+      "xp": 200,
+      "health": 27,
+      "hit_dice_formula": "5d8 + 5",
+      "size": "medium",
+      "diameter": 1
+    },
+    {
+      "name": "Bugbear Chief",
+      "keywords": ["Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;93mg",
+      "challenge_rating": 3,
+      "xp": 700,
+      "health": 65,
+      "hit_dice_formula": "10d8 + 20",
+      "size": "medium",
+      "diameter": 1,
+      "synergies": ["Bugbear"]
+    },
+    {
+      "name": "Goblin",
+      "keywords": ["Forest", "Grassland", "Hill", "Underdark", "Humanoid", "Goblinoid", "Evil"],
+      "ascii_char": "[1;32mg",
+      "challenge_rating": 0.25,
+      "xp": 50,
+      "health": 7,
+      "hit_dice_formula": "2d6",
+      "size": "small",
+      "diameter": 1
+    },
+    {
+      "name": "Goblin Boss",
+      "keywords": ["Forest", "Grassland", "Hill", "Underdark", "Humanoid", "Goblinoid", "Evil"],
+      "ascii_char": "[1;92mg",
+      "challenge_rating": 1,
+      "xp": 200,
+      "health": 21,
+      "hit_dice_formula": "6d6",
+      "size": "small",
+      "diameter": 1,
+      "synergies": ["Goblin"]
+    },
+    {
+      "name": "Hobgoblin",
+      "keywords": ["Desert", "Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Lawful", "Evil"],
+      "ascii_char": "[1;31mg",
+      "challenge_rating": 1,
+      "xp": 200,
+      "health": 11,
+      "hit_dice_formula": "2d8 + 2",
+      "size": "medium",
+      "diameter": 1
+    },
+    {
+      "name": "Hobgoblin Captain",
+      "keywords": ["Desert", "Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Lawful", "Evil"],
+      "ascii_char": "[1;91mg",
+      "challenge_rating": 3,
+      "xp": 700,
+      "health": 39,
+      "hit_dice_formula": "6d8 + 12",
+      "size": "medium",
+      "diameter": 1,
+      "synergies": ["Hobgoblin"]
+    },
+    {
+      "name": "Hobgoblin Warlord",
+      "keywords": ["Desert", "Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Lawful", "Evil"],
+      "ascii_char": "[1;95mg",
+      "challenge_rating": 6,
+      "xp": 2300,
+      "health": 97,
+      "hit_dice_formula": "13d8 + 39",
+      "size": "medium",
+      "diameter": 1,
+      "synergies": ["Hobgoblin", "Bugbear Captain"]
     }
   ]
 }

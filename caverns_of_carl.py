@@ -45,6 +45,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2903159179
 https://steamcommunity.com/sharedfiles/filedetails/?id=2300627680
 https://steamcommunity.com/sharedfiles/filedetails/?id=3053085917
 https://steamcommunity.com/sharedfiles/filedetails/?id=2756679033
+https://steamcommunity.com/sharedfiles/filedetails/?id=1706177926
 https://aos-tts.github.io/Stormvault/
 """
 
