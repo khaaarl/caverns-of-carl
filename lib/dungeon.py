@@ -892,7 +892,7 @@ def place_monsters_in_biome(df, biome, rooms, monster_counts):
     lowest_monster_xp = min((m.xp for m in monster_infos if m.xp))
     num_monster_encounters = 0
     target_monster_encounters = round(
-        len(df.rooms) * biome.room_encounter_percent / 100.0
+        len(rooms) * biome.room_encounter_percent / 100.0
     )
     roomixs = []
     for room in rooms:
