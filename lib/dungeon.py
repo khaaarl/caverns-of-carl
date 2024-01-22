@@ -530,6 +530,11 @@ def place_doors_in_dungeon(df):
             tile = df.tiles[x][y]
             ptile = df.tiles[px][py]
             ntile = df.tiles[nx][ny]
+            biome_name = corridor.biome_name
+            if ptile.roomix == room1.ix and ntile.roomix != room2.ix:
+                biome_name = room1.biome_name
+            if ptile.roomix != room1.ix and ntile.roomix == room2.ix:
+                biome_name = room2.biome_name
             if (
                 ptile.roomix == room1.ix
                 and room1.is_fully_enclosed_by_doors()
@@ -540,9 +545,11 @@ def place_doors_in_dungeon(df):
                 and ntile.roomix == room2.ix
                 and room2.is_fully_enclosed_by_doors()
             ):
-                df.set_tile(DoorTile(corridor.ix), x=x, y=y)
+                new_tile = DoorTile(corridor.ix, biome_name=biome_name)
+                df.set_tile(new_tile, x=x, y=y)
                 new_door_locations.add((x, y, x - px, y - py))
         for x, y, dx, dy in new_door_locations:
+            biome_name = df.get_tile(x=x, y=y).biome_name
             rx, ry = x, y
             lx, ly = x, y
             if dx != 0:
@@ -556,16 +563,23 @@ def place_doors_in_dungeon(df):
                 if isinstance(tile, DoorTile):
                     continue
                 if isinstance(tile, CorridorFloorTile):
-                    df.set_tile(DoorTile(corridor.ix), x=tx, y=ty)
+                    new_tile = DoorTile(corridor.ix, biome_name=biome_name)
+                    df.set_tile(new_tile, x=tx, y=ty)
         for x, y in corridor.walk(max_width_iter=1):
             tile = df.tiles[x][y]
             if not isinstance(tile, DoorTile):
                 continue
+            biome = df.config.get_biome(tile.biome_name)
             lock_dc = None
-            if random.random() < df.config.door_lock_percent * 100.1:
-                lock_dc = random_dc(df.config.target_character_level)
+            if random.random() * 100.0 < biome.door_lock_percent:
+                lock_dc = random_dc(biome.target_character_level)
             door = Door(
-                Door.pick_type(df.config), corridor, x, y, lock_dc=lock_dc
+                Door.pick_type(biome),
+                corridor,
+                x,
+                y,
+                lock_dc=lock_dc,
+                biome_name=tile.biome_name,
             )
             df.add_door(door)
             for dx in [-1, 0, 1]:
@@ -803,7 +817,10 @@ def place_treasure_in_dungeon(df):
         )
         if not contents:
             contents = ["Nothing!"]
-        df.set_tile(ChestTile(room.ix, contents="\n".join(contents)), x=x, y=y)
+        new_tile = ChestTile(
+            room.ix, biome_name=room.biome_name, contents="\n".join(contents)
+        )
+        df.set_tile(new_tile, x=x, y=y)
         num_treasures += 1
     for _ in range(target_num_mimics * 10):
         if not eligible_rooms or num_mimics >= target_num_mimics:
@@ -817,7 +834,8 @@ def place_treasure_in_dungeon(df):
         x, y = coords
         monster = Monster(mimic_info)
         monster.adjust_cr(df.config.target_character_level)
-        df.set_tile(MimicTile(room.ix, monster=monster), x=x, y=y)
+        nt = MimicTile(room.ix, biome_name=room.biome_name, monster=monster)
+        df.set_tile(nt, x=x, y=y)
         num_mimics += 1
     for _ in range(target_num_bookshelves * 10):
         if not bookshelf_rooms or num_bookshelves >= target_num_bookshelves:
@@ -835,9 +853,10 @@ def place_treasure_in_dungeon(df):
         )
         if not contents:
             contents = ["Nothing!"]
-        df.set_tile(
-            BookshelfTile(room.ix, contents="\n".join(contents)), x=x, y=y
+        new_tile = BookshelfTile(
+            room.ix, biome_name=room.biome_name, contents="\n".join(contents)
         )
+        df.set_tile(new_tile, x=x, y=y)
         num_bookshelves += 1
 
 
@@ -909,74 +928,54 @@ def place_monsters_in_dungeon(df):
 
 
 def place_traps_in_dungeon(df):
-    level = df.config.target_character_level
-    config = df.config
-    roomixs_to_trap = []
-    target_num_room_traps = int(
-        len(df.rooms) * config.room_trap_percent / 100.0
-    )
-    for roomix, room in enumerate(df.rooms):
-        if room.allows_traps(df):
-            roomixs_to_trap.append(roomix)
-    random.shuffle(roomixs_to_trap)
-    for roomix in roomixs_to_trap[:target_num_room_traps]:
-        room = df.rooms[roomix]
-        trap = lib.trap.RoomTrap.create(config, room)
+    for room in df.rooms:
+        if not room.allows_traps(df):
+            continue
+        biome = df.config.get_biome(room.biome_name)
+        if random.random() * 100.0 >= biome.room_trap_percent:
+            continue
+        trap = lib.trap.RoomTrap.create(biome, room)
         df.add_trap(trap)
-        df.rooms[roomix].trapixs.add(trap.ix)
+        room.trapixs.add(trap.ix)
 
-    corridorixs_to_trap = []
-    for corridorix, corridor in enumerate(df.corridors):
-        if corridor.is_nontrivial(df):
-            corridorixs_to_trap.append(corridorix)
-    target_num_corridor_traps = int(
-        len(corridorixs_to_trap) * config.corridor_trap_percent / 100.0
-    )
-    random.shuffle(corridorixs_to_trap)
-    corridorixs_to_trap = corridorixs_to_trap[:target_num_corridor_traps]
-    for corridorix in corridorixs_to_trap:
-        corridor = df.corridors[corridorix]
+    for corridor in df.corridors:
+        if corridor.is_trivial(df):
+            continue
+        biome = df.config.get_biome(corridor.biome_name)
+        if random.random() * 100 >= biome.corridor_trap_percent:
+            continue
         num_nearby_encounters = 0
         for roomix in [corridor.room1ix, corridor.room2ix]:
             room = df.rooms[roomix]
             if room.encounter:
                 num_nearby_encounters += 1
         trap = lib.trap.CorridorTrap.create(
-            config, corridor, num_nearby_encounters=num_nearby_encounters
+            biome, corridor, num_nearby_encounters=num_nearby_encounters
         )
         df.add_trap(trap)
-        df.corridors[corridorix].trapixs.add(trap.ix)
-    doors_to_trap = list(df.doors)
-    target_num_door_traps = int(
-        len(doors_to_trap) * config.door_trap_percent / 100.0
-    )
-    random.shuffle(doors_to_trap)
-    num_door_traps = 0
-    for door in doors_to_trap:
-        if door.corridorix in corridorixs_to_trap:
+        corridor.trapixs.add(trap.ix)
+
+    for door in df.doors:
+        corridor = df.corridors[door.corridorix]
+        if corridor.trapixs:
             continue
-        if num_door_traps >= target_num_door_traps:
-            break
-        num_door_traps += 1
-        trap = lib.trap.DoorTrap.create(config, door.ix, door.x, door.y)
+        biome = df.config.get_biome(door.biome_name)
+        if random.random() * 100 >= biome.door_trap_percent:
+            continue
+        trap = lib.trap.DoorTrap.create(biome, door.ix, door.x, door.y)
         df.add_trap(trap)
         door.trapixs.add(trap.ix)
 
     # chests
-    chest_coords = []
-    for x in range(df.width):
-        for y in range(df.height):
-            tile = df.tiles[x][y]
-            if tile.is_chest():
-                chest_coords.append((x, y))
-    target_num_chest_traps = int(
-        len(chest_coords) * config.chest_trap_percent / 100.0
-    )
-    random.shuffle(chest_coords)
-    for x, y in chest_coords[:target_num_chest_traps]:
-        trap = lib.trap.ChestTrap.create(config, x, y)
+    for tile in df.get_tiles():
+        if not tile.is_chest():
+            continue
+        biome = df.config.get_biome(tile.biome_name)
+        if random.random() * 100 >= biome.chest_trap_percent:
+            continue
+        trap = lib.trap.ChestTrap.create(biome, tile.x, tile.y)
         df.add_trap(trap)
-        df.tiles[x][y].trapixs.add(trap.ix)
+        tile.trapixs.add(trap.ix)
 
 
 def place_lights_in_dungeon(df):

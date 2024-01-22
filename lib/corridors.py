@@ -69,7 +69,16 @@ class CorridorWalker:
 
 class Corridor:
     def __init__(
-        self, room1ix, room2ix, x1, y1, x2, y2, is_horizontal_first, width=1, biome_name=None
+        self,
+        room1ix,
+        room2ix,
+        x1,
+        y1,
+        x2,
+        y2,
+        is_horizontal_first,
+        width=1,
+        biome_name=None,
     ):
         self.room1ix, self.room2ix = room1ix, room2ix
         self.x1, self.y1, self.x2, self.y2 = x1, y1, x2, y2
@@ -101,6 +110,9 @@ class Corridor:
                     continue
             if isinstance(tile, CorridorFloorTile):
                 yield (x, y)
+
+    def is_trivial(self, df):
+        return not self.is_nontrivial(df)
 
     def is_nontrivial(self, df):
         usable_length = 0.0
@@ -217,7 +229,16 @@ class CavernousCorridor(Corridor):
 
 
 class Door:
-    def __init__(self, door_type, corridor, x, y, roomixs=None, lock_dc=None):
+    def __init__(
+        self,
+        door_type,
+        corridor,
+        x,
+        y,
+        roomixs=None,
+        lock_dc=None,
+        biome_name=None,
+    ):
         self.door_type = door_type
         self.x, self.y = x, y
         self.corridorix = corridor.ix
@@ -226,6 +247,7 @@ class Door:
         self.trapixs = set()
         self.ix = None
         self.lock_dc = lock_dc
+        self.biome_name = biome_name
 
     def apply_minimum_door_strength(self, min_door_type):
         min_row_ix = 0
