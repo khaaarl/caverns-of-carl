@@ -627,6 +627,45 @@
       "diameter": 1
     },
     {
+      "name": "Kobold Dragonshield",
+      "keywords": ["Forest", "Hill", "Mountain","Underdark", "Humanoid", "Koboldoid", "Lawful", "Evil"],
+      "ascii_char": "[1;35mk",
+      "challenge_rating": 1,
+      "xp": 200,
+      "health": 44,
+      "hit_dice_formula": "8d6 + 16",
+      "size": "small",
+      "diameter": 1,
+      "tts_reference_nicknames": [
+        "Kobold Spearman"
+      ]
+    },
+    {
+      "name": "Kobold Inventor",
+      "keywords": ["Backline", "Forest", "Hill", "Mountain", "Underdark", "Urban", "Humanoid", "Koboldoid", "Lawful", "Evil"],
+      "ascii_char": "[1;94mk",
+      "challenge_rating": 0.25,
+      "xp": 50,
+      "health": 13,
+      "hit_dice_formula": "3d6 + 3",
+      "size": "small",
+      "diameter": 1
+    },
+    {
+      "name": "Kobold Scale Sorcerer",
+      "keywords": ["Backline", "Spellcaster", "Forest", "Hill", "Mountain", "Underdark", "Urban", "Humanoid", "Koboldoid", "Lawful", "Evil"],
+      "ascii_char": "[1;91mk",
+      "challenge_rating": 1,
+      "xp": 200,
+      "health": 27,
+      "hit_dice_formula": "5d6 + 10",
+      "size": "small",
+      "diameter": 1,
+      "tts_reference_nicknames": [
+        "Kobold Mage"
+      ]
+    },
+    {
       "name": "Giant Lizard",
       "keywords": ["Frontline", "Coastal", "Desert", "Forest", "Swamp", "Underdark", "Urban", "Beast"],
       "ascii_char": "[1;32ml",
