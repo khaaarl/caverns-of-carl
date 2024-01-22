@@ -603,6 +603,83 @@
       "size": "medium",
       "diameter": 1,
       "synergies": ["Hobgoblin", "Bugbear Captain"]
+    },
+    {
+      "name": "Kobold",
+      "keywords": ["Arctic", "Coastal", "Desert", "Forest", "Hill", "Mountain", "Swamp", "Underdark", "Urban", "Humanoid", "Koboldoid", "Lawful", "Evil"],
+      "ascii_char": "[1;32mk",
+      "challenge_rating": 0.125,
+      "xp": 25,
+      "health": 6,
+      "hit_dice_formula": "2d6 - 2",
+      "size": "small",
+      "diameter": 1
+    },
+    {
+      "name": "Winged Kobold",
+      "keywords": ["Flying", "Arctic", "Coastal", "Desert", "Forest", "Hill", "Mountain", "Swamp", "Underdark", "Urban", "Humanoid", "Koboldoid", "Lawful", "Evil"],
+      "ascii_char": "[1;34mk",
+      "challenge_rating": 0.25,
+      "xp": 50,
+      "health": 7,
+      "hit_dice_formula": "3d6 - 3",
+      "size": "small",
+      "diameter": 1
+    },
+    {
+      "name": "Giant Lizard",
+      "keywords": ["Frontline", "Coastal", "Desert", "Forest", "Swamp", "Underdark", "Urban", "Beast"],
+      "ascii_char": "[1;32ml",
+      "challenge_rating": 0.25,
+      "xp": 50,
+      "health": 19,
+      "hit_dice_formula": "3d10 + 3",
+      "size": "large",
+      "diameter": 2
+    },
+    {
+      "name": "Black Dragon Wyrmling",
+      "keywords": ["Flying", "Amphibious", "Swimming", "Dragon", "Chaotic", "Evil"],
+      "ascii_char": "[1;37mD",
+      "challenge_rating": 2,
+      "xp": 450,
+      "health": 33,
+      "hit_dice_formula": "6d8 + 6",
+      "size": "medium",
+      "diameter": 1
+    },
+    {
+      "name": "Green Dragon Wyrmling",
+      "keywords": ["Flying", "Amphibious", "Swimming", "Dragon", "Green Dragon", "Lawful", "Evil"],
+      "ascii_char": "[1;32mD",
+      "challenge_rating": 2,
+      "xp": 450,
+      "health": 38,
+      "hit_dice_formula": "7d8 + 7",
+      "size": "medium",
+      "diameter": 1
+    },
+    {
+      "name": "Young Green Dragon",
+      "keywords": ["Flying", "Amphibious", "Swimming", "Forest", "Dragon", "Green Dragon", "Lawful", "Evil"],
+      "ascii_char": "[1;92mD",
+      "challenge_rating": 8,
+      "xp": 3900,
+      "health": 136,
+      "hit_dice_formula": "16d10 + 48",
+      "size": "large",
+      "diameter": 2
+    },
+    {
+      "name": "Adult Green Dragon",
+      "keywords": ["Flying", "Amphibious", "Swimming", "Forest", "Dragon", "Green Dragon", "Lawful", "Evil"],
+      "ascii_char": "[1;92mD",
+      "challenge_rating": 15,
+      "xp": 13000,
+      "health": 207,
+      "hit_dice_formula": "18d12 + 90",
+      "size": "huge",
+      "diameter": 3
     }
   ]
 }
