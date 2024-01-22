@@ -861,10 +861,19 @@ def place_treasure_in_dungeon(df):
 
 
 def place_monsters_in_dungeon(df):
-    config = df.config
-    max_cr = int(math.ceil(config.target_character_level * 7.0 / 5.0))
+    room_biome_names = collections.defaultdict(list)
+    for room in df.rooms:
+        room_biome_names[room.biome_name].append(room)
+    monster_counts = collections.defaultdict(int)
+    for biome_name, rooms in room_biome_names.items():
+        biome = df.config.get_biome(biome_name)
+        place_monsters_in_biome(df, biome, rooms, monster_counts)
+
+
+def place_monsters_in_biome(df, biome, rooms, monster_counts):
+    max_cr = int(math.ceil(biome.target_character_level * 7.0 / 5.0))
     monster_infos = get_monster_library("dnd 5e monsters").get_monster_infos(
-        filter=config.monster_filter,
+        filter=biome.monster_filter,
         max_challenge_rating=max_cr,
         has_tts=True,
     )
@@ -873,24 +882,23 @@ def place_monsters_in_dungeon(df):
     lowest_monster_xp = min((m.xp for m in monster_infos if m.xp))
     num_monster_encounters = 0
     target_monster_encounters = round(
-        len(df.rooms) * config.room_encounter_percent / 100.0
+        len(df.rooms) * biome.room_encounter_percent / 100.0
     )
     roomixs = []
-    for roomix, room in enumerate(df.rooms):
+    for room in rooms:
         if room.allows_enemies(df):
-            roomixs.append(roomix)
+            roomixs.append(room.ix)
     random.shuffle(roomixs)
     roomixs = roomixs[:target_monster_encounters]
     roomixs.sort(key=lambda ix: df.rooms[ix].total_space())
     encounters = []
-    monster_counts = collections.defaultdict(int)
     for roomix in roomixs:
-        lo = config.encounter_xp_low_percent
-        hi = config.encounter_xp_high_percent
+        lo = biome.encounter_xp_low_percent
+        hi = biome.encounter_xp_high_percent
         xp_percent_of_medium = lo + random.random() * abs(hi - lo)
         target_xp = max(
             round(
-                lib.monster.med_target_xp(config) * xp_percent_of_medium * 0.01
+                lib.monster.med_target_xp(biome) * xp_percent_of_medium * 0.01
             ),
             lowest_monster_xp,
         )
