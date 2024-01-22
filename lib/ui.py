@@ -79,10 +79,29 @@ def run_ui():
     config_label = tk.Label(left_frame, text="Configuration", width=70)
     config_label.pack()
 
-    # dungeon dimensions
-    size_frame = tk.Frame(left_frame)
-    config.make_tk_labels_and_entries(size_frame)
-    size_frame.pack()
+    # dungeon config notebook
+    config_notebook = ttk.Notebook(left_frame)
+    config_notebook.pack(expand=True, fill="both")
+    default_config_frame = ttk.Frame(config_notebook)
+    config_notebook.add(default_config_frame, text="Overall")
+    config.make_tk_labels_and_entries(default_config_frame)
+
+    def add_biome(*args, **kwargs):
+        switch_to_tab = kwargs.get("switch_to_tab", True)
+        biome_name = f"Biome {1+len(config.biomes)}"
+        config.load_from_tk_entries()
+        biome_config = config.add_biome(biome_name=biome_name)
+        biome_config.biome_northness = float(random.randrange(1, 10))
+        biome_config.biome_southness = float(random.randrange(1, 10))
+        biome_config.biome_westness = float(random.randrange(1, 10))
+        biome_config.biome_eastness = float(random.randrange(1, 10))
+        biome_config.num_up_ladders = 0
+        biome_config.num_down_ladders = 0
+        biome_config_frame = ttk.Frame(config_notebook)
+        config_notebook.add(biome_config_frame, text=biome_name)
+        biome_config.make_tk_labels_and_entries(biome_config_frame)
+        if switch_to_tab:
+            config_notebook.select(len(config.biomes))
 
     def new_preview(*args, **kwargs):
         set_tk_text(ascii_map_text, "")
@@ -168,14 +187,18 @@ def run_ui():
         chest_info_text.see(tk.END)
 
     operation_frame = tk.Frame(left_frame)
+    add_biome_button = tk.Button(
+        operation_frame, text="Add Biome", command=add_biome
+    )
+    add_biome_button.grid(row=0, column=0)
     generate_button = tk.Button(
         operation_frame, text="Generate", command=new_preview
     )
-    generate_button.grid(row=0, column=0)
+    generate_button.grid(row=0, column=1)
     save_button = tk.Button(
         operation_frame, text="Save to TTS", command=save_dungeon
     )
-    save_button.grid(row=0, column=1)
+    save_button.grid(row=0, column=2)
     operation_frame.pack(pady=10)
 
     ascii_map_label = tk.Label(middle_frame, text="ASCII Map")

@@ -24,7 +24,15 @@ from lib.room import Room, RectRoom, CavernousRoom
 import lib.features
 import lib.trap
 from lib.treasure import get_treasure_library
-from lib.utils import bfs, choice, dfs, eval_dice, neighbor_coords, random_dc, samples
+from lib.utils import (
+    bfs,
+    choice,
+    dfs,
+    eval_dice,
+    neighbor_coords,
+    random_dc,
+    samples,
+)
 
 
 class RetriableDungeonographyException(Exception):
@@ -81,16 +89,17 @@ class DungeonFloor:
         return (tts_x, tts_z)
 
     def random_room(self):
-        r = int(max(1, self.config.min_room_radius))
+        x = random.randrange(2, self.width - 3)
+        y = random.randrange(2, self.height - 3)
+        tile = self.tiles[x][y]
+        biome = self.config.get_biome(tile.biome_name)
+        r = int(max(1, biome.min_room_radius))
+        x = min(max(1 + r, x), self.width - 2 - r)
+        y = min(max(1 + r, y), self.height - 2 - r)
         cls = RectRoom
-        if random.random() * 100.0 < self.config.cavernous_room_percent:
+        if random.random() * 100.0 < biome.cavernous_room_percent:
             cls = CavernousRoom
-        return cls(
-            x=random.randrange(1 + r, self.width - 1 - r),
-            y=random.randrange(1 + r, self.height - 1 - r),
-            rw=r,
-            rh=r,
-        )
+        return cls(x=x, y=y, rw=r, rh=r, biome_name=tile.biome_name)
 
     def tile_iter(self):
         for y in range(self.height - 1, -1, -1):
@@ -124,6 +133,13 @@ class DungeonFloor:
                 return default(x=x, y=y)
         return self.tiles[x][y]
 
+    def get_tiles(self):
+        l = []
+        for x in range(self.width):
+            for y in range(self.height):
+                l.append(self.tiles[x][y])
+        return l
+
     def neighbor_tiles(
         self, x, y=None, default=None, cardinal=True, diagonal=False
     ):
@@ -147,7 +163,13 @@ class DungeonFloor:
         self.room_neighbors[corridor.room2ix].add(corridor.room1ix)
         for x, y in corridor.walk():
             if isinstance(self.tiles[x][y], WallTile):
-                self.set_tile(CorridorFloorTile(corridor.ix), x=x, y=y)
+                self.set_tile(
+                    CorridorFloorTile(
+                        corridor.ix, biome_name=corridor.biome_name
+                    ),
+                    x=x,
+                    y=y,
+                )
 
     def add_door(self, door):
         door.ix = len(self.doors)
@@ -247,6 +269,7 @@ def generate_random_dungeon(config=None, errors=None):
     for _ in range(100):
         try:
             df = DungeonFloor(config)
+            place_biomes_in_dungeon(df)
             place_rooms_in_dungeon(df)
             erode_cavernous_rooms_in_dungeon(df)
             place_corridors_in_dungeon(df)
@@ -268,6 +291,22 @@ def generate_random_dungeon(config=None, errors=None):
     if successful:
         return df
     raise errors[-1]
+
+
+def place_biomes_in_dungeon(df):
+    for tile in df.get_tiles():
+        biome_weight_names = []
+        for biome in df.config.biomes:
+            weight = 0.0
+            weight += (tile.y / df.height) * biome.biome_northness
+            weight += (1 - tile.y / df.height) * biome.biome_southness
+            weight += (tile.x / df.width) * biome.biome_eastness
+            weight += (1 - tile.x / df.width) * biome.biome_westness
+            weight += random.random()
+            biome_weight_names.append((weight, biome.biome_name))
+        if len(df.config.biomes) < 2:
+            biome_weight_names.append((3.0 + random.random(), None))
+        tile.biome_name = sorted(biome_weight_names)[-1][1]
 
 
 def place_rooms_in_dungeon(df):
@@ -346,12 +385,20 @@ def place_corridors_in_dungeon(df):
             continue
         is_horizontal_first = random.randrange(2)
 
+        room1 = df.rooms[room1ix]
+        room2 = df.rooms[room2ix]
+        biome_name = room1.biome_name
+        if isinstance(room1, CavernousRoom) and not isinstance(
+            room2, CavernousRoom
+        ):
+            biome_name = room2.biome_name
+        biome = config.get_biome(biome_name)
         width = choice(
             [1, 2, 3],
             weights=[
-                config.corridor_width_1_ratio,
-                config.corridor_width_2_ratio,
-                config.corridor_width_3_ratio,
+                biome.corridor_width_1_ratio,
+                biome.corridor_width_2_ratio,
+                biome.corridor_width_3_ratio,
             ],
         )
         signature = (room1ix, room2ix, width, is_horizontal_first)
@@ -359,8 +406,6 @@ def place_corridors_in_dungeon(df):
             continue
         prev_attempts.add(signature)
 
-        room1 = df.rooms[room1ix]
-        room2 = df.rooms[room2ix]
         cls = Corridor
         if isinstance(room1, CavernousRoom) and isinstance(
             room2, CavernousRoom
@@ -375,6 +420,7 @@ def place_corridors_in_dungeon(df):
             room2.y,
             is_horizontal_first,
             width=width,
+            biome_name=biome_name,
         )
 
         wall_entries = 0
@@ -518,7 +564,9 @@ def place_doors_in_dungeon(df):
             lock_dc = None
             if random.random() < df.config.door_lock_percent * 100.1:
                 lock_dc = random_dc(df.config.target_character_level)
-            door = Door(Door.pick_type(df.config), corridor, x, y, lock_dc=lock_dc)
+            door = Door(
+                Door.pick_type(df.config), corridor, x, y, lock_dc=lock_dc
+            )
             df.add_door(door)
             for dx in [-1, 0, 1]:
                 for dy in [-1, 0, 1]:
@@ -545,18 +593,52 @@ def place_ladders_in_dungeon(df):
     while len(rooms) < 2 * len(df.rooms) - 3:
         rooms = rooms + rooms[: int((2 * len(df.rooms) - len(rooms)) / 2 + 1)]
 
+    # map from biome_name to [(roomix, x, y)]
+    biome_up_ladders = collections.defaultdict(list)
+    biome_down_ladders = collections.defaultdict(list)
+
+    def biome_up_satisfied(biome_name):
+        biome = df.config.get_biome(biome_name)
+        return len(biome_up_ladders[biome_name]) >= biome.num_up_ladders
+
+    def biome_satisfied(biome_name):
+        biome = df.config.get_biome(biome_name)
+        return (
+            len(biome_up_ladders[biome_name]) >= biome.num_up_ladders
+            and len(biome_down_ladders[biome_name]) >= biome.num_down_ladders
+        )
+
+    def all_satisfied():
+        for biome_name in biome_name_set.union({None}):
+            if not biome_satisfied(biome_name):
+                return False
+        return True
+
+    biome_name_set = set()
+    for room in rooms:
+        if room.biome_name is not None:
+            biome_name_set.add(room.biome_name)
     max_attempts = 50
     for attempt_ix in range(max_attempts):
-        if len(ladder_room_ixs) >= target_n_ladders:
+        if all_satisfied():
             break
         ladder_room_ixs = set()
         roomix_tile_coords = {}
-        for _ in range(
-            10 * (df.config.num_up_ladders + df.config.num_down_ladders)
-        ):
-            if len(ladder_room_ixs) >= target_n_ladders:
+        biome_up_ladders = collections.defaultdict(list)
+        biome_down_ladders = collections.defaultdict(list)
+        for _ in range(20):
+            biome_name_options = []
+            for biome_name in biome_name_set:
+                if not biome_satisfied(biome_name):
+                    biome_name_options.append(biome_name)
+            biome_name = None
+            biome_rooms = rooms
+            if biome_name_options:
+                biome_name = random.choice(biome_name_options)
+                biome_rooms = [r for r in rooms if r.biome_name == biome_name]
+            elif biome_satisfied(None):
                 break
-            room = random.choice(rooms)
+            room = random.choice(biome_rooms)
             if room.ix in ladder_room_ixs:
                 continue
             # BFS check on ladders to be a configurable distance
@@ -573,8 +655,43 @@ def place_ladders_in_dungeon(df):
             )
             if not tile_coords:
                 continue
+            x, y = tile_coords
+            tup = (room.ix, x, y)
+            is_up = not biome_up_satisfied(biome_name)
+            if is_up:
+                biome_up_ladders[biome_name].append(tup)
+                if biome_name is not None:
+                    biome_up_ladders[None].append(tup)
+            else:
+                biome_down_ladders[biome_name].append(tup)
+                if biome_name is not None:
+                    biome_down_ladders[None].append(tup)
             ladder_room_ixs.add(room.ix)
             roomix_tile_coords[room.ix] = tile_coords
+    tups_seen = set()
+    for l in biome_up_ladders.values():
+        for tup in l:
+            if tup in tups_seen:
+                continue
+            tups_seen.add(tup)
+            roomix, x, y = tup
+            room = df.rooms[roomix]
+            df.set_tile(
+                LadderUpTile(roomix, biome_name=room.biome_name), x=x, y=y
+            )
+            room.has_up_ladder = True
+    for l in biome_down_ladders.values():
+        for tup in l:
+            if tup in tups_seen:
+                continue
+            tups_seen.add(tup)
+            roomix, x, y = tup
+            room = df.rooms[roomix]
+            df.set_tile(
+                LadderDownTile(roomix, biome_name=room.biome_name), x=x, y=y
+            )
+            room.has_down_ladder = True
+    return
     ladder_room_ixs = list(ladder_room_ixs)
     random.shuffle(ladder_room_ixs)
     num_up_ladders = 0

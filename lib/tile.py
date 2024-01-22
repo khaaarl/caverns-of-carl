@@ -6,7 +6,7 @@ import lib.tts as tts
 
 
 class Tile:
-    def __init__(self, x=None, y=None):
+    def __init__(self, x=None, y=None, biome_name=None):
         self.x = x
         self.y = y
         self.tile_style = None
@@ -15,6 +15,7 @@ class Tile:
         self.trapixs = set()
         self.light_level = "bright"  # or "dim" or "dark"
         self.is_interior = False
+        self.biome_name = biome_name
 
     def _tts_light_mul(self, obj):
         ref = tts.reference_object("Floor, Dungeon")

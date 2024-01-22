@@ -14,7 +14,7 @@ from lib.utils import Doc, DocBookmark, DocLink
 
 
 class Room:
-    def __init__(self, x, y, rw=1, rh=1):
+    def __init__(self, x, y, rw=1, rh=1, biome_name=None):
         self.x = x
         self.y = y
         self.rw = int(max(rw, 1))
@@ -28,6 +28,7 @@ class Room:
         self.corridorixs = set()
         self.doorixs = set()
         self.trapixs = set()
+        self.biome_name = biome_name
 
     def embiggened(self):
         return self.__class__(
@@ -35,6 +36,7 @@ class Room:
             self.y,
             self.rw + random.randrange(2),
             self.rh + random.randrange(2),
+            biome_name=self.biome_name,
         )
 
     def wiggled(self):
@@ -43,14 +45,15 @@ class Room:
             self.y + random.randrange(-1, 2),
             self.rw,
             self.rh,
+            biome_name=self.biome_name,
         )
 
     def tile_style(self):
         return "dungeon"
 
     def new_floor_tile(self):
-        t = RoomFloorTile(self.ix)
-        t.tile_style = "dungeon"
+        t = RoomFloorTile(self.ix, biome_name=self.biome_name)
+        t.tile_style = self.tile_style()
         return t
 
     def apply_to_tiles(self, df):
@@ -59,7 +62,7 @@ class Room:
 
     def remove_from_tiles(self, df):
         for x, y in self.tile_coords():
-            df.set_tile(WallTile(), x=x, y=y)
+            df.set_tile(WallTile(biome_name=self.biome_name), x=x, y=y)
 
     def tile_coords(self):
         raise NotImplementedError()
@@ -269,11 +272,6 @@ class CavernousRoom(Room):
 
     def tile_style(self):
         return "cavern"
-
-    def new_floor_tile(self):
-        t = RoomFloorTile(self.ix)
-        t.tile_style = "cavern"
-        return t
 
     def tile_coords(self):
         if self.explicit_tile_coords is None:

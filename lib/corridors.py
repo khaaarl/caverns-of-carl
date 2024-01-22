@@ -69,7 +69,7 @@ class CorridorWalker:
 
 class Corridor:
     def __init__(
-        self, room1ix, room2ix, x1, y1, x2, y2, is_horizontal_first, width=1
+        self, room1ix, room2ix, x1, y1, x2, y2, is_horizontal_first, width=1, biome_name=None
     ):
         self.room1ix, self.room2ix = room1ix, room2ix
         self.x1, self.y1, self.x2, self.y2 = x1, y1, x2, y2
@@ -80,6 +80,7 @@ class Corridor:
         self.doorixs = set()
         self.trapixs = set()
         self.name = None
+        self.biome_name = biome_name
 
     def is_fully_enclosed_by_doors(self):
         return len(self.doorixs) >= 2
