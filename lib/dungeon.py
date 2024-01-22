@@ -777,17 +777,26 @@ def place_treasure_in_dungeon(df):
     mimic_info = get_monster_library("dnd 5e monsters").get_monster_infos(
         "Mimic"
     )[0]
+    room_biome_names = collections.defaultdict(list)
+    for room in df.rooms:
+        room_biome_names[room.biome_name].append(room)
+    for biome_name, rooms in room_biome_names.items():
+        biome = df.config.get_biome(biome_name)
+        place_treasure_in_biome(df, biome, rooms, lib, mimic_info)
+
+
+def place_treasure_in_biome(df, biome, rooms, lib, mimic_info):
     num_treasures = 0
-    target_num_treasures = eval_dice(df.config.num_treasures)
+    target_num_treasures = eval_dice(biome.num_treasures)
     num_mimics = 0
-    target_num_mimics = eval_dice(df.config.num_mimics)
+    target_num_mimics = eval_dice(biome.num_mimics)
     num_bookshelves = 0
-    target_num_bookshelves = eval_dice(df.config.num_bookshelves)
+    target_num_bookshelves = eval_dice(biome.num_bookshelves)
     eligible_rooms = []
     eligible_room_weights = []
     bookshelf_rooms = []
     bookshelf_room_weights = []
-    for room in df.rooms:
+    for room in rooms:
         if not room.allows_treasure(df):
             continue
         if not room.corridorixs:
@@ -812,8 +821,8 @@ def place_treasure_in_dungeon(df):
             continue
         x, y = coords
         contents = lib.gen_horde(
-            df.config.target_character_level,
-            df.config.num_player_characters,
+            biome.target_character_level,
+            biome.num_player_characters,
         )
         if not contents:
             contents = ["Nothing!"]
@@ -833,7 +842,7 @@ def place_treasure_in_dungeon(df):
             continue
         x, y = coords
         monster = Monster(mimic_info)
-        monster.adjust_cr(df.config.target_character_level)
+        monster.adjust_cr(biome.target_character_level)
         nt = MimicTile(room.ix, biome_name=room.biome_name, monster=monster)
         df.set_tile(nt, x=x, y=y)
         num_mimics += 1
@@ -848,8 +857,8 @@ def place_treasure_in_dungeon(df):
             continue
         x, y = coords
         contents = lib.gen_bookshelf_horde(
-            df.config.target_character_level,
-            df.config.num_player_characters,
+            biome.target_character_level,
+            biome.num_player_characters,
         )
         if not contents:
             contents = ["Nothing!"]
