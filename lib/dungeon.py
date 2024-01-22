@@ -345,12 +345,13 @@ def place_rooms_in_dungeon(df):
             rooms[ix] = room2
     # apply light levels
     for room in rooms:
+        biome = df.config.get_biome(room.biome_name)
         room.light_level = choice(
             ["bright", "dim", "dark"],
             weights=[
-                config.room_bright_ratio,
-                config.room_dim_ratio,
-                config.room_dark_ratio,
+                biome.room_bright_ratio,
+                biome.room_dim_ratio,
+                biome.room_dark_ratio,
             ],
         )
     # sort rooms from top to bottom so their indices are more human comprehensible maybe
