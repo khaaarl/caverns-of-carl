@@ -571,7 +571,7 @@
     },
     {
       "name": "Hobgoblin",
-      "keywords": ["Desert", "Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Lawful", "Evil"],
+      "keywords": ["Desert", "Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Hobgoblinoid", "Lawful", "Evil"],
       "ascii_char": "[1;31mg",
       "challenge_rating": 1,
       "xp": 200,
@@ -582,7 +582,7 @@
     },
     {
       "name": "Hobgoblin Captain",
-      "keywords": ["Desert", "Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Lawful", "Evil"],
+      "keywords": ["Desert", "Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Hobgoblinoid", "Lawful", "Evil"],
       "ascii_char": "[1;91mg",
       "challenge_rating": 3,
       "xp": 700,
@@ -594,7 +594,7 @@
     },
     {
       "name": "Hobgoblin Warlord",
-      "keywords": ["Desert", "Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Lawful", "Evil"],
+      "keywords": ["Desert", "Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Hobgoblinoid", "Lawful", "Evil"],
       "ascii_char": "[1;95mg",
       "challenge_rating": 6,
       "xp": 2300,
@@ -602,7 +602,29 @@
       "hit_dice_formula": "13d8 + 39",
       "size": "medium",
       "diameter": 1,
-      "synergies": ["Hobgoblin", "Bugbear Captain"]
+      "synergies": ["Hobgoblin", "Hobgoblin Captain"]
+    },
+    {
+      "name": "Hobgoblin Devastator",
+      "keywords": ["Backline", "Spellcaster", "Forest", "Grassland", "Hill", "Humanoid", "Goblinoid", "Hobgoblinoid", "Lawful", "Evil"],
+      "ascii_char": "[1;93mg",
+      "challenge_rating": 4,
+      "xp": 1100,
+      "health": 45,
+      "hit_dice_formula": "7d8 + 14",
+      "size": "medium",
+      "diameter": 1
+    },
+    {
+      "name": "Hobgoblin Iron Shadow",
+      "keywords": ["Spellcaster", "Forest", "Grassland", "Hill", "Humanoid", "Goblinoid", "Hobgoblinoid", "Lawful", "Evil"],
+      "ascii_char": "[1;37mg",
+      "challenge_rating": 2,
+      "xp": 450,
+      "health": 32,
+      "hit_dice_formula": "5d8 + 10",
+      "size": "medium",
+      "diameter": 1
     },
     {
       "name": "Kobold",
