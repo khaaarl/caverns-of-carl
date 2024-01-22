@@ -25,8 +25,8 @@ class DungeonConfig:
         self.add_var("biome_westness", 5.0, biome_only=True)
         self.add_var("biome_eastness", 5.0, biome_only=True)
         self.add_var("min_room_radius", 1)
-        self.add_var("num_room_embiggenings", 5)
-        self.add_var("num_room_wiggles", 5)
+        self.add_var("num_room_embiggenings", 5, in_biome=False)
+        self.add_var("num_room_wiggles", 5, in_biome=False)
         self.add_var("cavernous_room_percent", 50.0)
         self.add_var("room_bright_ratio", 5.0)
         self.add_var("room_dim_ratio", 2.0)
@@ -62,7 +62,7 @@ class DungeonConfig:
         self.add_var("blacksmith_percent", 30.0)
         self.add_var("kryxix_altar_percent", 30.0)
         self.add_var("ssarthaxx_altar_percent", 30.0)
-        self.add_var("num_misc_NPCs", "1d6-1")
+        self.add_var("num_misc_NPCs", "1d6-1", in_biome=False)
         self.allow_corridor_intersection = False
         self.max_corridor_attempts = 30000
         self.max_room_attempts = 10
