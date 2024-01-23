@@ -359,6 +359,9 @@ def place_maze_in_biome(df, biome):
             if junctions_by_mxy[(nmx, nmy)]:
                 connections[(x, y)].add((nmx, nmy))
                 connections[(nmx, nmy)].add((x, y))
+
+    # The sections of the grid aren't guaranteed to be contiguous.
+    # Prune until it is.
     mxmy_to_remove = set()
     while True:
         keys = list(connections.keys())
@@ -377,19 +380,14 @@ def place_maze_in_biome(df, biome):
     for p in mxmy_to_remove:
         maze_grid[p[0]][p[1]] = None
     junctions = []
-    junctions_by_mxy = collections.defaultdict(lambda: None)
     for mx in range(maze_width):
         for my in range(maze_height):
-            junction = maze_grid[mx][my]
-            if junction:
-                junctions.append(junction)
-                junctions_by_mxy[(mx, my)] = junction
+            if maze_grid[mx][my]:
+                junctions.append(maze_grid[mx][my])
+
+    # Replace some junctions with regular rooms
     target_num_rooms = int(
-        round(
-            df.config.num_rooms
-            * len(junctions)
-            / (len(junctions) + not_us_junctions)
-        )
+        round(df.config.num_rooms * len(junctions) / (maze_width * maze_height))
     )
     random.shuffle(junctions)
     room_ps = []
@@ -419,26 +417,17 @@ def place_maze_in_biome(df, biome):
             if isinstance(item, Room):
                 item.in_maze = True
                 df.add_room(item)
-    num_pruned = 1
-    while num_pruned > 0:
-        num_pruned = 0
-        ps = list(connections.keys())
-        random.shuffle(ps)
-        random.shuffle(room_ps)
-        for p1 in room_ps + ps:
-            others = list(connections[p1])
-            random.shuffle(others)
-            for p2 in others:
-                # try disconnecting
-                connections[p1].remove(p2)
-                connections[p2].remove(p1)
-                if len(dfs(connections, p1)) == len(connections):
-                    num_pruned += 1
-                    continue
-                # reconnect, as we broke the full connectivity
-                connections[p1].add(p2)
-                connections[p2].add(p1)
-    for p1 in ps:
+
+    # DFS-based algorithm for connecting the maze
+    start = random.choice(list(connections.keys()))
+    dfs_path = dfs(connections, start, include_previous=True, randomize=True)
+    connections = collections.defaultdict(set)
+    for a, b in dfs_path[1:]:
+        connections[a].add(b)
+        connections[b].add(a)
+
+    # dig the corridors determined by the above algorithm
+    for p1 in list(connections.keys()):
         others = list(connections[p1])
         for p2 in others:
             if p1 > p2:

@@ -246,14 +246,29 @@ def bfs(d, start, max_depth=None):
     return output
 
 
-def dfs(d, start, seen=None, accum=None):
+def dfs(
+    d,
+    start,
+    seen=None,
+    accum=None,
+    prev=None,
+    include_previous=False,
+    randomize=False,
+):
     accum = accum or []
     seen = seen or set()
     seen.add(start)
-    accum.append(start)
-    for other in d[start]:
+    if include_previous:
+        accum.append((prev, start))
+    else:
+        accum.append(start)
+    next_layer = d[start]
+    if randomize:
+        next_layer = list(next_layer)
+        random.shuffle(next_layer)
+    for other in next_layer:
         if other not in seen:
-            dfs(d, other, seen, accum)
+            dfs(d, other, seen, accum, start, include_previous, randomize)
     return accum
 
 

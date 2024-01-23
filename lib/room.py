@@ -202,11 +202,14 @@ class Room:
                 other_roomix = (
                     set([corridor.room1ix, corridor.room2ix]) - set([self.ix])
                 ).pop()
-                way = "Passage to"
+                way = "Passage"
                 if door:
-                    way = f"{door.nickname()} to"
+                    way = door.nickname()
                 line = Doc([way], separator=" ")
-                line.body.append(DocLink(f"Room {other_roomix}"))
+                other_room = df.rooms[other_roomix]
+                if not other_room.is_trivial():
+                    line.body.append("to")
+                    line.body.append(DocLink(f"Room {other_roomix}"))
                 if corridor.is_nontrivial(df):
                     line.body.append("by way of")
                     line.body.append(DocLink(f"Corridor {corridor.name}"))

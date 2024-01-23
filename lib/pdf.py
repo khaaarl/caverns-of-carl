@@ -244,6 +244,8 @@ def produce_pdf(df, name):
     )
     docs = []
     for room in df.rooms:
+        if room.is_trivial():
+            continue
         docs.append(room.description(df, verbose=True))
     for corridor in sorted(df.corridors, key=lambda x: x.name or ""):
         if not corridor.is_nontrivial(df):

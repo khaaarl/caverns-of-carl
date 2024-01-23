@@ -130,6 +130,8 @@ def run_ui():
             )
             text_output.append("")
             for room in df.rooms:
+                if room.is_trivial():
+                    continue
                 doc = room.description(df, verbose=True)
                 text_output.append(f"***{doc.flat_header()}***")
                 text_output.append(doc.flat_body(separator="\n\n"))
@@ -168,6 +170,7 @@ def run_ui():
             return
         text_output = ["\n"]
         try:
+            config.load_from_tk_entries()
             df = dungeon_history[-1]
             now = datetime.datetime.now()
             name = f"Caverns of Carl {now:%Y-%m-%dT%H-%M-%S%z}"
