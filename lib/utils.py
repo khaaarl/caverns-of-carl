@@ -3,6 +3,7 @@ import math
 import os
 import re
 import random
+import unicodedata
 
 COC_ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
@@ -528,3 +529,10 @@ def random_dc(level):
     lo = int(math.floor(level * 0.7 + 8))
     hi = int(math.ceil(level * 0.8 + 12))
     return random.randrange(lo, hi + 1)
+
+
+def remove_non_ascii(text):
+    # Normalize the Unicode string to decompose accented characters
+    normalized = unicodedata.normalize("NFKD", text)
+    # Encode to ASCII bytes, ignoring errors, then decode back to a string
+    return normalized.encode("ascii", "ignore").decode("ascii")

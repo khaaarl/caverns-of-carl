@@ -1,24 +1,33 @@
 import collections
 import copy
+import functools
 import json
 import math
 import os
 import random
 import re
+import sys
+
+_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+if _ROOT not in sys.path:
+    sys.path.append(_ROOT)
 
 import lib.tts as tts
-from lib.utils import COC_ROOT_DIR, Doc, choice, expr_match_keywords, eval_dice
+from lib.utils import (
+    COC_ROOT_DIR,
+    Doc,
+    choice,
+    expr_match_keywords,
+    eval_dice,
+    remove_non_ascii,
+)
 
 
-_monster_library_cache = {}
-
-
+@functools.cache
 def get_monster_library(name):
-    if name not in _monster_library_cache:
-        ml = MonsterLibrary(name=name)
-        ml.load()
-        _monster_library_cache[name] = ml
-    return _monster_library_cache[name]
+    ml = MonsterLibrary(name=name)
+    ml.load()
+    return ml
 
 
 class MonsterLibrary:
@@ -36,9 +45,12 @@ class MonsterLibrary:
                 self.monster_infos.append(MonsterInfo(monster_blob))
 
     def to_blob(self):
+        infos = sorted(
+            self.monster_infos, key=lambda x: (x.challenge_rating or 0, x.name)
+        )
         return {
             "name": self.name,
-            "monsters": [x.to_blob() for x in self.monster_infos],
+            "monsters": [x.to_blob() for x in infos],
         }
 
     def save(self):
@@ -46,7 +58,7 @@ class MonsterLibrary:
             COC_ROOT_DIR, "reference_info", "monsters", f"{self.name}.json"
         )
         with open(filename, "w") as f:
-            json.dump(self.to_blob(), f, indent=2)
+            json.dump(self.to_blob(), f, sort_keys=True, indent=2)
 
     def get_monster_infos(
         self,
@@ -79,25 +91,187 @@ class MonsterLibrary:
             output.append(m)
         return output
 
+    def ingest_5e_tools_json(self, filename):
+        infos = collections.defaultdict(MonsterInfo)
+        for mi in self.monster_infos:
+            infos[mi.name] = mi
+        others = []
+        with open(filename) as f:
+            blob = json.load(f)
+            others = blob["monster"]
+        for m in others:
+            if "hp" not in m:
+                continue
+            name = remove_non_ascii(m["name"])
+            mi = infos[name]
+            mi.name = name
+            mi.health = m["hp"]["average"]
+            mi.hit_dice_formula = m["hp"]["formula"]
+            mi.size = {
+                "T": "tiny",
+                "S": "small",
+                "M": "medium",
+                "L": "large",
+                "H": "huge",
+                "G": "gargantuan",
+            }[m.get("size", ["M"])[0]]
+            cr = None
+            if "cr" in m:
+                tmp = m["cr"]
+                if isinstance(tmp, dict):
+                    tmp = tmp.get("cr")
+                if tmp == "1/2":
+                    cr = 0.5
+                elif tmp == "1/4":
+                    cr = 0.25
+                elif tmp == "1/8":
+                    cr = 0.125
+                elif tmp and tmp.isdigit():
+                    cr = int(tmp)
+            if cr is not None:
+                mi.challenge_rating = cr
+            # keywords
+            keywords = set(mi.keywords)
+            if "spellcasting" in m:
+                keywords.add("Spellcaster")
+            if "type" in m:
+                tmp = m["type"]
+                if isinstance(tmp, dict):
+                    keywords.add(tmp["type"])
+                    for tag in tmp.get("tags", []):
+                        if tag.lower() == "orc":
+                            tag = "orcoid"
+                        keywords.add(tag)
+                elif isinstance(tmp, str):
+                    keywords.add(tmp)
+            for sense in m.get("senses", []):
+                keywords.add(sense.split()[0])
+            for environment in m.get("environment", []):
+                keywords.add(environment)
+            for k in m.get("speed", {}).keys():
+                if k == "burrow":
+                    keywords.add("Burrowing")
+                if k == "climb":
+                    keywords.add("Climbing")
+                if k == "fly":
+                    keywords.add("Flying")
+                if k == "swim":
+                    keywords.add("Swimming")
+            mi.keywords = sorted({a.title() for a in keywords})
+        self.monster_infos = infos.values()
+
+
+_CR_TO_HP_RATIO = {
+    0: 3.5,
+    0.125: 21.0,
+    0.25: 42.5,
+    0.5: 60.0,
+    1: 78.0,
+    2: 93.0,
+    3: 108.0,
+    4: 123.0,
+    5: 138.0,
+    6: 153.0,
+    7: 168.0,
+    8: 183.0,
+    9: 198.0,
+    10: 213.0,
+    11: 228.0,
+    12: 243.0,
+    13: 258.0,
+    14: 273.0,
+    15: 288.0,
+    16: 303.0,
+    17: 318.0,
+    18: 333.0,
+    19: 348.0,
+    20: 378.0,
+    21: 423.0,
+    22: 468.0,
+    23: 513.0,
+    24: 558.0,
+    25: 603.0,
+    26: 648.0,
+    27: 693.0,
+    28: 738.0,
+    29: 783.0,
+    30: 828.0,
+}
+_CR_TO_XP = {
+    0: 10,
+    0.125: 25,
+    0.25: 50,
+    0.5: 100,
+    1: 200,
+    2: 450,
+    3: 700,
+    4: 1100,
+    5: 1800,
+    6: 2300,
+    7: 2900,
+    8: 3900,
+    9: 5000,
+    10: 5900,
+    11: 7200,
+    12: 8400,
+    13: 10000,
+    14: 11500,
+    15: 13000,
+    16: 15000,
+    17: 18000,
+    18: 20000,
+    19: 22000,
+    20: 25000,
+    21: 33000,
+    22: 41000,
+    23: 50000,
+    24: 62000,
+    25: 75000,
+    26: 90000,
+    27: 105000,
+    28: 120000,
+    29: 135000,
+    30: 155000,
+}
+
 
 class MonsterInfo:
+    _KEYS_DEFAULTS = {
+        "name": "Unnamed Monster",
+        "keywords": [],
+        "tts_reference_nicknames": [],
+        "ascii_char": "e",
+        "health": None,
+        "hit_dice_formula": None,
+        "size": "medium",
+        "synergies": [],
+        "challenge_rating": None,
+        "max_per_floor": None,
+        "frequency": 1.0,
+    }
+
     def __init__(self, blob={}):
-        self.name = blob.get("name", "Unnamed Monster")
-        self.keywords = blob.get("keywords", [])
-        self.tts_reference_nicknames = blob.get("tts_reference_nicknames", [])
-        self.ascii_char = blob.get("ascii_char", "e")
-        self.health = blob.get("health")
-        self.hit_dice_formula = blob.get("hit_dice_formula")
-        self.size = blob.get("size")
-        self.diameter = blob.get("diameter", 1)
-        self.synergies = blob.get("synergies", [])
-        self.challenge_rating = blob.get("challenge_rating")
-        self.xp = blob.get("xp")
-        self.max_per_floor = blob.get("max_per_floor")
-        self.frequency = blob.get("frequency", 1.0)
+        for k, default in MonsterInfo._KEYS_DEFAULTS.items():
+            self.__dict__[k] = blob.get(k, default)
+        self.diameter = {
+            "tiny": 1,
+            "small": 1,
+            "medium": 1,
+            "large": 2,
+            "huge": 3,
+            "gargantuan": 3,
+        }[self.size]
+        self.xp = None
+        if self.challenge_rating is not None:
+            self.xp = _CR_TO_XP[self.challenge_rating]
 
     def to_blob(self):
-        return self
+        blob = {}
+        for k, default in MonsterInfo._KEYS_DEFAULTS.items():
+            v = self.__dict__[k]
+            if v != default:
+                blob[k] = v
+        return blob
 
     def has_keyword(self, k):
         for k2 in self.keywords:
@@ -131,90 +305,15 @@ class Monster:
         return self.monster_info.ascii_char
 
     def adjust_cr(self, new_cr):
-        dmg_hps = {
-            0: 3.5,
-            0.125: 21.0,
-            0.25: 42.5,
-            0.5: 60.0,
-            1: 78.0,
-            2: 93.0,
-            3: 108.0,
-            4: 123.0,
-            5: 138.0,
-            6: 153.0,
-            7: 168.0,
-            8: 183.0,
-            9: 198.0,
-            10: 213.0,
-            11: 228.0,
-            12: 243.0,
-            13: 258.0,
-            14: 273.0,
-            15: 288.0,
-            16: 303.0,
-            17: 318.0,
-            18: 333.0,
-            19: 348.0,
-            20: 378.0,
-            21: 423.0,
-            22: 468.0,
-            23: 513.0,
-            24: 558.0,
-            25: 603.0,
-            26: 648.0,
-            27: 693.0,
-            28: 738.0,
-            29: 783.0,
-            30: 828.0,
-        }
-        xps = {
-            0: 10,
-            0.125: 25,
-            0.25: 50,
-            0.5: 100,
-            1: 200,
-            2: 450,
-            3: 700,
-            4: 1100,
-            5: 1800,
-            6: 2300,
-            7: 2900,
-            8: 3900,
-            9: 5000,
-            10: 5900,
-            11: 7200,
-            12: 8400,
-            13: 10000,
-            14: 11500,
-            15: 13000,
-            16: 15000,
-            17: 18000,
-            18: 20000,
-            19: 22000,
-            20: 25000,
-            21: 33000,
-            22: 41000,
-            23: 50000,
-            24: 62000,
-            25: 75000,
-            26: 90000,
-            27: 105000,
-            28: 120000,
-            29: 135000,
-            30: 155000,
-        }
         old_cr = self.monster_info.challenge_rating
         if new_cr == old_cr:
             return
         self.monster_info = copy.deepcopy(self.monster_info)
         self.monster_info.challenge_rating = new_cr
-        self.monster_info.xp = round(
-            self.monster_info.xp * xps[new_cr] / xps[old_cr]
-        )
+        self.monster_info.xp = _CR_TO_XP[new_cr]
         if self.health:
-            self.health = max(
-                1, round(self.health * dmg_hps[new_cr] / dmg_hps[old_cr])
-            )
+            rat = _CR_TO_HP_RATIO[new_cr] / _CR_TO_HP_RATIO[old_cr]
+            self.health = max(1, round(self.health * rat))
         if self.name:
             self.name = re.sub(r" \(CR [0-9]+\)", "", self.name)
             fractionator = {0.125: "1/8", 0.25: "1/4", 0.5: "1/2"}
@@ -451,3 +550,9 @@ def med_target_xp(config):
         20: 5700,
     }[config.target_character_level]
     return med_xp_per_char * config.num_player_characters
+
+
+if __name__ == "__main__":
+    ml = get_monster_library("dnd 5e monsters")
+    # ml.ingest_5e_tools_json(r"C:\Users\carl\Downloads\bestiary-vgm.json")
+    ml.save()

@@ -1,6 +1,48 @@
 {
   "monsters": [
     {
+      "challenge_rating": 0,
+      "health": 2,
+      "hit_dice_formula": "1d4",
+      "keywords": [
+        "Beast",
+        "Darkvision",
+        "Underdark",
+        "Urban"
+      ],
+      "name": "Cranium Rat",
+      "size": "tiny"
+    },
+    {
+      "challenge_rating": 0.125,
+      "health": 18,
+      "hit_dice_formula": "4d6 + 4",
+      "keywords": [
+        "Climbing",
+        "Darkvision",
+        "Fey",
+        "Forest",
+        "Hill",
+        "Underdark",
+        "Urban"
+      ],
+      "name": "Boggle",
+      "size": "small"
+    },
+    {
+      "challenge_rating": 0.125,
+      "health": 11,
+      "hit_dice_formula": "2d8 + 2",
+      "keywords": [
+        "Beast",
+        "Blindsight",
+        "Coastal",
+        "Swimming",
+        "Underwater"
+      ],
+      "name": "Dolphin"
+    },
+    {
       "ascii_char": "[1;32mk",
       "challenge_rating": 0.125,
       "health": 6,
@@ -21,8 +63,21 @@
         "Evil"
       ],
       "name": "Kobold",
-      "size": "small",
-      "xp": 25
+      "size": "small"
+    },
+    {
+      "challenge_rating": 0.125,
+      "health": 7,
+      "hit_dice_formula": "3d4",
+      "keywords": [
+        "Aberration",
+        "Climbing",
+        "Darkvision",
+        "Hill",
+        "Underdark"
+      ],
+      "name": "Neogi Hatchling",
+      "size": "tiny"
     },
     {
       "ascii_char": "[1;95mg",
@@ -43,8 +98,82 @@
         "Beast"
       ],
       "name": "Stirge",
-      "size": "tiny",
-      "xp": 25
+      "size": "tiny"
+    },
+    {
+      "challenge_rating": 0.125,
+      "health": 7,
+      "hit_dice_formula": "2d6",
+      "keywords": [
+        "Darkvision",
+        "Hill",
+        "Humanoid",
+        "Underdark",
+        "Xvart"
+      ],
+      "name": "Xvart",
+      "size": "small"
+    },
+    {
+      "challenge_rating": 0.125,
+      "health": 7,
+      "hit_dice_formula": "2d6",
+      "keywords": [
+        "Darkvision",
+        "Hill",
+        "Humanoid",
+        "Underdark",
+        "Xvart"
+      ],
+      "name": "Xvart Speaker",
+      "size": "small"
+    },
+    {
+      "challenge_rating": 0.25,
+      "health": 9,
+      "hit_dice_formula": "2d8",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Spellcaster",
+        "Urban"
+      ],
+      "name": "Apprentice Wizard"
+    },
+    {
+      "challenge_rating": 0.25,
+      "health": 15,
+      "hit_dice_formula": "2d10 + 4",
+      "keywords": [
+        "Beast",
+        "Grassland"
+      ],
+      "name": "Cow",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 0.25,
+      "health": 13,
+      "hit_dice_formula": "2d8 + 4",
+      "keywords": [
+        "Beast",
+        "Darkvision",
+        "Spellcaster",
+        "Underdark"
+      ],
+      "name": "Deep RothA"
+    },
+    {
+      "challenge_rating": 0.25,
+      "health": 19,
+      "hit_dice_formula": "3d8 + 6",
+      "keywords": [
+        "Beast",
+        "Coastal",
+        "Swamp",
+        "Swimming"
+      ],
+      "name": "Dimetrodon"
     },
     {
       "ascii_char": "[1;32ml",
@@ -62,8 +191,7 @@
         "Beast"
       ],
       "name": "Giant Lizard",
-      "size": "large",
-      "xp": 50
+      "size": "large"
     },
     {
       "ascii_char": "[1;33ms",
@@ -72,19 +200,19 @@
       "hit_dice_formula": "2d8 + 2",
       "keywords": [
         "Arctic",
+        "Chaotic",
+        "Darkvision",
+        "Evil",
         "Forest",
+        "Frontline",
         "Grassland",
         "Hill",
-        "Undead",
-        "Chaotic",
-        "Evil",
-        "Frontline"
+        "Undead"
       ],
       "name": "Gnoll Witherling",
       "tts_reference_nicknames": [
         "Gnoll Witherling A"
-      ],
-      "xp": 50
+      ]
     },
     {
       "ascii_char": "[1;32mg",
@@ -106,8 +234,32 @@
         "Goblin A",
         "Goblin B",
         "Goblin C"
+      ]
+    },
+    {
+      "challenge_rating": 0.25,
+      "health": 11,
+      "hit_dice_formula": "2d6 + 4",
+      "keywords": [
+        "Climbing",
+        "Forest",
+        "Grung",
+        "Humanoid"
       ],
-      "xp": 50
+      "name": "Grung",
+      "size": "small"
+    },
+    {
+      "challenge_rating": 0.25,
+      "health": 19,
+      "hit_dice_formula": "3d10 + 3",
+      "keywords": [
+        "Beast",
+        "Grassland",
+        "Swamp"
+      ],
+      "name": "Hadrosaurus",
+      "size": "large"
     },
     {
       "ascii_char": "[1;94mk",
@@ -116,19 +268,43 @@
       "hit_dice_formula": "3d6 + 3",
       "keywords": [
         "Backline",
+        "Darkvision",
+        "Evil",
         "Forest",
         "Hill",
-        "Mountain",
-        "Underdark",
-        "Urban",
         "Humanoid",
+        "Kobold",
         "Koboldoid",
         "Lawful",
-        "Evil"
+        "Mountain",
+        "Underdark",
+        "Urban"
       ],
       "name": "Kobold Inventor",
-      "size": "small",
-      "xp": 50
+      "size": "small"
+    },
+    {
+      "challenge_rating": 0.25,
+      "health": 15,
+      "hit_dice_formula": "2d10 + 4",
+      "keywords": [
+        "Beast",
+        "Grassland"
+      ],
+      "name": "Ox",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 0.25,
+      "health": 15,
+      "hit_dice_formula": "2d10 + 4",
+      "keywords": [
+        "Beast",
+        "Darkvision",
+        "Grassland"
+      ],
+      "name": "RothA",
+      "size": "large"
     },
     {
       "ascii_char": "[1;97ms",
@@ -144,8 +320,43 @@
         "Skeleton Archer A",
         "Skeleton Warrior A",
         "Skeleton Warrior B"
+      ]
+    },
+    {
+      "challenge_rating": 0.25,
+      "health": 15,
+      "hit_dice_formula": "2d10 + 4",
+      "keywords": [
+        "Beast",
+        "Darkvision"
       ],
-      "xp": 50
+      "name": "Stench Kow",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 0.25,
+      "health": 9,
+      "hit_dice_formula": "2d6 + 2",
+      "keywords": [
+        "Darkvision",
+        "Forest",
+        "Plant",
+        "Swamp"
+      ],
+      "name": "Vegepygmy",
+      "size": "small"
+    },
+    {
+      "challenge_rating": 0.25,
+      "health": 10,
+      "hit_dice_formula": "3d4 + 3",
+      "keywords": [
+        "Beast",
+        "Forest",
+        "Grassland"
+      ],
+      "name": "Velociraptor",
+      "size": "tiny"
     },
     {
       "ascii_char": "[1;34mk",
@@ -169,8 +380,7 @@
         "Evil"
       ],
       "name": "Winged Kobold",
-      "size": "small",
-      "xp": 50
+      "size": "small"
     },
     {
       "ascii_char": "[1;33mz",
@@ -187,8 +397,78 @@
         "Zombie A",
         "Zombie B",
         "Zombie C"
+      ]
+    },
+    {
+      "challenge_rating": 0.5,
+      "health": 18,
+      "hit_dice_formula": "4d6 + 4",
+      "keywords": [
+        "Climbing",
+        "Darkvision",
+        "Monstrosity",
+        "Underdark"
       ],
-      "xp": 50
+      "name": "Chitine",
+      "size": "small"
+    },
+    {
+      "challenge_rating": 0.5,
+      "health": 13,
+      "hit_dice_formula": "3d6 + 3",
+      "keywords": [
+        "Blindsight",
+        "Darkvision",
+        "Fey",
+        "Forest",
+        "Swamp",
+        "Underdark",
+        "Urban"
+      ],
+      "name": "Darkling",
+      "size": "small"
+    },
+    {
+      "challenge_rating": 0.5,
+      "health": 22,
+      "hit_dice_formula": "4d8 + 4",
+      "keywords": [
+        "Desert",
+        "Firenewt",
+        "Hill",
+        "Humanoid",
+        "Mountain",
+        "Underdark"
+      ],
+      "name": "Firenewt Warrior"
+    },
+    {
+      "challenge_rating": 0.5,
+      "health": 13,
+      "hit_dice_formula": "3d4 + 6",
+      "keywords": [
+        "Aberration",
+        "Darkvision",
+        "Flying",
+        "Underdark"
+      ],
+      "name": "Gazer",
+      "size": "tiny"
+    },
+    {
+      "challenge_rating": 0.5,
+      "health": 22,
+      "hit_dice_formula": "4d8 + 4",
+      "keywords": [
+        "Arctic",
+        "Darkvision",
+        "Forest",
+        "Gnoll",
+        "Grassland",
+        "Hill",
+        "Humanoid"
+      ],
+      "name": "Gnoll Hunter"
     },
     {
       "ascii_char": "[1;37mo",
@@ -213,8 +493,7 @@
       "tts_reference_nicknames": [
         "Orc A",
         "Orc B"
-      ],
-      "xp": 100
+      ]
     },
     {
       "ascii_char": "[1;32mo",
@@ -223,15 +502,16 @@
       "health": 30,
       "hit_dice_formula": "4d8 + 12",
       "keywords": [
+        "Chaotic",
+        "Darkvision",
+        "Evil",
         "Forest",
         "Grassland",
         "Hill",
-        "Mountain",
-        "Underdark",
         "Humanoid",
+        "Mountain",
         "Orcoid",
-        "Chaotic",
-        "Evil"
+        "Underdark"
       ],
       "name": "Orc Nurtured One of Yurtrus",
       "synergies": [
@@ -241,8 +521,7 @@
         "Orc Nurtured One of Yurtrus A",
         "Orc Nurtured One of Yurtrus B",
         "Orc Nurtured One of Yurtrus C"
-      ],
-      "xp": 100
+      ]
     },
     {
       "ascii_char": "[1;37ms",
@@ -257,8 +536,20 @@
       "name": "Shadow",
       "tts_reference_nicknames": [
         "Shadow A"
+      ]
+    },
+    {
+      "challenge_rating": 0.5,
+      "health": 22,
+      "hit_dice_formula": "5d8",
+      "keywords": [
+        "Beast",
+        "Blindsight",
+        "Climbing",
+        "Swamp",
+        "Underdark"
       ],
-      "xp": 100
+      "name": "Swarm of Rot Grubs"
     },
     {
       "ascii_char": "[1;33mg",
@@ -275,8 +566,35 @@
         "Chaotic",
         "Evil"
       ],
-      "name": "Bugbear",
-      "xp": 200
+      "name": "Bugbear"
+    },
+    {
+      "challenge_rating": 1,
+      "health": 26,
+      "hit_dice_formula": "4d8 + 8",
+      "keywords": [
+        "Beast",
+        "Forest",
+        "Grassland",
+        "Hill"
+      ],
+      "name": "Deinonychus"
+    },
+    {
+      "challenge_rating": 1,
+      "health": 33,
+      "hit_dice_formula": "6d8 + 6",
+      "keywords": [
+        "Darkvision",
+        "Desert",
+        "Firenewt",
+        "Hill",
+        "Humanoid",
+        "Mountain",
+        "Spellcaster",
+        "Underdark"
+      ],
+      "name": "Firenewt Warlock of Imix"
     },
     {
       "ascii_char": "[1;33mg",
@@ -296,8 +614,35 @@
       ],
       "tts_reference_nicknames": [
         "Ghoul A"
+      ]
+    },
+    {
+      "challenge_rating": 1,
+      "health": 22,
+      "hit_dice_formula": "3d10 + 6",
+      "keywords": [
+        "Hill",
+        "Monstrosity",
+        "Mountain",
+        "Underdark"
       ],
-      "xp": 200
+      "name": "Giant Strider",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 1,
+      "health": 22,
+      "hit_dice_formula": "4d8 + 4",
+      "keywords": [
+        "Arctic",
+        "Darkvision",
+        "Forest",
+        "Gnoll",
+        "Grassland",
+        "Hill",
+        "Humanoid"
+      ],
+      "name": "Gnoll Flesh Gnawer"
     },
     {
       "ascii_char": "[1;92mg",
@@ -320,8 +665,21 @@
       ],
       "tts_reference_nicknames": [
         "Goblin Boss A"
+      ]
+    },
+    {
+      "challenge_rating": 1,
+      "health": 27,
+      "hit_dice_formula": "5d6 + 10",
+      "keywords": [
+        "Climbing",
+        "Forest",
+        "Grung",
+        "Humanoid",
+        "Spellcaster"
       ],
-      "xp": 200
+      "name": "Grung Wildling",
+      "size": "small"
     },
     {
       "ascii_char": "[1;31mg",
@@ -339,8 +697,7 @@
         "Lawful",
         "Evil"
       ],
-      "name": "Hobgoblin",
-      "xp": 200
+      "name": "Hobgoblin"
     },
     {
       "ascii_char": "[1;35mk",
@@ -348,21 +705,22 @@
       "health": 44,
       "hit_dice_formula": "8d6 + 16",
       "keywords": [
+        "Darkvision",
+        "Evil",
         "Forest",
         "Hill",
-        "Mountain",
-        "Underdark",
         "Humanoid",
+        "Kobold",
         "Koboldoid",
         "Lawful",
-        "Evil"
+        "Mountain",
+        "Underdark"
       ],
       "name": "Kobold Dragonshield",
       "size": "small",
       "tts_reference_nicknames": [
         "Kobold Spearman"
-      ],
-      "xp": 200
+      ]
     },
     {
       "ascii_char": "[1;91mk",
@@ -371,23 +729,77 @@
       "hit_dice_formula": "5d6 + 10",
       "keywords": [
         "Backline",
-        "Spellcaster",
+        "Darkvision",
+        "Evil",
         "Forest",
         "Hill",
-        "Mountain",
-        "Underdark",
-        "Urban",
         "Humanoid",
+        "Kobold",
         "Koboldoid",
         "Lawful",
-        "Evil"
+        "Mountain",
+        "Spellcaster",
+        "Underdark",
+        "Urban"
       ],
       "name": "Kobold Scale Sorcerer",
       "size": "small",
       "tts_reference_nicknames": [
         "Kobold Mage"
+      ]
+    },
+    {
+      "challenge_rating": 1,
+      "health": 33,
+      "hit_dice_formula": "6d8 + 6",
+      "keywords": [
+        "Darkvision",
+        "Demon",
+        "Fiend",
+        "Underdark"
       ],
-      "xp": 200
+      "name": "Maw Demon"
+    },
+    {
+      "challenge_rating": 1,
+      "health": 7,
+      "hit_dice_formula": "2d6",
+      "keywords": [
+        "Darkvision",
+        "Forest",
+        "Goblinoid",
+        "Hill",
+        "Humanoid",
+        "Spellcaster",
+        "Underdark"
+      ],
+      "name": "Nilbog",
+      "size": "small"
+    },
+    {
+      "challenge_rating": 1,
+      "health": 10,
+      "hit_dice_formula": "3d4 + 3",
+      "keywords": [
+        "Darkvision",
+        "Fey",
+        "Forest"
+      ],
+      "name": "Quickling",
+      "size": "tiny"
+    },
+    {
+      "challenge_rating": 1,
+      "health": 32,
+      "hit_dice_formula": "5d8 + 10",
+      "keywords": [
+        "Coastal",
+        "Darkvision",
+        "Humanoid",
+        "Swimming",
+        "Underwater"
+      ],
+      "name": "Sea Spawn"
     },
     {
       "ascii_char": "[1;95ms",
@@ -402,8 +814,74 @@
       "name": "Specter",
       "tts_reference_nicknames": [
         "Specter A"
+      ]
+    },
+    {
+      "challenge_rating": 1,
+      "health": 27,
+      "hit_dice_formula": "5d8 + 5",
+      "keywords": [
+        "Darkvision",
+        "Forest",
+        "Plant",
+        "Swamp"
       ],
-      "xp": 200
+      "name": "Thorny"
+    },
+    {
+      "challenge_rating": 1,
+      "health": 13,
+      "hit_dice_formula": "3d4 + 6",
+      "keywords": [
+        "Darkvision",
+        "Desert",
+        "Fiend",
+        "Flying",
+        "Swamp",
+        "Underdark"
+      ],
+      "name": "Vargouille",
+      "size": "tiny"
+    },
+    {
+      "challenge_rating": 1,
+      "health": 22,
+      "hit_dice_formula": "5d6 + 5",
+      "keywords": [
+        "Darkvision",
+        "Hill",
+        "Humanoid",
+        "Spellcaster",
+        "Underdark",
+        "Xvart"
+      ],
+      "name": "Xvart Warlock of Raxivort",
+      "size": "small"
+    },
+    {
+      "challenge_rating": 2,
+      "health": 38,
+      "hit_dice_formula": "4d10 + 16",
+      "keywords": [
+        "Beast",
+        "Grassland",
+        "Hill",
+        "Mountain"
+      ],
+      "name": "Aurochs",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 2,
+      "health": 44,
+      "hit_dice_formula": "8d8 + 8",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Spellcaster",
+        "Urban"
+      ],
+      "name": "Bard"
     },
     {
       "ascii_char": "[1;37mD",
@@ -418,8 +896,48 @@
         "Chaotic",
         "Evil"
       ],
-      "name": "Black Dragon Wyrmling",
-      "xp": 450
+      "name": "Black Dragon Wyrmling"
+    },
+    {
+      "challenge_rating": 2,
+      "health": 52,
+      "hit_dice_formula": "7d8 + 21",
+      "keywords": [
+        "Darkvision",
+        "Dragon",
+        "Swamp",
+        "Swimming",
+        "Urban"
+      ],
+      "name": "Black Guard Drake"
+    },
+    {
+      "challenge_rating": 2,
+      "health": 52,
+      "hit_dice_formula": "7d8 + 21",
+      "keywords": [
+        "Burrowing",
+        "Darkvision",
+        "Desert",
+        "Dragon",
+        "Urban"
+      ],
+      "name": "Blue Guard Drake"
+    },
+    {
+      "challenge_rating": 2,
+      "health": 27,
+      "hit_dice_formula": "5d8 + 5",
+      "keywords": [
+        "Blindsight",
+        "Darkvision",
+        "Fey",
+        "Forest",
+        "Swamp",
+        "Underdark",
+        "Urban"
+      ],
+      "name": "Darkling Elder"
     },
     {
       "ascii_char": "[1;34mg",
@@ -439,8 +957,7 @@
       ],
       "tts_reference_nicknames": [
         "Ghast A"
-      ],
-      "xp": 450
+      ]
     },
     {
       "ascii_char": "[1;32mD",
@@ -456,8 +973,33 @@
         "Lawful",
         "Evil"
       ],
-      "name": "Green Dragon Wyrmling",
-      "xp": 450
+      "name": "Green Dragon Wyrmling"
+    },
+    {
+      "challenge_rating": 2,
+      "health": 52,
+      "hit_dice_formula": "7d8 + 21",
+      "keywords": [
+        "Darkvision",
+        "Dragon",
+        "Forest",
+        "Swimming",
+        "Urban"
+      ],
+      "name": "Green Guard Drake"
+    },
+    {
+      "challenge_rating": 2,
+      "health": 49,
+      "hit_dice_formula": "9d6 + 18",
+      "keywords": [
+        "Climbing",
+        "Forest",
+        "Grung",
+        "Humanoid"
+      ],
+      "name": "Grung Elite Warrior",
+      "size": "small"
     },
     {
       "ascii_char": "[1;37mg",
@@ -465,18 +1007,32 @@
       "health": 32,
       "hit_dice_formula": "5d8 + 10",
       "keywords": [
-        "Spellcaster",
+        "Darkvision",
+        "Evil",
         "Forest",
+        "Goblinoid",
         "Grassland",
         "Hill",
-        "Humanoid",
-        "Goblinoid",
         "Hobgoblinoid",
+        "Humanoid",
         "Lawful",
-        "Evil"
+        "Spellcaster"
       ],
-      "name": "Hobgoblin Iron Shadow",
-      "xp": 450
+      "name": "Hobgoblin Iron Shadow"
+    },
+    {
+      "challenge_rating": 2,
+      "health": 31,
+      "hit_dice_formula": "7d6 + 7",
+      "keywords": [
+        "Darkvision",
+        "Fey",
+        "Forest",
+        "Swamp",
+        "Urban"
+      ],
+      "name": "Meenlock",
+      "size": "small"
     },
     {
       "ascii_char": "[1;33mm",
@@ -494,8 +1050,7 @@
       "name": "Mimic",
       "tts_reference_nicknames": [
         "Mimic A"
-      ],
-      "xp": 450
+      ]
     },
     {
       "ascii_char": "[1;97mS",
@@ -513,8 +1068,7 @@
       "size": "large",
       "tts_reference_nicknames": [
         "Minotaur Skeleton A"
-      ],
-      "xp": 450
+      ]
     },
     {
       "ascii_char": "[1;93mo",
@@ -523,16 +1077,16 @@
       "health": 45,
       "hit_dice_formula": "6d8 + 18",
       "keywords": [
-        "Spellcaster",
-        "Mountain",
-        "Underdark",
-        "Humanoid",
-        "Orcoid",
         "Chaotic",
-        "Evil"
+        "Darkvision",
+        "Evil",
+        "Humanoid",
+        "Mountain",
+        "Orcoid",
+        "Spellcaster",
+        "Underdark"
       ],
-      "name": "Orc Claw of Luthic",
-      "xp": 450
+      "name": "Orc Claw of Luthic"
     },
     {
       "ascii_char": "[1;96mo",
@@ -553,29 +1107,31 @@
       "synergies": [
         "Orc",
         "Orog"
-      ],
-      "xp": 450
+      ]
     },
     {
       "ascii_char": "[1;92mo",
       "challenge_rating": 2,
       "frequency": 0.25,
-      "health": 45,
-      "hit_dice_formula": "6d8 + 18",
+      "health": 30,
+      "hit_dice_formula": "4d8 + 12",
       "keywords": [
-        "Spellcaster",
-        "Mountain",
-        "Underdark",
-        "Humanoid",
-        "Orcoid",
         "Chaotic",
-        "Evil"
+        "Darkvision",
+        "Evil",
+        "Forest",
+        "Grassland",
+        "Hill",
+        "Humanoid",
+        "Mountain",
+        "Orcoid",
+        "Spellcaster",
+        "Underdark"
       ],
       "name": "Orc Hand of Yurtrus",
       "synergies": [
         "Orc Nurtured One of Yurtrus"
-      ],
-      "xp": 450
+      ]
     },
     {
       "ascii_char": "[1;97mo",
@@ -594,8 +1150,75 @@
       "tts_reference_nicknames": [
         "Orog A",
         "Orog B"
+      ]
+    },
+    {
+      "challenge_rating": 2,
+      "health": 30,
+      "hit_dice_formula": "4d12 + 4",
+      "keywords": [
+        "Beast",
+        "Coastal",
+        "Flying",
+        "Hill",
+        "Mountain"
       ],
-      "xp": 450
+      "name": "Quetzalcoatlus",
+      "size": "huge"
+    },
+    {
+      "challenge_rating": 2,
+      "health": 52,
+      "hit_dice_formula": "7d8 + 21",
+      "keywords": [
+        "Climbing",
+        "Darkvision",
+        "Dragon",
+        "Mountain",
+        "Underdark",
+        "Urban"
+      ],
+      "name": "Red Guard Drake"
+    },
+    {
+      "challenge_rating": 2,
+      "health": 33,
+      "hit_dice_formula": "6d8 + 6",
+      "keywords": [
+        "Darkvision",
+        "Forest",
+        "Hill",
+        "Monstrosity",
+        "Swamp"
+      ],
+      "name": "Shadow Mastiff"
+    },
+    {
+      "challenge_rating": 2,
+      "health": 33,
+      "hit_dice_formula": "6d6 + 12",
+      "keywords": [
+        "Darkvision",
+        "Forest",
+        "Plant",
+        "Swamp"
+      ],
+      "name": "Vegepygmy Chief",
+      "size": "small"
+    },
+    {
+      "challenge_rating": 2,
+      "health": 52,
+      "hit_dice_formula": "7d8 + 21",
+      "keywords": [
+        "Arctic",
+        "Burrowing",
+        "Climbing",
+        "Darkvision",
+        "Dragon",
+        "Urban"
+      ],
+      "name": "White Guard Drake"
     },
     {
       "ascii_char": "[1;93mw",
@@ -613,8 +1236,33 @@
       "size": "tiny",
       "tts_reference_nicknames": [
         "Will-o'-Wisp A"
+      ]
+    },
+    {
+      "challenge_rating": 2,
+      "health": 45,
+      "hit_dice_formula": "7d8 + 14",
+      "keywords": [
+        "Darkvision",
+        "Desert",
+        "Forest",
+        "Humanoid",
+        "Underdark",
+        "Yuan-Ti"
       ],
-      "xp": 450
+      "name": "Yuan-ti Broodguard"
+    },
+    {
+      "challenge_rating": 3,
+      "health": 75,
+      "hit_dice_formula": "10d8 + 30",
+      "keywords": [
+        "Any Race",
+        "Forest",
+        "Humanoid",
+        "Urban"
+      ],
+      "name": "Archer"
     },
     {
       "ascii_char": "[1;93mg",
@@ -634,8 +1282,32 @@
       "name": "Bugbear Chief",
       "synergies": [
         "Bugbear"
+      ]
+    },
+    {
+      "challenge_rating": 3,
+      "health": 58,
+      "hit_dice_formula": "9d8 + 18",
+      "keywords": [
+        "Blindsight",
+        "Climbing",
+        "Monstrosity",
+        "Underdark"
       ],
-      "xp": 700
+      "name": "Cave Fisher"
+    },
+    {
+      "challenge_rating": 3,
+      "health": 66,
+      "hit_dice_formula": "12d8 + 12",
+      "keywords": [
+        "Climbing",
+        "Darkvision",
+        "Monstrosity",
+        "Spellcaster",
+        "Underdark"
+      ],
+      "name": "Choldrith"
     },
     {
       "ascii_char": "[1;37m@",
@@ -654,8 +1326,35 @@
       ],
       "tts_reference_nicknames": [
         "Deathlock Wight A"
+      ]
+    },
+    {
+      "challenge_rating": 3,
+      "health": 67,
+      "hit_dice_formula": "9d8 + 27",
+      "keywords": [
+        "Coastal",
+        "Darkvision",
+        "Humanoid",
+        "Shapechanger",
+        "Underwater"
       ],
-      "xp": 700
+      "name": "Deep Scion"
+    },
+    {
+      "challenge_rating": 3,
+      "health": 52,
+      "hit_dice_formula": "5d10 + 25",
+      "keywords": [
+        "Darkvision",
+        "Elemental",
+        "Forest",
+        "Swamp",
+        "Tremorsense",
+        "Underdark"
+      ],
+      "name": "Flail Snail",
+      "size": "large"
     },
     {
       "ascii_char": "[1;91mg",
@@ -676,8 +1375,43 @@
       "name": "Hobgoblin Captain",
       "synergies": [
         "Hobgoblin"
+      ]
+    },
+    {
+      "challenge_rating": 3,
+      "health": 38,
+      "hit_dice_formula": "7d8 + 7",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Spellcaster",
+        "Urban"
       ],
-      "xp": 700
+      "name": "Illusionist"
+    },
+    {
+      "challenge_rating": 3,
+      "health": 67,
+      "hit_dice_formula": "9d10 + 18",
+      "keywords": [
+        "Darkvision",
+        "Desert",
+        "Grassland",
+        "Monstrosity"
+      ],
+      "name": "Leucrotta",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 3,
+      "health": 60,
+      "hit_dice_formula": "11d8 + 11",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Urban"
+      ],
+      "name": "Martial Arts Adept"
     },
     {
       "ascii_char": "[1;33mM",
@@ -695,8 +1429,21 @@
       ],
       "tts_reference_nicknames": [
         "Mummy A"
+      ]
+    },
+    {
+      "challenge_rating": 3,
+      "health": 33,
+      "hit_dice_formula": "6d6 + 12",
+      "keywords": [
+        "Aberration",
+        "Climbing",
+        "Darkvision",
+        "Hill",
+        "Underdark"
       ],
-      "xp": 700
+      "name": "Neogi",
+      "size": "small"
     },
     {
       "ascii_char": "[1;91mo",
@@ -705,16 +1452,59 @@
       "health": 52,
       "hit_dice_formula": "8d8 + 16",
       "keywords": [
-        "Spellcaster",
-        "Mountain",
-        "Underdark",
-        "Humanoid",
-        "Orcoid",
         "Chaotic",
-        "Evil"
+        "Darkvision",
+        "Evil",
+        "Forest",
+        "Hill",
+        "Humanoid",
+        "Mountain",
+        "Orcoid",
+        "Spellcaster",
+        "Underdark",
+        "Urban"
       ],
-      "name": "Orc Red Fang of Shargaas",
-      "xp": 700
+      "name": "Orc Red Fang of Shargaas"
+    },
+    {
+      "challenge_rating": 3,
+      "health": 45,
+      "hit_dice_formula": "6d6 + 24",
+      "keywords": [
+        "Darkvision",
+        "Fey",
+        "Forest",
+        "Hill",
+        "Swamp"
+      ],
+      "name": "Redcap",
+      "size": "small"
+    },
+    {
+      "challenge_rating": 3,
+      "health": 32,
+      "hit_dice_formula": "5d8 + 10",
+      "keywords": [
+        "Blindsight",
+        "Climbing",
+        "Ooze",
+        "Swimming",
+        "Underdark",
+        "Urban"
+      ],
+      "name": "Slithering Tracker"
+    },
+    {
+      "challenge_rating": 3,
+      "health": 66,
+      "hit_dice_formula": "12d8 + 12",
+      "keywords": [
+        "Any Race",
+        "Coastal",
+        "Humanoid",
+        "Urban"
+      ],
+      "name": "Swashbuckler"
     },
     {
       "ascii_char": "[1;96mw",
@@ -732,8 +1522,67 @@
       ],
       "tts_reference_nicknames": [
         "Sword Wraith Warrior A"
+      ]
+    },
+    {
+      "challenge_rating": 3,
+      "health": 85,
+      "hit_dice_formula": "10d10 + 30",
+      "keywords": [
+        "Blindsight",
+        "Climbing",
+        "Darkvision",
+        "Monstrosity",
+        "Underdark"
       ],
-      "xp": 700
+      "name": "Trapper",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 3,
+      "health": 66,
+      "hit_dice_formula": "12d8 + 12",
+      "keywords": [
+        "Darkvision",
+        "Desert",
+        "Forest",
+        "Monstrosity",
+        "Shapechanger",
+        "Spellcaster",
+        "Swamp",
+        "Yuan-Ti"
+      ],
+      "name": "Yuan-ti Malison (Type 4)"
+    },
+    {
+      "challenge_rating": 3,
+      "health": 66,
+      "hit_dice_formula": "12d8 + 12",
+      "keywords": [
+        "Darkvision",
+        "Desert",
+        "Forest",
+        "Monstrosity",
+        "Shapechanger",
+        "Spellcaster",
+        "Swamp",
+        "Yuan-Ti"
+      ],
+      "name": "Yuan-ti Malison (Type 5)"
+    },
+    {
+      "challenge_rating": 4,
+      "health": 82,
+      "hit_dice_formula": "11d8 + 33",
+      "keywords": [
+        "Darkvision",
+        "Demon",
+        "Fiend",
+        "Spellcaster",
+        "Underdark",
+        "Urban"
+      ],
+      "name": "Babau"
     },
     {
       "ascii_char": "[1;95mB",
@@ -750,8 +1599,26 @@
       "name": "Banshee",
       "tts_reference_nicknames": [
         "Banshee A"
+      ]
+    },
+    {
+      "challenge_rating": 4,
+      "health": 90,
+      "hit_dice_formula": "12d10 + 24",
+      "keywords": [
+        "Blindsight",
+        "Darkvision",
+        "Fiend",
+        "Forest",
+        "Grassland",
+        "Hill",
+        "Mountain",
+        "Shapechanger",
+        "Spellcaster",
+        "Underdark"
       ],
-      "xp": 1100
+      "name": "Barghest",
+      "size": "large"
     },
     {
       "ascii_char": "[1;35m@",
@@ -769,8 +1636,7 @@
       "size": "large",
       "tts_reference_nicknames": [
         "Bone Naga A"
-      ],
-      "xp": 1100
+      ]
     },
     {
       "ascii_char": "[1;34m@",
@@ -788,8 +1654,7 @@
       "size": "large",
       "tts_reference_nicknames": [
         "Bone Naga A"
-      ],
-      "xp": 1100
+      ]
     },
     {
       "ascii_char": "[1;95mg",
@@ -806,8 +1671,7 @@
       "size": "small",
       "synergies": [
         "Goblin"
-      ],
-      "xp": 1100
+      ]
     },
     {
       "ascii_char": "[1;97m@",
@@ -827,8 +1691,7 @@
       ],
       "tts_reference_nicknames": [
         "Deathlock A"
-      ],
-      "xp": 1100
+      ]
     },
     {
       "ascii_char": "[1;92mF",
@@ -844,8 +1707,20 @@
       "size": "tiny",
       "tts_reference_nicknames": [
         "Flaming Skull A"
+      ]
+    },
+    {
+      "challenge_rating": 4,
+      "health": 59,
+      "hit_dice_formula": "7d10 + 21",
+      "keywords": [
+        "Climbing",
+        "Darkvision",
+        "Forest",
+        "Monstrosity"
       ],
-      "xp": 1100
+      "name": "Girallon",
+      "size": "large"
     },
     {
       "ascii_char": "[1;93mg",
@@ -854,18 +1729,32 @@
       "hit_dice_formula": "7d8 + 14",
       "keywords": [
         "Backline",
-        "Spellcaster",
+        "Darkvision",
+        "Evil",
         "Forest",
+        "Goblinoid",
         "Grassland",
         "Hill",
-        "Humanoid",
-        "Goblinoid",
         "Hobgoblinoid",
+        "Humanoid",
         "Lawful",
-        "Evil"
+        "Spellcaster"
       ],
-      "name": "Hobgoblin Devastator",
-      "xp": 1100
+      "name": "Hobgoblin Devastator"
+    },
+    {
+      "challenge_rating": 4,
+      "health": 71,
+      "hit_dice_formula": "11d8 + 22",
+      "keywords": [
+        "Aberration",
+        "Climbing",
+        "Darkvision",
+        "Hill",
+        "Spellcaster",
+        "Underdark"
+      ],
+      "name": "Neogi Master"
     },
     {
       "ascii_char": "[1;94mo",
@@ -874,19 +1763,22 @@
       "health": 60,
       "hit_dice_formula": "8d8 + 24",
       "keywords": [
-        "Mountain",
-        "Underdark",
-        "Humanoid",
-        "Orcoid",
         "Chaotic",
-        "Evil"
+        "Darkvision",
+        "Evil",
+        "Forest",
+        "Grassland",
+        "Hill",
+        "Humanoid",
+        "Mountain",
+        "Orcoid",
+        "Underdark"
       ],
       "name": "Orc Blade of Ilneval",
       "synergies": [
         "Orc",
         "Orog"
-      ],
-      "xp": 1100
+      ]
     },
     {
       "ascii_char": "[1;95mo",
@@ -906,8 +1798,82 @@
       "synergies": [
         "Orc",
         "Orog"
+      ]
+    },
+    {
+      "challenge_rating": 4,
+      "health": 76,
+      "hit_dice_formula": "8d12 + 24",
+      "keywords": [
+        "Beast",
+        "Forest",
+        "Grassland"
       ],
-      "xp": 1100
+      "name": "Stegosaurus",
+      "size": "huge"
+    },
+    {
+      "challenge_rating": 4,
+      "health": 49,
+      "hit_dice_formula": "11d8",
+      "keywords": [
+        "Any Race",
+        "Arctic",
+        "Forest",
+        "Humanoid",
+        "Mountain",
+        "Spellcaster",
+        "Swamp",
+        "Urban"
+      ],
+      "name": "Warlock of the Archfey"
+    },
+    {
+      "challenge_rating": 4,
+      "health": 51,
+      "hit_dice_formula": "6d10 + 18",
+      "keywords": [
+        "Darkvision",
+        "Fey",
+        "Flying",
+        "Forest",
+        "Grassland",
+        "Hill"
+      ],
+      "name": "Yeth Hound",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 4,
+      "health": 71,
+      "hit_dice_formula": "13d8 + 13",
+      "keywords": [
+        "Darkvision",
+        "Desert",
+        "Forest",
+        "Monstrosity",
+        "Shapechanger",
+        "Spellcaster",
+        "Underdark",
+        "Yuan-Ti"
+      ],
+      "name": "Yuan-ti Mind Whisperer"
+    },
+    {
+      "challenge_rating": 4,
+      "health": 71,
+      "hit_dice_formula": "13d8 + 13",
+      "keywords": [
+        "Darkvision",
+        "Desert",
+        "Forest",
+        "Monstrosity",
+        "Shapechanger",
+        "Spellcaster",
+        "Underdark",
+        "Yuan-Ti"
+      ],
+      "name": "Yuan-ti Nightmare Speaker"
     },
     {
       "ascii_char": "[1;37mA",
@@ -923,8 +1889,55 @@
       "name": "Allip",
       "tts_reference_nicknames": [
         "Allip A"
+      ]
+    },
+    {
+      "challenge_rating": 5,
+      "health": 84,
+      "hit_dice_formula": "8d10 + 40",
+      "keywords": [
+        "Darkvision",
+        "Monstrosity",
+        "Urban"
       ],
-      "xp": 1800
+      "name": "Banderhobb",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 5,
+      "health": 121,
+      "hit_dice_formula": "9d20 + 27",
+      "keywords": [
+        "Beast",
+        "Forest",
+        "Grassland"
+      ],
+      "name": "Brontosaurus",
+      "size": "gargantuan"
+    },
+    {
+      "challenge_rating": 5,
+      "health": 84,
+      "hit_dice_formula": "8d10 + 40",
+      "keywords": [
+        "Darkvision",
+        "Monstrosity",
+        "Swamp"
+      ],
+      "name": "Catoblepas",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 5,
+      "health": 40,
+      "hit_dice_formula": "9d8",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Spellcaster",
+        "Urban"
+      ],
+      "name": "Enchanter"
     },
     {
       "ascii_char": "[1;33mG",
@@ -939,8 +1952,45 @@
       "tts_reference_nicknames": [
         "Flesh Golem A",
         "Flesh Golem B"
+      ]
+    },
+    {
+      "challenge_rating": 5,
+      "health": 75,
+      "hit_dice_formula": "10d8 + 30",
+      "keywords": [
+        "Any Race",
+        "Coastal",
+        "Humanoid",
+        "Spellcaster",
+        "Swimming",
+        "Underwater"
       ],
-      "xp": 1800
+      "name": "Kraken Priest"
+    },
+    {
+      "challenge_rating": 5,
+      "health": 83,
+      "hit_dice_formula": "13d8 + 26",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Urban"
+      ],
+      "name": "Master Thief"
+    },
+    {
+      "challenge_rating": 5,
+      "health": 75,
+      "hit_dice_formula": "10d10 + 20",
+      "keywords": [
+        "Aberration",
+        "Darkvision",
+        "Flying",
+        "Underdark"
+      ],
+      "name": "Mindwitness",
+      "size": "large"
     },
     {
       "ascii_char": "[1;96mG",
@@ -953,8 +2003,32 @@
         "Evil"
       ],
       "name": "Roper",
-      "size": "large",
-      "xp": 1800
+      "size": "large"
+    },
+    {
+      "challenge_rating": 5,
+      "health": 76,
+      "hit_dice_formula": "9d8 + 36",
+      "keywords": [
+        "Darkvision",
+        "Desert",
+        "Undead",
+        "Underdark"
+      ],
+      "name": "Spawn of Kyuss"
+    },
+    {
+      "challenge_rating": 5,
+      "health": 36,
+      "hit_dice_formula": "8d8",
+      "keywords": [
+        "Beast",
+        "Darkvision",
+        "Spellcaster",
+        "Underdark",
+        "Urban"
+      ],
+      "name": "Swarm of Cranium Rats"
     },
     {
       "ascii_char": "[1;95mo",
@@ -963,21 +2037,46 @@
       "health": 95,
       "hit_dice_formula": "10d8 + 50",
       "keywords": [
-        "Frontline",
-        "Mountain",
-        "Underdark",
-        "Fiend",
-        "Demon",
-        "Orcoid",
         "Chaotic",
-        "Evil"
+        "Darkvision",
+        "Demon",
+        "Evil",
+        "Fiend",
+        "Frontline",
+        "Hill",
+        "Mountain",
+        "Orcoid",
+        "Underdark"
       ],
       "name": "Tanarukk",
       "synergies": [
         "Orc",
         "Orog"
+      ]
+    },
+    {
+      "challenge_rating": 5,
+      "health": 85,
+      "hit_dice_formula": "10d10 + 30",
+      "keywords": [
+        "Darkvision",
+        "Desert",
+        "Monstrosity"
       ],
-      "xp": 1800
+      "name": "Tlincalli",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 5,
+      "health": 40,
+      "hit_dice_formula": "9d8",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Spellcaster",
+        "Urban"
+      ],
+      "name": "Transmuter"
     },
     {
       "ascii_char": "[1;97mv",
@@ -996,8 +2095,19 @@
       "tts_reference_nicknames": [
         "Vampire Spawn A",
         "Vampire Spawn B"
+      ]
+    },
+    {
+      "challenge_rating": 5,
+      "health": 75,
+      "hit_dice_formula": "10d8 + 30",
+      "keywords": [
+        "Climbing",
+        "Darkvision",
+        "Forest",
+        "Plant"
       ],
-      "xp": 1800
+      "name": "Wood Woad"
     },
     {
       "ascii_char": "[1;96mG",
@@ -1012,8 +2122,37 @@
       "name": "Wraith",
       "tts_reference_nicknames": [
         "Wraith A"
+      ]
+    },
+    {
+      "challenge_rating": 5,
+      "health": 88,
+      "hit_dice_formula": "16d8 + 16",
+      "keywords": [
+        "Darkvision",
+        "Desert",
+        "Forest",
+        "Monstrosity",
+        "Shapechanger",
+        "Spellcaster",
+        "Underdark",
+        "Yuan-Ti"
       ],
-      "xp": 1800
+      "name": "Yuan-ti Pit Master"
+    },
+    {
+      "challenge_rating": 6,
+      "health": 75,
+      "hit_dice_formula": "10d10 + 20",
+      "keywords": [
+        "Darkvision",
+        "Fey",
+        "Hill",
+        "Mountain",
+        "Spellcaster"
+      ],
+      "name": "Annis Hag",
+      "size": "large"
     },
     {
       "ascii_char": "[1;37mB",
@@ -1021,16 +2160,16 @@
       "health": 58,
       "hit_dice_formula": "9d8 + 18",
       "keywords": [
+        "Darkvision",
         "Swamp",
+        "Undead",
         "Underdark",
-        "Urban",
-        "Undead"
+        "Urban"
       ],
       "name": "Bodak",
       "tts_reference_nicknames": [
         "Bodak A"
-      ],
-      "xp": 2300
+      ]
     },
     {
       "ascii_char": "[1;95mg",
@@ -1047,8 +2186,7 @@
       "size": "small",
       "synergies": [
         "Goblin"
-      ],
-      "xp": 2300
+      ]
     },
     {
       "ascii_char": "[1;95mg",
@@ -1065,8 +2203,7 @@
       "size": "small",
       "synergies": [
         "Goblin"
-      ],
-      "xp": 2300
+      ]
     },
     {
       "ascii_char": "[1;95mg",
@@ -1083,8 +2220,31 @@
       "size": "small",
       "synergies": [
         "Goblin"
+      ]
+    },
+    {
+      "challenge_rating": 6,
+      "health": 40,
+      "hit_dice_formula": "9d8",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Spellcaster",
+        "Urban"
       ],
-      "xp": 2300
+      "name": "Conjurer"
+    },
+    {
+      "challenge_rating": 6,
+      "health": 67,
+      "hit_dice_formula": "9d8 + 27",
+      "keywords": [
+        "Aberration",
+        "Darkvision",
+        "Flying",
+        "Underdark"
+      ],
+      "name": "Gauth"
     },
     {
       "ascii_char": "[1;95mg",
@@ -1106,8 +2266,107 @@
       "synergies": [
         "Hobgoblin",
         "Hobgoblin Captain"
+      ]
+    },
+    {
+      "challenge_rating": 6,
+      "health": 105,
+      "hit_dice_formula": "10d12 + 40",
+      "keywords": [
+        "Giant",
+        "Grassland",
+        "Hill",
+        "Hill Giant"
       ],
-      "xp": 2300
+      "name": "Mouth of Grolantor",
+      "size": "huge"
+    },
+    {
+      "challenge_rating": 6,
+      "health": 91,
+      "hit_dice_formula": "14d8 + 28",
+      "keywords": [
+        "Any Race",
+        "Darkvision",
+        "Desert",
+        "Hill",
+        "Humanoid",
+        "Mountain",
+        "Spellcaster",
+        "Underdark",
+        "Urban"
+      ],
+      "name": "Warlock of the Great Old One"
+    },
+    {
+      "challenge_rating": 7,
+      "health": 91,
+      "hit_dice_formula": "14d8 + 28",
+      "keywords": [
+        "Arctic",
+        "Darkvision",
+        "Fey",
+        "Spellcaster"
+      ],
+      "name": "Bheur Hag"
+    },
+    {
+      "challenge_rating": 7,
+      "health": 123,
+      "hit_dice_formula": "13d10 + 52",
+      "keywords": [
+        "Darkvision",
+        "Demon",
+        "Fiend",
+        "Spellcaster",
+        "Underdark"
+      ],
+      "name": "Draegloth",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 7,
+      "health": 102,
+      "hit_dice_formula": "12d6 + 60",
+      "keywords": [
+        "Burrowing",
+        "Darkvision",
+        "Fey",
+        "Forest",
+        "Spellcaster",
+        "Tremorsense"
+      ],
+      "name": "Korred",
+      "size": "small"
+    },
+    {
+      "challenge_rating": 7,
+      "health": 78,
+      "hit_dice_formula": "12d8 + 24",
+      "keywords": [
+        "Any Race",
+        "Arctic",
+        "Darkvision",
+        "Desert",
+        "Humanoid",
+        "Spellcaster",
+        "Underdark",
+        "Urban"
+      ],
+      "name": "Warlock of the Fiend"
+    },
+    {
+      "challenge_rating": 8,
+      "health": 153,
+      "hit_dice_formula": "18d8 + 72",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Spellcaster",
+        "Underdark",
+        "Urban"
+      ],
+      "name": "Blackguard"
     },
     {
       "ascii_char": "[1;96m@",
@@ -1127,8 +2386,47 @@
       ],
       "tts_reference_nicknames": [
         "Deathlock Mastermind A"
+      ]
+    },
+    {
+      "challenge_rating": 8,
+      "health": 67,
+      "hit_dice_formula": "15d8",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Spellcaster",
+        "Urban"
       ],
-      "xp": 3900
+      "name": "Diviner"
+    },
+    {
+      "challenge_rating": 8,
+      "health": 71,
+      "hit_dice_formula": "13d8 + 13",
+      "keywords": [
+        "Aberration",
+        "Darkvision",
+        "Spellcaster",
+        "Underdark"
+      ],
+      "name": "Mind Flayer Psion"
+    },
+    {
+      "challenge_rating": 8,
+      "health": 110,
+      "hit_dice_formula": "13d10 + 39",
+      "keywords": [
+        "Arctic",
+        "Darkvision",
+        "Demon",
+        "Fiend",
+        "Forest",
+        "Grassland",
+        "Hill"
+      ],
+      "name": "Shoosuva",
+      "size": "large"
     },
     {
       "ascii_char": "[1;96mW",
@@ -1146,8 +2444,7 @@
       ],
       "tts_reference_nicknames": [
         "Sword Wraith Commander A"
-      ],
-      "xp": 3900
+      ]
     },
     {
       "ascii_char": "[1;92mD",
@@ -1165,25 +2462,286 @@
         "Evil"
       ],
       "name": "Young Green Dragon",
-      "size": "large",
-      "xp": 3900
+      "size": "large"
+    },
+    {
+      "challenge_rating": 9,
+      "health": 84,
+      "hit_dice_formula": "13d8 + 26",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Spellcaster",
+        "Urban"
+      ],
+      "name": "Abjurer"
+    },
+    {
+      "challenge_rating": 9,
+      "health": 143,
+      "hit_dice_formula": "22d8 + 44",
+      "keywords": [
+        "Any Race",
+        "Desert",
+        "Humanoid",
+        "Urban"
+      ],
+      "name": "Champion"
+    },
+    {
+      "challenge_rating": 9,
+      "health": 66,
+      "hit_dice_formula": "12d8 + 12",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Spellcaster",
+        "Urban"
+      ],
+      "name": "Evoker"
+    },
+    {
+      "challenge_rating": 9,
+      "health": 127,
+      "hit_dice_formula": "15d8 + 60",
+      "keywords": [
+        "Arctic",
+        "Darkvision",
+        "Forest",
+        "Gnoll",
+        "Grassland",
+        "Hill",
+        "Humanoid"
+      ],
+      "name": "Flind"
+    },
+    {
+      "challenge_rating": 9,
+      "health": 66,
+      "hit_dice_formula": "12d8 + 12",
+      "keywords": [
+        "Any Race",
+        "Desert",
+        "Humanoid",
+        "Spellcaster",
+        "Urban"
+      ],
+      "name": "Necromancer"
+    },
+    {
+      "challenge_rating": 9,
+      "health": 127,
+      "hit_dice_formula": "17d10 + 14",
+      "keywords": [
+        "Aberration",
+        "Darkvision",
+        "Spellcaster",
+        "Underdark"
+      ],
+      "name": "Ulitharid",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 9,
+      "health": 117,
+      "hit_dice_formula": "18d8 + 36",
+      "keywords": [
+        "Any Race",
+        "Desert",
+        "Humanoid",
+        "Spellcaster",
+        "Urban"
+      ],
+      "name": "War Priest"
     },
     {
       "ascii_char": "[1;37m@",
       "challenge_rating": 10,
-      "health": 150,
-      "hit_dice_formula": "20d8 + 60",
+      "health": 120,
+      "hit_dice_formula": "16d8 + 48",
       "keywords": [
-        "Spellcaster",
-        "Underdark",
         "Flying",
-        "Undead"
+        "Spellcaster",
+        "Truesight",
+        "Undead",
+        "Underdark"
       ],
       "name": "Alhoon",
       "tts_reference_nicknames": [
         "Alhoon A"
+      ]
+    },
+    {
+      "challenge_rating": 10,
+      "health": 161,
+      "hit_dice_formula": "17d10 + 68",
+      "keywords": [
+        "Aberration",
+        "Darkvision",
+        "Flying",
+        "Underdark"
       ],
-      "xp": 5900
+      "name": "Death Kiss",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 10,
+      "health": 184,
+      "hit_dice_formula": "16d12 + 80",
+      "keywords": [
+        "Darkvision",
+        "Monstrosity",
+        "Swamp",
+        "Swimming",
+        "Underdark"
+      ],
+      "name": "Froghemoth",
+      "size": "huge"
+    },
+    {
+      "challenge_rating": 10,
+      "health": 161,
+      "hit_dice_formula": "14d12 + 70",
+      "keywords": [
+        "Coastal",
+        "Darkvision",
+        "Giant",
+        "Hill",
+        "Mountain",
+        "Stone Giant"
+      ],
+      "name": "Stone Giant Dreamwalker",
+      "size": "huge"
+    },
+    {
+      "challenge_rating": 11,
+      "health": 262,
+      "hit_dice_formula": "21d12 + 128",
+      "keywords": [
+        "Cloud Giant",
+        "Giant",
+        "Mountain",
+        "Spellcaster"
+      ],
+      "name": "Cloud Giant Smiling One",
+      "size": "huge"
+    },
+    {
+      "challenge_rating": 11,
+      "health": 130,
+      "hit_dice_formula": "20d8 + 40",
+      "keywords": [
+        "Aberration",
+        "Blindsight",
+        "Coastal",
+        "Darkvision",
+        "Spellcaster",
+        "Swimming",
+        "Underwater"
+      ],
+      "name": "Morkoth"
+    },
+    {
+      "challenge_rating": 12,
+      "health": 132,
+      "hit_dice_formula": "24d8 + 24",
+      "keywords": [
+        "Any Race",
+        "Forest",
+        "Humanoid",
+        "Mountain",
+        "Spellcaster",
+        "Swamp"
+      ],
+      "name": "Archdruid"
+    },
+    {
+      "challenge_rating": 12,
+      "health": 189,
+      "hit_dice_formula": "14d12 + 98",
+      "keywords": [
+        "Arctic",
+        "Coastal",
+        "Darkvision",
+        "Frost Giant",
+        "Giant"
+      ],
+      "name": "Frost Giant Everlasting One",
+      "size": "huge"
+    },
+    {
+      "challenge_rating": 12,
+      "health": 152,
+      "hit_dice_formula": "16d12 + 48",
+      "keywords": [
+        "Blindsight",
+        "Celestial",
+        "Coastal",
+        "Darkvision",
+        "Desert",
+        "Flying",
+        "Grassland",
+        "Mountain",
+        "Spellcaster"
+      ],
+      "name": "Ki-rin",
+      "size": "huge"
+    },
+    {
+      "challenge_rating": 12,
+      "health": 229,
+      "hit_dice_formula": "27d8 + 108",
+      "keywords": [
+        "Any Race",
+        "Humanoid",
+        "Urban"
+      ],
+      "name": "Warlord"
+    },
+    {
+      "challenge_rating": 12,
+      "health": 189,
+      "hit_dice_formula": "18d12 + 72",
+      "keywords": [
+        "Blindsight",
+        "Climbing",
+        "Darkvision",
+        "Desert",
+        "Forest",
+        "Monstrosity",
+        "Shapechanger",
+        "Spellcaster",
+        "Swimming",
+        "Underdark",
+        "Yuan-Ti"
+      ],
+      "name": "Yuan-ti Anathema",
+      "size": "huge"
+    },
+    {
+      "challenge_rating": 13,
+      "health": 178,
+      "hit_dice_formula": "17d10 + 85",
+      "keywords": [
+        "Darkvision",
+        "Fiend",
+        "Underdark"
+      ],
+      "name": "Devourer",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 13,
+      "health": 325,
+      "hit_dice_formula": "21d20 + 105",
+      "keywords": [
+        "Aberration",
+        "Blindsight",
+        "Spellcaster",
+        "Underdark"
+      ],
+      "name": "Neothelid",
+      "size": "gargantuan"
     },
     {
       "ascii_char": "[1;97mV",
@@ -1200,8 +2758,7 @@
       "name": "Vampire",
       "tts_reference_nicknames": [
         "Vampire A"
-      ],
-      "xp": 10000
+      ]
     },
     {
       "ascii_char": "[1;37mB",
@@ -1219,8 +2776,34 @@
       "size": "large",
       "tts_reference_nicknames": [
         "Death Tyrant A"
+      ]
+    },
+    {
+      "challenge_rating": 14,
+      "health": 210,
+      "hit_dice_formula": "20d10 + 100",
+      "keywords": [
+        "Aberration",
+        "Blindsight",
+        "Spellcaster",
+        "Swimming",
+        "Underdark"
       ],
-      "xp": 11500
+      "name": "Elder Brain",
+      "size": "large"
+    },
+    {
+      "challenge_rating": 14,
+      "health": 187,
+      "hit_dice_formula": "15d12 + 90",
+      "keywords": [
+        "Fire Giant",
+        "Giant",
+        "Mountain",
+        "Underdark"
+      ],
+      "name": "Fire Giant Dreadnought",
+      "size": "huge"
     },
     {
       "ascii_char": "[1;92mD",
@@ -1238,8 +2821,7 @@
         "Evil"
       ],
       "name": "Adult Green Dragon",
-      "size": "huge",
-      "xp": 13000
+      "size": "huge"
     },
     {
       "ascii_char": "[1;93mM",
@@ -1257,8 +2839,7 @@
       ],
       "tts_reference_nicknames": [
         "Mummy Lord A"
-      ],
-      "xp": 13000
+      ]
     },
     {
       "ascii_char": "[1;97m@",
@@ -1273,8 +2854,7 @@
       "name": "Skull Lord",
       "tts_reference_nicknames": [
         "Skull Lord A"
-      ],
-      "xp": 13000
+      ]
     },
     {
       "ascii_char": "[1;96mV",
@@ -1290,8 +2870,7 @@
       "name": "Vampire Spellcaster",
       "tts_reference_nicknames": [
         "Vampire Spellcaster A"
-      ],
-      "xp": 13000
+      ]
     },
     {
       "ascii_char": "[1;91mV",
@@ -1308,8 +2887,26 @@
       "name": "Vampire Warrior",
       "tts_reference_nicknames": [
         "Vampire Warrior A"
+      ]
+    },
+    {
+      "challenge_rating": 16,
+      "health": 230,
+      "hit_dice_formula": "20d12 + 100",
+      "keywords": [
+        "Arctic",
+        "Coastal",
+        "Desert",
+        "Flying",
+        "Giant",
+        "Mountain",
+        "Storm Giant",
+        "Swimming",
+        "Truesight",
+        "Underwater"
       ],
-      "xp": 13000
+      "name": "Storm Giant Quintessent",
+      "size": "huge"
     },
     {
       "ascii_char": "[1;34mD",
@@ -1327,8 +2924,7 @@
       "size": "huge",
       "tts_reference_nicknames": [
         "Adult Blue Dracolich A"
-      ],
-      "xp": 18000
+      ]
     },
     {
       "ascii_char": "[1;97mS",
@@ -1341,8 +2937,7 @@
       "name": "Death Knight",
       "tts_reference_nicknames": [
         "Death Knight A"
-      ],
-      "xp": 18000
+      ]
     },
     {
       "ascii_char": "[1;37mL",
@@ -1360,8 +2955,7 @@
       "size": "tiny",
       "tts_reference_nicknames": [
         "Demilich A"
-      ],
-      "xp": 20000
+      ]
     },
     {
       "ascii_char": "[1;97mL",
@@ -1377,8 +2971,19 @@
       "tts_reference_nicknames": [
         "Lich A",
         "Lich B"
+      ]
+    },
+    {
+      "challenge_rating": 22,
+      "health": 135,
+      "hit_dice_formula": "18d8 + 54",
+      "keywords": [
+        "Spellcaster",
+        "Truesight",
+        "Undead",
+        "Underdark"
       ],
-      "xp": 33000
+      "name": "Illithilich"
     }
   ],
   "name": "dnd 5e monsters"
