@@ -446,7 +446,13 @@ def place_maze_in_biome(df, biome):
             room1 = maze_grid[p1[0]][p1[1]]
             room2 = maze_grid[p2[0]][p2[1]]
             corridor = carve_corridor(
-                df, room1, room2, maze_corridor_width, True, biome.biome_name
+                df,
+                room1,
+                room2,
+                maze_corridor_width,
+                True,
+                biome.biome_name,
+                force_trivial=True,
             )
             df.add_corridor(corridor)
 
@@ -516,7 +522,15 @@ def erode_cavernous_rooms_in_dungeon(df):
             room.erode(df, num_iterations=df.config.num_erosion_steps)
 
 
-def carve_corridor(df, room1, room2, width, is_horizontal_first, biome_name):
+def carve_corridor(
+    df,
+    room1,
+    room2,
+    width,
+    is_horizontal_first,
+    biome_name,
+    force_trivial=False,
+):
     cls = Corridor
     if isinstance(room1, CavernousRoom) and isinstance(room2, CavernousRoom):
         cls = CavernousCorridor
@@ -530,6 +544,7 @@ def carve_corridor(df, room1, room2, width, is_horizontal_first, biome_name):
         is_horizontal_first,
         width=width,
         biome_name=biome_name,
+        force_trivial=force_trivial,
     )
     wall_entries = 0
     corridor_coords = list(corridor.walk())

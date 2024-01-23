@@ -79,6 +79,7 @@ class Corridor:
         is_horizontal_first,
         width=1,
         biome_name=None,
+        force_trivial=False,
     ):
         self.room1ix, self.room2ix = room1ix, room2ix
         self.x1, self.y1, self.x2, self.y2 = x1, y1, x2, y2
@@ -90,6 +91,7 @@ class Corridor:
         self.trapixs = set()
         self.name = None
         self.biome_name = biome_name
+        self.force_trivial = force_trivial
 
     def is_fully_enclosed_by_doors(self):
         return len(self.doorixs) >= 2
@@ -115,6 +117,8 @@ class Corridor:
         return not self.is_nontrivial(df)
 
     def is_nontrivial(self, df):
+        if self.force_trivial:
+            return False
         usable_length = 0.0
         for x, y in self.walk():
             tile = df.tiles[x][y]
