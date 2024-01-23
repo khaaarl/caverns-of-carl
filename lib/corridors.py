@@ -140,11 +140,14 @@ class Corridor:
                 assert len(door.roomixs) == 1
                 roomix_doors[list(door.roomixs)[0]] = door
             for roomix, door in roomix_doors.items():
-                way = "Passage to"
+                way = "Passage"
                 if door:
-                    way = f"{door.nickname()} to"
-                room_name = f"Room {roomix}"
-                line = Doc([way, DocLink(room_name)], separator=" ")
+                    way = door.nickname()
+                line = Doc([way], separator=" ")
+                room = df.rooms[roomix]
+                if not room.is_trivial():
+                    line.body.append("to")
+                    line.body.append(DocLink(f"Room {roomix}"))
                 door_l = [line]
                 if door:
                     for trapix in door.trapixs:

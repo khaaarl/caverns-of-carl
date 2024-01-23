@@ -191,8 +191,6 @@ class Room:
         if verbose:
             if self.encounter:
                 o.append(self.encounter.description(df))
-            # TODO: this should not just deal with doors, but all
-            # corridors going out of me (not all of these have doors)
             corridorix_doors = {k: None for k in self.corridorixs}
             for doorix in self.doorixs:
                 door = df.doors[doorix]
