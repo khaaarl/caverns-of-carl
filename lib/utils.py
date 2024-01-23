@@ -246,13 +246,15 @@ def bfs(d, start, max_depth=None):
     return output
 
 
-def dfs(d, start, seen=None):
+def dfs(d, start, seen=None, accum=None):
+    accum = accum or []
     seen = seen or set()
     seen.add(start)
+    accum.append(start)
     for other in d[start]:
         if other not in seen:
-            dfs(d, other, seen)
-    return seen
+            dfs(d, other, seen, accum)
+    return accum
 
 
 def neighbor_coords(x, y, cardinal=True, diagonal=False):

@@ -29,6 +29,7 @@ class Room:
         self.doorixs = set()
         self.trapixs = set()
         self.biome_name = biome_name
+        self.in_maze = False
 
     def embiggened(self):
         return self.__class__(
@@ -340,7 +341,10 @@ class CavernousRoom(Room):
                         break
                     if (tx, ty) in outer_coords:
                         continue
-                    if isinstance(df.tiles[tx][ty], RoomFloorTile):
+                    otile = df.tiles[tx][ty]
+                    if isinstance(otile, RoomFloorTile) or isinstance(
+                        otile, CorridorFloorTile
+                    ):
                         # found another room, oughtn't expand
                         safe_to_expand = False
                         break

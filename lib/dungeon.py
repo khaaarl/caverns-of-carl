@@ -261,6 +261,10 @@ def is_room_valid(room, df, rooms, ix_to_ignore=None):
             abs(room.y - r2.y) <= room.rh + r2.rh + 1
         ):
             return False
+    for x in range(room.x - room.rw - 1, room.x + room.rw + 2):
+        for y in range(room.y - room.rh - 1, room.y + room.rh + 2):
+            if not isinstance(df.get_tile(x, y), WallTile):
+                return False
     return True
 
 
@@ -332,6 +336,7 @@ def place_maze_in_biome(df, biome):
     maze_grid = [[None for _ in range(maze_height)] for _ in range(maze_width)]
     not_us_junctions = 0
     junctions = []
+    junctions_by_mxy = collections.defaultdict(lambda: None)
     for mx in range(maze_width):
         for my in range(maze_height):
             tile = maze_xy_to_tile(mx, my)
@@ -342,7 +347,43 @@ def place_maze_in_biome(df, biome):
             junction.maze_x = mx
             junction.maze_y = my
             junctions.append(junction)
+            junctions_by_mxy[(mx, my)] = junction
             maze_grid[mx][my] = junction
+    if not junctions:
+        return
+    connections = collections.defaultdict(set)
+    for junction in junctions:
+        for dmx, dmy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            x, y = junction.maze_x, junction.maze_y
+            nmx, nmy = x + dmx, y + dmy
+            if junctions_by_mxy[(nmx, nmy)]:
+                connections[(x, y)].add((nmx, nmy))
+                connections[(nmx, nmy)].add((x, y))
+    mxmy_to_remove = set()
+    while True:
+        keys = list(connections.keys())
+        if not keys:
+            return
+        p = keys[0]
+        if len(dfs(connections, p)) == len(junctions) - len(mxmy_to_remove):
+            break
+        keys.sort(key=lambda p: len(dfs(connections, p)))
+        p = keys[0]
+        mxmy_to_remove.add(p)
+        del connections[p]
+        for k, v in connections.items():
+            if p in v:
+                v.remove(p)
+    for p in mxmy_to_remove:
+        maze_grid[p[0]][p[1]] = None
+    junctions = []
+    junctions_by_mxy = collections.defaultdict(lambda: None)
+    for mx in range(maze_width):
+        for my in range(maze_height):
+            junction = maze_grid[mx][my]
+            if junction:
+                junctions.append(junction)
+                junctions_by_mxy[(mx, my)] = junction
     target_num_rooms = int(
         round(
             df.config.num_rooms
@@ -351,15 +392,63 @@ def place_maze_in_biome(df, biome):
         )
     )
     random.shuffle(junctions)
+    room_ps = []
     for junction in junctions[:target_num_rooms]:
         room = RectRoom(
             x=junction.x, y=junction.y, rw=1, rh=1, biome_name=biome.biome_name
         )
-        maze_grid[junction.maze_x][junction.maze_y] = room
+        mx, my = junction.maze_x, junction.maze_y
+        if mx > 0 and mx < maze_width - 1:
+            if isinstance(maze_grid[mx - 1][my], RectRoom) or isinstance(
+                maze_grid[mx + 1][my], RectRoom
+            ):
+                room.rw += 1
+            else:
+                room.rw += 2
+        if my > 0 and my < maze_height - 1:
+            if isinstance(maze_grid[mx][my - 1], RectRoom) or isinstance(
+                maze_grid[mx][my + 1], RectRoom
+            ):
+                room.rh += 1
+            else:
+                room.rh += 2
+        room_ps.append((mx, my))
+        maze_grid[mx][my] = room
     for l in maze_grid:
         for item in l:
             if isinstance(item, Room):
+                item.in_maze = True
                 df.add_room(item)
+    num_pruned = 1
+    while num_pruned > 0:
+        num_pruned = 0
+        ps = list(connections.keys())
+        random.shuffle(ps)
+        random.shuffle(room_ps)
+        for p1 in room_ps + ps:
+            others = list(connections[p1])
+            random.shuffle(others)
+            for p2 in others:
+                # try disconnecting
+                connections[p1].remove(p2)
+                connections[p2].remove(p1)
+                if len(dfs(connections, p1)) == len(connections):
+                    num_pruned += 1
+                    continue
+                # reconnect, as we broke the full connectivity
+                connections[p1].add(p2)
+                connections[p2].add(p1)
+    for p1 in ps:
+        others = list(connections[p1])
+        for p2 in others:
+            if p1 > p2:
+                continue
+            room1 = maze_grid[p1[0]][p1[1]]
+            room2 = maze_grid[p2[0]][p2[1]]
+            corridor = carve_corridor(
+                df, room1, room2, maze_corridor_width, True, biome.biome_name
+            )
+            df.add_corridor(corridor)
 
 
 def place_rooms_in_dungeon(df):
@@ -377,6 +466,9 @@ def place_rooms_in_dungeon(df):
             )
         num_attempts += 1
         room = df.random_room()
+        biome = df.config.get_biome(room.biome_name)
+        if biome.use_maze_layout:
+            continue
         if is_room_valid(room, df, rooms + df.rooms):
             rooms.append(room)
         elif len(rooms) > 0:
@@ -424,6 +516,83 @@ def erode_cavernous_rooms_in_dungeon(df):
             room.erode(df, num_iterations=df.config.num_erosion_steps)
 
 
+def carve_corridor(df, room1, room2, width, is_horizontal_first, biome_name):
+    cls = Corridor
+    if isinstance(room1, CavernousRoom) and isinstance(room2, CavernousRoom):
+        cls = CavernousCorridor
+    corridor = cls(
+        room1.ix,
+        room2.ix,
+        room1.x,
+        room1.y,
+        room2.x,
+        room2.y,
+        is_horizontal_first,
+        width=width,
+        biome_name=biome_name,
+    )
+    wall_entries = 0
+    corridor_coords = list(corridor.walk())
+    for ix in range(1, len(corridor_coords) - 1):
+        x, y = corridor_coords[ix]
+        px, py = corridor_coords[ix - 1]
+        nx, ny = corridor_coords[ix + 1]
+        if max(abs(px - x), abs(py - y), abs(nx - x), abs(ny - y)) > 1:
+            # this is in between tunnel width iterations
+            wall_entries = 0
+            continue
+        tile = df.tiles[x][y]
+        ptile = df.tiles[px][py]
+        ntile = df.tiles[nx][ny]
+        if not df.config.allow_corridor_intersection and isinstance(
+            tile, CorridorFloorTile
+        ):
+            return None
+        if not isinstance(tile, RoomFloorTile):
+            if isinstance(ptile, RoomFloorTile):
+                wall_entries += 1
+                if wall_entries > 1:
+                    return None
+        if isinstance(tile, WallTile):
+            proom = None
+            penclose = None
+            if isinstance(ptile, RoomFloorTile):
+                proom = df.rooms[ptile.roomix]
+                penclose = proom.is_fully_enclosed_by_doors()
+            nroom = None
+            nenclose = None
+            if isinstance(ntile, RoomFloorTile):
+                nroom = df.rooms[ntile.roomix]
+                nenclose = nroom.is_fully_enclosed_by_doors()
+            if proom and nroom:
+                if not penclose and not nenclose:
+                    continue
+            elif proom and not penclose or nroom and not nenclose:
+                continue
+            pdx = x - px
+            pdy = y - py
+            ndx = nx - x
+            ndy = ny - y
+            reqd_walls = []
+            if ndx == pdx and ndy == pdy:
+                # going the same direction, just ensure our sides are walls.
+                reqd_walls += [(x + ndy, y + ndx), (x - ndy, y - ndx)]
+            else:
+                # we're in an elbow turn; ensure all are walls.
+                for x2 in range(-1, 2):
+                    for y2 in range(-1, 2):
+                        reqd_walls.append((x + x2, y + y2))
+            for x2, y2 in reqd_walls:
+                if not isinstance(df.tiles[x2][y2], WallTile):
+                    return None
+    # set light level to in between the two rooms
+    light_levels = sorted([room1.light_level, room2.light_level])
+    corridor.light_level = random.choice(light_levels)
+    if light_levels == ["bright", "dark"]:
+        corridor.light_level = "dim"
+    return corridor
+
+
 def place_corridors_in_dungeon(df):
     config = df.config
     is_fully_connected = False
@@ -458,97 +627,24 @@ def place_corridors_in_dungeon(df):
                 biome.corridor_width_3_ratio,
             ],
         )
+        if room1.in_maze or room2.in_maze:
+            width = 3
         signature = (room1ix, room2ix, width, is_horizontal_first)
         if signature in prev_attempts:
             continue
         prev_attempts.add(signature)
-
-        cls = Corridor
-        if isinstance(room1, CavernousRoom) and isinstance(
-            room2, CavernousRoom
-        ):
-            cls = CavernousCorridor
-        corridor = cls(
-            room1ix,
-            room2ix,
-            room1.x,
-            room1.y,
-            room2.x,
-            room2.y,
-            is_horizontal_first,
-            width=width,
-            biome_name=biome_name,
+        if room1.biome_name == room2.biome_name and room1.in_maze:
+            continue
+        corridor = carve_corridor(
+            df, room1, room2, width, is_horizontal_first, biome_name
         )
-
-        wall_entries = 0
-        found_problem = False
-        corridor_coords = list(corridor.walk())
-        for ix in range(1, len(corridor_coords) - 1):
-            x, y = corridor_coords[ix]
-            px, py = corridor_coords[ix - 1]
-            nx, ny = corridor_coords[ix + 1]
-            if max(abs(px - x), abs(py - y), abs(nx - x), abs(ny - y)) > 1:
-                # this is in between tunnel width iterations
-                wall_entries = 0
-                continue
-            tile = df.tiles[x][y]
-            ptile = df.tiles[px][py]
-            ntile = df.tiles[nx][ny]
-            if not config.allow_corridor_intersection and isinstance(
-                tile, CorridorFloorTile
-            ):
-                found_problem = True
-                break
-            if not isinstance(tile, RoomFloorTile):
-                if isinstance(ptile, RoomFloorTile):
-                    wall_entries += 1
-                    if wall_entries > 1:
-                        found_problem = True
-                        break
-            if isinstance(tile, WallTile):
-                proom = None
-                penclose = None
-                if isinstance(ptile, RoomFloorTile):
-                    proom = df.rooms[ptile.roomix]
-                    penclose = proom.is_fully_enclosed_by_doors()
-                nroom = None
-                nenclose = None
-                if isinstance(ntile, RoomFloorTile):
-                    nroom = df.rooms[ntile.roomix]
-                    nenclose = nroom.is_fully_enclosed_by_doors()
-                if proom and nroom:
-                    if not penclose and not nenclose:
-                        continue
-                elif proom and not penclose or nroom and not nenclose:
-                    continue
-                pdx = x - px
-                pdy = y - py
-                ndx = nx - x
-                ndy = ny - y
-                reqd_walls = []
-                if ndx == pdx and ndy == pdy:
-                    # going the same direction, just ensure our sides are walls.
-                    reqd_walls += [(x + ndy, y + ndx), (x - ndy, y - ndx)]
-                else:
-                    # we're in an elbow turn; ensure all are walls.
-                    for x2 in range(-1, 2):
-                        for y2 in range(-1, 2):
-                            reqd_walls.append((x + x2, y + y2))
-                for x2, y2 in reqd_walls:
-                    if not isinstance(df.tiles[x2][y2], WallTile):
-                        found_problem = True
-                        break
-        if not found_problem:
-            # set light level to in between the two rooms
-            light_levels = sorted([room1.light_level, room2.light_level])
-            corridor.light_level = random.choice(light_levels)
-            if light_levels == ["bright", "dark"]:
-                corridor.light_level = "dim"
-            df.add_corridor(corridor)
-            if not is_fully_connected and len(
-                dfs(df.room_neighbors, room1ix)
-            ) == len(df.rooms):
-                is_fully_connected = True
+        if not corridor:
+            continue
+        df.add_corridor(corridor)
+        if not is_fully_connected and len(
+            dfs(df.room_neighbors, room1ix)
+        ) == len(df.rooms):
+            is_fully_connected = True
     if config.prefer_full_connection and len(dfs(df.room_neighbors, 0)) < len(
         df.rooms
     ):
