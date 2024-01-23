@@ -28,6 +28,8 @@ class SpecialFeature:
         placement."""
         output = {}
         for room in df.rooms:
+            if room.is_trivial():
+                continue
             if self.biome_name and room.biome_name != self.biome_name:
                 continue
             score = self.score_room(df, room)

@@ -265,6 +265,31 @@ class RectRoom(Room):
         return True
 
 
+class MazeJunction(RectRoom):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.maze_x = None
+        self.maze_y = None
+
+    def is_trivial(self):
+        return True
+
+    def is_fully_enclosed_by_doors(self):
+        return False
+
+    def allows_treasure(self, df):
+        return False
+
+    def allows_bookshelf(self, df):
+        return False
+
+    def allows_enemies(self, df):
+        return False
+
+    def allows_traps(self, df):
+        return False
+
+
 class CavernousRoom(Room):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

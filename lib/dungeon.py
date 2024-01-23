@@ -20,7 +20,7 @@ from lib.tile import (
     Tile,
     WallTile,
 )
-from lib.room import Room, RectRoom, CavernousRoom
+from lib.room import Room, RectRoom, CavernousRoom, MazeJunction
 import lib.features
 import lib.trap
 from lib.treasure import get_treasure_library
@@ -159,6 +159,8 @@ class DungeonFloor:
     def add_corridor(self, corridor):
         corridor.ix = len(self.corridors)
         self.corridors.append(corridor)
+        self.rooms[corridor.room1ix].corridorixs.add(corridor.ix)
+        self.rooms[corridor.room2ix].corridorixs.add(corridor.ix)
         self.room_neighbors[corridor.room1ix].add(corridor.room2ix)
         self.room_neighbors[corridor.room2ix].add(corridor.room1ix)
         for x, y in corridor.walk():
@@ -253,7 +255,7 @@ def is_room_valid(room, df, rooms, ix_to_ignore=None):
     ):
         return False
     for ix, r2 in enumerate(rooms):
-        if ix_to_ignore and ix == ix_to_ignore:
+        if ix_to_ignore is not None and ix == ix_to_ignore:
             continue
         if (abs(room.x - r2.x) <= room.rw + r2.rw + 1) and (
             abs(room.y - r2.y) <= room.rh + r2.rh + 1
@@ -270,6 +272,7 @@ def generate_random_dungeon(config=None, errors=None):
         try:
             df = DungeonFloor(config)
             place_biomes_in_dungeon(df)
+            place_mazes_in_dungeon(df)
             place_rooms_in_dungeon(df)
             erode_cavernous_rooms_in_dungeon(df)
             place_corridors_in_dungeon(df)
@@ -309,22 +312,76 @@ def place_biomes_in_dungeon(df):
         tile.biome_name = sorted(biome_weight_names)[-1][1]
 
 
+def place_mazes_in_dungeon(df):
+    for biome in df.config.biomes + [df.config]:
+        if biome.use_maze_layout:
+            place_maze_in_biome(df, biome)
+
+
+def place_maze_in_biome(df, biome):
+    maze_corridor_width = 3
+    maze_width = int((df.width +1) / (maze_corridor_width * 2))
+    maze_height = int((df.height +1) / (maze_corridor_width * 2))
+    maze_offset = 2
+
+    def maze_xy_to_tile(mx, my):
+        x = maze_offset + mx * 2 * maze_corridor_width
+        y = maze_offset + my * 2 * maze_corridor_width
+        return df.get_tile(x=x, y=y)
+
+    maze_grid = [[None for _ in range(maze_height)] for _ in range(maze_width)]
+    not_us_junctions = 0
+    junctions = []
+    for mx in range(maze_width):
+        for my in range(maze_height):
+            tile = maze_xy_to_tile(mx, my)
+            if tile.biome_name != biome.biome_name:
+                not_us_junctions += 1
+                continue
+            junction = MazeJunction(tile.x, tile.y, biome_name=biome.biome_name)
+            junction.maze_x = mx
+            junction.maze_y = my
+            junctions.append(junction)
+            maze_grid[mx][my] = junction
+    target_num_rooms = int(
+        round(
+            df.config.num_rooms
+            * len(junctions)
+            / (len(junctions) + not_us_junctions)
+        )
+    )
+    random.shuffle(junctions)
+    for junction in junctions[:target_num_rooms]:
+        room = RectRoom(
+            x=junction.x, y=junction.y, rw=1, rh=1, biome_name=biome.biome_name
+        )
+        maze_grid[junction.maze_x][junction.maze_y] = room
+    for l in maze_grid:
+        for item in l:
+            if isinstance(item, Room):
+                df.add_room(item)
+
+
 def place_rooms_in_dungeon(df):
+    num_rooms_already = 0
+    for room in df.rooms:
+        if not room.is_trivial():
+            num_rooms_already += 1
     config = df.config
     rooms = []
     for _ in range(config.max_room_attempts * config.num_rooms):
-        if len(rooms) >= config.num_rooms:
+        if len(rooms) + num_rooms_already >= config.num_rooms:
             break
         room = df.random_room()
-        if is_room_valid(room, df, rooms):
+        if is_room_valid(room, df, rooms + df.rooms):
             rooms.append(room)
         elif len(rooms) > 0:
             # wiggle something a bit just in case this helps
             ix = random.randrange(0, len(rooms))
             room2 = rooms[ix].wiggled()
-            if is_room_valid(room2, df, rooms, ix):
+            if is_room_valid(room2, df, rooms + df.rooms, ix):
                 rooms[ix] = room2
-    if len(rooms) < config.num_rooms:
+    if len(rooms) + num_rooms_already < config.num_rooms:
         raise RetriableRoomPlacementException(
             f"Failed to place all requested rooms ({len(rooms)} of {config.num_rooms})"
         )
@@ -335,6 +392,8 @@ def place_rooms_in_dungeon(df):
     ] * config.num_room_wiggles * config.num_rooms
     random.shuffle(ews)
     for op in ews:
+        if not rooms:
+            break
         ix = random.randrange(0, len(rooms))
         room2 = None
         if op == "e":
@@ -343,8 +402,13 @@ def place_rooms_in_dungeon(df):
             room2 = rooms[ix].wiggled()
         if is_room_valid(room2, df, rooms, ix):
             rooms[ix] = room2
-    # apply light levels
+    # sort rooms from top to bottom so their indices are more human comprehensible maybe
+    rooms.sort(key=lambda r: (-r.y, r.x))
+    # add rooms to dungeon floor
     for room in rooms:
+        df.add_room(room)
+    # apply light levels
+    for room in df.rooms:
         biome = df.config.get_biome(room.biome_name)
         room.light_level = choice(
             ["bright", "dim", "dark"],
@@ -354,11 +418,6 @@ def place_rooms_in_dungeon(df):
                 biome.room_dark_ratio,
             ],
         )
-    # sort rooms from top to bottom so their indices are more human comprehensible maybe
-    rooms.sort(key=lambda r: (-r.y, r.x))
-    # add rooms to dungeon floor
-    for room in rooms:
-        df.add_room(room)
 
 
 def erode_cavernous_rooms_in_dungeon(df):
@@ -369,7 +428,6 @@ def erode_cavernous_rooms_in_dungeon(df):
 
 def place_corridors_in_dungeon(df):
     config = df.config
-    rooms_connected = {}
     is_fully_connected = False
     prev_attempts = set()
     for _ in range(config.max_corridor_attempts):
@@ -382,7 +440,7 @@ def place_corridors_in_dungeon(df):
         if room1ix == room2ix:
             continue
         room1ix, room2ix = sorted([room1ix, room2ix])
-        if room2ix in (rooms_connected.get(room1ix) or set()):
+        if room2ix in df.room_neighbors[room1ix]:
             continue
         is_horizontal_first = random.randrange(2)
 
@@ -488,17 +546,9 @@ def place_corridors_in_dungeon(df):
             corridor.light_level = random.choice(light_levels)
             if light_levels == ["bright", "dark"]:
                 corridor.light_level = "dim"
-            s = rooms_connected.get(room1ix) or set()
-            s.add(room2ix)
-            rooms_connected[room1ix] = s
-            s = rooms_connected.get(room2ix) or set()
-            s.add(room1ix)
-            rooms_connected[room2ix] = s
             df.add_corridor(corridor)
-            df.rooms[corridor.room1ix].corridorixs.add(corridor.ix)
-            df.rooms[corridor.room2ix].corridorixs.add(corridor.ix)
             if not is_fully_connected and len(
-                dfs(rooms_connected, room1ix)
+                dfs(df.room_neighbors, room1ix)
             ) == len(df.rooms):
                 is_fully_connected = True
     if config.prefer_full_connection and len(dfs(df.room_neighbors, 0)) < len(
@@ -599,12 +649,13 @@ def place_ladders_in_dungeon(df):
     max_depth = df.config.min_ladder_distance - 1
     ladder_room_ixs = set()
     rooms = [x for x in df.rooms if not x.is_trivial()]
+    roomlen = len(rooms)
     random.shuffle(rooms)
 
     # bias ourselves towards smallest rooms
     rooms.sort(key=lambda x: x.total_space())
-    while len(rooms) < 2 * len(df.rooms) - 3:
-        rooms = rooms + rooms[: int((2 * len(df.rooms) - len(rooms)) / 2 + 1)]
+    while len(rooms) < 2 * roomlen - 3:
+        rooms = rooms + rooms[: int((2 * roomlen - len(rooms)) / 2 + 1)]
 
     # map from biome_name to [(roomix, x, y)]
     biome_up_ladders = collections.defaultdict(list)

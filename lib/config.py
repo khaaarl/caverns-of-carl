@@ -27,6 +27,7 @@ class DungeonConfig:
         self.add_var("min_room_radius", 1)
         self.add_var("num_room_embiggenings", 5, in_biome=False)
         self.add_var("num_room_wiggles", 5, in_biome=False)
+        self.add_var("use_maze_layout", False)
         self.add_var("cavernous_room_percent", 50.0)
         self.add_var("room_bright_ratio", 5.0)
         self.add_var("room_dim_ratio", 2.0)
