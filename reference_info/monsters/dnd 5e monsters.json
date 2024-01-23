@@ -1,963 +1,1385 @@
 {
-  "name": "dnd 5e monsters",
   "monsters": [
     {
-      "name": "Skeleton",
-      "keywords": ["Urban", "Undead"],
-      "ascii_char": "[1;97ms",
-      "challenge_rating": 0.25,
-      "xp": 50,
-      "health": 13,
-      "hit_dice_formula": "2d8+4",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Skeleton Archer A",
-        "Skeleton Warrior A",
-        "Skeleton Warrior B"
-      ]
+      "ascii_char": "[1;32mk",
+      "challenge_rating": 0.125,
+      "health": 6,
+      "hit_dice_formula": "2d6 - 2",
+      "keywords": [
+        "Arctic",
+        "Coastal",
+        "Desert",
+        "Forest",
+        "Hill",
+        "Mountain",
+        "Swamp",
+        "Underdark",
+        "Urban",
+        "Humanoid",
+        "Koboldoid",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Kobold",
+      "size": "small",
+      "xp": 25
     },
     {
-      "name": "Zombie",
-      "keywords": ["Urban", "Undead", "Frontline"],
-      "ascii_char": "[1;33mz",
-      "challenge_rating": 0.25,
-      "xp": 50,
-      "health": 22,
-      "hit_dice_formula": "3d8+9",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Zombie A",
-        "Zombie B",
-        "Zombie C"
-      ]
-    },
-    {
-      "name": "Shadow",
-      "keywords": ["Underdark", "Undead", "Frontline"],
-      "ascii_char": "[1;37ms",
-      "challenge_rating": 0.5,
-      "xp": 100,
-      "health": 16,
-      "hit_dice_formula": "3d8 + 3",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Shadow A"
-      ]
-    },
-    {
-      "name": "Ghoul",
-      "keywords": ["Swamp", "Underdark", "Urban", "Undead", "Frontline"],
-      "ascii_char": "[1;33mg",
-      "challenge_rating": 1,
-      "xp": 200,
-      "health": 22,
-      "hit_dice_formula": "5d8",
-      "size": "medium",
-      "diameter": 1,
-      "synergies": ["Ghast"],
-      "tts_reference_nicknames": [
-        "Ghoul A"
-      ]
-    },
-    {
-      "name": "Ghast",
-      "keywords": ["Swamp", "Underdark", "Urban", "Undead", "Frontline"],
-      "ascii_char": "[1;34mg",
-      "challenge_rating": 2,
-      "xp": 450,
-      "health": 36,
-      "hit_dice_formula": "8d8",
-      "size": "medium",
-      "diameter": 1,
-      "synergies": ["Ghoul"],
-      "tts_reference_nicknames": [
-        "Ghast A"
-      ]
-    },
-    {
-      "name": "Deathlock Wight",
-      "keywords": ["Spellcaster", "Urban", "Undead"],
-      "ascii_char": "[1;37m@",
-      "challenge_rating": 3,
-      "xp": 700,
-      "health": 37,
-      "hit_dice_formula": "5d8 + 15",
-      "size": "medium",
-      "diameter": 1,
-      "synergies": ["Deathlock", "Deathlock Mastermind"],
-      "tts_reference_nicknames": [
-        "Deathlock Wight A"
-      ]
-    },
-    {
-      "name": "Deathlock",
-      "keywords": ["Backline", "Spellcaster", "Urban", "Undead"],
-      "ascii_char": "[1;97m@",
-      "challenge_rating": 4,
-      "xp": 1100,
-      "health": 36,
-      "hit_dice_formula": "8d8",
-      "size": "medium",
-      "diameter": 1,
-      "synergies": ["Deathlock Wight", "Deathlock Mastermind"],
-      "tts_reference_nicknames": [
-        "Deathlock A"
-      ]
-    },
-    {
-      "name": "Deathlock Mastermind",
-      "keywords": ["Backline", "Spellcaster", "Urban", "Undead"],
-      "ascii_char": "[1;96m@",
-      "challenge_rating": 8,
-      "xp": 3900,
-      "health": 110,
-      "hit_dice_formula": "20d8 + 20",
-      "size": "medium",
-      "diameter": 1,
-      "synergies": ["Deathlock", "Deathlock Wight"],
-      "tts_reference_nicknames": [
-        "Deathlock Mastermind A"
-      ]
-    },
-    {
-      "name": "Banshee",
-      "keywords": ["Coastal", "Forest", "Undead", "Homogenous"],
-      "ascii_char": "[1;95mB",
-      "challenge_rating": 4,
-      "xp": 1100,
-      "health": 58,
-      "hit_dice_formula": "13d8",
-      "size": "medium",
-      "diameter": 1,
-      "max_per_floor": 1,
-      "tts_reference_nicknames": [
-        "Banshee A"
-      ]
-    },
-    {
-      "name": "Sword Wraith Warrior",
-      "keywords": ["Grassland", "Swamp", "Undead"],
-      "ascii_char": "[1;96mw",
-      "challenge_rating": 3,
-      "xp": 700,
-      "health": 45,
-      "hit_dice_formula": "6d8+18",
-      "size": "medium",
-      "diameter": 1,
-      "synergies": ["Sword Wraith Commander"],
-      "tts_reference_nicknames": [
-        "Sword Wraith Warrior A"
-      ]
-    },
-    {
-      "name": "Sword Wraith Commander",
-      "keywords": ["Grassland", "Swamp", "Undead"],
-      "ascii_char": "[1;96mW",
-      "challenge_rating": 8,
-      "xp": 3900,
-      "health": 127,
-      "hit_dice_formula": "15d8+60",
-      "size": "medium",
-      "diameter": 1,
-      "synergies": ["Sword Wraith Warrior"],
-      "tts_reference_nicknames": [
-        "Sword Wraith Commander A"
-      ]
-    },
-    {
-      "name": "Specter",
-      "keywords": ["Underdark", "Urban", "Undead"],
-      "ascii_char": "[1;95ms",
-      "challenge_rating": 1,
-      "xp": 200,
-      "health": 22,
-      "hit_dice_formula": "5d8",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Specter A"
-      ]
-    },
-    {
-      "name": "Wraith",
-      "keywords": ["Underdark", "Undead", "Frontline"],
-      "ascii_char": "[1;96mG",
-      "challenge_rating": 5,
-      "xp": 1800,
-      "health": 67,
-      "hit_dice_formula": "9d8+27",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Wraith A"
-      ]
-    },
-    {
-      "name": "Mummy",
-      "keywords": ["Desert", "Undead", "Frontline"],
-      "ascii_char": "[1;33mM",
-      "challenge_rating": 3,
-      "xp": 700,
-      "health": 58,
-      "hit_dice_formula": "9d8 + 18",
-      "size": "medium",
-      "diameter": 1,
-      "synergies": ["Mummy Lord"],
-      "tts_reference_nicknames": [
-        "Mummy A"
-      ]
-    },
-    {
-      "name": "Mummy Lord",
-      "keywords": ["Desert", "Undead", "Frontline"],
-      "ascii_char": "[1;93mM",
-      "challenge_rating": 15,
-      "xp": 13000,
-      "health": 97,
-      "hit_dice_formula": "13d8 + 39",
-      "size": "medium",
-      "diameter": 1,
-      "synergies": ["Mummy"],
-      "tts_reference_nicknames": [
-        "Mummy Lord A"
-      ]
-    },
-    {
-      "name": "Bodak",
-      "keywords": ["Swamp", "Underdark", "Urban", "Undead"],
-      "ascii_char": "[1;37mB",
-      "challenge_rating": 6,
-      "xp": 2300,
-      "health": 58,
-      "hit_dice_formula": "9d8 + 18",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Bodak A"
-      ]
-    },
-    {
-      "name": "Death Knight",
-      "keywords": ["Undead"],
-      "ascii_char": "[1;97mS",
-      "challenge_rating": 17,
-      "xp": 18000,
-      "health": 180,
-      "hit_dice_formula": "19d8 + 95",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Death Knight A"
-      ]
-    },
-    {
-      "name": "Flameskull",
-      "keywords": ["Underdark", "Undead", "Backline"],
-      "ascii_char": "[1;92mF",
-      "challenge_rating": 4,
-      "xp": 1100,
-      "health": 40,
-      "hit_dice_formula": "9d4 + 18",
+      "ascii_char": "[1;95mg",
+      "challenge_rating": 0.125,
+      "health": 2,
+      "hit_dice_formula": "1d4",
+      "keywords": [
+        "Flying",
+        "Coastal",
+        "Desert",
+        "Forest",
+        "Grassland",
+        "Hill",
+        "Mountain",
+        "Swamp",
+        "Underdark",
+        "Urban",
+        "Beast"
+      ],
+      "name": "Stirge",
       "size": "tiny",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Flaming Skull A"
-      ]
+      "xp": 25
     },
     {
-      "name": "Lich",
-      "keywords": ["Backline", "Spellcaster", "Undead"],
-      "ascii_char": "[1;97mL",
-      "challenge_rating": 21,
-      "xp": 33000,
-      "health": 135,
-      "hit_dice_formula": "18d8 + 54",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Lich A",
-        "Lich B"
-      ]
+      "ascii_char": "[1;32ml",
+      "challenge_rating": 0.25,
+      "health": 19,
+      "hit_dice_formula": "3d10 + 3",
+      "keywords": [
+        "Frontline",
+        "Coastal",
+        "Desert",
+        "Forest",
+        "Swamp",
+        "Underdark",
+        "Urban",
+        "Beast"
+      ],
+      "name": "Giant Lizard",
+      "size": "large",
+      "xp": 50
     },
     {
-      "name": "Mimic",
-      "keywords": ["Underdark", "Urban", "Monstrosity", "Neutral", "Frontline"],
-      "ascii_char": "[1;33mm",
-      "challenge_rating": 2,
-      "xp": 450,
-      "health": 58,
-      "hit_dice_formula": "9d8 + 18",
-      "size": "medium",
-      "diameter": 1,
-      "frequency": 0,
-      "tts_reference_nicknames": [
-        "Mimic A"
-      ]
-    },
-    {
-      "name": "Vampire",
-      "keywords": ["Urban", "Undead", "Evil", "Lawful", "Frontline"],
-      "ascii_char": "[1;97mV",
-      "challenge_rating": 13,
-      "xp": 10000,
-      "health": 144,
-      "hit_dice_formula": "17d8 + 68",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Vampire A"
-      ]
-    },
-    {
-      "name": "Vampire Warrior",
-      "keywords": ["Urban", "Undead", "Evil", "Lawful", "Frontline"],
-      "ascii_char": "[1;91mV",
-      "challenge_rating": 15,
-      "xp": 13000,
-      "health": 144,
-      "hit_dice_formula": "17d8 + 68",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Vampire Warrior A"
-      ]
-    },
-    {
-      "name": "Vampire Spellcaster",
-      "keywords": ["Urban", "Undead", "Evil", "Lawful"],
-      "ascii_char": "[1;96mV",
-      "challenge_rating": 15,
-      "xp": 13000,
-      "health": 144,
-      "hit_dice_formula": "17d8 + 68",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Vampire Spellcaster A"
-      ]
-    },
-    {
-      "name": "Vampire Spawn",
-      "keywords": ["Underdark", "Urban", "Undead", "Evil", "Lawful", "Frontline"],
-      "ascii_char": "[1;97mv",
-      "challenge_rating": 5,
-      "xp": 1800,
-      "health": 82,
-      "hit_dice_formula": "11d8 + 33",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Vampire Spawn A",
-        "Vampire Spawn B"
-      ]
-    },
-    {
-      "name": "Demilich",
-      "keywords": ["Backline", "Spellcaster", "Urban", "Undead", "Evil"],
-      "ascii_char": "[1;37mL",
-      "challenge_rating": 18,
-      "xp": 20000,
-      "health": 80,
-      "hit_dice_formula": "32d4",
-      "size": "tiny",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Demilich A"
-      ]
-    },
-    {
-      "name": "Gnoll Witherling",
-      "keywords": ["Arctic", "Forest", "Grassland", "Hill", "Undead", "Chaotic", "Evil", "Frontline"],
       "ascii_char": "[1;33ms",
       "challenge_rating": 0.25,
-      "xp": 50,
       "health": 11,
       "hit_dice_formula": "2d8 + 2",
-      "size": "medium",
-      "diameter": 1,
+      "keywords": [
+        "Arctic",
+        "Forest",
+        "Grassland",
+        "Hill",
+        "Undead",
+        "Chaotic",
+        "Evil",
+        "Frontline"
+      ],
+      "name": "Gnoll Witherling",
       "tts_reference_nicknames": [
         "Gnoll Witherling A"
-      ]
+      ],
+      "xp": 50
     },
     {
-      "name": "Skull Lord",
-      "keywords": ["Spellcaster", "Urban", "Undead"],
-      "ascii_char": "[1;97m@",
-      "challenge_rating": 15,
-      "xp": 13000,
-      "health": 105,
-      "hit_dice_formula": "14d8 + 42",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Skull Lord A"
-      ]
-    },
-    {
-      "name": "Flesh Golem",
-      "keywords": ["Construct", "Frontline"],
-      "ascii_char": "[1;33mG",
-      "challenge_rating": 5,
-      "xp": 1800,
-      "health": 93,
-      "hit_dice_formula": "11d8 + 44",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Flesh Golem A",
-        "Flesh Golem B"
-      ]
-    },
-    {
-      "name": "Will-o'-Wisp",
-      "keywords": ["Forest", "Swamp", "Urban", "Flying", "Undead"],
-      "ascii_char": "[1;93mw",
-      "challenge_rating": 2,
-      "xp": 450,
-      "health": 22,
-      "hit_dice_formula": "9d4",
-      "size": "tiny",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Will-o'-Wisp A"
-      ]
-    },
-    {
-      "name": "Alhoon",
-      "keywords": ["Spellcaster", "Underdark", "Flying", "Undead"],
-      "ascii_char": "[1;37m@",
-      "challenge_rating": 10,
-      "xp": 5900,
-      "health": 150,
-      "hit_dice_formula": "20d8 + 60",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Alhoon A"
-      ]
-    },
-    {
-      "name": "Allip",
-      "keywords": ["Swamp", "Urban", "Flying", "Undead"],
-      "ascii_char": "[1;37mA",
-      "challenge_rating": 5,
-      "xp": 1800,
-      "health": 40,
-      "hit_dice_formula": "9d8",
-      "size": "medium",
-      "diameter": 1,
-      "tts_reference_nicknames": [
-        "Allip A"
-      ]
-    },
-    {
-      "name": "Minotaur Skeleton",
-      "keywords": ["Underdark", "Undead", "Lawful", "Evil", "Frontline"],
-      "ascii_char": "[1;97mS",
-      "challenge_rating": 2,
-      "xp": 450,
-      "health": 67,
-      "hit_dice_formula": "9d10 + 18",
-      "size": "large",
-      "diameter": 2,
-      "tts_reference_nicknames": [
-        "Minotaur Skeleton A"
-      ]
-    },
-    {
-      "name": "Death Tyrant",
-      "keywords": ["Underdark", "Flying", "Undead", "Lawful", "Evil"],
-      "ascii_char": "[1;37mB",
-      "challenge_rating": 14,
-      "xp": 11500,
-      "health": 187,
-      "hit_dice_formula": "25d10 + 50",
-      "size": "large",
-      "diameter": 2,
-      "tts_reference_nicknames": [
-        "Death Tyrant A"
-      ]
-    },
-    {
-      "name": "Bone Naga (Guardian)",
-      "keywords": ["Spellcaster", "Underdark", "Undead", "Lawful", "Evil"],
-      "ascii_char": "[1;35m@",
-      "challenge_rating": 4,
-      "xp": 1100,
-      "health": 58,
-      "hit_dice_formula": "9d10 + 9",
-      "size": "large",
-      "diameter": 2,
-      "tts_reference_nicknames": [
-        "Bone Naga A"
-      ]
-    },
-    {
-      "name": "Bone Naga (Spirit)",
-      "keywords": ["Spellcaster", "Underdark", "Undead", "Lawful", "Evil"],
-      "ascii_char": "[1;34m@",
-      "challenge_rating": 4,
-      "xp": 1100,
-      "health": 58,
-      "hit_dice_formula": "9d10 + 9",
-      "size": "large",
-      "diameter": 2,
-      "tts_reference_nicknames": [
-        "Bone Naga A"
-      ]
-    },
-    {
-      "name": "Adult Blue Dracolich",
-      "keywords": ["Flying", "Desert", "Undead", "Lawful", "Evil"],
-      "ascii_char": "[1;34mD",
-      "challenge_rating": 17,
-      "xp": 18000,
-      "health": 225,
-      "hit_dice_formula": "18d12 + 108",
-      "size": "huge",
-      "diameter": 3,
-      "tts_reference_nicknames": [
-        "Adult Blue Dracolich A"
-      ]
-    },
-    {
-      "name": "Bugbear",
-      "keywords": ["Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Bugbearoid", "Chaotic", "Evil"],
-      "ascii_char": "[1;33mg",
-      "challenge_rating": 1,
-      "xp": 200,
-      "health": 27,
-      "hit_dice_formula": "5d8 + 5",
-      "size": "medium",
-      "diameter": 1
-    },
-    {
-      "name": "Bugbear Chief",
-      "keywords": ["Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Bugbearoid", "Chaotic", "Evil"],
-      "ascii_char": "[1;93mg",
-      "challenge_rating": 3,
-      "xp": 700,
-      "health": 65,
-      "hit_dice_formula": "10d8 + 20",
-      "size": "medium",
-      "diameter": 1,
-      "synergies": ["Bugbear"]
-    },
-    {
-      "name": "Goblin",
-      "keywords": ["Forest", "Grassland", "Hill", "Underdark", "Humanoid", "Goblinoid", "Evil"],
       "ascii_char": "[1;32mg",
       "challenge_rating": 0.25,
-      "xp": 50,
       "health": 7,
       "hit_dice_formula": "2d6",
+      "keywords": [
+        "Forest",
+        "Grassland",
+        "Hill",
+        "Underdark",
+        "Humanoid",
+        "Goblinoid",
+        "Evil"
+      ],
+      "name": "Goblin",
       "size": "small",
-      "diameter": 1,
       "tts_reference_nicknames": [
         "Goblin A",
         "Goblin B",
         "Goblin C"
-      ]
+      ],
+      "xp": 50
     },
     {
-      "name": "Goblin Boss",
-      "keywords": ["Forest", "Grassland", "Hill", "Underdark", "Humanoid", "Goblinoid", "Evil"],
-      "ascii_char": "[1;92mg",
-      "challenge_rating": 1,
-      "xp": 200,
-      "health": 21,
-      "hit_dice_formula": "6d6",
+      "ascii_char": "[1;94mk",
+      "challenge_rating": 0.25,
+      "health": 13,
+      "hit_dice_formula": "3d6 + 3",
+      "keywords": [
+        "Backline",
+        "Forest",
+        "Hill",
+        "Mountain",
+        "Underdark",
+        "Urban",
+        "Humanoid",
+        "Koboldoid",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Kobold Inventor",
       "size": "small",
-      "diameter": 1,
-      "synergies": ["Goblin"],
+      "xp": 50
+    },
+    {
+      "ascii_char": "[1;97ms",
+      "challenge_rating": 0.25,
+      "health": 13,
+      "hit_dice_formula": "2d8+4",
+      "keywords": [
+        "Urban",
+        "Undead"
+      ],
+      "name": "Skeleton",
       "tts_reference_nicknames": [
-        "Goblin Boss A"
-      ]
+        "Skeleton Archer A",
+        "Skeleton Warrior A",
+        "Skeleton Warrior B"
+      ],
+      "xp": 50
     },
     {
-      "name": "Booyahg Slave of the Archfey",
-      "keywords": ["Backline", "Spellcaster", "Humanoid", "Goblinoid"],
-      "ascii_char": "[1;95mg",
-      "challenge_rating": 4,
-      "xp": 1100,
-      "health": 49,
-      "hit_dice_formula": "11d8",
+      "ascii_char": "[1;34mk",
+      "challenge_rating": 0.25,
+      "health": 7,
+      "hit_dice_formula": "3d6 - 3",
+      "keywords": [
+        "Flying",
+        "Arctic",
+        "Coastal",
+        "Desert",
+        "Forest",
+        "Hill",
+        "Mountain",
+        "Swamp",
+        "Underdark",
+        "Urban",
+        "Humanoid",
+        "Koboldoid",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Winged Kobold",
       "size": "small",
-      "diameter": 1,
-      "synergies": ["Goblin"]
+      "xp": 50
     },
     {
-      "name": "Booyahg Booyahg Booyahg",
-      "keywords": ["Backline", "Spellcaster", "Humanoid", "Goblinoid"],
-      "ascii_char": "[1;95mg",
-      "challenge_rating": 6,
-      "xp": 2300,
-      "health": 40,
-      "hit_dice_formula": "9d8",
-      "size": "small",
-      "diameter": 1,
-      "synergies": ["Goblin"]
+      "ascii_char": "[1;33mz",
+      "challenge_rating": 0.25,
+      "health": 22,
+      "hit_dice_formula": "3d8+9",
+      "keywords": [
+        "Urban",
+        "Undead",
+        "Frontline"
+      ],
+      "name": "Zombie",
+      "tts_reference_nicknames": [
+        "Zombie A",
+        "Zombie B",
+        "Zombie C"
+      ],
+      "xp": 50
     },
     {
-      "name": "Booyahg Slave of the Great Old One",
-      "keywords": ["Backline", "Spellcaster", "Humanoid", "Goblinoid"],
-      "ascii_char": "[1;95mg",
-      "challenge_rating": 6,
-      "xp": 2300,
-      "health": 91,
-      "hit_dice_formula": "14d8 + 28",
-      "size": "small",
-      "diameter": 1,
-      "synergies": ["Goblin"]
-    },
-    {
-      "name": "Booyahg Slave of the Fiend",
-      "keywords": ["Backline", "Spellcaster", "Humanoid", "Goblinoid"],
-      "ascii_char": "[1;95mg",
-      "challenge_rating": 6,
-      "xp": 2300,
-      "health": 78,
-      "hit_dice_formula": "12d8 + 24",
-      "size": "small",
-      "diameter": 1,
-      "synergies": ["Goblin"]
-    },
-    {
-      "name": "Stirge",
-      "keywords": ["Flying", "Coastal", "Desert", "Forest", "Grassland", "Hill", "Mountain", "Swamp", "Underdark", "Urban", "Beast"],
-      "ascii_char": "[1;95mg",
-      "challenge_rating": 0.125,
-      "xp": 25,
-      "health": 2,
-      "hit_dice_formula": "1d4",
-      "size": "tiny",
-      "diameter": 1
-    },
-    {
-      "name": "Roper",
-      "keywords": ["Underdark", "Monstrosity", "Evil"],
-      "ascii_char": "[1;96mG",
-      "challenge_rating": 5,
-      "xp": 1800,
-      "health": 93,
-      "hit_dice_formula": "11d10 + 33",
-      "size": "large",
-      "diameter": 2
-    },
-    {
-      "name": "Orc",
-      "keywords": ["Arctic", "Forest", "Grassland", "Hill", "Mountain", "Swamp", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
       "ascii_char": "[1;37mo",
       "challenge_rating": 0.5,
-      "xp": 100,
+      "frequency": 2,
       "health": 15,
       "hit_dice_formula": "2d8 + 6",
-      "size": "medium",
-      "diameter": 1,
-      "frequency": 2,
+      "keywords": [
+        "Arctic",
+        "Forest",
+        "Grassland",
+        "Hill",
+        "Mountain",
+        "Swamp",
+        "Underdark",
+        "Humanoid",
+        "Orcoid",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Orc",
       "tts_reference_nicknames": [
         "Orc A",
         "Orc B"
-      ]
+      ],
+      "xp": 100
     },
     {
-      "name": "Orc Nurtured One of Yurtrus",
-      "keywords": ["Forest", "Grassland", "Hill", "Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
       "ascii_char": "[1;32mo",
       "challenge_rating": 0.5,
-      "xp": 100,
+      "frequency": 0.5,
       "health": 30,
       "hit_dice_formula": "4d8 + 12",
-      "size": "medium",
-      "diameter": 1,
-      "frequency": 0.5,
-      "synergies": ["Orc Hand of Yurtrus"],
+      "keywords": [
+        "Forest",
+        "Grassland",
+        "Hill",
+        "Mountain",
+        "Underdark",
+        "Humanoid",
+        "Orcoid",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Orc Nurtured One of Yurtrus",
+      "synergies": [
+        "Orc Hand of Yurtrus"
+      ],
       "tts_reference_nicknames": [
         "Orc Nurtured One of Yurtrus A",
         "Orc Nurtured One of Yurtrus B",
         "Orc Nurtured One of Yurtrus C"
-      ]
+      ],
+      "xp": 100
     },
     {
-      "name": "Orc Claw of Luthic",
-      "keywords": ["Spellcaster", "Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;37ms",
+      "challenge_rating": 0.5,
+      "health": 16,
+      "hit_dice_formula": "3d8 + 3",
+      "keywords": [
+        "Underdark",
+        "Undead",
+        "Frontline"
+      ],
+      "name": "Shadow",
+      "tts_reference_nicknames": [
+        "Shadow A"
+      ],
+      "xp": 100
+    },
+    {
+      "ascii_char": "[1;33mg",
+      "challenge_rating": 1,
+      "health": 27,
+      "hit_dice_formula": "5d8 + 5",
+      "keywords": [
+        "Forest",
+        "Grassland",
+        "Underdark",
+        "Humanoid",
+        "Goblinoid",
+        "Bugbearoid",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Bugbear",
+      "xp": 200
+    },
+    {
+      "ascii_char": "[1;33mg",
+      "challenge_rating": 1,
+      "health": 22,
+      "hit_dice_formula": "5d8",
+      "keywords": [
+        "Swamp",
+        "Underdark",
+        "Urban",
+        "Undead",
+        "Frontline"
+      ],
+      "name": "Ghoul",
+      "synergies": [
+        "Ghast"
+      ],
+      "tts_reference_nicknames": [
+        "Ghoul A"
+      ],
+      "xp": 200
+    },
+    {
+      "ascii_char": "[1;92mg",
+      "challenge_rating": 1,
+      "health": 21,
+      "hit_dice_formula": "6d6",
+      "keywords": [
+        "Forest",
+        "Grassland",
+        "Hill",
+        "Underdark",
+        "Humanoid",
+        "Goblinoid",
+        "Evil"
+      ],
+      "name": "Goblin Boss",
+      "size": "small",
+      "synergies": [
+        "Goblin"
+      ],
+      "tts_reference_nicknames": [
+        "Goblin Boss A"
+      ],
+      "xp": 200
+    },
+    {
+      "ascii_char": "[1;31mg",
+      "challenge_rating": 1,
+      "health": 11,
+      "hit_dice_formula": "2d8 + 2",
+      "keywords": [
+        "Desert",
+        "Forest",
+        "Grassland",
+        "Underdark",
+        "Humanoid",
+        "Goblinoid",
+        "Hobgoblinoid",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Hobgoblin",
+      "xp": 200
+    },
+    {
+      "ascii_char": "[1;35mk",
+      "challenge_rating": 1,
+      "health": 44,
+      "hit_dice_formula": "8d6 + 16",
+      "keywords": [
+        "Forest",
+        "Hill",
+        "Mountain",
+        "Underdark",
+        "Humanoid",
+        "Koboldoid",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Kobold Dragonshield",
+      "size": "small",
+      "tts_reference_nicknames": [
+        "Kobold Spearman"
+      ],
+      "xp": 200
+    },
+    {
+      "ascii_char": "[1;91mk",
+      "challenge_rating": 1,
+      "health": 27,
+      "hit_dice_formula": "5d6 + 10",
+      "keywords": [
+        "Backline",
+        "Spellcaster",
+        "Forest",
+        "Hill",
+        "Mountain",
+        "Underdark",
+        "Urban",
+        "Humanoid",
+        "Koboldoid",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Kobold Scale Sorcerer",
+      "size": "small",
+      "tts_reference_nicknames": [
+        "Kobold Mage"
+      ],
+      "xp": 200
+    },
+    {
+      "ascii_char": "[1;95ms",
+      "challenge_rating": 1,
+      "health": 22,
+      "hit_dice_formula": "5d8",
+      "keywords": [
+        "Underdark",
+        "Urban",
+        "Undead"
+      ],
+      "name": "Specter",
+      "tts_reference_nicknames": [
+        "Specter A"
+      ],
+      "xp": 200
+    },
+    {
+      "ascii_char": "[1;37mD",
+      "challenge_rating": 2,
+      "health": 33,
+      "hit_dice_formula": "6d8 + 6",
+      "keywords": [
+        "Flying",
+        "Amphibious",
+        "Swimming",
+        "Dragon",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Black Dragon Wyrmling",
+      "xp": 450
+    },
+    {
+      "ascii_char": "[1;34mg",
+      "challenge_rating": 2,
+      "health": 36,
+      "hit_dice_formula": "8d8",
+      "keywords": [
+        "Swamp",
+        "Underdark",
+        "Urban",
+        "Undead",
+        "Frontline"
+      ],
+      "name": "Ghast",
+      "synergies": [
+        "Ghoul"
+      ],
+      "tts_reference_nicknames": [
+        "Ghast A"
+      ],
+      "xp": 450
+    },
+    {
+      "ascii_char": "[1;32mD",
+      "challenge_rating": 2,
+      "health": 38,
+      "hit_dice_formula": "7d8 + 7",
+      "keywords": [
+        "Flying",
+        "Amphibious",
+        "Swimming",
+        "Dragon",
+        "Green Dragon",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Green Dragon Wyrmling",
+      "xp": 450
+    },
+    {
+      "ascii_char": "[1;37mg",
+      "challenge_rating": 2,
+      "health": 32,
+      "hit_dice_formula": "5d8 + 10",
+      "keywords": [
+        "Spellcaster",
+        "Forest",
+        "Grassland",
+        "Hill",
+        "Humanoid",
+        "Goblinoid",
+        "Hobgoblinoid",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Hobgoblin Iron Shadow",
+      "xp": 450
+    },
+    {
+      "ascii_char": "[1;33mm",
+      "challenge_rating": 2,
+      "frequency": 0,
+      "health": 58,
+      "hit_dice_formula": "9d8 + 18",
+      "keywords": [
+        "Underdark",
+        "Urban",
+        "Monstrosity",
+        "Neutral",
+        "Frontline"
+      ],
+      "name": "Mimic",
+      "tts_reference_nicknames": [
+        "Mimic A"
+      ],
+      "xp": 450
+    },
+    {
+      "ascii_char": "[1;97mS",
+      "challenge_rating": 2,
+      "health": 67,
+      "hit_dice_formula": "9d10 + 18",
+      "keywords": [
+        "Underdark",
+        "Undead",
+        "Lawful",
+        "Evil",
+        "Frontline"
+      ],
+      "name": "Minotaur Skeleton",
+      "size": "large",
+      "tts_reference_nicknames": [
+        "Minotaur Skeleton A"
+      ],
+      "xp": 450
+    },
+    {
       "ascii_char": "[1;93mo",
       "challenge_rating": 2,
-      "xp": 450,
+      "frequency": 0.25,
       "health": 45,
       "hit_dice_formula": "6d8 + 18",
-      "size": "medium",
-      "diameter": 1,
-      "frequency": 0.25
+      "keywords": [
+        "Spellcaster",
+        "Mountain",
+        "Underdark",
+        "Humanoid",
+        "Orcoid",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Orc Claw of Luthic",
+      "xp": 450
     },
     {
-      "name": "Orc Eye of Gruumsh",
-      "keywords": ["Spellcaster", "Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
       "ascii_char": "[1;96mo",
       "challenge_rating": 2,
-      "xp": 450,
+      "frequency": 0.5,
       "health": 45,
       "hit_dice_formula": "6d8 + 18",
-      "size": "medium",
-      "diameter": 1,
-      "frequency": 0.5,
-      "synergies": ["Orc", "Orog"]
+      "keywords": [
+        "Spellcaster",
+        "Mountain",
+        "Underdark",
+        "Humanoid",
+        "Orcoid",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Orc Eye of Gruumsh",
+      "synergies": [
+        "Orc",
+        "Orog"
+      ],
+      "xp": 450
     },
     {
-      "name": "Orc Hand of Yurtrus",
-      "keywords": ["Spellcaster", "Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
       "ascii_char": "[1;92mo",
       "challenge_rating": 2,
-      "xp": 450,
+      "frequency": 0.25,
       "health": 45,
       "hit_dice_formula": "6d8 + 18",
-      "size": "medium",
-      "diameter": 1,
-      "frequency": 0.25,
-      "synergies": ["Orc Nurtured One of Yurtrus"]
+      "keywords": [
+        "Spellcaster",
+        "Mountain",
+        "Underdark",
+        "Humanoid",
+        "Orcoid",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Orc Hand of Yurtrus",
+      "synergies": [
+        "Orc Nurtured One of Yurtrus"
+      ],
+      "xp": 450
     },
     {
-      "name": "Orog",
-      "keywords": ["Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
       "ascii_char": "[1;97mo",
       "challenge_rating": 2,
-      "xp": 450,
       "health": 42,
       "hit_dice_formula": "5d8 + 20",
-      "size": "medium",
-      "diameter": 1,
-      "frequency": 1,
+      "keywords": [
+        "Mountain",
+        "Underdark",
+        "Humanoid",
+        "Orcoid",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Orog",
       "tts_reference_nicknames": [
         "Orog A",
         "Orog B"
-      ]
+      ],
+      "xp": 450
     },
     {
-      "name": "Orc Red Fang of Shargaas",
-      "keywords": ["Spellcaster", "Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
-      "ascii_char": "[1;91mo",
+      "ascii_char": "[1;93mw",
+      "challenge_rating": 2,
+      "health": 22,
+      "hit_dice_formula": "9d4",
+      "keywords": [
+        "Forest",
+        "Swamp",
+        "Urban",
+        "Flying",
+        "Undead"
+      ],
+      "name": "Will-o'-Wisp",
+      "size": "tiny",
+      "tts_reference_nicknames": [
+        "Will-o'-Wisp A"
+      ],
+      "xp": 450
+    },
+    {
+      "ascii_char": "[1;93mg",
       "challenge_rating": 3,
-      "xp": 700,
-      "health": 52,
-      "hit_dice_formula": "8d8 + 16",
-      "size": "medium",
-      "diameter": 0.25,
-      "frequency": 0.5
+      "health": 65,
+      "hit_dice_formula": "10d8 + 20",
+      "keywords": [
+        "Forest",
+        "Grassland",
+        "Underdark",
+        "Humanoid",
+        "Goblinoid",
+        "Bugbearoid",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Bugbear Chief",
+      "synergies": [
+        "Bugbear"
+      ],
+      "xp": 700
     },
     {
-      "name": "Orc Blade of Ilneval",
-      "keywords": ["Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
-      "ascii_char": "[1;94mo",
-      "challenge_rating": 4,
-      "xp": 1100,
-      "health": 60,
-      "hit_dice_formula": "8d8 + 24",
-      "size": "medium",
-      "diameter": 1,
-      "frequency": 0.1,
-      "synergies": ["Orc", "Orog"]
+      "ascii_char": "[1;37m@",
+      "challenge_rating": 3,
+      "health": 37,
+      "hit_dice_formula": "5d8 + 15",
+      "keywords": [
+        "Spellcaster",
+        "Urban",
+        "Undead"
+      ],
+      "name": "Deathlock Wight",
+      "synergies": [
+        "Deathlock",
+        "Deathlock Mastermind"
+      ],
+      "tts_reference_nicknames": [
+        "Deathlock Wight A"
+      ],
+      "xp": 700
     },
     {
-      "name": "Orc War Chief",
-      "keywords": ["Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
-      "ascii_char": "[1;95mo",
-      "challenge_rating": 4,
-      "xp": 1100,
-      "health": 93,
-      "hit_dice_formula": "11d8 + 44",
-      "size": "medium",
-      "diameter": 1,
-      "frequency": 0.2,
-      "synergies": ["Orc", "Orog"]
-    },
-    {
-      "name": "Tanarukk",
-      "keywords": ["Frontline", "Mountain", "Underdark", "Fiend", "Demon", "Orcoid", "Chaotic", "Evil"],
-      "ascii_char": "[1;95mo",
-      "challenge_rating": 5,
-      "xp": 1800,
-      "health": 95,
-      "hit_dice_formula": "10d8 + 50",
-      "size": "medium",
-      "diameter": 1,
-      "frequency": 0.2,
-      "synergies": ["Orc", "Orog"]
-    },
-    {
-      "name": "Hobgoblin",
-      "keywords": ["Desert", "Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Hobgoblinoid", "Lawful", "Evil"],
-      "ascii_char": "[1;31mg",
-      "challenge_rating": 1,
-      "xp": 200,
-      "health": 11,
-      "hit_dice_formula": "2d8 + 2",
-      "size": "medium",
-      "diameter": 1
-    },
-    {
-      "name": "Hobgoblin Captain",
-      "keywords": ["Desert", "Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Hobgoblinoid", "Lawful", "Evil"],
       "ascii_char": "[1;91mg",
       "challenge_rating": 3,
-      "xp": 700,
       "health": 39,
       "hit_dice_formula": "6d8 + 12",
-      "size": "medium",
-      "diameter": 1,
-      "synergies": ["Hobgoblin"]
+      "keywords": [
+        "Desert",
+        "Forest",
+        "Grassland",
+        "Underdark",
+        "Humanoid",
+        "Goblinoid",
+        "Hobgoblinoid",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Hobgoblin Captain",
+      "synergies": [
+        "Hobgoblin"
+      ],
+      "xp": 700
     },
     {
-      "name": "Hobgoblin Warlord",
-      "keywords": ["Desert", "Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Hobgoblinoid", "Lawful", "Evil"],
+      "ascii_char": "[1;33mM",
+      "challenge_rating": 3,
+      "health": 58,
+      "hit_dice_formula": "9d8 + 18",
+      "keywords": [
+        "Desert",
+        "Undead",
+        "Frontline"
+      ],
+      "name": "Mummy",
+      "synergies": [
+        "Mummy Lord"
+      ],
+      "tts_reference_nicknames": [
+        "Mummy A"
+      ],
+      "xp": 700
+    },
+    {
+      "ascii_char": "[1;91mo",
+      "challenge_rating": 3,
+      "frequency": 0.5,
+      "health": 52,
+      "hit_dice_formula": "8d8 + 16",
+      "keywords": [
+        "Spellcaster",
+        "Mountain",
+        "Underdark",
+        "Humanoid",
+        "Orcoid",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Orc Red Fang of Shargaas",
+      "xp": 700
+    },
+    {
+      "ascii_char": "[1;96mw",
+      "challenge_rating": 3,
+      "health": 45,
+      "hit_dice_formula": "6d8+18",
+      "keywords": [
+        "Grassland",
+        "Swamp",
+        "Undead"
+      ],
+      "name": "Sword Wraith Warrior",
+      "synergies": [
+        "Sword Wraith Commander"
+      ],
+      "tts_reference_nicknames": [
+        "Sword Wraith Warrior A"
+      ],
+      "xp": 700
+    },
+    {
+      "ascii_char": "[1;95mB",
+      "challenge_rating": 4,
+      "health": 58,
+      "hit_dice_formula": "13d8",
+      "keywords": [
+        "Coastal",
+        "Forest",
+        "Undead",
+        "Homogenous"
+      ],
+      "max_per_floor": 1,
+      "name": "Banshee",
+      "tts_reference_nicknames": [
+        "Banshee A"
+      ],
+      "xp": 1100
+    },
+    {
+      "ascii_char": "[1;35m@",
+      "challenge_rating": 4,
+      "health": 58,
+      "hit_dice_formula": "9d10 + 9",
+      "keywords": [
+        "Spellcaster",
+        "Underdark",
+        "Undead",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Bone Naga (Guardian)",
+      "size": "large",
+      "tts_reference_nicknames": [
+        "Bone Naga A"
+      ],
+      "xp": 1100
+    },
+    {
+      "ascii_char": "[1;34m@",
+      "challenge_rating": 4,
+      "health": 58,
+      "hit_dice_formula": "9d10 + 9",
+      "keywords": [
+        "Spellcaster",
+        "Underdark",
+        "Undead",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Bone Naga (Spirit)",
+      "size": "large",
+      "tts_reference_nicknames": [
+        "Bone Naga A"
+      ],
+      "xp": 1100
+    },
+    {
       "ascii_char": "[1;95mg",
-      "challenge_rating": 6,
-      "xp": 2300,
-      "health": 97,
-      "hit_dice_formula": "13d8 + 39",
-      "size": "medium",
-      "diameter": 1,
-      "synergies": ["Hobgoblin", "Hobgoblin Captain"]
+      "challenge_rating": 4,
+      "health": 49,
+      "hit_dice_formula": "11d8",
+      "keywords": [
+        "Backline",
+        "Spellcaster",
+        "Humanoid",
+        "Goblinoid"
+      ],
+      "name": "Booyahg Slave of the Archfey",
+      "size": "small",
+      "synergies": [
+        "Goblin"
+      ],
+      "xp": 1100
     },
     {
-      "name": "Hobgoblin Devastator",
-      "keywords": ["Backline", "Spellcaster", "Forest", "Grassland", "Hill", "Humanoid", "Goblinoid", "Hobgoblinoid", "Lawful", "Evil"],
+      "ascii_char": "[1;97m@",
+      "challenge_rating": 4,
+      "health": 36,
+      "hit_dice_formula": "8d8",
+      "keywords": [
+        "Backline",
+        "Spellcaster",
+        "Urban",
+        "Undead"
+      ],
+      "name": "Deathlock",
+      "synergies": [
+        "Deathlock Wight",
+        "Deathlock Mastermind"
+      ],
+      "tts_reference_nicknames": [
+        "Deathlock A"
+      ],
+      "xp": 1100
+    },
+    {
+      "ascii_char": "[1;92mF",
+      "challenge_rating": 4,
+      "health": 40,
+      "hit_dice_formula": "9d4 + 18",
+      "keywords": [
+        "Underdark",
+        "Undead",
+        "Backline"
+      ],
+      "name": "Flameskull",
+      "size": "tiny",
+      "tts_reference_nicknames": [
+        "Flaming Skull A"
+      ],
+      "xp": 1100
+    },
+    {
       "ascii_char": "[1;93mg",
       "challenge_rating": 4,
-      "xp": 1100,
       "health": 45,
       "hit_dice_formula": "7d8 + 14",
-      "size": "medium",
-      "diameter": 1
+      "keywords": [
+        "Backline",
+        "Spellcaster",
+        "Forest",
+        "Grassland",
+        "Hill",
+        "Humanoid",
+        "Goblinoid",
+        "Hobgoblinoid",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Hobgoblin Devastator",
+      "xp": 1100
     },
     {
-      "name": "Hobgoblin Iron Shadow",
-      "keywords": ["Spellcaster", "Forest", "Grassland", "Hill", "Humanoid", "Goblinoid", "Hobgoblinoid", "Lawful", "Evil"],
-      "ascii_char": "[1;37mg",
-      "challenge_rating": 2,
-      "xp": 450,
-      "health": 32,
-      "hit_dice_formula": "5d8 + 10",
-      "size": "medium",
-      "diameter": 1
+      "ascii_char": "[1;94mo",
+      "challenge_rating": 4,
+      "frequency": 0.1,
+      "health": 60,
+      "hit_dice_formula": "8d8 + 24",
+      "keywords": [
+        "Mountain",
+        "Underdark",
+        "Humanoid",
+        "Orcoid",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Orc Blade of Ilneval",
+      "synergies": [
+        "Orc",
+        "Orog"
+      ],
+      "xp": 1100
     },
     {
-      "name": "Kobold",
-      "keywords": ["Arctic", "Coastal", "Desert", "Forest", "Hill", "Mountain", "Swamp", "Underdark", "Urban", "Humanoid", "Koboldoid", "Lawful", "Evil"],
-      "ascii_char": "[1;32mk",
-      "challenge_rating": 0.125,
-      "xp": 25,
-      "health": 6,
-      "hit_dice_formula": "2d6 - 2",
-      "size": "small",
-      "diameter": 1
+      "ascii_char": "[1;95mo",
+      "challenge_rating": 4,
+      "frequency": 0.2,
+      "health": 93,
+      "hit_dice_formula": "11d8 + 44",
+      "keywords": [
+        "Mountain",
+        "Underdark",
+        "Humanoid",
+        "Orcoid",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Orc War Chief",
+      "synergies": [
+        "Orc",
+        "Orog"
+      ],
+      "xp": 1100
     },
     {
-      "name": "Winged Kobold",
-      "keywords": ["Flying", "Arctic", "Coastal", "Desert", "Forest", "Hill", "Mountain", "Swamp", "Underdark", "Urban", "Humanoid", "Koboldoid", "Lawful", "Evil"],
-      "ascii_char": "[1;34mk",
-      "challenge_rating": 0.25,
-      "xp": 50,
-      "health": 7,
-      "hit_dice_formula": "3d6 - 3",
-      "size": "small",
-      "diameter": 1
-    },
-    {
-      "name": "Kobold Dragonshield",
-      "keywords": ["Forest", "Hill", "Mountain","Underdark", "Humanoid", "Koboldoid", "Lawful", "Evil"],
-      "ascii_char": "[1;35mk",
-      "challenge_rating": 1,
-      "xp": 200,
-      "health": 44,
-      "hit_dice_formula": "8d6 + 16",
-      "size": "small",
-      "diameter": 1,
+      "ascii_char": "[1;37mA",
+      "challenge_rating": 5,
+      "health": 40,
+      "hit_dice_formula": "9d8",
+      "keywords": [
+        "Swamp",
+        "Urban",
+        "Flying",
+        "Undead"
+      ],
+      "name": "Allip",
       "tts_reference_nicknames": [
-        "Kobold Spearman"
-      ]
+        "Allip A"
+      ],
+      "xp": 1800
     },
     {
-      "name": "Kobold Inventor",
-      "keywords": ["Backline", "Forest", "Hill", "Mountain", "Underdark", "Urban", "Humanoid", "Koboldoid", "Lawful", "Evil"],
-      "ascii_char": "[1;94mk",
-      "challenge_rating": 0.25,
-      "xp": 50,
-      "health": 13,
-      "hit_dice_formula": "3d6 + 3",
-      "size": "small",
-      "diameter": 1
-    },
-    {
-      "name": "Kobold Scale Sorcerer",
-      "keywords": ["Backline", "Spellcaster", "Forest", "Hill", "Mountain", "Underdark", "Urban", "Humanoid", "Koboldoid", "Lawful", "Evil"],
-      "ascii_char": "[1;91mk",
-      "challenge_rating": 1,
-      "xp": 200,
-      "health": 27,
-      "hit_dice_formula": "5d6 + 10",
-      "size": "small",
-      "diameter": 1,
+      "ascii_char": "[1;33mG",
+      "challenge_rating": 5,
+      "health": 93,
+      "hit_dice_formula": "11d8 + 44",
+      "keywords": [
+        "Construct",
+        "Frontline"
+      ],
+      "name": "Flesh Golem",
       "tts_reference_nicknames": [
-        "Kobold Mage"
-      ]
+        "Flesh Golem A",
+        "Flesh Golem B"
+      ],
+      "xp": 1800
     },
     {
-      "name": "Giant Lizard",
-      "keywords": ["Frontline", "Coastal", "Desert", "Forest", "Swamp", "Underdark", "Urban", "Beast"],
-      "ascii_char": "[1;32ml",
-      "challenge_rating": 0.25,
-      "xp": 50,
-      "health": 19,
-      "hit_dice_formula": "3d10 + 3",
+      "ascii_char": "[1;96mG",
+      "challenge_rating": 5,
+      "health": 93,
+      "hit_dice_formula": "11d10 + 33",
+      "keywords": [
+        "Underdark",
+        "Monstrosity",
+        "Evil"
+      ],
+      "name": "Roper",
       "size": "large",
-      "diameter": 2
+      "xp": 1800
     },
     {
-      "name": "Black Dragon Wyrmling",
-      "keywords": ["Flying", "Amphibious", "Swimming", "Dragon", "Chaotic", "Evil"],
-      "ascii_char": "[1;37mD",
-      "challenge_rating": 2,
-      "xp": 450,
-      "health": 33,
-      "hit_dice_formula": "6d8 + 6",
-      "size": "medium",
-      "diameter": 1
+      "ascii_char": "[1;95mo",
+      "challenge_rating": 5,
+      "frequency": 0.2,
+      "health": 95,
+      "hit_dice_formula": "10d8 + 50",
+      "keywords": [
+        "Frontline",
+        "Mountain",
+        "Underdark",
+        "Fiend",
+        "Demon",
+        "Orcoid",
+        "Chaotic",
+        "Evil"
+      ],
+      "name": "Tanarukk",
+      "synergies": [
+        "Orc",
+        "Orog"
+      ],
+      "xp": 1800
     },
     {
-      "name": "Green Dragon Wyrmling",
-      "keywords": ["Flying", "Amphibious", "Swimming", "Dragon", "Green Dragon", "Lawful", "Evil"],
-      "ascii_char": "[1;32mD",
-      "challenge_rating": 2,
-      "xp": 450,
-      "health": 38,
-      "hit_dice_formula": "7d8 + 7",
-      "size": "medium",
-      "diameter": 1
+      "ascii_char": "[1;97mv",
+      "challenge_rating": 5,
+      "health": 82,
+      "hit_dice_formula": "11d8 + 33",
+      "keywords": [
+        "Underdark",
+        "Urban",
+        "Undead",
+        "Evil",
+        "Lawful",
+        "Frontline"
+      ],
+      "name": "Vampire Spawn",
+      "tts_reference_nicknames": [
+        "Vampire Spawn A",
+        "Vampire Spawn B"
+      ],
+      "xp": 1800
     },
     {
-      "name": "Young Green Dragon",
-      "keywords": ["Flying", "Amphibious", "Swimming", "Forest", "Dragon", "Green Dragon", "Lawful", "Evil"],
+      "ascii_char": "[1;96mG",
+      "challenge_rating": 5,
+      "health": 67,
+      "hit_dice_formula": "9d8+27",
+      "keywords": [
+        "Underdark",
+        "Undead",
+        "Frontline"
+      ],
+      "name": "Wraith",
+      "tts_reference_nicknames": [
+        "Wraith A"
+      ],
+      "xp": 1800
+    },
+    {
+      "ascii_char": "[1;37mB",
+      "challenge_rating": 6,
+      "health": 58,
+      "hit_dice_formula": "9d8 + 18",
+      "keywords": [
+        "Swamp",
+        "Underdark",
+        "Urban",
+        "Undead"
+      ],
+      "name": "Bodak",
+      "tts_reference_nicknames": [
+        "Bodak A"
+      ],
+      "xp": 2300
+    },
+    {
+      "ascii_char": "[1;95mg",
+      "challenge_rating": 6,
+      "health": 40,
+      "hit_dice_formula": "9d8",
+      "keywords": [
+        "Backline",
+        "Spellcaster",
+        "Humanoid",
+        "Goblinoid"
+      ],
+      "name": "Booyahg Booyahg Booyahg",
+      "size": "small",
+      "synergies": [
+        "Goblin"
+      ],
+      "xp": 2300
+    },
+    {
+      "ascii_char": "[1;95mg",
+      "challenge_rating": 6,
+      "health": 78,
+      "hit_dice_formula": "12d8 + 24",
+      "keywords": [
+        "Backline",
+        "Spellcaster",
+        "Humanoid",
+        "Goblinoid"
+      ],
+      "name": "Booyahg Slave of the Fiend",
+      "size": "small",
+      "synergies": [
+        "Goblin"
+      ],
+      "xp": 2300
+    },
+    {
+      "ascii_char": "[1;95mg",
+      "challenge_rating": 6,
+      "health": 91,
+      "hit_dice_formula": "14d8 + 28",
+      "keywords": [
+        "Backline",
+        "Spellcaster",
+        "Humanoid",
+        "Goblinoid"
+      ],
+      "name": "Booyahg Slave of the Great Old One",
+      "size": "small",
+      "synergies": [
+        "Goblin"
+      ],
+      "xp": 2300
+    },
+    {
+      "ascii_char": "[1;95mg",
+      "challenge_rating": 6,
+      "health": 97,
+      "hit_dice_formula": "13d8 + 39",
+      "keywords": [
+        "Desert",
+        "Forest",
+        "Grassland",
+        "Underdark",
+        "Humanoid",
+        "Goblinoid",
+        "Hobgoblinoid",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Hobgoblin Warlord",
+      "synergies": [
+        "Hobgoblin",
+        "Hobgoblin Captain"
+      ],
+      "xp": 2300
+    },
+    {
+      "ascii_char": "[1;96m@",
+      "challenge_rating": 8,
+      "health": 110,
+      "hit_dice_formula": "20d8 + 20",
+      "keywords": [
+        "Backline",
+        "Spellcaster",
+        "Urban",
+        "Undead"
+      ],
+      "name": "Deathlock Mastermind",
+      "synergies": [
+        "Deathlock",
+        "Deathlock Wight"
+      ],
+      "tts_reference_nicknames": [
+        "Deathlock Mastermind A"
+      ],
+      "xp": 3900
+    },
+    {
+      "ascii_char": "[1;96mW",
+      "challenge_rating": 8,
+      "health": 127,
+      "hit_dice_formula": "15d8+60",
+      "keywords": [
+        "Grassland",
+        "Swamp",
+        "Undead"
+      ],
+      "name": "Sword Wraith Commander",
+      "synergies": [
+        "Sword Wraith Warrior"
+      ],
+      "tts_reference_nicknames": [
+        "Sword Wraith Commander A"
+      ],
+      "xp": 3900
+    },
+    {
       "ascii_char": "[1;92mD",
       "challenge_rating": 8,
-      "xp": 3900,
       "health": 136,
       "hit_dice_formula": "16d10 + 48",
+      "keywords": [
+        "Flying",
+        "Amphibious",
+        "Swimming",
+        "Forest",
+        "Dragon",
+        "Green Dragon",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Young Green Dragon",
       "size": "large",
-      "diameter": 2
+      "xp": 3900
     },
     {
-      "name": "Adult Green Dragon",
-      "keywords": ["Flying", "Amphibious", "Swimming", "Forest", "Dragon", "Green Dragon", "Lawful", "Evil"],
+      "ascii_char": "[1;37m@",
+      "challenge_rating": 10,
+      "health": 150,
+      "hit_dice_formula": "20d8 + 60",
+      "keywords": [
+        "Spellcaster",
+        "Underdark",
+        "Flying",
+        "Undead"
+      ],
+      "name": "Alhoon",
+      "tts_reference_nicknames": [
+        "Alhoon A"
+      ],
+      "xp": 5900
+    },
+    {
+      "ascii_char": "[1;97mV",
+      "challenge_rating": 13,
+      "health": 144,
+      "hit_dice_formula": "17d8 + 68",
+      "keywords": [
+        "Urban",
+        "Undead",
+        "Evil",
+        "Lawful",
+        "Frontline"
+      ],
+      "name": "Vampire",
+      "tts_reference_nicknames": [
+        "Vampire A"
+      ],
+      "xp": 10000
+    },
+    {
+      "ascii_char": "[1;37mB",
+      "challenge_rating": 14,
+      "health": 187,
+      "hit_dice_formula": "25d10 + 50",
+      "keywords": [
+        "Underdark",
+        "Flying",
+        "Undead",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Death Tyrant",
+      "size": "large",
+      "tts_reference_nicknames": [
+        "Death Tyrant A"
+      ],
+      "xp": 11500
+    },
+    {
       "ascii_char": "[1;92mD",
       "challenge_rating": 15,
-      "xp": 13000,
       "health": 207,
       "hit_dice_formula": "18d12 + 90",
+      "keywords": [
+        "Flying",
+        "Amphibious",
+        "Swimming",
+        "Forest",
+        "Dragon",
+        "Green Dragon",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Adult Green Dragon",
       "size": "huge",
-      "diameter": 3
+      "xp": 13000
+    },
+    {
+      "ascii_char": "[1;93mM",
+      "challenge_rating": 15,
+      "health": 97,
+      "hit_dice_formula": "13d8 + 39",
+      "keywords": [
+        "Desert",
+        "Undead",
+        "Frontline"
+      ],
+      "name": "Mummy Lord",
+      "synergies": [
+        "Mummy"
+      ],
+      "tts_reference_nicknames": [
+        "Mummy Lord A"
+      ],
+      "xp": 13000
+    },
+    {
+      "ascii_char": "[1;97m@",
+      "challenge_rating": 15,
+      "health": 105,
+      "hit_dice_formula": "14d8 + 42",
+      "keywords": [
+        "Spellcaster",
+        "Urban",
+        "Undead"
+      ],
+      "name": "Skull Lord",
+      "tts_reference_nicknames": [
+        "Skull Lord A"
+      ],
+      "xp": 13000
+    },
+    {
+      "ascii_char": "[1;96mV",
+      "challenge_rating": 15,
+      "health": 144,
+      "hit_dice_formula": "17d8 + 68",
+      "keywords": [
+        "Urban",
+        "Undead",
+        "Evil",
+        "Lawful"
+      ],
+      "name": "Vampire Spellcaster",
+      "tts_reference_nicknames": [
+        "Vampire Spellcaster A"
+      ],
+      "xp": 13000
+    },
+    {
+      "ascii_char": "[1;91mV",
+      "challenge_rating": 15,
+      "health": 144,
+      "hit_dice_formula": "17d8 + 68",
+      "keywords": [
+        "Urban",
+        "Undead",
+        "Evil",
+        "Lawful",
+        "Frontline"
+      ],
+      "name": "Vampire Warrior",
+      "tts_reference_nicknames": [
+        "Vampire Warrior A"
+      ],
+      "xp": 13000
+    },
+    {
+      "ascii_char": "[1;34mD",
+      "challenge_rating": 17,
+      "health": 225,
+      "hit_dice_formula": "18d12 + 108",
+      "keywords": [
+        "Flying",
+        "Desert",
+        "Undead",
+        "Lawful",
+        "Evil"
+      ],
+      "name": "Adult Blue Dracolich",
+      "size": "huge",
+      "tts_reference_nicknames": [
+        "Adult Blue Dracolich A"
+      ],
+      "xp": 18000
+    },
+    {
+      "ascii_char": "[1;97mS",
+      "challenge_rating": 17,
+      "health": 180,
+      "hit_dice_formula": "19d8 + 95",
+      "keywords": [
+        "Undead"
+      ],
+      "name": "Death Knight",
+      "tts_reference_nicknames": [
+        "Death Knight A"
+      ],
+      "xp": 18000
+    },
+    {
+      "ascii_char": "[1;37mL",
+      "challenge_rating": 18,
+      "health": 80,
+      "hit_dice_formula": "32d4",
+      "keywords": [
+        "Backline",
+        "Spellcaster",
+        "Urban",
+        "Undead",
+        "Evil"
+      ],
+      "name": "Demilich",
+      "size": "tiny",
+      "tts_reference_nicknames": [
+        "Demilich A"
+      ],
+      "xp": 20000
+    },
+    {
+      "ascii_char": "[1;97mL",
+      "challenge_rating": 21,
+      "health": 135,
+      "hit_dice_formula": "18d8 + 54",
+      "keywords": [
+        "Backline",
+        "Spellcaster",
+        "Undead"
+      ],
+      "name": "Lich",
+      "tts_reference_nicknames": [
+        "Lich A",
+        "Lich B"
+      ],
+      "xp": 33000
     }
-  ]
+  ],
+  "name": "dnd 5e monsters"
 }
