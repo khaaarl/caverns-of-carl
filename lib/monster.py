@@ -140,7 +140,9 @@ class MonsterLibrary:
                     keywords.add(tmp["type"])
                     for tag in tmp.get("tags", []):
                         if tag.lower() == "orc":
-                            tag = "orcoid"
+                            tag = "Orcoid"
+                        if tag.lower() == "kobold":
+                            tag = "Koboldoid"
                         keywords.add(tag)
                 elif isinstance(tmp, str):
                     keywords.add(tmp)
@@ -555,4 +557,5 @@ def med_target_xp(config):
 if __name__ == "__main__":
     ml = get_monster_library("dnd 5e monsters")
     # ml.ingest_5e_tools_json(r"C:\Users\carl\Downloads\bestiary-vgm.json")
+    # ml.ingest_5e_tools_json(r"C:\Users\carl\Downloads\bestiary-mm.json")
     ml.save()
