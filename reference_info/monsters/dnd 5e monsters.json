@@ -525,7 +525,7 @@
     },
     {
       "name": "Bugbear",
-      "keywords": ["Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Chaotic", "Evil"],
+      "keywords": ["Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Bugbearoid", "Chaotic", "Evil"],
       "ascii_char": "[1;33mg",
       "challenge_rating": 1,
       "xp": 200,
@@ -536,7 +536,7 @@
     },
     {
       "name": "Bugbear Chief",
-      "keywords": ["Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Chaotic", "Evil"],
+      "keywords": ["Forest", "Grassland", "Underdark", "Humanoid", "Goblinoid", "Bugbearoid", "Chaotic", "Evil"],
       "ascii_char": "[1;93mg",
       "challenge_rating": 3,
       "xp": 700,
@@ -555,7 +555,12 @@
       "health": 7,
       "hit_dice_formula": "2d6",
       "size": "small",
-      "diameter": 1
+      "diameter": 1,
+      "tts_reference_nicknames": [
+        "Goblin A",
+        "Goblin B",
+        "Goblin C"
+      ]
     },
     {
       "name": "Goblin Boss",
@@ -567,7 +572,218 @@
       "hit_dice_formula": "6d6",
       "size": "small",
       "diameter": 1,
+      "synergies": ["Goblin"],
+      "tts_reference_nicknames": [
+        "Goblin Boss A"
+      ]
+    },
+    {
+      "name": "Booyahg Slave of the Archfey",
+      "keywords": ["Backline", "Spellcaster", "Humanoid", "Goblinoid"],
+      "ascii_char": "[1;95mg",
+      "challenge_rating": 4,
+      "xp": 1100,
+      "health": 49,
+      "hit_dice_formula": "11d8",
+      "size": "small",
+      "diameter": 1,
       "synergies": ["Goblin"]
+    },
+    {
+      "name": "Booyahg Booyahg Booyahg",
+      "keywords": ["Backline", "Spellcaster", "Humanoid", "Goblinoid"],
+      "ascii_char": "[1;95mg",
+      "challenge_rating": 6,
+      "xp": 2300,
+      "health": 40,
+      "hit_dice_formula": "9d8",
+      "size": "small",
+      "diameter": 1,
+      "synergies": ["Goblin"]
+    },
+    {
+      "name": "Booyahg Slave of the Great Old One",
+      "keywords": ["Backline", "Spellcaster", "Humanoid", "Goblinoid"],
+      "ascii_char": "[1;95mg",
+      "challenge_rating": 6,
+      "xp": 2300,
+      "health": 91,
+      "hit_dice_formula": "14d8 + 28",
+      "size": "small",
+      "diameter": 1,
+      "synergies": ["Goblin"]
+    },
+    {
+      "name": "Booyahg Slave of the Fiend",
+      "keywords": ["Backline", "Spellcaster", "Humanoid", "Goblinoid"],
+      "ascii_char": "[1;95mg",
+      "challenge_rating": 6,
+      "xp": 2300,
+      "health": 78,
+      "hit_dice_formula": "12d8 + 24",
+      "size": "small",
+      "diameter": 1,
+      "synergies": ["Goblin"]
+    },
+    {
+      "name": "Stirge",
+      "keywords": ["Flying", "Coastal", "Desert", "Forest", "Grassland", "Hill", "Mountain", "Swamp", "Underdark", "Urban", "Beast"],
+      "ascii_char": "[1;95mg",
+      "challenge_rating": 0.125,
+      "xp": 25,
+      "health": 2,
+      "hit_dice_formula": "1d4",
+      "size": "tiny",
+      "diameter": 1
+    },
+    {
+      "name": "Roper",
+      "keywords": ["Underdark", "Monstrosity", "Evil"],
+      "ascii_char": "[1;96mG",
+      "challenge_rating": 5,
+      "xp": 1800,
+      "health": 93,
+      "hit_dice_formula": "11d10 + 33",
+      "size": "large",
+      "diameter": 2
+    },
+    {
+      "name": "Orc",
+      "keywords": ["Arctic", "Forest", "Grassland", "Hill", "Mountain", "Swamp", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;37mo",
+      "challenge_rating": 0.5,
+      "xp": 100,
+      "health": 15,
+      "hit_dice_formula": "2d8 + 6",
+      "size": "medium",
+      "diameter": 1,
+      "tts_reference_nicknames": [
+        "Orc A",
+        "Orc B"
+      ]
+    },
+    {
+      "name": "Orc Nurtured One of Yurtrus",
+      "keywords": ["Forest", "Grassland", "Hill", "Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;32mo",
+      "challenge_rating": 0.5,
+      "xp": 100,
+      "health": 30,
+      "hit_dice_formula": "4d8 + 12",
+      "size": "medium",
+      "diameter": 1,
+      "frequency": 0.5,
+      "synergies": ["Orc Hand of Yurtrus"],
+      "tts_reference_nicknames": [
+        "Orc Nurtured One of Yurtrus A",
+        "Orc Nurtured One of Yurtrus B",
+        "Orc Nurtured One of Yurtrus C"
+      ]
+    },
+    {
+      "name": "Orc Claw of Luthic",
+      "keywords": ["Spellcaster", "Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;93mo",
+      "challenge_rating": 2,
+      "xp": 450,
+      "health": 45,
+      "hit_dice_formula": "6d8 + 18",
+      "size": "medium",
+      "diameter": 1,
+      "frequency": 0.5
+    },
+    {
+      "name": "Orc Eye of Gruumsh",
+      "keywords": ["Spellcaster", "Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;96mo",
+      "challenge_rating": 2,
+      "xp": 450,
+      "health": 45,
+      "hit_dice_formula": "6d8 + 18",
+      "size": "medium",
+      "diameter": 1,
+      "frequency": 1,
+      "synergies": ["Orc", "Orog"]
+    },
+    {
+      "name": "Orc Hand of Yurtrus",
+      "keywords": ["Spellcaster", "Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;92mo",
+      "challenge_rating": 2,
+      "xp": 450,
+      "health": 45,
+      "hit_dice_formula": "6d8 + 18",
+      "size": "medium",
+      "diameter": 1,
+      "frequency": 0.5,
+      "synergies": ["Orc Nurtured One of Yurtrus"]
+    },
+    {
+      "name": "Orog",
+      "keywords": ["Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;97mo",
+      "challenge_rating": 2,
+      "xp": 450,
+      "health": 42,
+      "hit_dice_formula": "5d8 + 20",
+      "size": "medium",
+      "diameter": 1,
+      "frequency": 1,
+      "tts_reference_nicknames": [
+        "Orog A",
+        "Orog B"
+      ]
+    },
+    {
+      "name": "Orc Red Fang of Shargaas",
+      "keywords": ["Spellcaster", "Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;91mo",
+      "challenge_rating": 3,
+      "xp": 700,
+      "health": 52,
+      "hit_dice_formula": "8d8 + 16",
+      "size": "medium",
+      "diameter": 1,
+      "frequency": 0.5
+    },
+    {
+      "name": "Orc Blade of Ilneval",
+      "keywords": ["Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;94mo",
+      "challenge_rating": 4,
+      "xp": 1100,
+      "health": 60,
+      "hit_dice_formula": "8d8 + 24",
+      "size": "medium",
+      "diameter": 1,
+      "frequency": 0.3,
+      "synergies": ["Orc", "Orog"]
+    },
+    {
+      "name": "Orc War Chief",
+      "keywords": ["Mountain", "Underdark", "Humanoid", "Orcoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;95mo",
+      "challenge_rating": 4,
+      "xp": 1100,
+      "health": 93,
+      "hit_dice_formula": "11d8 + 44",
+      "size": "medium",
+      "diameter": 1,
+      "frequency": 0.5,
+      "synergies": ["Orc", "Orog"]
+    },
+    {
+      "name": "Tanarukk",
+      "keywords": ["Frontline", "Mountain", "Underdark", "Fiend", "Demon", "Orcoid", "Chaotic", "Evil"],
+      "ascii_char": "[1;95mo",
+      "challenge_rating": 5,
+      "xp": 1800,
+      "health": 95,
+      "hit_dice_formula": "10d8 + 50",
+      "size": "medium",
+      "diameter": 1,
+      "frequency": 0.5,
+      "synergies": ["Orc", "Orog"]
     },
     {
       "name": "Hobgoblin",
