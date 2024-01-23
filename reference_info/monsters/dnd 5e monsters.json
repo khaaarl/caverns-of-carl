@@ -657,6 +657,7 @@
       "hit_dice_formula": "2d8 + 6",
       "size": "medium",
       "diameter": 1,
+      "frequency": 2,
       "tts_reference_nicknames": [
         "Orc A",
         "Orc B"
@@ -690,7 +691,7 @@
       "hit_dice_formula": "6d8 + 18",
       "size": "medium",
       "diameter": 1,
-      "frequency": 0.5
+      "frequency": 0.25
     },
     {
       "name": "Orc Eye of Gruumsh",
@@ -702,7 +703,7 @@
       "hit_dice_formula": "6d8 + 18",
       "size": "medium",
       "diameter": 1,
-      "frequency": 1,
+      "frequency": 0.5,
       "synergies": ["Orc", "Orog"]
     },
     {
@@ -715,7 +716,7 @@
       "hit_dice_formula": "6d8 + 18",
       "size": "medium",
       "diameter": 1,
-      "frequency": 0.5,
+      "frequency": 0.25,
       "synergies": ["Orc Nurtured One of Yurtrus"]
     },
     {
@@ -743,7 +744,7 @@
       "health": 52,
       "hit_dice_formula": "8d8 + 16",
       "size": "medium",
-      "diameter": 1,
+      "diameter": 0.25,
       "frequency": 0.5
     },
     {
@@ -756,7 +757,7 @@
       "hit_dice_formula": "8d8 + 24",
       "size": "medium",
       "diameter": 1,
-      "frequency": 0.3,
+      "frequency": 0.1,
       "synergies": ["Orc", "Orog"]
     },
     {
@@ -769,7 +770,7 @@
       "hit_dice_formula": "11d8 + 44",
       "size": "medium",
       "diameter": 1,
-      "frequency": 0.5,
+      "frequency": 0.2,
       "synergies": ["Orc", "Orog"]
     },
     {
@@ -782,7 +783,7 @@
       "hit_dice_formula": "10d8 + 50",
       "size": "medium",
       "diameter": 1,
-      "frequency": 0.5,
+      "frequency": 0.2,
       "synergies": ["Orc", "Orog"]
     },
     {

@@ -7,7 +7,7 @@ import random
 import re
 
 import lib.tts as tts
-from lib.utils import COC_ROOT_DIR, Doc, expr_match_keywords, eval_dice
+from lib.utils import COC_ROOT_DIR, Doc, choice, expr_match_keywords, eval_dice
 
 
 _monster_library_cache = {}
@@ -249,10 +249,22 @@ class Encounter:
 
     def total_xp(self):
         tmp_sum = sum([m.monster_info.xp for m in self.monsters])
+        # Count up the monsters, but monsters significantly lower CR
+        # don't count as much. I'm attenuating by the square root of
+        # the difference in CR minus 1, so 2 CR difference doesn't
+        # change things, but going lower than that counds for a good
+        # deal less.
+        hi_cr = max([m.monster_info.challenge_rating for m in self.monsters])
+        count = 0.0
+        for m in self.monsters:
+            dcount = 1.0
+            if m.monster_info.challenge_rating < hi_cr - 2:
+                dcount /= math.sqrt(hi_cr - 1 - m.monster_info.challenge_rating)
+            count += dcount
         # sqrt approximates the table from the DMG for modifying
         # difficulty with multiple monsters. This does not yet ignore
         # monsters with substantially lowered CR.
-        return int(tmp_sum * math.sqrt(len(self.monsters)))
+        return int(tmp_sum * math.sqrt(count))
 
     def total_space(self):
         return sum([m.monster_info.diameter**2 for m in self.monsters])
@@ -283,18 +295,20 @@ def _build_encounter_single_attempt(
     encounter = Encounter()
     prev_xp = -1000000
     eligible_monsters = []
+    eligible_monster_freqs = []
     monster_counts = collections.defaultdict(int)
+    monster_infos = [m for m in monster_infos if m.frequency > 0.0]
+    removable_monster_infos = list(monster_infos)
+    monster_freqs = [m.frequency for m in monster_infos]
     for _ in range(100):
         if len(encounter.monsters) >= variety or len(used_infos) >= len(
             monster_infos
         ):
             break
-        mi = random.choice(monster_infos)
-        if mi.name in used_infos:
-            continue
+        ix, mi = choice(list(enumerate(removable_monster_infos)), monster_freqs)
         used_infos[mi.name] = mi
-        if mi.frequency <= 0.0:
-            continue
+        del removable_monster_infos[ix]
+        del monster_freqs[ix]
         if variety != 1 and mi.has_keyword("Homogenous"):
             continue
         if mi.max_per_floor is not None:
@@ -307,6 +321,7 @@ def _build_encounter_single_attempt(
         new_xp = encounter.total_xp()
         if abs(target_xp - new_xp) < abs(target_xp - prev_xp):
             eligible_monsters.append(mi.name)
+            eligible_monster_freqs.append(mi.frequency)
             prev_xp = new_xp
             monster_counts[mi.name] += 1
         else:
@@ -314,7 +329,9 @@ def _build_encounter_single_attempt(
     for _ in range(100):
         if not eligible_monsters:
             break
-        name = random.choice(eligible_monsters)
+        ix, name = choice(
+            list(enumerate(eligible_monsters)), eligible_monster_freqs
+        )
         mi = used_infos[name]
         encounter.monsters.append(Monster(mi))
         new_xp = encounter.total_xp()
@@ -323,7 +340,7 @@ def _build_encounter_single_attempt(
             if encounter.total_space() > max_space:
                 is_improved = False
         if mi.max_per_floor is not None:
-            new_count = prev_monster_counts[name] + monster_counts[name]
+            new_count = prev_monster_counts[name] + monster_counts[name] + 1
             if new_count > mi.max_per_floor:
                 is_improved = False
         if is_improved:
@@ -331,7 +348,8 @@ def _build_encounter_single_attempt(
             monster_counts[name] += 1
         else:
             encounter.monsters.pop()
-            eligible_monsters = list(set(eligible_monsters) - set([name]))
+            del eligible_monsters[ix]
+            del eligible_monster_freqs[ix]
     return encounter
 
 
