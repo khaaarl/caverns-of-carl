@@ -320,8 +320,8 @@ def place_mazes_in_dungeon(df):
 
 def place_maze_in_biome(df, biome):
     maze_corridor_width = 3
-    maze_width = int((df.width +1) / (maze_corridor_width * 2))
-    maze_height = int((df.height +1) / (maze_corridor_width * 2))
+    maze_width = int((df.width + 1) / (maze_corridor_width * 2))
+    maze_height = int((df.height + 1) / (maze_corridor_width * 2))
     maze_offset = 2
 
     def maze_xy_to_tile(mx, my):
@@ -369,9 +369,13 @@ def place_rooms_in_dungeon(df):
             num_rooms_already += 1
     config = df.config
     rooms = []
-    for _ in range(config.max_room_attempts * config.num_rooms):
-        if len(rooms) + num_rooms_already >= config.num_rooms:
-            break
+    num_attempts = 0
+    while len(rooms) + num_rooms_already < config.num_rooms:
+        if num_attempts > config.max_room_attempts * config.num_rooms:
+            raise RetriableRoomPlacementException(
+                f"Failed to place all requested rooms ({len(rooms)+num_rooms_already} of {config.num_rooms})"
+            )
+        num_attempts += 1
         room = df.random_room()
         if is_room_valid(room, df, rooms + df.rooms):
             rooms.append(room)
@@ -381,19 +385,13 @@ def place_rooms_in_dungeon(df):
             room2 = rooms[ix].wiggled()
             if is_room_valid(room2, df, rooms + df.rooms, ix):
                 rooms[ix] = room2
-    if len(rooms) + num_rooms_already < config.num_rooms:
-        raise RetriableRoomPlacementException(
-            f"Failed to place all requested rooms ({len(rooms)} of {config.num_rooms})"
-        )
 
     # embiggen and wiggle rooms
-    ews = ["e"] * config.num_room_embiggenings * config.num_rooms + [
+    ews = ["e"] * config.num_room_embiggenings * len(rooms) + [
         "w"
-    ] * config.num_room_wiggles * config.num_rooms
+    ] * config.num_room_wiggles * len(rooms)
     random.shuffle(ews)
     for op in ews:
-        if not rooms:
-            break
         ix = random.randrange(0, len(rooms))
         room2 = None
         if op == "e":
