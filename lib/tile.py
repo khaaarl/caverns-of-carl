@@ -12,6 +12,7 @@ class Tile:
         self.tile_style = None
         self.roomix = None
         self.corridorix = None
+        self.doorix = None
         self.trapixs = set()
         self.light_level = "bright"  # or "dim" or "dark"
         self.is_interior = False
@@ -78,6 +79,32 @@ class Tile:
         for featureix in room.special_featureixs:
             feature = df.special_features[featureix]
             feature.mod_tts_room_tile(obj)
+
+    def _tts_gmnotes(self, df):
+        output = []
+        if isinstance(self, MimicTile):
+            output.append("Mimic!")
+        if self.doorix is not None:
+            door = df.doors[self.doorix]
+            output.append(door.tts_gmnotes(df))
+        elif self.roomix is not None:
+            room = df.rooms[self.roomix]
+            doc = room.description(df, verbose=False)
+            output.append(doc.flat_header().unstyled())
+        elif self.corridorix is not None:
+            corridor = df.corridors[self.corridorix]
+            doc = corridor.description(df, verbose=False)
+            output.append(doc.flat_header().unstyled())
+        for trapix in self.trapixs:
+            trap = df.traps[trapix]
+            output.append(trap.description())
+        return "\n".join(output)
+
+    def _postprocess_tts_object(self, obj, df):
+        self._update_texture_style(obj, df)
+        self._tts_light_mul(obj)
+        self._update_tile_for_features(obj, df)
+        obj["GMNotes"] = self._tts_gmnotes(df)
 
 
 class WallTile(Tile):
@@ -161,6 +188,7 @@ class WallTile(Tile):
             obj = tts.reference_object("Wall, Dungeon")
             obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = ""
+        self._postprocess_tts_object(obj, df)
         return [obj]
 
 
@@ -169,9 +197,7 @@ class FloorTile(Tile):
         obj = tts.reference_object("Floor, Dungeon")
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = ""
-        self._update_texture_style(obj, df)
-        self._tts_light_mul(obj)
-        self._update_tile_for_features(obj, df)
+        self._postprocess_tts_object(obj, df)
         return [obj]
 
     def is_move_blocking(self):
@@ -230,13 +256,10 @@ class DoorTile(CorridorFloorTile):
             for dx in [1, -1]:
                 if isinstance(df.tiles[self.x + dx][self.y], RoomFloorTile):
                     obj["Transform"]["rotY"] = 90.0
-            self._update_texture_style(obj, df)
-            self._tts_light_mul(obj)
-            self._update_tile_for_features(obj, df)
             door = df.doors[self.doorix]
             obj["Nickname"] = door.tts_nickname()
             obj["Description"] = door.tts_description()
-            obj["GMNotes"] = door.tts_gmnotes()
+            self._postprocess_tts_object(obj, df)
             return [obj]
         return []
 
@@ -253,9 +276,7 @@ class LadderUpTile(RoomFloorTile):
         # TODO: adjust such that ladder is against the wall if a wall is near
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = "Ladder up"
-        self._update_texture_style(obj, df)
-        self._tts_light_mul(obj)
-        self._update_tile_for_features(obj, df)
+        self._postprocess_tts_object(obj, df)
         return [obj]
 
     def is_move_blocking(self):
@@ -273,9 +294,7 @@ class LadderDownTile(RoomFloorTile):
         obj = tts.reference_object("Floor, Hatch")
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = "Hatch down"
-        self._update_texture_style(obj, df)
-        self._tts_light_mul(obj)
-        self._update_tile_for_features(obj, df)
+        self._postprocess_tts_object(obj, df)
         return [obj]
 
     def is_move_blocking(self):
@@ -311,9 +330,7 @@ class ChestTile(RoomFloorTile):
         if self.contents:
             opened["Description"] = "Contents:\n" + self.contents
             opened["ContainedObjects"] = self.tts_contained_objects()
-        self._update_texture_style(obj, df)
-        self._tts_light_mul(obj)
-        self._update_tile_for_features(obj, df)
+        self._postprocess_tts_object(obj, df)
         return [obj]
 
     def is_move_blocking(self):
@@ -390,9 +407,7 @@ class BookshelfTile(ChestTile):
             opened = obj["States"]["2"]
             opened["Description"] = "Contents:\n" + self.contents
             opened["ContainedObjects"] = self.tts_contained_objects()
-        self._update_texture_style(obj, df)
-        self._tts_light_mul(obj)
-        self._update_tile_for_features(obj, df)
+        self._postprocess_tts_object(obj, df)
         return [obj]
 
 
@@ -412,7 +427,5 @@ class MimicTile(ChestTile):
         obj["States"]["2"]["ChildObjects"][0][
             "Nickname"
         ] = self.monster.tts_nickname()
-        self._update_texture_style(obj, df)
-        self._tts_light_mul(obj)
-        self._update_tile_for_features(obj, df)
+        self._postprocess_tts_object(obj, df)
         return [obj]

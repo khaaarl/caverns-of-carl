@@ -43,6 +43,7 @@ class DungeonConfig:
         self.add_var("min_ladder_distance", 2, in_biome=False)
         self.add_var("tts_fog_of_war", False, in_biome=False)
         self.add_var("tts_hidden_zones", True, in_biome=False)
+        self.add_var("tts_notecards", True, in_biome=False)
         self.ui_ops.append(("next group", None))
         self.add_var("target_character_level", 7)
         self.add_var("num_player_characters", 5)

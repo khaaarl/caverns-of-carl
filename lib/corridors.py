@@ -299,10 +299,15 @@ class Door:
             ]
         )
 
-    def tts_gmnotes(self):
+    def tts_gmnotes(self, df):
+        output = []
         if self.lock_dc is not None:
-            return f"Lock DC: {self.lock_dc}"
-        return ""
+            output.append(f"Lock DC: {self.lock_dc}")
+        if self.trapixs:
+            for trapix in self.trapixs:
+                trap = df.traps[trapix]
+                output.append(trap.description())
+        return "\n".join(output)
 
     # name, thickness, damage threshold, armor class, hit points
     door_type_table = [

@@ -348,16 +348,18 @@ def dungeon_to_tts_blob(df, name, pdf_filename=None):
         obj = npc.tts_object(df, x, y)
         blob["ObjectStates"].append(obj)
     handouts = []
-    for roomix, room in enumerate(df.rooms):
+    for room in df.rooms:
         for feature in room.special_features(df):
             blob["ObjectStates"] += feature.tts_objects(df)
             handouts += feature.tts_handouts()
-        if not room.is_trivial():
+        if df.config.tts_notecards and not room.is_trivial():
             blob["ObjectStates"].append(room.tts_notecard(df))
-    for corridorix, corridor in enumerate(df.corridors):
-        if corridor.is_nontrivial(df):
+    for corridor in df.corridors:
+        if df.config.tts_notecards and corridor.is_nontrivial(df):
             blob["ObjectStates"].append(corridor.tts_notecard(df))
     for trap in df.traps:
+        if not df.config.tts_notecards:
+            break
         if isinstance(trap, lib.trap.RoomTrap) or isinstance(
             trap, lib.trap.CorridorTrap
         ):

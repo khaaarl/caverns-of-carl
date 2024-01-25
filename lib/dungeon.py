@@ -1135,7 +1135,7 @@ def place_traps_in_dungeon(df):
 
     # chests
     for tile in df.get_tiles():
-        if not tile.is_chest():
+        if not tile.is_chest() or isinstance(tile, MimicTile):
             continue
         biome = df.config.get_biome(tile.biome_name)
         if random.random() * 100 >= biome.chest_trap_percent:
