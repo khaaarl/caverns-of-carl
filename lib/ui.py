@@ -129,7 +129,8 @@ def run_ui():
                 f"Total floor encounter xp: ~{total_xp:,} (~{xp_per_player:,} per player)"
             )
             text_output.append("")
-            for room in df.rooms:
+            rooms = [r for r in df.rooms if r.name_num is not None]
+            for room in sorted(rooms, key=lambda r: r.name_num):
                 if room.is_trivial():
                     continue
                 doc = room.description(df, verbose=True)

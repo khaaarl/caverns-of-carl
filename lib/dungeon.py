@@ -208,7 +208,9 @@ class DungeonFloor:
             for x, y, c in feature.ascii_chars(self):
                 chars[x][y] = c
         for room in self.rooms:
-            num_s = str(room.ix)
+            if room.name_num is None:
+                continue
+            num_s = str(room.name_num)
             x, y = room.x, room.y
             x -= (len(num_s) - 1) / 2.0
             # Try to avoid locations that have stuff on them
@@ -487,8 +489,6 @@ def place_rooms_in_dungeon(df):
             room2 = rooms[ix].wiggled()
         if is_room_valid(room2, df, rooms, ix):
             rooms[ix] = room2
-    # sort rooms from top to bottom so their indices are more human comprehensible maybe
-    rooms.sort(key=lambda r: (-r.y, r.x))
     # add rooms to dungeon floor
     for room in rooms:
         df.add_room(room)
@@ -503,6 +503,28 @@ def place_rooms_in_dungeon(df):
                 biome.room_dark_ratio,
             ],
         )
+    # sort rooms from top to bottom so their indices are more human comprehensible maybe
+    rooms = [r for r in df.rooms if not r.is_trivial()]
+    rooms.sort(key=lambda r: (-r.y, r.x))
+    # time for a crappy sort
+    num_reorderings = 1
+    while num_reorderings > 0:
+        num_reorderings = 0
+        for ix in range(len(rooms) - 1):
+            for ix2 in range(ix + 1, len(rooms)):
+                room1 = rooms[ix]
+                room2 = rooms[ix2]
+                if room1.y + room1.rh < room2.y - room2.rh:
+                    continue
+                if room1.y - room1.rh > room2.y + room2.rh:
+                    continue
+                if room1.x <= room2.x:
+                    continue
+                num_reorderings += 1
+                rooms[ix] = room2
+                rooms[ix2] = room1
+    for ix, room in enumerate(rooms):
+        room.name_num = ix + 1
 
 
 def erode_cavernous_rooms_in_dungeon(df):

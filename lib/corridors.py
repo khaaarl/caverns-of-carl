@@ -147,7 +147,7 @@ class Corridor:
                 room = df.rooms[roomix]
                 if not room.is_trivial():
                     line.body.append("to")
-                    line.body.append(DocLink(f"Room {roomix}"))
+                    line.body.append(DocLink(room.name()))
                 door_l = [line]
                 if door:
                     for trapix in door.trapixs:

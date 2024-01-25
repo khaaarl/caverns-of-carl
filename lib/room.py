@@ -30,6 +30,7 @@ class Room:
         self.trapixs = set()
         self.biome_name = biome_name
         self.in_maze = False
+        self.name_num = None
 
     def embiggened(self):
         return self.__class__(
@@ -207,7 +208,7 @@ class Room:
                 other_room = df.rooms[other_roomix]
                 if not other_room.is_trivial():
                     line.body.append("to")
-                    line.body.append(DocLink(f"Room {other_roomix}"))
+                    line.body.append(DocLink(other_room.name()))
                 if corridor.is_nontrivial(df):
                     line.body.append("by way of")
                     line.body.append(DocLink(f"Corridor {corridor.name}"))
@@ -233,9 +234,7 @@ class Room:
                 else:
                     s.append(tile.contents)
                 o.append("\n".join(s))
-        name = f"Room {self.ix}"
-        # header =
-        return Doc(DocBookmark(name, name), o)
+        return Doc(DocBookmark(self.name()), o)
 
     def tts_notecard(self, df):
         obj = tts.reference_object("Reference Notecard")
@@ -248,7 +247,7 @@ class Room:
         return obj
 
     def name(self):
-        return f"Room {self.ix}"
+        return f"Room {self.name_num}"
 
     def is_fully_enclosed_by_doors(self):
         return NotImplementedError()

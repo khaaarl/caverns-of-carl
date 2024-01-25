@@ -460,9 +460,9 @@ class DocLink:
 
 
 class DocBookmark:
-    def __init__(self, name, content):
+    def __init__(self, name, content=None):
         self.name = name
-        self.content = content
+        self.content = content or name
 
 
 class Doc:

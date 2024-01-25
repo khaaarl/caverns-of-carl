@@ -243,7 +243,8 @@ def produce_pdf(df, name):
         pdf_filename, pagesize=reportlab.lib.pagesizes.letter
     )
     docs = []
-    for room in df.rooms:
+    rooms = [r for r in df.rooms if r.name_num is not None]
+    for room in sorted(rooms, key=lambda r: r.name_num):
         if room.is_trivial():
             continue
         docs.append(room.description(df, verbose=True))
