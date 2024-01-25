@@ -293,6 +293,9 @@ class TTSFogBit:
 
 
 _LUA_SCRIPT = """
+GM_NOTES_MATCHER = "REPLACE ME"
+
+
 function changeModelWoundCount(mod, target)
     local name = target.getName()
     local _,_, current, total = name:find("([0-9]+)/([0-9]+)")
@@ -313,8 +316,9 @@ function onScriptingButtonDown(index, playerColor)
 
     local player = Player[playerColor]
     local hoveredObject = player.getHoverObject()
+    if hoveredObject == nil then return end
 
-    if not hoveredObject.hasTag("REPLACE ME") then return end
+    if not hoveredObject.getGMNotes():find(GM_NOTES_MATCHER) then return end
     
     if index == 2 then
       changeModelWoundCount(-1, hoveredObject)
@@ -416,18 +420,20 @@ def dungeon_to_tts_blob(df, name, pdf_filename=None):
     df.tts_xz(df.width / 2.0 - 0.5, -10.5, dm_fog)
     blob["ObjectStates"].append(dm_fog)
     # Clear scripts if any.
-    name_tag = f"{TTS_SPAWNED_TAG} '{name}'"
     for _obj in blob["ObjectStates"]:
         for obj in recurse_object(_obj):
             obj["LuaScript"] = ""
             obj["LuaScriptState"] = ""
             obj["XmlUI"] = ""
-    name_tag = f"{TTS_SPAWNED_TAG} '{name}'"
     # Add HP script carrier.
+    guid = new_tts_guid()
+    name_tag = f"{TTS_SPAWNED_TAG} {guid}"
     script_carrier = reference_object("Reference Notecard")
     script_carrier["LuaScript"] = re.sub("REPLACE ME", name_tag, _LUA_SCRIPT)
     script_carrier["Nickname"] = "Caverns of Carl Script Carrier"
-    script_carrier["Description"] = f"Associated with dungeon '{name}'"
+    script_carrier[
+        "Description"
+    ] = f"Associated with dungeon '{name}' with GUID '{guid}'"
     script_carrier["Transform"]["posY"] = 2.0
     script_carrier["Locked"] = False
     df.tts_xz(5, -5, script_carrier)
