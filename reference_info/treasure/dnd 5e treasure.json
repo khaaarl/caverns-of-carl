@@ -493,7 +493,7 @@
         ["74-75", "Dust of disappearance"],
         ["76-77", "Dust of dryness"],
         ["78-79", "Dust of sneezing and choking"],
-        ["80-81", "Elemental gem"],
+        ["80-81", "Elemental Gem, {elemental-gem-type}"],
         ["82-83", "Philter of love"],
         ["84", "Alchemy jug"],
         ["85", "Cap of water breathing"],
@@ -777,7 +777,7 @@
         ["65", "Cloak of arachnida"],
         ["66", "Dancing sword"],
         ["67", "Demon armor"],
-        ["68", "Dragon scale mail"],
+        ["68", "{dragon-color} Dragon Scale Mail"],
         ["69", "Dwarven plate"],
         ["70", "Dwarven thrower"],
         ["71", "Efreeti bottle"],
@@ -891,6 +891,30 @@
     }
   ],
   "variants": [
+    {
+      "name": "dragon-color",
+      "variants": [
+        "Black",
+        "Blue",
+        "Brass",
+        "Bronze",
+        "Copper",
+        "Gold",
+        "Green",
+        "Red",
+        "Silver",
+        "White"
+      ]
+    },
+    {
+      "name": "elemental-gem-type",
+      "variants": [
+        "Blue Sapphire",
+        "Emerald",
+        "Red Corundum",
+        "Yellow Diamond"
+      ]
+    },
     {
       "name": "resistance-damage-type",
       "variants": [
