@@ -296,6 +296,26 @@ _LUA_SCRIPT = """
 GM_NOTES_MATCHER = "REPLACE ME"
 
 
+function onLoad()
+    update_visibility()
+end
+function onPlayerChangeColor(color)
+    update_visibility()
+end
+
+
+function update_visibility()
+    local colors = {"White", "Brown", "Red", "Orange", "Yellow", "Green", "Teal", "Blue", "Purple", "Pink", "Grey"}
+    for ix, obj in ipairs(getObjects()) do
+        if obj.getGMNotes():find(GM_NOTES_MATCHER) then
+            if obj.type == "Notecard" then
+                obj.setInvisibleTo(colors)
+            end
+        end
+    end
+end
+
+
 function changeModelWoundCount(mod, target)
     local name = target.getName()
     local _,_, current, total = name:find("([0-9]+)/([0-9]+)")
@@ -319,7 +339,7 @@ function onScriptingButtonDown(index, playerColor)
     if hoveredObject == nil then return end
 
     if not hoveredObject.getGMNotes():find(GM_NOTES_MATCHER) then return end
-    
+
     if index == 2 then
       changeModelWoundCount(-1, hoveredObject)
     end
