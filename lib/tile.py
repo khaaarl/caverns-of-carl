@@ -48,6 +48,9 @@ class Tile:
     def is_chest(self):
         return False
 
+    def is_water(self):
+        return False
+
     def _alter_tex(self, obj, ref, new):
         mesh_url = obj.get("CustomMesh", {}).get("MeshURL")
         if mesh_url == ref["CustomMesh"]["MeshURL"]:
@@ -427,5 +430,22 @@ class MimicTile(ChestTile):
         obj["States"]["2"]["ChildObjects"][0][
             "Nickname"
         ] = self.monster.tts_nickname()
+        self._postprocess_tts_object(obj, df)
+        return [obj]
+
+
+class WaterTile(Tile):
+    def is_water(self):
+        return True
+
+    def to_char(self):
+        return "[1;94m~"
+
+    def tts_objects(self, df):
+        refs = ["River Tile A"] * 8 + ["River Tile B", "River Tile C"]
+        obj = tts.reference_object(random.choice(refs))
+        obj["Transform"]["rotY"] = random.randrange(4) * 90.0
+        obj["Nickname"] = ""
+        obj["Description"] = ""
         self._postprocess_tts_object(obj, df)
         return [obj]

@@ -250,6 +250,9 @@ class Room:
         return f"Room {self.name_num}"
 
     def is_fully_enclosed_by_doors(self):
+        return self.doorixs and len(self.doorixs) == len(self.corridorixs)
+
+    def desires_doors(self):
         return NotImplementedError()
 
 
@@ -262,7 +265,7 @@ class RectRoom(Room):
     def total_space(self):
         return (1 + self.rw * 2) * (1 + self.rh * 2)
 
-    def is_fully_enclosed_by_doors(self):
+    def desires_doors(self):
         return True
 
 
@@ -275,7 +278,7 @@ class MazeJunction(RectRoom):
     def is_trivial(self):
         return True
 
-    def is_fully_enclosed_by_doors(self):
+    def desires_doors(self):
         return False
 
     def allows_treasure(self, df):
@@ -310,7 +313,7 @@ class CavernousRoom(Room):
                         self.explicit_tile_coords.append((x, y))
         return self.explicit_tile_coords
 
-    def is_fully_enclosed_by_doors(self):
+    def desires_doors(self):
         return False
 
     def allows_bookshelf(self, df):

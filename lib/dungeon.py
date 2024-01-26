@@ -8,6 +8,7 @@ import lib.lights
 import lib.monster
 from lib.monster import get_monster_library, Monster
 import lib.npcs
+from lib.rivers import River
 from lib.tile import (
     BookshelfTile,
     ChestTile,
@@ -63,6 +64,7 @@ class DungeonFloor:
         ]
         self.rooms = []
         self.corridors = []
+        self.rivers = []
         self.doors = []
         self.special_features = []
         self.monsters = []
@@ -113,14 +115,14 @@ class DungeonFloor:
             tile.y = y
         assert tile.x is not None and tile.y is not None
         if tile.corridorix is None and tile.roomix is None:
-            prev_tile = self.tiles[x][y]
+            prev_tile = self.tiles[tile.x][tile.y]
             tile.roomix = prev_tile.roomix
             tile.corridorix = prev_tile.corridorix
         assert tile.x >= 0
         assert tile.x < self.width
         assert tile.y >= 0
         assert tile.y <= self.height
-        self.tiles[x][y] = tile
+        self.tiles[tile.x][tile.y] = tile
         return tile
 
     def get_tile(self, x, y, default=None):
@@ -282,6 +284,7 @@ def generate_random_dungeon(config=None, errors=None):
             place_rooms_in_dungeon(df)
             erode_cavernous_rooms_in_dungeon(df)
             place_corridors_in_dungeon(df)
+            place_rivers_in_dungeon(df)
             place_doors_in_dungeon(df)
             place_ladders_in_dungeon(df)
             place_special_features_in_dungeon(df)
@@ -584,12 +587,12 @@ def carve_corridor(
             penclose = None
             if isinstance(ptile, RoomFloorTile):
                 proom = df.rooms[ptile.roomix]
-                penclose = proom.is_fully_enclosed_by_doors()
+                penclose = proom.desires_doors()
             nroom = None
             nenclose = None
             if isinstance(ntile, RoomFloorTile):
                 nroom = df.rooms[ntile.roomix]
-                nenclose = nroom.is_fully_enclosed_by_doors()
+                nenclose = nroom.desires_doors()
             if proom and nroom:
                 if not penclose and not nenclose:
                     continue
@@ -686,6 +689,41 @@ def place_corridors_in_dungeon(df):
         corridor.name = f"C{ix+1}"
 
 
+def place_rivers_in_dungeon(df):
+    for attempt_ix in range(100):
+        rivers = []
+        biome_river_counts = collections.defaultdict(int)
+        for ix in range(df.config.num_rivers):
+            river = River.propose_river(df)
+            biomes_touched = set()
+            for x, y in river.adjacent_coords_set:
+                tile = df.get_tile(x=x, y=y)
+                if tile:
+                    biomes_touched.add(tile.biome_name)
+            for biome_name in biomes_touched:
+                biome_river_counts[biome_name] += 1
+            found_problem = False
+            for biome in df.config.biomes:
+                if biome_river_counts[biome.biome_name] > biome.max_num_rivers:
+                    found_problem = True
+                    break
+            if found_problem:
+                break
+            rivers.append(river)
+        if len(rivers) < df.config.num_rivers:
+            continue
+        insufficient_rivers = False
+        for biome in df.config.biomes:
+            if biome_river_counts[biome.biome_name] < biome.min_num_rivers:
+                insufficient_rivers = True
+        if insufficient_rivers:
+            continue
+        df.rivers = rivers
+        break
+    for river in df.rivers:
+        river.carve_into_dungeon(df)
+
+
 def place_doors_in_dungeon(df):
     for corridor in df.corridors:
         if isinstance(corridor, CavernousCorridor):
@@ -708,14 +746,23 @@ def place_doors_in_dungeon(df):
                 biome_name = room2.biome_name
             if (
                 ptile.roomix == room1.ix
-                and room1.is_fully_enclosed_by_doors()
+                and room1.desires_doors()
                 and isinstance(tile, CorridorFloorTile)
             ) or (
                 not isinstance(ptile, DoorTile)
                 and isinstance(tile, CorridorFloorTile)
                 and ntile.roomix == room2.ix
-                and room2.is_fully_enclosed_by_doors()
+                and room2.desires_doors()
             ):
+                # TODO: check if there's a river nearby. If so, don't
+                # set up door.
+                found_water = False
+                for dx in range(-1, 2):
+                    for dy in range(-1, 2):
+                        wtile = df.get_tile(x=x + dx, y=y + dy)
+                        found_water |= wtile and wtile.is_water()
+                if found_water:
+                    continue
                 new_tile = DoorTile(corridor.ix, biome_name=biome_name)
                 df.set_tile(new_tile, x=x, y=y)
                 new_door_locations.add((x, y, x - px, y - py))
