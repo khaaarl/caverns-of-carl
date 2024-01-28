@@ -401,9 +401,35 @@ def dungeon_to_tts_blob(df, name, pdf_filename=None):
         x = int(df.width / 2) + ix
         df.tts_xz(x, y, handout)
         blob["ObjectStates"].append(handout)
+
+    def create_fog_blocker(x, y):
+        obj = reference_object("Reference Cube")
+        obj["Nickname"] = ""
+        obj["Description"] = ""
+        obj["Transform"]["scaleX"] = 0.2
+        obj["Transform"]["scaleY"] = 2.0
+        obj["Transform"]["scaleZ"] = 0.2
+        obj["Transform"]["posY"] = 2.7
+        obj["ColorDiffuse"] = {"r": 0.2, "g": 0.2, "b": 0.2}
+        obj["Locked"] = True
+        df.tts_xz(x, y, obj)
+        blob["ObjectStates"].append(obj)
+
     if df.config.tts_fog_of_war:
         fog = tts_fog(scaleX=df.width + 2.0, scaleZ=df.height + 2.0)
         blob["ObjectStates"].append(fog)
+        for x in range(df.width - 1):
+            for y in range(df.height - 1):
+                t = df.tiles[x][y]
+                if not t.blocks_line_of_sight():
+                    continue
+                r = df.tiles[x + 1][y]
+                if r.blocks_line_of_sight() and (t.is_wall() or r.is_wall()):
+                    create_fog_blocker(x + 0.5, y)
+                u = df.tiles[x][y + 1]
+                if u.blocks_line_of_sight() and (t.is_wall() or u.is_wall()):
+                    create_fog_blocker(x, y + 0.5)
+
     if df.config.tts_hidden_zones:
         fog_bits = {}  # TTSFogBit.coord_tuple():TTSFogBit
         tmp_fog_bit_list = []

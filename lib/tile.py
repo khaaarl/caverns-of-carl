@@ -51,6 +51,12 @@ class Tile:
     def is_water(self):
         return False
 
+    def is_wall(self):
+        return False
+
+    def blocks_line_of_sight(self):
+        return False
+
     def _alter_tex(self, obj, ref, new):
         mesh_url = obj.get("CustomMesh", {}).get("MeshURL")
         if mesh_url == ref["CustomMesh"]["MeshURL"]:
@@ -111,6 +117,12 @@ class Tile:
 
 
 class WallTile(Tile):
+    def is_wall(self):
+        return True
+
+    def blocks_line_of_sight(self):
+        return True
+
     def to_char(self):
         if self.is_interior:
             return " "
@@ -236,6 +248,9 @@ class DoorTile(CorridorFloorTile):
 
     def to_char(self):
         return "+"
+
+    def blocks_line_of_sight(self):
+        return True
 
     def tts_objects(self, df):
         obj = None
