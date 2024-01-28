@@ -156,7 +156,7 @@ class Room:
     def total_space(self):
         return len(self.tile_coords())
 
-    def tts_fog_bits(self):
+    def tts_fog_bits(self, df):
         """returns a list of fog bits: a big central one, and a small one for each border grid space."""
         fogs = []
         used_coords = set()
@@ -164,16 +164,18 @@ class Room:
             for dx in range(-1, 2):
                 for dy in range(-1, 2):
                     tx, ty = x + dx, y + dy
+                    if (tx, ty) in used_coords:
+                        continue
+                    used_coords.add((tx, ty))
+                    tile = df.get_tile(tx, ty)
+                    if not tile or tile.riverixs:
+                        continue
                     priority = 1
                     if tx == self.x and ty == self.y:
                         priority = 2
-                    if (tx, ty) not in used_coords:
-                        fogs.append(
-                            TTSFogBit(
-                                tx, ty, roomixs=[self.ix], priority=priority
-                            )
-                        )
-                        used_coords.add((tx, ty))
+                    fogs.append(
+                        TTSFogBit(tx, ty, roomixs=[self.ix], priority=priority)
+                    )
         return fogs
 
     def description(self, df, verbose=False):

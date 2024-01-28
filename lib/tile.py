@@ -13,6 +13,7 @@ class Tile:
         self.roomix = None
         self.corridorix = None
         self.doorix = None
+        self.riverixs = set()
         self.trapixs = set()
         self.light_level = "bright"  # or "dim" or "dark"
         self.is_interior = False

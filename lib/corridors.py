@@ -213,7 +213,7 @@ class Corridor:
         # walked places
         for x, y in self.walk():
             tile = df.tiles[x][y]
-            if isinstance(tile, CorridorFloorTile):
+            if isinstance(tile, CorridorFloorTile) and not tile.riverixs:
                 if not isinstance(tile, DoorTile):
                     num_blank_corridor_tiles += 1
                 fogs.append(tts.TTSFogBit(x, y, corridorixs=[self.ix]))

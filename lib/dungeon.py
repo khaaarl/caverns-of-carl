@@ -720,7 +720,8 @@ def place_rivers_in_dungeon(df):
             continue
         df.rivers = rivers
         break
-    for river in df.rivers:
+    for ix, river in enumerate(df.rivers):
+        river.ix = ix
         river.carve_into_dungeon(df)
 
 

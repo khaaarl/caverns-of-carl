@@ -203,6 +203,7 @@ class TTSFogBit:
         y2=None,
         roomixs=None,
         corridorixs=None,
+        riverixs=None,
         priority=1,
     ):
         if x2 is None:
@@ -215,11 +216,12 @@ class TTSFogBit:
         self.y2 = max(y1, y2)
         self.roomixs = set(roomixs or [])
         self.corridorixs = set(corridorixs or [])
+        self.riverixs = set(riverixs or [])
         self.priority = priority
         self.maximally_expanded = False
 
     def num_parents(self):
-        return len(self.roomixs) + len(self.corridorixs)
+        return len(self.roomixs) + len(self.corridorixs) + len(self.riverixs)
 
     def coord_tuple(self):
         return (self.x1, self.y1, self.x2, self.y2)
@@ -228,6 +230,7 @@ class TTSFogBit:
         self.priority = max(self.priority, other.priority)
         self.roomixs = self.roomixs.union(other.roomixs)
         self.corridorixs = self.corridorixs.union(other.corridorixs)
+        self.riverixs = self.riverixs.union(other.riverixs)
 
     def tts_fog(self, df):
         x = (self.x1 + self.x2) / 2.0
@@ -241,7 +244,11 @@ class TTSFogBit:
         )
 
     def room_corridor_signature(self):
-        return (tuple(sorted(self.roomixs)), tuple(sorted(self.corridorixs)))
+        return (
+            tuple(sorted(self.roomixs)),
+            tuple(sorted(self.corridorixs)),
+            tuple(sorted(self.riverixs)),
+        )
 
     @staticmethod
     def merge_fog_bits(fog_bits):
@@ -433,11 +440,14 @@ def dungeon_to_tts_blob(df, name, pdf_filename=None):
     if df.config.tts_hidden_zones:
         fog_bits = {}  # TTSFogBit.coord_tuple():TTSFogBit
         tmp_fog_bit_list = []
-        for roomix, room in enumerate(df.rooms):
-            for bit in room.tts_fog_bits():
+        for room in df.rooms:
+            for bit in room.tts_fog_bits(df):
                 tmp_fog_bit_list.append(bit)
-        for corridorix, corridor in enumerate(df.corridors):
+        for corridor in df.corridors:
             for bit in corridor.tts_fog_bits(df):
+                tmp_fog_bit_list.append(bit)
+        for river in df.rivers:
+            for bit in river.tts_fog_bits(df):
                 tmp_fog_bit_list.append(bit)
         for x in range(df.width):
             for y in range(df.height):

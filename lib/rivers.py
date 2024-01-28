@@ -3,6 +3,7 @@ import random
 
 
 from lib.tile import WaterTile
+import lib.tts as tts
 
 
 class River:
@@ -11,7 +12,7 @@ class River:
         self.river_tile_coords = list(river_tile_coords or [])
         self.adjacent_coords_set = self._adjacent_coords()
         self.is_carved = False
-        self.river_ix = None
+        self.ix = None
 
     def _adjacent_coords(self):
         adjacent_coords = set()
@@ -39,6 +40,8 @@ class River:
             tile.roomix = old_tile.roomix
             tile.corridorix = old_tile.corridorix
             tile.light_level = old_tile.light_level
+            tile.riverixs = set(old_tile.riverixs)
+            tile.riverixs.add(self.ix)
             df.set_tile(tile)
 
     @staticmethod
@@ -97,3 +100,13 @@ class River:
                         river_tile_coords.add((tx, ty))
 
         return River(diameter=diameter, river_tile_coords=river_tile_coords)
+
+    def tts_fog_bits(self, df):
+        """returns a list of fog bits: all small ones probably."""
+        fogs = []
+        coords = set(self.river_tile_coords).union(self.adjacent_coords_set)
+        for x, y in coords:
+            tile = df.get_tile(x=x, y=y)
+            if tile and (tile.is_water() or tile.blocks_line_of_sight()):
+                fogs.append(tts.TTSFogBit(x, y, riverixs=[self.ix]))
+        return fogs
