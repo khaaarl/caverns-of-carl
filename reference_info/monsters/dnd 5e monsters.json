@@ -3662,7 +3662,11 @@
         "Underdark"
       ],
       "name": "Ogre",
-      "size": "large"
+      "size": "large",
+      "tts_reference_nicknames": [
+        "Ogre A",
+        "Ogre B"
+      ]
     },
     {
       "challenge_rating": 2,
@@ -4383,7 +4387,10 @@
         "Underdark"
       ],
       "name": "Hook Horror",
-      "size": "large"
+      "size": "large",
+      "tts_reference_nicknames": [
+        "Hook Horror A"
+      ]
     },
     {
       "challenge_rating": 3,
@@ -6546,7 +6553,10 @@
         "Urban"
       ],
       "name": "Oni",
-      "size": "large"
+      "size": "large",
+      "tts_reference_nicknames": [
+        "Oni A"
+      ]
     },
     {
       "challenge_rating": 7,

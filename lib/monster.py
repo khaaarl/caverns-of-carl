@@ -340,6 +340,7 @@ class Monster:
         # TODO: adjust to not face wall if near wall?
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = self.tts_nickname()
+        obj["Description"] = ""
         obj["Locked"] = False
         return obj
 

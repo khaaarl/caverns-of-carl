@@ -755,8 +755,7 @@ def place_doors_in_dungeon(df):
                 and ntile.roomix == room2.ix
                 and room2.desires_doors()
             ):
-                # TODO: check if there's a river nearby. If so, don't
-                # set up door.
+                # If there's water nearby, don't set up door.
                 found_water = False
                 for dx in range(-1, 2):
                     for dy in range(-1, 2):
