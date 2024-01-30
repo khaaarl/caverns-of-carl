@@ -23,12 +23,12 @@ Vague plan of cool things
 * blacksmith npc (done)
 * PDF output, and have this linked in the TTS game in the DM hidden zone (done)
 * rivers (done)
+* secret doors (done)
 * cavernous corridors should have some erosion, and not be straight
 * DM toolpanel in TTS, including button to delete everything.
 * Prepared wandering monster encounters in the DM hidden zone (also relevant for traps that summon)
 * More special rooms, such as with altars
 * Boss fights / boss rooms?
-* secret doors?
 * door keys?
 * themes and tilesets?
 * cosmetic doodads like rugs and bloodstains and such

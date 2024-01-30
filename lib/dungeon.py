@@ -18,6 +18,7 @@ from lib.tile import (
     LadderDownTile,
     MimicTile,
     RoomFloorTile,
+    SecretDoorTile,
     Tile,
     WallTile,
 )
@@ -732,7 +733,12 @@ def place_doors_in_dungeon(df):
         room1 = df.rooms[corridor.room1ix]
         room2 = df.rooms[corridor.room2ix]
         corridor_coords = list(corridor.walk(max_width_iter=1))
-        new_door_locations = set()  # x, y, dx, dy
+        corridor_biome = df.config.get_biome(corridor.biome_name)
+        doors_are_secret = (
+            random.random() * 100.0 < corridor_biome.door_secret_percent
+            and (corridor.length(df) <= 1 or corridor.is_nontrivial(df))
+        )
+        new_door_locations = set()  # x, y, dx, dy, is_secret
         for ix in range(1, len(corridor_coords) - 1):
             x, y = corridor_coords[ix]
             px, py = corridor_coords[ix - 1]
@@ -763,10 +769,13 @@ def place_doors_in_dungeon(df):
                         found_water |= wtile and wtile.is_water()
                 if found_water:
                     continue
-                new_tile = DoorTile(corridor.ix, biome_name=biome_name)
+                cls = DoorTile
+                if doors_are_secret:
+                    cls = SecretDoorTile
+                new_tile = cls(corridor.ix, biome_name=biome_name)
                 df.set_tile(new_tile, x=x, y=y)
-                new_door_locations.add((x, y, x - px, y - py))
-        for x, y, dx, dy in new_door_locations:
+                new_door_locations.add((x, y, x - px, y - py, doors_are_secret))
+        for x, y, dx, dy, is_secret in new_door_locations:
             biome_name = df.get_tile(x=x, y=y).biome_name
             rx, ry = x, y
             lx, ly = x, y
@@ -778,19 +787,26 @@ def place_doors_in_dungeon(df):
                 lx -= 1
             for tx, ty in [(rx, ry), (lx, ly)]:
                 tile = df.get_tile(tx, ty)
-                if isinstance(tile, DoorTile):
+                if tile.is_door():
                     continue
                 if isinstance(tile, CorridorFloorTile):
-                    new_tile = DoorTile(corridor.ix, biome_name=biome_name)
+                    cls = DoorTile
+                    if is_secret:
+                        cls = SecretDoorTile
+                    new_tile = cls(corridor.ix, biome_name=biome_name)
                     df.set_tile(new_tile, x=tx, y=ty)
         for x, y in corridor.walk(max_width_iter=1):
             tile = df.tiles[x][y]
-            if not isinstance(tile, DoorTile):
+            if not tile.is_door():
                 continue
             biome = df.config.get_biome(tile.biome_name)
             lock_dc = None
             if random.random() * 100.0 < biome.door_lock_percent:
                 lock_dc = random_dc(biome.target_character_level)
+            detection_dc = None
+            is_secret = isinstance(tile, SecretDoorTile)
+            if is_secret:
+                detection_dc = random_dc(biome.target_character_level)
             door = Door(
                 Door.pick_type(biome),
                 corridor,
@@ -798,12 +814,14 @@ def place_doors_in_dungeon(df):
                 y,
                 lock_dc=lock_dc,
                 biome_name=tile.biome_name,
+                is_secret=is_secret,
+                detection_dc=detection_dc,
             )
             df.add_door(door)
             for dx in [-1, 0, 1]:
                 for dy in [-1, 0, 1]:
                     dtile = df.tiles[x + dx][y + dy]
-                    if isinstance(dtile, DoorTile):
+                    if dtile.is_door():
                         dtile.doorix = door.ix
                     elif isinstance(dtile, RoomFloorTile):
                         door.roomixs.add(dtile.roomix)

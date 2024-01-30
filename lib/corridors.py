@@ -113,6 +113,14 @@ class Corridor:
             if isinstance(tile, CorridorFloorTile):
                 yield (x, y)
 
+    def length(self, df):
+        length = 0
+        for x, y in self.walk(max_width_iter=1):
+            tile = df.tiles[x][y]
+            if isinstance(tile, CorridorFloorTile):
+                length += 1
+        return length
+
     def is_trivial(self, df):
         return not self.is_nontrivial(df)
 
@@ -245,6 +253,8 @@ class Door:
         roomixs=None,
         lock_dc=None,
         biome_name=None,
+        is_secret=False,
+        detection_dc=None,
     ):
         self.door_type = door_type
         self.x, self.y = x, y
@@ -255,6 +265,8 @@ class Door:
         self.ix = None
         self.lock_dc = lock_dc
         self.biome_name = biome_name
+        self.is_secret = is_secret
+        self.detection_dc = detection_dc
 
     def apply_minimum_door_strength(self, min_door_type):
         min_row_ix = 0
@@ -281,6 +293,8 @@ class Door:
 
     def nickname(self):
         nick = ""
+        if self.is_secret:
+            nick += "Secret "
         if self.lock_dc is not None:
             nick += "Locked "
         size_prefix = {1: "Small", 2: "Large", 3: "Huge"}[self.width]
@@ -288,10 +302,14 @@ class Door:
         return nick
 
     def tts_nickname(self):
+        if self.is_secret:
+            return ""
         nick = f"{self.health()}/{self.health()} "
         return nick + self.nickname()
 
     def tts_description(self):
+        if self.is_secret:
+            return ""
         return "\n".join(
             [
                 f"Armor Class: {self.armor_class()}",
@@ -301,6 +319,8 @@ class Door:
 
     def tts_gmnotes(self, df):
         output = []
+        if self.is_secret:
+            output.append(f"Secret Door! Detection DC: {self.detection_dc}")
         if self.lock_dc is not None:
             output.append(f"Lock DC: {self.lock_dc}")
         if self.trapixs:

@@ -55,6 +55,9 @@ class Tile:
     def is_wall(self):
         return False
 
+    def is_door(self):
+        return False
+
     def blocks_line_of_sight(self):
         return False
 
@@ -116,22 +119,14 @@ class Tile:
         self._update_tile_for_features(obj, df)
         obj["GMNotes"] = self._tts_gmnotes(df)
 
+    def _floor_tile_tts_object(self, df):
+        obj = tts.reference_object("Floor, Dungeon")
+        obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
+        obj["Nickname"] = ""
+        self._postprocess_tts_object(obj, df)
+        return obj
 
-class WallTile(Tile):
-    def is_wall(self):
-        return True
-
-    def blocks_line_of_sight(self):
-        return True
-
-    def to_char(self):
-        if self.is_interior:
-            return " "
-        if self.tile_style == "cavern":
-            return "[0;33m#"
-        return "[0;37m#"
-
-    def tts_objects(self, df):
+    def _wall_tts_object(self, df):
         if self.tile_style == "cavern":
             # use different wall bits if different adjacent walls
             def is_neighbor_wall(dx, dy):
@@ -205,16 +200,30 @@ class WallTile(Tile):
             obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = ""
         self._postprocess_tts_object(obj, df)
-        return [obj]
+        return obj
+
+
+class WallTile(Tile):
+    def is_wall(self):
+        return True
+
+    def blocks_line_of_sight(self):
+        return True
+
+    def to_char(self):
+        if self.is_interior:
+            return " "
+        if self.tile_style == "cavern":
+            return "[0;33m#"
+        return "[0;37m#"
+
+    def tts_objects(self, df):
+        return [self._floor_tile_tts_object(df), self._wall_tts_object(df)]
 
 
 class FloorTile(Tile):
     def tts_objects(self, df):
-        obj = tts.reference_object("Floor, Dungeon")
-        obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
-        obj["Nickname"] = ""
-        self._postprocess_tts_object(obj, df)
-        return [obj]
+        return [self._floor_tile_tts_object(df)]
 
     def is_move_blocking(self):
         return False
@@ -246,6 +255,9 @@ class DoorTile(CorridorFloorTile):
     def __init__(self, corridorix, doorix=None, *args, **kwargs):
         super().__init__(corridorix, *args, **kwargs)
         self.doorix = doorix
+
+    def is_door(self):
+        return True
 
     def to_char(self):
         return "+"
@@ -284,6 +296,23 @@ class DoorTile(CorridorFloorTile):
 
     def is_move_blocking(self):
         return True
+
+
+class SecretDoorTile(DoorTile):
+    def __init__(self, corridorix, doorix=None, *args, **kwargs):
+        super().__init__(corridorix, *args, **kwargs)
+        self.doorix = doorix
+
+    def to_char(self):
+        if self.tile_style == "cavern":
+            return "[0;93mS"
+        return "[0;97mS"
+
+    def tts_objects(self, df):
+        obj = self._wall_tts_object(df)
+        door = df.doors[self.doorix]
+        obj["GMNotes"] = door.tts_gmnotes(df)
+        return [self._floor_tile_tts_object(df), obj]
 
 
 class LadderUpTile(RoomFloorTile):

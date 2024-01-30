@@ -64,6 +64,7 @@ class DungeonConfig:
         self.add_var("door_trap_percent", 15.0)
         self.add_var("chest_trap_percent", 30.0)
         self.add_var("door_lock_percent", 15.0)
+        self.add_var("door_secret_percent", 15.0)
         self.add_var("blacksmith_percent", 30.0)
         self.add_var("kryxix_altar_percent", 30.0)
         self.add_var("ssarthaxx_altar_percent", 30.0)
