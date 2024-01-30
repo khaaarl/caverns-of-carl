@@ -341,7 +341,21 @@ class Monster:
         obj["Transform"]["rotY"] = 90.0 * random.randrange(4)
         obj["Nickname"] = self.tts_nickname()
         obj["Description"] = ""
+        obj["Autoraise"] = True
+        obj["DragSelectable"] = True
+        obj["Grid"] = True
+        obj["GridProjection"] = False
+        obj["Hands"] = False
+        obj["HideWhenFaceDown"] = False
+        obj["IgnoreFoW"] = False
         obj["Locked"] = False
+        obj["MeasureMovement"] = True
+        obj["Snap"] = True
+        obj["Sticky"] = True
+        obj["Tooltip"] = True
+        obj["LuaScript"] = ""
+        obj["LuaScriptState"] = ""
+        obj["XmlUI"] = ""
         return obj
 
 
