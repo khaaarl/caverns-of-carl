@@ -3355,7 +3355,10 @@
         "Underwater"
       ],
       "name": "Giant Constrictor Snake",
-      "size": "huge"
+      "size": "huge",
+      "tts_reference_nicknames": [
+        "Giant Constrictor Snake A"
+      ]
     },
     {
       "challenge_rating": 2,
