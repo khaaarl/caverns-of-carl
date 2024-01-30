@@ -175,7 +175,6 @@ class Deity:
         self.minimum_door_strength = blob.get("MinimumDoorStrength")
         self.altar_descriptions = blob["AltarDescriptions"]
         self.requests = blob["Requests"]
-        self.boons = blob["Boons"]
         self.ascii_color = blob["AsciiColor"]
         self.tts_tile_tint = blob.get("TTSTileTint")
         self.prefer_dark = blob.get("PreferDark", False)
@@ -187,8 +186,7 @@ class Altar(SpecialFeature):
         self.deity_name = deity_name
         self.deity = deity_library()[deity_name]
         self.altar_description = self.deity.altar_descriptions[0]
-        self.request = self.deity.requests[0]
-        self.boon = self.deity.boons[0]
+        self.request = random.choice(self.deity.requests)
 
     def description(self, df, verbose=False):
         if not verbose:
@@ -196,12 +194,12 @@ class Altar(SpecialFeature):
         header = f"An altar to {self.deity.full_title}"
         body = [
             self.altar_description,
-            Doc("Request:", self.request),
+            Doc("Request:", self.request["Request"]),
             Doc(
                 "Boon:",
                 [
-                    Doc(self.boon["SuccessDescription"]),
-                    [Doc(self.boon["BoonHeader"], self.boon["BoonBody"])],
+                    Doc(self.request["SuccessDescription"]),
+                    [Doc(self.request["BoonHeader"], self.request["BoonBody"])],
                 ],
             ),
         ]
@@ -273,9 +271,9 @@ class Altar(SpecialFeature):
         return [altar]
 
     def tts_handouts(self):
-        obj = tts.reference_object(self.boon["TTSHandoutReferenceObject"])
-        obj["Nickname"] = self.boon["BoonHeader"]
-        obj["Description"] = self.boon["BoonBody"]
+        obj = tts.reference_object(self.request["TTSHandoutReferenceObject"])
+        obj["Nickname"] = self.request["BoonHeader"]
+        obj["Description"] = self.request["BoonBody"]
         return [obj]
 
     def mod_tts_room_tile(self, obj):
