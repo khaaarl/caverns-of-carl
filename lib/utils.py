@@ -72,126 +72,176 @@ def samples(seq, k=1, weights=None):
         yield value
 
 
-class Expr:
-    pass
+class BNFRule:
+    def expression(self):
+        "[rule, rule, rule, ...]"
+        raise NotImplementedError()
 
+    def parse(self, tokens):
+        rules = self.expression()
+        return self._parse_tokens_with_rules(tokens, rules)
 
-class NestedExpr(Expr):
-    def __init__(self, exprs=None):
-        self.exprs = exprs or []
-
-    def __str__(self):
-        return f"{type(self).__name__}{self.exprs}"
+    def _parse_tokens_with_rules(self, tokens, rules):
+        if len(tokens) < len(rules):
+            return None
+        if len(rules) == 1:
+            p = rules[0].parse(tokens)
+            if p:
+                return [p]
+            else:
+                return None
+        for ix in range(1, len(tokens) - len(rules) + 2):
+            p0 = rules[0].parse(tokens[:ix])
+            if not p0:
+                continue
+            pn = self._parse_tokens_with_rules(tokens[ix:], rules[1:])
+            if pn:
+                return [p0] + pn
+        return None
 
     def __repr__(self):
-        return self.__str__()
-
-    def __iter__(self):
-        return self.exprs.__iter__()
-
-    def mutate(self, func):
-        for ix, item in enumerate(self.exprs):
-            if isinstance(item, NestedExpr):
-                item.mutate(func)
-            else:
-                self.exprs[ix] = func(item)
+        return str(self.__class__)
 
 
-class ParenExpr(NestedExpr):
-    @staticmethod
-    def from_tokens(tokens):
-        return ParenExpr._recursively_from_tokens(tokens, 0)[0]
+class LiteralRule(BNFRule):
+    def __init__(self, literal):
+        self.literal = literal
 
-    @staticmethod
-    def _recursively_from_tokens(tokens, ix):
-        output = []
-        while ix < len(tokens):
-            token = tokens[ix]
-            ix += 1
-            if token == ")":
-                break
-            elif token == "(":
-                val, ix = ParenExpr._recursively_from_tokens(tokens, ix)
-                output.append(val)
-            else:
-                output.append(token)
-        return (ParenExpr(output), ix)
+    def parse(self, tokens):
+        if len(tokens) == 1 and tokens[0] == self.literal:
+            return self
+        return None
+
+    def __repr__(self):
+        return f"L('{self.literal}')"
 
 
-class OrExpr(NestedExpr):
-    @staticmethod
-    def from_tokens(tokens):
-        or_groups = []
-        cur = []
+class EitherRule(BNFRule):
+    def __init__(self, rule_options):
+        self.rule_options = list(rule_options)
+
+    def parse(self, tokens):
+        for rule in self.rule_options:
+            p = rule.parse(tokens)
+            if p:
+                return p
+        return None
+
+    def __repr__(self):
+        return f"EitherRule({', '.join([repr(x) for x in self.rule_options])})"
+
+
+class NonSpecialTokensRule(BNFRule):
+    def __init__(self, tokens=None):
+        self.keyword = None
+        if tokens:
+            self.keyword = " ".join(tokens)
+
+    def parse(self, tokens):
         for token in tokens:
-            if token == "OR":
-                if cur:
-                    or_groups.append(cur)
-                cur = []
-            elif isinstance(token, ParenExpr):
-                if "OR" in token.exprs:
-                    cur.append(OrExpr.from_tokens(token))
-                else:
-                    cur.append(token)
-            else:
-                cur.append(token)
-        if cur:
-            or_groups.append(cur)
-        return OrExpr(or_groups)
+            if token in {"(", ")", "OR", "AND", "NOT"}:
+                return None
+        return NonSpecialTokensRule(tokens)
+
+    def match(self, keywords):
+        return self.keyword in keywords or not self.keyword
+
+    def __repr__(self):
+        return f"'{self.keyword}'"
 
 
-class AndExpr(NestedExpr):
-    @staticmethod
-    def from_tokens(tokens):
-        if isinstance(tokens, str):
-            return tokens
-        and_groups = []
-        cur = []
-        for token in tokens:
-            if token == "AND":
-                and_groups.append(cur)
-                cur = []
-            elif isinstance(token, list):
-                cur.append([AndExpr.from_tokens(x) for x in token])
-            elif isinstance(token, ParenExpr):
-                if "AND" in token.exprs:
-                    cur.append(AndExpr.from_tokens(token))
-                else:
-                    cur.append(token)
-            elif isinstance(token, OrExpr):
-                o = [AndExpr.from_tokens(l) for l in token]
-                cur.append(OrExpr(o))
-            else:
-                cur.append(token)
-        and_groups.append(cur)
-        return AndExpr(and_groups)
+class NotRule(BNFRule):
+    def __init__(self, internal_rule=None):
+        self.internal_rule = internal_rule
+
+    def expression(self):
+        return [LiteralRule("NOT"), KeywordExprRule()]
+
+    def parse(self, tokens):
+        p = super().parse(tokens)
+        if not p:
+            return None
+        return NotRule(p[1])
+
+    def match(self, keywords):
+        return not self.internal_rule.match(keywords)
+
+    def __repr__(self):
+        return f"NotRule({self.internal_rule})"
+
+
+class OrRule(BNFRule):
+    def __init__(self, left=None, right=None):
+        self.left, self.right = left, right
+
+    def expression(self):
+        return [KeywordExprRule(), LiteralRule("OR"), KeywordExprRule()]
+
+    def parse(self, tokens):
+        p = super().parse(tokens)
+        if not p:
+            return None
+        return OrRule(p[0], p[2])
+
+    def match(self, keywords):
+        return self.left.match(keywords) or self.right.match(keywords)
+
+    def __repr__(self):
+        return f"OrRule({self.left}, {self.right})"
+
+
+class AndRule(BNFRule):
+    def __init__(self, left=None, right=None):
+        self.left, self.right = left, right
+
+    def expression(self):
+        return [KeywordExprRule(), LiteralRule("AND"), KeywordExprRule()]
+
+    def parse(self, tokens):
+        p = super().parse(tokens)
+        if not p:
+            return None
+        return AndRule(p[0], p[2])
+
+    def match(self, keywords):
+        return self.left.match(keywords) and self.right.match(keywords)
+
+    def __repr__(self):
+        return f"AndRule({self.left}, {self.right})"
+
+
+class ParensRule(BNFRule):
+    def expression(self):
+        return [LiteralRule("("), KeywordExprRule(), LiteralRule(")")]
+
+    def parse(self, tokens):
+        p = super().parse(tokens)
+        if not p:
+            return None
+        return p[1]
+
+
+class KeywordExprRule(EitherRule):
+    def __init__(self):
+        super().__init__(
+            [
+                ParensRule(),
+                OrRule(),
+                AndRule(),
+                NotRule(),
+                NonSpecialTokensRule(),
+            ]
+        )
+
+    def __repr__(self):
+        return "KeywordExprRule"
 
 
 @functools.cache
 def parse_keyword_expr(s):
-    tokens = re.split("([()]| OR | AND )", s.upper())
+    tokens = re.split("([() ])", s.upper().strip())
     tokens = [x.strip() for x in tokens if x.strip()]
-    expr = ParenExpr.from_tokens(tokens)
-    expr = OrExpr.from_tokens(expr)
-    expr = AndExpr.from_tokens([expr])
-    return expr
-
-
-def _expr_match_keywords(expr, keywords):
-    if isinstance(expr, str):
-        return expr in keywords
-    elif isinstance(expr, AndExpr) or isinstance(expr, list):
-        for item in expr:
-            if not _expr_match_keywords(item, keywords):
-                return False
-        return True
-    elif isinstance(expr, OrExpr):
-        for item in expr:
-            if _expr_match_keywords(item, keywords):
-                return True
-        return False
-    else:
-        raise ValueError(f"expr has weird type: {expr}")
+    return KeywordExprRule().parse(tokens)
 
 
 def expr_match_keywords(expr, keywords):
@@ -199,8 +249,10 @@ def expr_match_keywords(expr, keywords):
         return True
     keywords = {x.upper() for x in keywords}
     if isinstance(expr, str):
+        if not expr.strip():  # Blank matches everything.
+            return True
         expr = parse_keyword_expr(expr)
-    return _expr_match_keywords(expr, keywords)
+    return expr.match(keywords)
 
 
 def eval_dice(e):
