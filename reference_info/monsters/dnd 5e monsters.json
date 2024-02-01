@@ -7100,7 +7100,10 @@
         "Yugoloth"
       ],
       "name": "Nycaloth",
-      "size": "large"
+      "size": "large",
+      "tts_reference_nicknames": [
+        "Nycaloth A"
+      ]
     },
     {
       "challenge_rating": 9,
