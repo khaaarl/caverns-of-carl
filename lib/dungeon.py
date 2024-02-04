@@ -1295,6 +1295,7 @@ def stylize_tiles_in_dungeon(df):
             for tile in df.neighbor_tiles(x, y, diagonal=True):
                 if not tile.tile_style or room.tile_style() == "dungeon":
                     tile.tile_style = room.tile_style()
+                    tile.biome_name = room.biome_name
     for corridor in df.corridors:
         for x, y in corridor.tile_coords(df, include_doors=True):
             df.tiles[x][y].tile_style = corridor.tile_style()
@@ -1306,6 +1307,7 @@ def stylize_tiles_in_dungeon(df):
                     continue
                 if not tile.tile_style or corridor.tile_style() == "dungeon":
                     tile.tile_style = corridor.tile_style()
+                    tile.biome_name = corridor.biome_name
 
     unstyled = set()
     for x in range(df.width):

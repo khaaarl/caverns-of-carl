@@ -1,6 +1,7 @@
 import re
 
 import tkinter as tk
+from tkinter import ttk
 
 
 class DungeonConfig:
@@ -16,6 +17,7 @@ class DungeonConfig:
         self.tk_entries = {}
         self.tk_vars = {}
         self.tk_is_long = {}
+        self.tk_combobox_values = {}
 
         self.add_var("width", 35, in_biome=False)
         self.add_var("height", 35, in_biome=False)
@@ -29,6 +31,18 @@ class DungeonConfig:
         self.add_var("num_room_wiggles", 5, in_biome=False)
         self.add_var("use_maze_layout", False)
         self.add_var("cavernous_room_percent", 50.0)
+        self.add_var(
+            "structure_style",
+            "dungeon",
+            combobox_values=["dungeon", "mossy ruin"],
+            is_long=True,
+        )
+        self.add_var(
+            "cavern_style",
+            "cavern",
+            combobox_values=["cavern", "frozen cavern", "ice", "volcano"],
+            is_long=True,
+        )
         self.add_var("room_bright_ratio", 5.0)
         self.add_var("room_dim_ratio", 2.0)
         self.add_var("room_dark_ratio", 1.0)
@@ -44,9 +58,6 @@ class DungeonConfig:
         self.add_var("num_up_ladders", 1)
         self.add_var("num_down_ladders", 1)
         self.add_var("min_ladder_distance", 2, in_biome=False)
-        self.add_var("tts_fog_of_war", False, in_biome=False)
-        self.add_var("tts_hidden_zones", True, in_biome=False)
-        self.add_var("tts_notecards", True, in_biome=False)
         self.ui_ops.append(("next group", None))
         self.add_var("target_character_level", 7)
         self.add_var("num_player_characters", 5)
@@ -69,6 +80,9 @@ class DungeonConfig:
         self.add_var("kryxix_altar_percent", 30.0)
         self.add_var("ssarthaxx_altar_percent", 30.0)
         self.add_var("num_misc_NPCs", "1d6-1", in_biome=False)
+        self.add_var("tts_fog_of_war", False, in_biome=False)
+        self.add_var("tts_hidden_zones", True, in_biome=False)
+        self.add_var("tts_notecards", True, in_biome=False)
         self.allow_corridor_intersection = False
         self.max_corridor_attempts = 30000
         self.max_room_attempts = 10
@@ -81,6 +95,7 @@ class DungeonConfig:
         is_long=False,
         in_biome=True,
         biome_only=False,
+        combobox_values=None,
     ):
         assert k not in self.var_keys
         assert type(v) in [int, float, str, bool]
@@ -103,6 +118,8 @@ class DungeonConfig:
         self.tk_label_texts[k] = tk_label
         self.tk_is_long[k] = is_long
         self.ui_ops.append(("config", k))
+        if combobox_values:
+            self.tk_combobox_values[k] = combobox_values
 
     def make_tk_labels_and_entries(self, parent):
         row = 0
@@ -130,7 +147,15 @@ class DungeonConfig:
             assert var
             var.set(v)
             self.tk_vars[k] = var
-            if ty == bool:
+            is_combobox = k in self.tk_combobox_values
+            if is_combobox:
+                combobox = ttk.Combobox(
+                    parent, textvariable=var, state="readonly"
+                )
+                combobox["values"] = tuple(self.tk_combobox_values[k])
+                combobox.current(list(self.tk_combobox_values[k]).index(v))
+                self.tk_entries[k] = combobox
+            elif ty == bool:
                 self.tk_entries[k] = tk.Checkbutton(parent, variable=var)
             else:
                 if self.tk_is_long[k]:

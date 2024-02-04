@@ -61,16 +61,17 @@ class Tile:
     def blocks_line_of_sight(self):
         return False
 
-    def _alter_tex(self, obj, ref, new):
+    def _alter_tex(self, obj, ref_mesh, new_diffuse, new_normal):
         mesh_url = obj.get("CustomMesh", {}).get("MeshURL")
-        if mesh_url == ref["CustomMesh"]["MeshURL"]:
-            assert mesh_url == new["CustomMesh"]["MeshURL"]
-            obj["CustomMesh"]["DiffuseURL"] = new["CustomMesh"]["DiffuseURL"]
-            obj["CustomMesh"]["NormalURL"] = new["CustomMesh"]["NormalURL"]
+        if mesh_url == ref_mesh:
+            if new_diffuse is not None:
+                obj["CustomMesh"]["DiffuseURL"] = new_diffuse
+            if new_normal is not None:
+                obj["CustomMesh"]["NormalURL"] = new_normal
         for other in obj.get("States", {}).values():
-            self._alter_tex(other, ref, new)
+            self._alter_tex(other, ref_mesh, new_diffuse, new_normal)
         for other in obj.get("ChildObjects", []):
-            self._alter_tex(other, ref, new)
+            self._alter_tex(other, ref_mesh, new_diffuse, new_normal)
 
     def _update_texture_style(self, obj, df):
         tile_style = self.tile_style
@@ -78,12 +79,56 @@ class Tile:
             tile_style = df.rooms[self.roomix].tile_style()
         if not tile_style and self.corridorix is not None:
             tile_style = df.corridors[self.corridorix].tile_style()
-        new_floor = None
+        new_floor_diffuse = None
+        new_floor_normal = None
+        new_wall_diffuse = None
+        new_wall_normal = None
+        biome = df.config.get_biome(self.biome_name)
         if tile_style == "cavern":
-            new_floor = tts.reference_object("Floor, Cavern")
-        if new_floor:
+            if biome.cavern_style == "cavern":
+                new_floor = tts.reference_object("Floor, Cavern")
+                new_floor_diffuse = new_floor["CustomMesh"]["DiffuseURL"]
+                new_floor_normal = new_floor["CustomMesh"]["NormalURL"]
+            elif biome.cavern_style == "frozen cavern":
+                new_floor_diffuse = "http://cloud-3.steamusercontent.com/ugc/1626318952222096978/830A76F49316CF9F7812562635870D52C315AE6A/"
+                new_floor_normal = ""
+                new_wall_diffuse = "http://cloud-3.steamusercontent.com/ugc/1626318952222096978/830A76F49316CF9F7812562635870D52C315AE6A/"
+                new_wall_normal = ""
+            elif biome.cavern_style == "ice":
+                new_floor_diffuse = "http://cloud-3.steamusercontent.com/ugc/1626318952222098144/5B90E908E1553A68D4399BD7D7B7A43BA84C0967/"
+                new_floor_normal = ""
+                new_wall_diffuse = "http://cloud-3.steamusercontent.com/ugc/1626318952222098144/5B90E908E1553A68D4399BD7D7B7A43BA84C0967/"
+                new_wall_normal = ""
+            elif biome.cavern_style == "volcano":
+                new_floor_diffuse = "http://cloud-3.steamusercontent.com/ugc/1675863330275049342/81DD405503795EF897A44C3095402A2959BDD4D3/"
+                new_floor_normal = "http://cloud-3.steamusercontent.com/ugc/1675863330275049784/7D924C5CE3EACB03E0AD7E22F2F8B125D773852E/"
+                new_wall_diffuse = "http://cloud-3.steamusercontent.com/ugc/1675863330275049342/81DD405503795EF897A44C3095402A2959BDD4D3/"
+                new_wall_normal = "http://cloud-3.steamusercontent.com/ugc/1675863330275049784/7D924C5CE3EACB03E0AD7E22F2F8B125D773852E/"
+        else:
+            if biome.structure_style == "mossy ruin":
+                new_floor_diffuse = "http://cloud-3.steamusercontent.com/ugc/1618472276467693924/DE92ABF355272E38EC4A38B69E708543B935719B/"
+                new_floor_normal = ""
+                new_wall_diffuse = "http://cloud-3.steamusercontent.com/ugc/1618472276467615219/4469A712823FC698B254395A9FA7C27C39959127/"
+        if new_floor_diffuse:
             ref_floor = tts.reference_object("Floor, Dungeon")
-            self._alter_tex(obj, ref_floor, new_floor)
+            ref_mesh = ref_floor["CustomMesh"]["MeshURL"]
+            self._alter_tex(obj, ref_mesh, new_floor_diffuse, new_floor_normal)
+        if new_wall_diffuse:
+            refs = [
+                "Wall, Dungeon",
+                "Cavern Wall 1 Connection",
+                "Cavern Wall 2 Connections Through",
+                "Cavern Wall 2 Connections Corner",
+                "Cavern Wall 3 Connections",
+                "Cavern Wall Ambiguous Connections",
+                "Cavern Stalagmite",
+                "Cavern Stalagmites",
+            ]
+            for ref in refs:
+                ref_mesh = tts.reference_object(ref)["CustomMesh"]["MeshURL"]
+                self._alter_tex(
+                    obj, ref_mesh, new_wall_diffuse, new_wall_normal
+                )
 
     def _update_tile_for_features(self, obj, df):
         if self.roomix is None:
