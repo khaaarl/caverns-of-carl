@@ -237,5 +237,8 @@ def run_ui():
 
     new_preview()
 
-    root.state("zoomed")
+    try:
+        root.state("zoomed")
+    except:
+        pass
     root.mainloop()
