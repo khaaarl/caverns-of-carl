@@ -205,7 +205,9 @@ class Tile:
                     obj = tts.reference_object(
                         "Cavern Wall 2 Connections Through"
                     )
-                    obj["Transform"]["rotY"] = 0.0 + 180.0 * random.randrange(2)
+                    obj["Transform"]["rotY"] = 0.0 + 180.0 * random.randrange(
+                        2
+                    )
                 elif north and south:
                     obj = tts.reference_object(
                         "Cavern Wall 2 Connections Through"
@@ -316,9 +318,9 @@ class DoorTile(CorridorFloorTile):
         if corridor.width == 1:
             obj = tts.reference_object("Door, Metal")
         elif corridor.width == 2:
-            if isinstance(df.tiles[self.x + 1][self.y], DoorTile) or isinstance(
-                df.tiles[self.x][self.y - 1], DoorTile
-            ):
+            if isinstance(
+                df.tiles[self.x + 1][self.y], DoorTile
+            ) or isinstance(df.tiles[self.x][self.y - 1], DoorTile):
                 obj = tts.reference_object("Door, Double")
         else:
             if (

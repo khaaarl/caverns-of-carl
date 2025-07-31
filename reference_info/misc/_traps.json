@@ -1,0 +1,87 @@
+{
+    "Triggers": [
+        {
+            "Name": "Scattered pressure plates",
+            "Required Keywords": [
+                "Area"
+            ]
+        },
+        {
+            "Name": "Magical chalk lines",
+            "Required Keywords": [
+                "Area"
+            ]
+        },
+        {
+            "Name": "Life-sensing runes",
+            "Required Keywords": [
+                "Area"
+            ]
+        },
+        {
+            "Name": "Tripwire by an entrance",
+            "Required Keywords": [
+                "Corridor"
+            ],
+            "Trap Keywords": [
+                "Tripwire"
+            ]
+        },
+        {
+            "Name": "Tripwire partway through",
+            "Required Keywords": [
+                "Corridor"
+            ],
+            "Trap Keywords": [
+                "Tripwire"
+            ]
+        },
+        {
+            "Name": "Pressure plates by an entrance",
+            "Required Keywords": [
+                "Corridor"
+            ]
+        },
+        {
+            "Name": "Opening or tampering",
+            "Required Keywords": [
+                "Openable"
+            ]
+        }
+    ],
+    "Traps": [
+        {
+            "Name": "Swinging blade: {AB} to hit, {DAM:slashing}"
+        },
+        {
+            "Name": "Poison darts: {AB} to hit, {DAM:piercing} & {DAM:poison}"
+        },
+        {
+            "Name": "Extending spikes: {AB} to hit, {DAM:piercing}"
+        },
+        {
+            "Name": "Falling rocks: Dex {DC} for half, {DAM:bludgeoning}"
+        },
+        {
+            "Name": "Flame jet: Dex {DC} for half, {DAM:fire}"
+        },
+        {
+            "Name": "Fiery explosion, {AREA}: Dex {DC} for half, {DAM:fire}"
+        },
+        {
+            "Name": "Flash freeze, {AREA}: Con {DC} for half, {DAM:cold}"
+        },
+        {
+            "Name": "Acid spray, {AREA}: Dex {DC} for half, {DAM:acid}"
+        },
+        {
+            "Name": "Thunderous shockwave, {AREA}: Con {DC} for half, {DAM:thunder}"
+        },
+        {
+            "Name": "Life drain, {AREA}: Con {DC} for half, {DAM:necrotic}"
+        },
+        {
+            "Name": "Mind-shattering scream, {AREA}: Int {DC} for half, {DAM:psychic}"
+        }
+    ]
+}

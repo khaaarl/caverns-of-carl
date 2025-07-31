@@ -1,11 +1,11 @@
 import math
 
+import lib.tts as tts
 from lib.tile import (
     CorridorFloorTile,
     DoorTile,
     WallTile,
 )
-import lib.tts as tts
 from lib.utils import Doc, DocBookmark, DocLink, eval_dice
 
 

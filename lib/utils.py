@@ -1,8 +1,8 @@
 import functools
 import math
 import os
-import re
 import random
+import re
 import unicodedata
 
 COC_ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))

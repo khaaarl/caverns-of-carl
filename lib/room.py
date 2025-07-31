@@ -1,5 +1,6 @@
 import random
 
+import lib.tts as tts
 from lib.tile import (
     BookshelfTile,
     ChestTile,
@@ -8,7 +9,6 @@ from lib.tile import (
     RoomFloorTile,
     WallTile,
 )
-import lib.tts as tts
 from lib.tts import TTSFogBit
 from lib.utils import Doc, DocBookmark, DocLink
 

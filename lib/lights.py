@@ -1,9 +1,9 @@
 import random
 
+import lib.tts as tts
 from lib.tile import (
     WallTile,
 )
-import lib.tts as tts
 
 
 class LightSource:

@@ -48,7 +48,6 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2393359134
 https://aos-tts.github.io/Stormvault/
 """
 
-
 try:
     import tkinter as _tk_test
 except:
@@ -59,7 +58,6 @@ except:
     exit()
 
 import lib.ui
-
 
 if __name__ == "__main__":
     lib.ui.run_ui()

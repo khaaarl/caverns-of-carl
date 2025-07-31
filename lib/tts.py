@@ -240,7 +240,11 @@ class TTSFogBit:
         scaleX = 2 * (x - self.x1 + 0.5)
         scaleZ = 2 * (y - self.y1 + 0.5)
         return tts_fog(
-            hidden_zone=True, posX=posX, posZ=posZ, scaleX=scaleX, scaleZ=scaleZ
+            hidden_zone=True,
+            posX=posX,
+            posZ=posZ,
+            scaleX=scaleX,
+            scaleZ=scaleZ,
         )
 
     def room_corridor_signature(self):
@@ -487,9 +491,9 @@ def dungeon_to_tts_blob(df, name, pdf_filename=None):
     script_carrier = reference_object("Reference Notecard")
     script_carrier["LuaScript"] = re.sub("REPLACE ME", name_tag, _LUA_SCRIPT)
     script_carrier["Nickname"] = "Caverns of Carl Script Carrier"
-    script_carrier[
-        "Description"
-    ] = f"Associated with dungeon '{name}' with GUID '{guid}'"
+    script_carrier["Description"] = (
+        f"Associated with dungeon '{name}' with GUID '{guid}'"
+    )
     script_carrier["Transform"]["posY"] = 2.0
     script_carrier["Locked"] = False
     df.tts_xz(5, -5, script_carrier)

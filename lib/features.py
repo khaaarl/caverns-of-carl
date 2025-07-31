@@ -199,7 +199,12 @@ class Altar(SpecialFeature):
                 "Boon:",
                 [
                     Doc(self.request["SuccessDescription"]),
-                    [Doc(self.request["BoonHeader"], self.request["BoonBody"])],
+                    [
+                        Doc(
+                            self.request["BoonHeader"],
+                            self.request["BoonBody"],
+                        )
+                    ],
                 ],
             ),
         ]

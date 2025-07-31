@@ -9,7 +9,9 @@ from lib.utils import COC_ROOT_DIR, Doc
 
 @functools.cache
 def npc_library():
-    filename = os.path.join(COC_ROOT_DIR, "reference_info", "npcs", "npcs.json")
+    filename = os.path.join(
+        COC_ROOT_DIR, "reference_info", "npcs", "npcs.json"
+    )
     npcs = {}
     with open(filename) as f:
         blob = json.load(f)
@@ -156,7 +158,9 @@ class Npc:
             items.append(f"Activity: {self.activities[0]}")
         elif len(self.activities) > 1:
             items.append(
-                "\n".join(["Activities:"] + [f"- {a}" for a in self.activities])
+                "\n".join(
+                    ["Activities:"] + [f"- {a}" for a in self.activities]
+                )
             )
         if not items:
             return None

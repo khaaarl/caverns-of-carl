@@ -4,18 +4,16 @@ https://www.reportlab.com/docs/reportlab-userguide.pdf
 https://docs.reportlab.com/reportlab/userguide/ch2_graphics/
 """
 
-
 import os
 
 from lib.utils import COC_ROOT_DIR, CharStyle, StyledString
-
 
 LOADED_PDFLAB = False
 
 try:
     import reportlab.lib.pagesizes
-    from reportlab.pdfbase.pdfmetrics import stringWidth
     import reportlab.pdfgen.canvas
+    from reportlab.pdfbase.pdfmetrics import stringWidth
 
     LOADED_PDFLAB = True
 except:

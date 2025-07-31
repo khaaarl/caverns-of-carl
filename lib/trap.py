@@ -4,7 +4,6 @@ import re
 
 from lib.utils import random_dc
 
-
 _AREA_TRAP_TRIGGERS = [
     "Scattered pressure plates",
     "Magical chalk lines",

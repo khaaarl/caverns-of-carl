@@ -1,9 +1,8 @@
 import math
 import random
 
-
-from lib.tile import WaterTile
 import lib.tts as tts
+from lib.tile import WaterTile
 
 
 class River:
@@ -96,7 +95,12 @@ class River:
             for dx in range(rlo, rhi):
                 for dy in range(rlo, rhi):
                     tx, ty = x + dx, y + dy
-                    if tx >= 0 and tx < df.width and ty >= 0 and ty < df.height:
+                    if (
+                        tx >= 0
+                        and tx < df.width
+                        and ty >= 0
+                        and ty < df.height
+                    ):
                         river_tile_coords.add((tx, ty))
 
         return River(diameter=diameter, river_tile_coords=river_tile_coords)

@@ -17,8 +17,8 @@ from lib.utils import (
     COC_ROOT_DIR,
     Doc,
     choice,
-    expr_match_keywords,
     eval_dice,
+    expr_match_keywords,
     remove_non_ascii,
 )
 
@@ -375,7 +375,9 @@ class Encounter:
         for m in self.monsters:
             dcount = 1.0
             if m.monster_info.challenge_rating < hi_cr - 2:
-                dcount /= math.sqrt(hi_cr - 1 - m.monster_info.challenge_rating)
+                dcount /= math.sqrt(
+                    hi_cr - 1 - m.monster_info.challenge_rating
+                )
             count += dcount
         # sqrt approximates the table from the DMG for modifying
         # difficulty with multiple monsters. This does not yet ignore
@@ -421,7 +423,9 @@ def _build_encounter_single_attempt(
             monster_infos
         ):
             break
-        ix, mi = choice(list(enumerate(removable_monster_infos)), monster_freqs)
+        ix, mi = choice(
+            list(enumerate(removable_monster_infos)), monster_freqs
+        )
         used_infos[mi.name] = mi
         del removable_monster_infos[ix]
         del monster_freqs[ix]

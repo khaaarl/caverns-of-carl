@@ -3,28 +3,28 @@ import math
 import random
 
 import lib.config
-from lib.corridors import Corridor, CavernousCorridor, Door
+import lib.features
 import lib.lights
 import lib.monster
-from lib.monster import get_monster_library, Monster
 import lib.npcs
+import lib.trap
+from lib.corridors import CavernousCorridor, Corridor, Door
+from lib.monster import Monster, get_monster_library
 from lib.rivers import River
+from lib.room import CavernousRoom, MazeJunction, RectRoom, Room
 from lib.tile import (
     BookshelfTile,
     ChestTile,
     CorridorFloorTile,
     DoorTile,
-    LadderUpTile,
     LadderDownTile,
+    LadderUpTile,
     MimicTile,
     RoomFloorTile,
     SecretDoorTile,
     Tile,
     WallTile,
 )
-from lib.room import Room, RectRoom, CavernousRoom, MazeJunction
-import lib.features
-import lib.trap
 from lib.treasure import get_treasure_library
 from lib.utils import (
     bfs,
@@ -349,7 +349,9 @@ def place_maze_in_biome(df, biome):
             if tile.biome_name != biome.biome_name:
                 not_us_junctions += 1
                 continue
-            junction = MazeJunction(tile.x, tile.y, biome_name=biome.biome_name)
+            junction = MazeJunction(
+                tile.x, tile.y, biome_name=biome.biome_name
+            )
             junction.maze_x = mx
             junction.maze_y = my
             junctions.append(junction)
@@ -393,7 +395,9 @@ def place_maze_in_biome(df, biome):
 
     # Replace some junctions with regular rooms
     target_num_rooms = int(
-        round(df.config.num_rooms * len(junctions) / (maze_width * maze_height))
+        round(
+            df.config.num_rooms * len(junctions) / (maze_width * maze_height)
+        )
     )
     random.shuffle(junctions)
     room_ps = []
@@ -774,7 +778,9 @@ def place_doors_in_dungeon(df):
                     cls = SecretDoorTile
                 new_tile = cls(corridor.ix, biome_name=biome_name)
                 df.set_tile(new_tile, x=x, y=y)
-                new_door_locations.add((x, y, x - px, y - py, doors_are_secret))
+                new_door_locations.add(
+                    (x, y, x - px, y - py, doors_are_secret)
+                )
         for x, y, dx, dy, is_secret in new_door_locations:
             biome_name = df.get_tile(x=x, y=y).biome_name
             rx, ry = x, y

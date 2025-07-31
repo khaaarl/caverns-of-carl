@@ -1,12 +1,10 @@
 import datetime
-import re
 import random
-import traceback
-
+import re
 import tkinter as tk
 import tkinter.font
-from tkinter import scrolledtext
-from tkinter import ttk
+import traceback
+from tkinter import scrolledtext, ttk
 
 import lib.config
 import lib.dungeon
