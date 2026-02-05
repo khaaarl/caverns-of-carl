@@ -5,8 +5,9 @@ Output is suitable for use in 2D virtual tabletops like Roll20.
 
 import os
 import random
+import sys
 
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
 from lib.tile import (
     BookshelfTile,
@@ -29,6 +30,52 @@ OUTPUT_DIR = os.path.join(COC_ROOT_DIR, "output", "maps")
 
 # Cache for loaded tile images
 _tile_image_cache = {}
+
+# Load font for room numbers
+ROOM_NUMBER_FONT_SIZE = 24
+try:
+    # Try to use Vera font from ReportLab
+    vera_font_path = os.path.join(
+        sys.prefix,
+        "lib",
+        f"python{sys.version_info.major}.{sys.version_info.minor}",
+        "site-packages",
+        "reportlab",
+        "fonts",
+        "Vera.ttf",
+    )
+    ROOM_NUMBER_FONT = ImageFont.truetype(
+        vera_font_path, ROOM_NUMBER_FONT_SIZE
+    )
+except Exception:
+    # Fallback to default font if Vera not available
+    ROOM_NUMBER_FONT = ImageFont.load_default()
+
+
+def _draw_text_with_outline(
+    draw,
+    position,
+    text,
+    font,
+    fill_color=(255, 255, 255),
+    outline_color=(0, 0, 0),
+    outline_width=2,
+):
+    """Draw text with an outline for better visibility."""
+    x, y = position
+    # Draw outline by drawing text offset in 8 directions
+    for dx in [-outline_width, 0, outline_width]:
+        for dy in [-outline_width, 0, outline_width]:
+            if dx != 0 or dy != 0:
+                draw.text(
+                    (x + dx, y + dy),
+                    text,
+                    font=font,
+                    fill=outline_color,
+                    anchor="mm",
+                )
+    # Draw main text centered
+    draw.text((x, y), text, font=font, fill=fill_color, anchor="mm")
 
 
 def _load_tile(name):
@@ -223,6 +270,18 @@ def produce_map_image(df, name, format="png", player_map=False):
             if overlay_img is not None:
                 map_img.paste(overlay_img, (img_x, img_y), mask=overlay_img)
 
+    # Draw room numbers on DM map
+    if not player_map:
+        draw = ImageDraw.Draw(map_img)
+        for room in df.rooms:
+            if not room.is_trivial() and room.name_num is not None:
+                # Calculate center position in pixels
+                img_x = room.x * TILE_SIZE + TILE_SIZE // 2
+                img_y = (df.height - 1 - room.y) * TILE_SIZE + TILE_SIZE // 2
+                _draw_text_with_outline(
+                    draw, (img_x, img_y), str(room.name_num), ROOM_NUMBER_FONT
+                )
+
     ext = "jpg" if format.lower() in ("jpg", "jpeg") else "png"
     safe_name = "".join(c if c.isalnum() or c in " -_" else "_" for c in name)
     suffix = " (player)" if player_map else " (DM)"
@@ -269,6 +328,17 @@ def produce_dm_overlay_image(df, name, format="png"):
             elif isinstance(tile, SecretDoorTile):
                 secret_img = _load_tile("secret_door")
                 overlay_img.paste(secret_img, (img_x, img_y))
+
+    # Draw room numbers on overlay
+    draw = ImageDraw.Draw(overlay_img)
+    for room in df.rooms:
+        if not room.is_trivial() and room.name_num is not None:
+            # Calculate center position in pixels
+            img_x = room.x * TILE_SIZE + TILE_SIZE // 2
+            img_y = (df.height - 1 - room.y) * TILE_SIZE + TILE_SIZE // 2
+            _draw_text_with_outline(
+                draw, (img_x, img_y), str(room.name_num), ROOM_NUMBER_FONT
+            )
 
     safe_name = "".join(c if c.isalnum() or c in " -_" else "_" for c in name)
     filename = os.path.join(OUTPUT_DIR, f"{safe_name} (DM overlay).png")

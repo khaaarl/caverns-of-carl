@@ -17,6 +17,8 @@
       "Bash(ls *)",
       "Bash(pip *)",
       "Bash(py --version *)",
+      "Bash(python -m black *)",
+      "Bash(python -m isort *)",
       "Bash(python -m unittest *)",
       "Bash(pre-commit run)",
       "Bash(pre-commit run *)",
