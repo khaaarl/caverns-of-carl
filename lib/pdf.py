@@ -6,6 +6,8 @@ https://docs.reportlab.com/reportlab/userguide/ch2_graphics/
 
 import os
 
+from PIL import Image
+
 from lib.utils import COC_ROOT_DIR, CharStyle, StyledString
 
 LOADED_PDFLAB = False
@@ -230,6 +232,51 @@ def draw_map_page(canvas, df, pagenum):
     canvas.showPage()
 
 
+def draw_dm_map_image_page(canvas, name, pagenum):
+    """Draw the DM map image on its own page, scaled to fit the letter page."""
+    maps_dir = os.path.join(COC_ROOT_DIR, "output", "maps")
+    safe_name = "".join(c if c.isalnum() or c in " -_" else "_" for c in name)
+    map_image_path = os.path.join(maps_dir, f"{safe_name} (DM).png")
+
+    try:
+        # Load the map image
+        img = Image.open(map_image_path)
+
+        # Calculate scaling to fit on letter page with margins
+        # Letter page is 8.5" x 11" = 612 x 792 points
+        page_width = 8.5 * 72
+        page_height = 11 * 72
+        available_width = page_width - 2 * _DOC_PAGE_MARGIN
+        available_height = page_height - 2 * _DOC_PAGE_MARGIN
+
+        img_width, img_height = img.size
+        scale_x = available_width / img_width
+        scale_y = available_height / img_height
+        scale = min(scale_x, scale_y)
+
+        new_width = int(img_width * scale)
+        new_height = int(img_height * scale)
+
+        # Center the image on the page
+        x = _DOC_PAGE_MARGIN + (available_width - new_width) / 2
+        y = (
+            page_height
+            - _DOC_PAGE_MARGIN
+            - new_height
+            - (available_height - new_height) / 2
+        )
+
+        # Draw the image
+        canvas.drawImage(
+            map_image_path, x, y, width=new_width, height=new_height
+        )
+
+        draw_pagenum(canvas, pagenum)
+        canvas.showPage()
+    except Exception as e:
+        print(f"Failed to draw DM map image page: {e}")
+
+
 def produce_pdf(df, name):
     assert stringWidth("m", font_normal(), _FONT_SIZE) == _FONT_CHAR_WIDTH
     assert stringWidth("m", font_bold(), _FONT_SIZE) == _FONT_CHAR_WIDTH
@@ -252,8 +299,9 @@ def produce_pdf(df, name):
     for npc in sorted(df.npcs, key=lambda x: x.name):
         docs.append(npc.doc())
     draw_map_page(canvas, df, 1)
+    draw_dm_map_image_page(canvas, name, 2)
     accumulated_bookmark_names = set()
-    for page in docs_to_pages(docs, 2):
+    for page in docs_to_pages(docs, 3):
         page.render(
             canvas, accumulated_bookmark_names=accumulated_bookmark_names
         )

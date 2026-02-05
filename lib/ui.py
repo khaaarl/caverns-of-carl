@@ -173,6 +173,14 @@ def run_ui():
             df = dungeon_history[-1]
             now = datetime.datetime.now()
             name = f"Caverns of Carl {now:%Y-%m-%dT%H-%M-%S%z}"
+            if config.save_map_image:
+                map_filenames = lib.map_image.produce_map_images_if_possible(
+                    df, name
+                )
+                for map_filename in map_filenames:
+                    text_output.append(f"Saved map image to {map_filename}")
+                if not map_filenames:
+                    text_output.append("Failed to produce map images.")
             pdf_filename = lib.pdf.produce_pdf_if_possible(df, name)
             if pdf_filename:
                 text_output.append(
@@ -185,14 +193,6 @@ def run_ui():
             blob = tts.dungeon_to_tts_blob(df, name, pdf_filename=pdf_filename)
             tts_filename = tts.save_tts_blob(blob)
             text_output.append(f"Saved TTS file to {tts_filename}")
-            if config.save_map_image:
-                map_filenames = lib.map_image.produce_map_images_if_possible(
-                    df, name
-                )
-                for map_filename in map_filenames:
-                    text_output.append(f"Saved map image to {map_filename}")
-                if not map_filenames:
-                    text_output.append("Failed to produce map images.")
         except Exception:
             text_output.append("\n")
             text_output.append(traceback.format_exc())
