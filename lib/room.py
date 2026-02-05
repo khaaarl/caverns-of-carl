@@ -299,7 +299,7 @@ class MazeJunction(RectRoom):
 class CavernousRoom(Room):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.explicit_tile_coords = None
+        self.explicit_tile_coords: list[tuple[int, int]] | None = None
 
     def tile_style(self):
         return "cavern"
@@ -355,6 +355,8 @@ class CavernousRoom(Room):
                         break
             if safe_to_expand:
                 erodable.append((x, y))
+        # Ensure explicit_tile_coords is initialized
+        assert self.explicit_tile_coords is not None
         for x, y in erodable:
             if random.random() < per_tile_chance:
                 self.explicit_tile_coords.append((x, y))

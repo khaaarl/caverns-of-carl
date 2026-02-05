@@ -9,3 +9,19 @@ repos:
     rev: 6.0.1
     hooks:
       - id: isort
+
+  - repo: local
+    hooks:
+      - id: ty
+        name: ty
+        entry: ty check
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: unittest
+        name: Python unit tests
+        entry: python -m unittest lib.utils_test
+        language: system
+        types: [python]
+        pass_filenames: false

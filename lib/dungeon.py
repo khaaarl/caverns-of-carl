@@ -149,6 +149,7 @@ class DungeonFloor:
         if isinstance(x, Tile):
             y = x.y
             x = x.x
+        assert isinstance(x, int) and isinstance(y, int)
         for tx, ty in neighbor_coords(x, y, cardinal, diagonal):
             tile = self.get_tile(tx, ty, default)
             if tile:

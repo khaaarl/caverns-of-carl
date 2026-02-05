@@ -160,20 +160,21 @@ class TreasureLibrary:
         contents = [x.strip() for x in contents if x]
         return contents
 
-    def gold_to_treasure(self, gp):
-        l = []
+    def gold_to_treasure(self, gp: float) -> list[str]:
+        keys: list[int] = []
         treasure_type, d = random.choice(
             [("Gemstone", self.gemstones), ("Art Object", self.art_objects)]
         )
-        lowest_key = None
-        highest_key = None
+        lowest_key: int | None = None
+        highest_key: int | None = None
         for k in d:
             if lowest_key is None or k < lowest_key:
                 lowest_key = k
             if highest_key is None or k > highest_key:
                 highest_key = k
-        k_lo = lowest_key
-        k_hi = highest_key
+        assert lowest_key is not None and highest_key is not None
+        k_lo: int = lowest_key
+        k_hi: int = highest_key
         for k in d:
             if k <= gp and abs(k - gp) <= abs(k_lo - gp):
                 k_lo = k
@@ -181,24 +182,26 @@ class TreasureLibrary:
                 k_hi = k
         if gp < k_lo:
             if random.random() < (gp / k_lo):
-                l.append(k_lo)
+                keys.append(k_lo)
         elif gp > k_hi:
             n = int(math.floor(gp / k_hi))
             if random.random() < (gp % k_hi) / k_hi:
                 n += 1
             for _ in range(n):
-                l.append(k_hi)
+                keys.append(k_hi)
         elif gp == k_lo:
-            l.append(k_lo)
+            keys.append(k_lo)
         elif gp == k_hi:
-            l.append(k_hi)
+            keys.append(k_hi)
         else:
             if random.random() < (k_hi - k_lo) / (gp - k_lo):
-                l.append(k_hi)
+                keys.append(k_hi)
             else:
-                l.append(k_lo)
-        l = [f"{treasure_type} ({k} gp): {random.choice(d[k])}" for k in l]
-        return sorted(l)
+                keys.append(k_lo)
+        result = [
+            f"{treasure_type} ({k} gp): {random.choice(d[k])}" for k in keys
+        ]
+        return sorted(result)
 
     def _hoard_gp_quantity(
         self, level, num_player_characters, level_plus_minus=3.0
@@ -207,10 +210,12 @@ class TreasureLibrary:
         # loosely based on hoard numbers?
         return 2 ** (level / 2.5) * 15.0 * num_player_characters
 
-    def gen_bookshelf_horde(self, level, num_player_characters):
+    def gen_bookshelf_horde(
+        self, level: int, num_player_characters: int
+    ) -> list[str]:
         clvl = (level + 1) / 2
         freq = 50
-        table_use = [
+        scroll_names = [
             "Spell scroll (cantrip): {spell-lvl0}",
             "Spell scroll (1st level): {spell-lvl1}",
             "Spell scroll (2nd level): {spell-lvl2}",
@@ -222,11 +227,12 @@ class TreasureLibrary:
             "Spell scroll (8th level): {spell-lvl8}",
             "Spell scroll (9th level): {spell-lvl9}",
         ]
+        table_use: list[tuple[str, float]] = []
         for lvl in range(10):
             p = freq * min(1.0 + (clvl - lvl) / 2.0, 1.0)
-            table_use[lvl] = (table_use[lvl], p)
-        contents = []
-        contents_seen = set()
+            table_use.append((scroll_names[lvl], p))
+        contents: list[str] = []
+        contents_seen: set[str] = set()
         for c, p in table_use:
             tmp = []
             for _ in range(2 * num_player_characters):

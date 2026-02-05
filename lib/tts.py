@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import collections
 import copy
 import functools
@@ -8,6 +10,7 @@ import pathlib
 import random
 import re
 import sys
+from typing import Any
 
 import lib.trap
 from lib.utils import COC_ROOT_DIR
@@ -271,21 +274,23 @@ class TTSFogBit:
         )
 
     @staticmethod
-    def merge_fog_bits(fog_bits):
+    def merge_fog_bits(fog_bits: Any) -> list[TTSFogBit]:
         # Better merging maybe: https://mathoverflow.net/a/80676
 
         # room/corridor signature : list[bit]
-        groups = collections.defaultdict(list)
+        groups: dict[Any, list[TTSFogBit]] = collections.defaultdict(list)
         for bit in fog_bits:
             groups[bit.room_corridor_signature()].append(bit)
-        output = []
+        output: list[TTSFogBit] = []
         for l in groups.values():
-            singletons = {(bit.x1, bit.y1): bit for bit in l}
+            singletons: dict[tuple[int, int], TTSFogBit] = {
+                (bit.x1, bit.y1): bit for bit in l
+            }
             while len(singletons) > 0:
                 # get the highest priority thing which isn't maximally expanded
-                bit = None
+                bit: TTSFogBit = next(iter(singletons.values()))
                 for x in singletons.values():
-                    if bit is None or x.priority > bit.priority:
+                    if x.priority > bit.priority:
                         bit = x
                 del singletons[(bit.x1, bit.y1)]
                 for _ in range(500):

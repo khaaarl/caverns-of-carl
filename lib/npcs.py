@@ -89,7 +89,7 @@ class Npc:
         nl = []
         for name, value in abilities:
             h = str(name)
-            b = int(math.floor(value / 2.0) - 5)
+            b = int(math.floor((value or 0) / 2.0) - 5)
             if b < 0:
                 b = f"{b}"
             else:

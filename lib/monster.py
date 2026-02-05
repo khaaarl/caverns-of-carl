@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import collections
 import copy
 import functools
@@ -7,6 +9,7 @@ import os
 import random
 import re
 import sys
+from typing import Any
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 if _ROOT not in sys.path:
@@ -24,18 +27,18 @@ from lib.utils import (
 
 
 @functools.cache
-def get_monster_library(name):
+def get_monster_library(name: str) -> MonsterLibrary:
     ml = MonsterLibrary(name=name)
     ml.load()
     return ml
 
 
 class MonsterLibrary:
-    def __init__(self, name):
-        self.name = name
-        self.monster_infos = []
+    def __init__(self, name: str) -> None:
+        self.name: str = name
+        self.monster_infos: list[MonsterInfo] = []
 
-    def load(self):
+    def load(self) -> None:
         filename = os.path.join(
             COC_ROOT_DIR, "reference_info", "monsters", f"{self.name}.json"
         )
@@ -44,7 +47,7 @@ class MonsterLibrary:
             for monster_blob in blob["monsters"]:
                 self.monster_infos.append(MonsterInfo(monster_blob))
 
-    def to_blob(self):
+    def to_blob(self) -> dict[str, Any]:
         infos = sorted(
             self.monster_infos, key=lambda x: (x.challenge_rating or 0, x.name)
         )
@@ -53,7 +56,7 @@ class MonsterLibrary:
             "monsters": [x.to_blob() for x in infos],
         }
 
-    def save(self):
+    def save(self) -> None:
         filename = os.path.join(
             COC_ROOT_DIR, "reference_info", "monsters", f"{self.name}.json"
         )
@@ -62,11 +65,11 @@ class MonsterLibrary:
 
     def get_monster_infos(
         self,
-        filter=None,
-        min_challenge_rating=None,
-        max_challenge_rating=None,
-        has_tts=False,
-    ):
+        filter: Any = None,
+        min_challenge_rating: float | None = None,
+        max_challenge_rating: float | None = None,
+        has_tts: bool = False,
+    ) -> list[MonsterInfo]:
         output = []
         for m in self.monster_infos:
             if has_tts and not (
@@ -91,8 +94,8 @@ class MonsterLibrary:
             output.append(m)
         return output
 
-    def ingest_5e_tools_json(self, filename):
-        infos = collections.defaultdict(MonsterInfo)
+    def ingest_5e_tools_json(self, filename: str) -> None:
+        infos: dict[str, MonsterInfo] = collections.defaultdict(MonsterInfo)
         for mi in self.monster_infos:
             infos[mi.name] = mi
         others = []
@@ -160,7 +163,7 @@ class MonsterLibrary:
                 if k == "swim":
                     keywords.add("Swimming")
             mi.keywords = sorted({a.title() for a in keywords})
-        self.monster_infos = infos.values()
+        self.monster_infos = list(infos.values())
 
 
 _CR_TO_HP_RATIO = {
@@ -238,7 +241,7 @@ _CR_TO_XP = {
 
 
 class MonsterInfo:
-    _KEYS_DEFAULTS = {
+    _KEYS_DEFAULTS: dict[str, Any] = {
         "name": "Unnamed Monster",
         "keywords": [],
         "tts_reference_nicknames": [],
@@ -252,10 +255,23 @@ class MonsterInfo:
         "frequency": 1.0,
     }
 
-    def __init__(self, blob={}):
-        for k, default in MonsterInfo._KEYS_DEFAULTS.items():
-            self.__dict__[k] = blob.get(k, default)
-        self.diameter = {
+    def __init__(self, blob: dict[str, Any] = {}) -> None:
+        self.name: str = blob.get("name", "Unnamed Monster")
+        self.keywords: list[str] = blob.get("keywords", [])
+        self.tts_reference_nicknames: list[str] = blob.get(
+            "tts_reference_nicknames", []
+        )
+        self.ascii_char: str = blob.get("ascii_char", "e")
+        self.health: int | None = blob.get("health", None)
+        self.hit_dice_formula: str | None = blob.get("hit_dice_formula", None)
+        self.size: str = blob.get("size", "medium")
+        self.synergies: list[str] = blob.get("synergies", [])
+        self.challenge_rating: float | None = blob.get(
+            "challenge_rating", None
+        )
+        self.max_per_floor: int | None = blob.get("max_per_floor", None)
+        self.frequency: float = blob.get("frequency", 1.0)
+        self.diameter: int = {
             "tiny": 1,
             "small": 1,
             "medium": 1,
@@ -263,25 +279,25 @@ class MonsterInfo:
             "huge": 3,
             "gargantuan": 3,
         }[self.size]
-        self.xp = None
+        self.xp: int | None = None
         if self.challenge_rating is not None:
             self.xp = _CR_TO_XP[self.challenge_rating]
 
-    def to_blob(self):
-        blob = {}
+    def to_blob(self) -> dict[str, Any]:
+        blob: dict[str, Any] = {}
         for k, default in MonsterInfo._KEYS_DEFAULTS.items():
-            v = self.__dict__[k]
+            v = getattr(self, k)
             if v != default:
                 blob[k] = v
         return blob
 
-    def has_keyword(self, k):
+    def has_keyword(self, k: str) -> bool:
         for k2 in self.keywords:
             if k.upper() == k2.upper():
                 return True
         return False
 
-    def has_keyword_or_name(self, kn):
+    def has_keyword_or_name(self, kn: str) -> bool:
         return self.name.upper() == kn.upper() or self.has_keyword(kn)
 
 

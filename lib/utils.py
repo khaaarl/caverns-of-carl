@@ -1,14 +1,22 @@
+from __future__ import annotations
+
+import builtins
 import functools
 import math
 import os
 import random
 import re
 import unicodedata
+from typing import Any
 
 COC_ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 
-def choice(seq, weights=None, cum_weights=None):
+def choice(
+    seq: Any,
+    weights: list[float] | None = None,
+    cum_weights: list[float] | None = None,
+) -> Any:
     if cum_weights is not None:
         return random.choices(seq, cum_weights=cum_weights, k=1)[0]
     if weights is not None:
@@ -17,12 +25,19 @@ def choice(seq, weights=None, cum_weights=None):
 
 
 class WeightTreeNode:
-    def __init__(self, left_weight, value=None, left=None, right=None):
-        self.left_weight = left_weight
-        self.value = value
-        self.left, self.right = left, right
+    def __init__(
+        self,
+        left_weight: float,
+        value: Any = None,
+        left: WeightTreeNode | None = None,
+        right: WeightTreeNode | None = None,
+    ) -> None:
+        self.left_weight: float = left_weight
+        self.value: Any = value
+        self.left: WeightTreeNode | None = left
+        self.right: WeightTreeNode | None = right
 
-    def find_and_remove(self, weight):
+    def find_and_remove(self, weight: float) -> tuple[float, Any]:
         if self.left is None:
             prev_left_weight = self.left_weight
             self.left_weight = 0.0
@@ -32,13 +47,16 @@ class WeightTreeNode:
             self.left_weight -= dweight
             return (dweight, value)
         else:
+            assert self.right is not None
             dweight, value = self.right.find_and_remove(
                 weight - self.left_weight
             )
             return (dweight, value)
 
     @staticmethod
-    def build(seq, weights, ix0, ix1):
+    def build(
+        seq: Any, weights: list[float] | None, ix0: int, ix1: int
+    ) -> tuple[WeightTreeNode, float]:
         if ix1 - ix0 == 1:
             if weights is None:
                 weight = 1.0
@@ -54,7 +72,7 @@ class WeightTreeNode:
         )
 
 
-def samples(seq, k=1, weights=None):
+def samples(seq: Any, k: int = 1, weights: list[float] | None = None) -> Any:
     if k <= 0:
         return []
     elif k == 1:
@@ -73,15 +91,20 @@ def samples(seq, k=1, weights=None):
 
 
 class BNFRule:
-    def expression(self):
+    def expression(self) -> list[BNFRule]:
         "[rule, rule, rule, ...]"
         raise NotImplementedError()
 
-    def parse(self, tokens):
+    def match(self, keywords: set[str]) -> bool:
+        raise NotImplementedError()
+
+    def parse(self, tokens: list[str]) -> Any:
         rules = self.expression()
         return self._parse_tokens_with_rules(tokens, rules)
 
-    def _parse_tokens_with_rules(self, tokens, rules):
+    def _parse_tokens_with_rules(
+        self, tokens: list[str], rules: list[BNFRule]
+    ) -> list[Any] | None:
         if len(tokens) < len(rules):
             return None
         if len(rules) == 1:
@@ -99,122 +122,131 @@ class BNFRule:
                 return [p0] + pn
         return None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self.__class__)
 
 
 class LiteralRule(BNFRule):
-    def __init__(self, literal):
-        self.literal = literal
+    def __init__(self, literal: str) -> None:
+        self.literal: str = literal
 
-    def parse(self, tokens):
+    def parse(self, tokens: list[str]) -> LiteralRule | None:
         if len(tokens) == 1 and tokens[0] == self.literal:
             return self
         return None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"L('{self.literal}')"
 
 
 class EitherRule(BNFRule):
-    def __init__(self, rule_options):
-        self.rule_options = list(rule_options)
+    def __init__(self, rule_options: Any) -> None:
+        self.rule_options: list[BNFRule] = list(rule_options)
 
-    def parse(self, tokens):
+    def parse(self, tokens: list[str]) -> Any:
         for rule in self.rule_options:
             p = rule.parse(tokens)
             if p:
                 return p
         return None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"EitherRule({', '.join([repr(x) for x in self.rule_options])})"
 
 
 class NonSpecialTokensRule(BNFRule):
-    def __init__(self, tokens=None):
-        self.keyword = None
+    def __init__(self, tokens: list[str] | None = None) -> None:
+        self.keyword: str | None = None
         if tokens:
             self.keyword = " ".join(tokens)
 
-    def parse(self, tokens):
+    def parse(self, tokens: list[str]) -> NonSpecialTokensRule | None:
         for token in tokens:
             if token in {"(", ")", "OR", "AND", "NOT"}:
                 return None
         return NonSpecialTokensRule(tokens)
 
-    def match(self, keywords):
+    def match(self, keywords: set[str]) -> bool:
         return self.keyword in keywords or not self.keyword
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"'{self.keyword}'"
 
 
 class NotRule(BNFRule):
-    def __init__(self, internal_rule=None):
-        self.internal_rule = internal_rule
+    def __init__(self, internal_rule: BNFRule | None = None) -> None:
+        self.internal_rule: BNFRule | None = internal_rule
 
-    def expression(self):
+    def expression(self) -> list[BNFRule]:
         return [LiteralRule("NOT"), KeywordExprRule()]
 
-    def parse(self, tokens):
+    def parse(self, tokens: list[str]) -> NotRule | None:
         p = super().parse(tokens)
         if not p:
             return None
         return NotRule(p[1])
 
-    def match(self, keywords):
+    def match(self, keywords: set[str]) -> bool:
+        assert self.internal_rule is not None
         return not self.internal_rule.match(keywords)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"NotRule({self.internal_rule})"
 
 
 class OrRule(BNFRule):
-    def __init__(self, left=None, right=None):
-        self.left, self.right = left, right
+    def __init__(
+        self, left: BNFRule | None = None, right: BNFRule | None = None
+    ) -> None:
+        self.left: BNFRule | None = left
+        self.right: BNFRule | None = right
 
-    def expression(self):
+    def expression(self) -> list[BNFRule]:
         return [KeywordExprRule(), LiteralRule("OR"), KeywordExprRule()]
 
-    def parse(self, tokens):
+    def parse(self, tokens: list[str]) -> OrRule | None:
         p = super().parse(tokens)
         if not p:
             return None
         return OrRule(p[0], p[2])
 
-    def match(self, keywords):
+    def match(self, keywords: set[str]) -> bool:
+        assert self.left is not None and self.right is not None
         return self.left.match(keywords) or self.right.match(keywords)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"OrRule({self.left}, {self.right})"
 
 
 class AndRule(BNFRule):
-    def __init__(self, left=None, right=None):
-        self.left, self.right = left, right
+    def __init__(
+        self, left: BNFRule | None = None, right: BNFRule | None = None
+    ) -> None:
+        self.left: BNFRule | None = left
+        self.right: BNFRule | None = right
 
-    def expression(self):
+    def expression(self) -> list[BNFRule]:
         return [KeywordExprRule(), LiteralRule("AND"), KeywordExprRule()]
 
-    def parse(self, tokens):
+    def parse(self, tokens: list[str]) -> AndRule | None:
         p = super().parse(tokens)
         if not p:
             return None
         return AndRule(p[0], p[2])
 
-    def match(self, keywords):
+    def match(self, keywords: set[str]) -> bool:
+        assert self.left is not None and self.right is not None
         return self.left.match(keywords) and self.right.match(keywords)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"AndRule({self.left}, {self.right})"
 
 
 class ParensRule(BNFRule):
-    def expression(self):
+    def expression(self) -> list[BNFRule]:
         return [LiteralRule("("), KeywordExprRule(), LiteralRule(")")]
 
-    def parse(self, tokens):
+    def parse(self, tokens: list[str]) -> Any:
         p = super().parse(tokens)
         if not p:
             return None
@@ -222,7 +254,7 @@ class ParensRule(BNFRule):
 
 
 class KeywordExprRule(EitherRule):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             [
                 ParensRule(),
@@ -233,18 +265,18 @@ class KeywordExprRule(EitherRule):
             ]
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "KeywordExprRule"
 
 
 @functools.cache
-def parse_keyword_expr(s):
+def parse_keyword_expr(s: str) -> Any:
     tokens = re.split("([() ])", s.upper().strip())
     tokens = [x.strip() for x in tokens if x.strip()]
     return KeywordExprRule().parse(tokens)
 
 
-def expr_match_keywords(expr, keywords):
+def expr_match_keywords(expr: Any, keywords: list[str] | set[str]) -> bool:
     if not expr:
         return True
     keywords = {x.upper() for x in keywords}
@@ -255,7 +287,7 @@ def expr_match_keywords(expr, keywords):
     return expr.match(keywords)
 
 
-def eval_dice(e):
+def eval_dice(e: int | float | str) -> int:
     e = str(e).strip().replace("-", "+-")
     l = [x.strip() for x in e.split("+") if x.strip()]
     total = 0
@@ -278,15 +310,19 @@ def eval_dice(e):
     return total
 
 
-def bfs(d, start, max_depth=None):
+def bfs(
+    d: dict[Any, Any],
+    start: Any,
+    max_depth: int | None = None,
+) -> list[set[Any]]:
     if max_depth is not None and max_depth < 0:
         return []
-    output = [set([start])]
-    seen = set([start])
+    output: list[set[Any]] = [set([start])]
+    seen: set[Any] = set([start])
     while True:
         if max_depth is not None and len(output) > max_depth:
             break
-        next_layer = set()
+        next_layer: set[Any] = set()
         for item in output[-1]:
             for neighbor in d[item]:
                 if neighbor in seen:
@@ -300,14 +336,14 @@ def bfs(d, start, max_depth=None):
 
 
 def dfs(
-    d,
-    start,
-    seen=None,
-    accum=None,
-    prev=None,
-    include_previous=False,
-    randomize=False,
-):
+    d: dict[Any, Any],
+    start: Any,
+    seen: set[Any] | None = None,
+    accum: list[Any] | None = None,
+    prev: Any = None,
+    include_previous: bool = False,
+    randomize: bool = False,
+) -> list[Any]:
     accum = accum or []
     seen = seen or set()
     seen.add(start)
@@ -325,8 +361,10 @@ def dfs(
     return accum
 
 
-def neighbor_coords(x, y, cardinal=True, diagonal=False):
-    l = []
+def neighbor_coords(
+    x: int, y: int, cardinal: bool = True, diagonal: bool = False
+) -> Any:
+    l: list[tuple[int, int]] = []
     if cardinal:
         l += [(-1, 0), (1, 0), (0, -1), (0, 1)]
     if diagonal:
@@ -337,17 +375,25 @@ def neighbor_coords(x, y, cardinal=True, diagonal=False):
 
 @functools.total_ordering
 class CharStyle:
-    def __init__(self, r, g, b, *, is_bold=False, is_underline=False):
-        self.r = r
-        self.g = g
-        self.b = b
-        self.is_bold = is_bold
-        self.is_underline = is_underline
+    def __init__(
+        self,
+        r: int,
+        g: int,
+        b: int,
+        *,
+        is_bold: bool = False,
+        is_underline: bool = False,
+    ) -> None:
+        self.r: int = r
+        self.g: int = g
+        self.b: int = b
+        self.is_bold: bool = is_bold
+        self.is_underline: bool = is_underline
 
-    def color_hex(self):
+    def color_hex(self) -> str:
         return f"#{self.r:02x}{self.g:02x}{self.b:02x}"
 
-    def __str__(self):
+    def __str__(self) -> str:
         s = self.color_hex()
         if self.is_bold:
             s += " bold"
@@ -356,7 +402,7 @@ class CharStyle:
         return s
 
     @staticmethod
-    def from_ansi(possible_code):
+    def from_ansi(possible_code: str) -> CharStyle | None:
         m = re.match(r"^\[[0-9];[0-9][0-9]m$", possible_code)
         if not m:
             return None
@@ -388,44 +434,52 @@ class CharStyle:
             is_underline=style_code == 4,
         )
 
-    def tuple(self):
+    def tuple(self) -> builtins.tuple[int, int, int, bool, bool]:
         return (self.r, self.g, self.b, self.is_bold, self.is_underline)
 
-    def __lt__(self, other):
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, CharStyle):
+            return NotImplemented
         return self.tuple() < other.tuple()
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if other is None:
             return False
+        if not isinstance(other, CharStyle):
+            return NotImplemented
         return self.tuple() == other.tuple()
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return self.tuple().__hash__()
 
 
 class StyledChar:
-    def __init__(self, c, style=None):
+    def __init__(
+        self, c: str | StyledChar, style: CharStyle | None = None
+    ) -> None:
         if isinstance(c, StyledChar):
-            self.c = c.c
-            self.style = c.style
-            self.bookmark_name = c.bookmark_name
-            self.link_destination = c.link_destination
+            self.c: str = c.c
+            self.style: CharStyle | None = c.style
+            self.bookmark_name: str | None = c.bookmark_name
+            self.link_destination: str | None = c.link_destination
             return
         self.c = c
         self.style = style
         self.bookmark_name = None
         self.link_destination = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         if not self.style:
             return self.c
         return "{" + self.c + " " + str(self.style) + "}"
 
 
 class StyledString:
-    def __init__(self, chars=None):
+    def __init__(
+        self, chars: StyledString | str | StyledChar | list[Any] | None = None
+    ) -> None:
         if isinstance(chars, StyledString):
-            self.chars = list(chars.chars)
+            self.chars: list[StyledChar] = list(chars.chars)
             return
         if isinstance(chars, str):
             self.chars = StyledString._list_from_ascii(chars)
@@ -435,19 +489,19 @@ class StyledString:
             return
         self.chars = [StyledChar(x) for x in chars or []]
 
-    def unstyled(self):
-        l = []
+    def unstyled(self) -> str:
+        l: list[str] = []
         for c in self.chars:
             l.append(c.c)
         return "".join(l)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "".join([str(x) for x in self.chars])
 
-    def split_by_style(self):
-        output = []
-        accum = []
-        cur_style = None
+    def split_by_style(self) -> list[StyledString]:
+        output: list[StyledString] = []
+        accum: list[StyledChar] = []
+        cur_style: CharStyle | None = None
         for c in self.chars:
             if c.style != cur_style:
                 if accum:
@@ -459,9 +513,9 @@ class StyledString:
             output.append(StyledString(accum))
         return output
 
-    def join(self, seq):
+    def join(self, seq: Any) -> StyledString:
         seq = list(seq)
-        accum = []
+        accum: list[StyledChar] = []
         for ix, item in enumerate(seq):
             for c in StyledString(item).chars:
                 accum.append(c)
@@ -470,10 +524,10 @@ class StyledString:
                     accum.append(c)
         return StyledString(accum)
 
-    def split(self, separator):
+    def split(self, separator: str) -> list[StyledString]:
         # TODO: handle separators that aren't just len 1 strings
-        output = []
-        tmp = []
+        output: list[StyledString] = []
+        tmp: list[Any] = []
         for c in self.chars:
             if c.c == separator:
                 output.append(StyledString("").join(tmp))
@@ -485,8 +539,8 @@ class StyledString:
         return output
 
     @staticmethod
-    def _list_from_ascii(text):
-        output = []
+    def _list_from_ascii(text: str) -> list[StyledChar]:
+        output: list[StyledChar] = []
         ix = 0
         while ix < len(text):
             style = CharStyle.from_ansi(text[ix : ix + 6])
@@ -500,58 +554,71 @@ class StyledString:
 
 
 class DocLink:
-    def __init__(self, *args, content=None, destination=None):
+    def __init__(
+        self,
+        *args: str,
+        content: str | None = None,
+        destination: str | None = None,
+    ) -> None:
         if len(args) == 2:
             content = args[0]
             destination = args[1]
         elif len(args) == 1:
             content = args[0]
             destination = args[0]
-        self.content = content
-        self.destination = destination
+        self.content: str | None = content
+        self.destination: str | None = destination
 
 
 class DocBookmark:
-    def __init__(self, name, content=None):
-        self.name = name
-        self.content = content or name
+    def __init__(self, name: str, content: str | None = None) -> None:
+        self.name: str = name
+        self.content: str = content or name
 
 
 class Doc:
-    def __init__(self, *args, header=None, body=None, separator="\n"):
+    def __init__(
+        self,
+        *args: Any,
+        header: Any = None,
+        body: Any = None,
+        separator: str = "\n",
+    ) -> None:
         if len(args) == 2:
             header = args[0]
             body = args[1]
         elif len(args) == 1:
             body = args[0]
-        self.header = header
-        self.body = body
-        self.separator = separator
+        self.header: Any = header
+        self.body: Any = body
+        self.separator: str = separator
 
-    def __str__(self):
-        return self.flat_str()
+    def __str__(self) -> str:
+        return self.flat_str().unstyled()
 
-    def flat_str(self, *, separator=None):
+    def flat_str(self, *, separator: str | None = None) -> StyledString:
         if separator is None:
             separator = self.separator
-        o = []
+        o: list[Any] = []
         if self.header is not None:
             o.append(self.flat_header(separator=separator))
         if self.body is not None:
             o.append(self.flat_body(separator=separator))
         return StyledString(separator).join(o)
 
-    def flat_header(self, *, separator=None):
+    def flat_header(self, *, separator: str | None = None) -> StyledString:
         if separator is None:
             separator = self.separator
         return self._flat_thing(self.header, separator=separator)
 
-    def flat_body(self, *, separator=None):
+    def flat_body(self, *, separator: str | None = None) -> StyledString:
         if separator is None:
             separator = self.separator
         return self._flat_thing(self.body, separator=separator)
 
-    def _flat_thing(self, thing, *, separator="\n"):
+    def _flat_thing(
+        self, thing: Any, *, separator: str = "\n"
+    ) -> StyledString:
         if isinstance(thing, str):
             return StyledString(thing)
         if isinstance(thing, StyledString):
@@ -570,20 +637,20 @@ class Doc:
                 for c in tmp.chars:
                     c.bookmark_name = thing.name
             return tmp
-        o = []
+        o: list[Any] = []
         if isinstance(thing, list):
             for x in thing:
                 o.append(self._flat_thing(x))
         return StyledString(separator).join(o)
 
 
-def random_dc(level):
+def random_dc(level: int) -> int:
     lo = int(math.floor(level * 0.7 + 8))
     hi = int(math.ceil(level * 0.8 + 12))
     return random.randrange(lo, hi + 1)
 
 
-def remove_non_ascii(text):
+def remove_non_ascii(text: str) -> str:
     # Normalize the Unicode string to decompose accented characters
     normalized = unicodedata.normalize("NFKD", text)
     # Encode to ASCII bytes, ignoring errors, then decode back to a string

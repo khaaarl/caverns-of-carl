@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Read(/**)",
+      "Read(/**)",
+      "Edit(/*.py)",
+      "Edit(/**/*.py)",
+      "Edit(/reference_info/**)",
+      "Write(/*.py)",
+      "Write(/**/*.py)",
+      "Write(/reference_info/**)",
+      "Bash(find *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git status *)",
+      "Bash(ls *)",
+      "Bash(pip *)",
+      "Bash(py --version *)",
+      "Bash(python -m unittest *)",
+      "Bash(pre-commit run)",
+      "Bash(pre-commit run *)",
+      "Bash(ruff *)",
+      "Bash(ty *)",
+      "Bash(wc *)"
+    ],
+    "deny": [
+      "Bash(curl *)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
+  },
+  "env": {
+  }
+}

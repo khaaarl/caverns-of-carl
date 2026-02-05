@@ -6,9 +6,14 @@ import lib.tts as tts
 
 
 class Tile:
-    def __init__(self, x=None, y=None, biome_name=None):
-        self.x = x
-        self.y = y
+    def __init__(
+        self,
+        x: int | None = None,
+        y: int | None = None,
+        biome_name: str | None = None,
+    ):
+        self.x: int | None = x
+        self.y: int | None = y
         self.tile_style = None
         self.roomix = None
         self.corridorix = None
@@ -313,6 +318,7 @@ class DoorTile(CorridorFloorTile):
         return True
 
     def tts_objects(self, df):
+        assert self.x is not None and self.y is not None
         obj = None
         corridor = df.corridors[self.corridorix]
         if corridor.width == 1:
@@ -399,7 +405,7 @@ class LadderDownTile(RoomFloorTile):
         return True
 
 
-def rotY_away_from_wall(df, x, y, original=0):
+def rotY_away_from_wall(df, x: int, y: int, original: int = 0) -> int | None:
     posrots = [(0, 1, 0), (1, 0, 90), (0, -1, 180), (-1, 0, 270)]
     random.shuffle(posrots)
     for dx, dy, r in posrots:
@@ -417,6 +423,7 @@ class ChestTile(RoomFloorTile):
         return "[1;93m$"
 
     def tts_objects(self, df):
+        assert self.x is not None and self.y is not None
         obj = tts.reference_object("Chest Closed Tile")
         obj["Transform"]["rotY"] += rotY_away_from_wall(df, self.x, self.y)
         obj["Nickname"] = "Chest"
@@ -493,6 +500,7 @@ class BookshelfTile(ChestTile):
         return "[1;93mB"
 
     def tts_objects(self, df):
+        assert self.x is not None and self.y is not None
         obj = tts.reference_object("Bookshelf Tile")
         obj["Transform"]["rotY"] += rotY_away_from_wall(df, self.x, self.y)
         obj["Nickname"] = "Bookshelf"
@@ -508,13 +516,16 @@ class BookshelfTile(ChestTile):
 
 class MimicTile(ChestTile):
     def __init__(self, roomix, monster, *args, **kwargs):
-        super().__init__(roomix, contents="", *args, **kwargs)
+        # Ensure contents is not duplicated in kwargs
+        contents = kwargs.pop("contents", "")
+        super().__init__(roomix, contents, *args, **kwargs)
         self.monster = monster
 
     def to_char(self):
         return "m"
 
     def tts_objects(self, df):
+        assert self.x is not None and self.y is not None
         obj = tts.reference_object("Chest Closed Mimic Tile")
         obj["Transform"]["rotY"] += rotY_away_from_wall(df, self.x, self.y)
         obj["Nickname"] = "Chest"

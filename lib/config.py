@@ -1,22 +1,82 @@
+from __future__ import annotations
+
 import re
 import tkinter as tk
 from tkinter import ttk
+from typing import Any
 
 
 class DungeonConfig:
-    def __init__(self, biome_name=None):
-        self.biome_name = biome_name
-        self.biomes = []
+    def __init__(self, biome_name: str | None = None) -> None:
+        self.biome_name: str | None = biome_name
+        self.biomes: list[DungeonConfig] = []
 
-        self.ui_ops = []
-        self.var_keys = set()
-        self.tk_types = {}
-        self.tk_label_texts = {}
-        self.tk_labels = {}
-        self.tk_entries = {}
-        self.tk_vars = {}
-        self.tk_is_long = {}
-        self.tk_combobox_values = {}
+        self.ui_ops: list[tuple[str, str | None]] = []
+        self.var_keys: set[str] = set()
+        self.tk_types: dict[str, type] = {}
+        self.tk_label_texts: dict[str, str] = {}
+        self.tk_labels: dict[str, Any] = {}
+        self.tk_entries: dict[str, Any] = {}
+        self.tk_vars: dict[str, Any] = {}
+        self.tk_is_long: dict[str, bool] = {}
+        self.tk_combobox_values: dict[str, list[str]] = {}
+
+        # Declare all config attributes explicitly for type checker visibility.
+        # These are overwritten by add_var calls below.
+        self.width: int = 0
+        self.height: int = 0
+        self.num_rooms: int = 0
+        self.biome_northness: float = 0.0
+        self.biome_southness: float = 0.0
+        self.biome_westness: float = 0.0
+        self.biome_eastness: float = 0.0
+        self.min_room_radius: int = 0
+        self.num_room_embiggenings: int = 0
+        self.num_room_wiggles: int = 0
+        self.use_maze_layout: bool = False
+        self.cavernous_room_percent: float = 0.0
+        self.structure_style: str = ""
+        self.cavern_style: str = ""
+        self.room_bright_ratio: float = 0.0
+        self.room_dim_ratio: float = 0.0
+        self.room_dark_ratio: float = 0.0
+        self.num_erosion_steps: int = 0
+        self.prefer_full_connection: bool = False
+        self.min_corridors_per_room: float = 0.0
+        self.corridor_width_1_ratio: float = 0.0
+        self.corridor_width_2_ratio: float = 0.0
+        self.corridor_width_3_ratio: float = 0.0
+        self.num_rivers: int = 0
+        self.min_num_rivers: int = 0
+        self.max_num_rivers: int = 0
+        self.num_up_ladders: int = 0
+        self.num_down_ladders: int = 0
+        self.min_ladder_distance: int = 0
+        self.target_character_level: int = 0
+        self.num_player_characters: int = 0
+        self.num_treasures: str = ""
+        self.num_mimics: str = ""
+        self.num_bookshelves: str = ""
+        self.room_encounter_percent: float = 0.0
+        self.encounter_xp_low_percent: float = 0.0
+        self.encounter_xp_high_percent: float = 0.0
+        self.monster_filter: str = ""
+        self.trap_damage_low_multiplier: int = 0
+        self.trap_damage_high_multiplier: int = 0
+        self.room_trap_percent: float = 0.0
+        self.corridor_trap_percent: float = 0.0
+        self.door_trap_percent: float = 0.0
+        self.chest_trap_percent: float = 0.0
+        self.door_lock_percent: float = 0.0
+        self.door_secret_percent: float = 0.0
+        self.blacksmith_percent: float = 0.0
+        self.kryxix_altar_percent: float = 0.0
+        self.ssarthaxx_altar_percent: float = 0.0
+        self.num_misc_NPCs: str = ""
+        self.tts_fog_of_war: bool = False
+        self.tts_hidden_zones: bool = False
+        self.tts_notecards: bool = False
+        self.save_map_image: bool = False
 
         self.add_var("width", 35, in_biome=False)
         self.add_var("height", 35, in_biome=False)
@@ -89,14 +149,14 @@ class DungeonConfig:
 
     def add_var(
         self,
-        k,
-        v,
-        tk_label=None,
-        is_long=False,
-        in_biome=True,
-        biome_only=False,
-        combobox_values=None,
-    ):
+        k: str,
+        v: Any,
+        tk_label: str | None = None,
+        is_long: bool = False,
+        in_biome: bool = True,
+        biome_only: bool = False,
+        combobox_values: list[str] | None = None,
+    ) -> None:
         assert k not in self.var_keys
         assert type(v) in [int, float, str, bool]
         if not tk_label:
@@ -121,7 +181,7 @@ class DungeonConfig:
         if combobox_values:
             self.tk_combobox_values[k] = combobox_values
 
-    def make_tk_labels_and_entries(self, parent):
+    def make_tk_labels_and_entries(self, parent: Any) -> None:
         row = 0
         group = 0
         for op, k in self.ui_ops:
@@ -130,6 +190,7 @@ class DungeonConfig:
                 row = 0
             if op != "config":
                 continue
+            assert k is not None
             if k in self.tk_labels:
                 continue
             v = self.__dict__[k]
@@ -179,13 +240,13 @@ class DungeonConfig:
                 )
                 row += 1
 
-    def load_from_tk_entries(self):
+    def load_from_tk_entries(self) -> None:
         for k, var in self.tk_vars.items():
             self.__dict__[k] = var.get()
         for biome in self.biomes:
             biome.load_from_tk_entries()
 
-    def add_biome(self, biome_name):
+    def add_biome(self, biome_name: str) -> DungeonConfig:
         assert biome_name
         biome = DungeonConfig(biome_name=biome_name)
         for k in self.var_keys:
@@ -193,7 +254,7 @@ class DungeonConfig:
         self.biomes.append(biome)
         return biome
 
-    def get_biome(self, biome_name):
+    def get_biome(self, biome_name: str | None) -> DungeonConfig:
         if biome_name is None:
             return self
         for biome in self.biomes:

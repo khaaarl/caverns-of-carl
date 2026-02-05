@@ -197,7 +197,9 @@ def run_ui():
         except Exception as e:
             text_output.append("\n")
             text_output.append(traceback.format_exc())
-        chest_info_text.insert(tk.END, StyledString("\n").join(text_output))
+        chest_info_text.insert(
+            tk.END, StyledString("\n").join(text_output).unstyled()
+        )
         chest_info_text.see(tk.END)
 
     operation_frame = tk.Frame(left_frame)
