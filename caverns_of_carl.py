@@ -49,8 +49,8 @@ https://aos-tts.github.io/Stormvault/
 """
 
 try:
-    import tkinter as _tk_test
-except:
+    import tkinter as _tk_test  # noqa: F401
+except (ImportError, ModuleNotFoundError):
     print(
         "Failed to load tcl/tk. You may need to install additional modules (e.g. python3-tk if you are on Ubuntu)\nPress enter to exit"
     )
