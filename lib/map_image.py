@@ -237,8 +237,48 @@ def produce_map_image(df, name, format="png", player_map=False):
     return filename
 
 
+def produce_dm_overlay_image(df, name, format="png"):
+    """Produce a transparent overlay showing only mimics and secret doors.
+
+    Mimics are rendered as just the mimic sprite (no floor underneath).
+    Secret doors are rendered as the full secret door tile.
+    Everything else is fully transparent.
+
+    Args:
+        df: DungeonFloor instance
+        name: base name for the output file
+        format: "png" (must be png to support transparency)
+
+    Returns:
+        The output file path, or None if generation failed.
+    """
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+    width_px = df.width * TILE_SIZE
+    height_px = df.height * TILE_SIZE
+    overlay_img = Image.new("RGBA", (width_px, height_px), (0, 0, 0, 0))
+
+    for x in range(df.width):
+        for y in range(df.height):
+            tile = df.tiles[x][y]
+            img_x = x * TILE_SIZE
+            img_y = (df.height - 1 - y) * TILE_SIZE
+
+            if isinstance(tile, MimicTile):
+                mimic_img = _load_tile("mimic")
+                overlay_img.paste(mimic_img, (img_x, img_y), mask=mimic_img)
+            elif isinstance(tile, SecretDoorTile):
+                secret_img = _load_tile("secret_door")
+                overlay_img.paste(secret_img, (img_x, img_y))
+
+    safe_name = "".join(c if c.isalnum() or c in " -_" else "_" for c in name)
+    filename = os.path.join(OUTPUT_DIR, f"{safe_name} (DM overlay).png")
+    overlay_img.save(filename, "PNG")
+    return filename
+
+
 def produce_map_images_if_possible(df, name, format="png"):
-    """Produce both DM and player map images. Returns list of created file paths."""
+    """Produce DM, player, and DM overlay map images. Returns list of created file paths."""
     results = []
     for player_map in [False, True]:
         try:
@@ -247,4 +287,9 @@ def produce_map_images_if_possible(df, name, format="png"):
         except Exception as e:
             label = "player" if player_map else "DM"
             print(f"Failed to produce {label} map image: {e}")
+    try:
+        path = produce_dm_overlay_image(df, name, format)
+        results.append(path)
+    except Exception as e:
+        print(f"Failed to produce DM overlay image: {e}")
     return results

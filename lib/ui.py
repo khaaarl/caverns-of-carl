@@ -8,9 +8,9 @@ from tkinter import scrolledtext, ttk
 
 import lib.config
 import lib.dungeon
+import lib.map_image
 import lib.monster
 import lib.pdf
-import lib.map_image
 import lib.tts as tts
 from lib.utils import StyledString
 
