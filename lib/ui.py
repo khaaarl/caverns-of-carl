@@ -10,6 +10,7 @@ import lib.config
 import lib.dungeon
 import lib.monster
 import lib.pdf
+import lib.map_image
 import lib.tts as tts
 from lib.utils import StyledString
 
@@ -185,6 +186,16 @@ def run_ui():
             blob = tts.dungeon_to_tts_blob(df, name, pdf_filename=pdf_filename)
             tts_filename = tts.save_tts_blob(blob)
             text_output.append(f"Saved TTS file to {tts_filename}")
+            if config.save_map_image:
+                map_filenames = lib.map_image.produce_map_images_if_possible(
+                    df, name
+                )
+                for map_filename in map_filenames:
+                    text_output.append(
+                        f"Saved map image to {map_filename}"
+                    )
+                if not map_filenames:
+                    text_output.append("Failed to produce map images.")
         except Exception as e:
             text_output.append("\n")
             text_output.append(traceback.format_exc())

@@ -82,6 +82,7 @@ class DungeonConfig:
         self.add_var("tts_fog_of_war", False, in_biome=False)
         self.add_var("tts_hidden_zones", True, in_biome=False)
         self.add_var("tts_notecards", True, in_biome=False)
+        self.add_var("save_map_image", True, in_biome=False)
         self.allow_corridor_intersection = False
         self.max_corridor_attempts = 30000
         self.max_room_attempts = 10
