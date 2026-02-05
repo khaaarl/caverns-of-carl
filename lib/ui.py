@@ -191,9 +191,7 @@ def run_ui():
                     df, name
                 )
                 for map_filename in map_filenames:
-                    text_output.append(
-                        f"Saved map image to {map_filename}"
-                    )
+                    text_output.append(f"Saved map image to {map_filename}")
                 if not map_filenames:
                     text_output.append("Failed to produce map images.")
         except Exception as e:

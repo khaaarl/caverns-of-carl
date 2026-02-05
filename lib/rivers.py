@@ -1,20 +1,35 @@
+from __future__ import annotations
+
 import math
 import random
+from collections.abc import Iterable
+from typing import TYPE_CHECKING
 
 import lib.tts as tts
 from lib.tile import WaterTile
 
+if TYPE_CHECKING:
+    from lib.dungeon import DungeonFloor
+
 
 class River:
-    def __init__(self, diameter, river_tile_coords=None):
-        self.diameter = diameter
-        self.river_tile_coords = list(river_tile_coords or [])
-        self.adjacent_coords_set = self._adjacent_coords()
-        self.is_carved = False
-        self.ix = None
+    def __init__(
+        self,
+        diameter: int,
+        river_tile_coords: Iterable[tuple[int, int]] | None = None,
+    ) -> None:
+        self.diameter: int = diameter
+        self.river_tile_coords: list[tuple[int, int]] = list(
+            river_tile_coords or []
+        )
+        self.adjacent_coords_set: set[tuple[int, int]] = (
+            self._adjacent_coords()
+        )
+        self.is_carved: bool = False
+        self.ix: int | None = None
 
-    def _adjacent_coords(self):
-        adjacent_coords = set()
+    def _adjacent_coords(self) -> set[tuple[int, int]]:
+        adjacent_coords: set[tuple[int, int]] = set()
         for x, y in self.river_tile_coords:
             for dx in range(-1, 2):
                 for dy in range(-1, 2):
@@ -24,8 +39,8 @@ class River:
                 adjacent_coords.remove((x, y))
         return adjacent_coords
 
-    def carve_into_dungeon(self, df):
-        adjacent_coords = set()
+    def carve_into_dungeon(self, df: DungeonFloor) -> None:
+        adjacent_coords: set[tuple[int, int]] = set()
         for x, y in self.river_tile_coords:
             for dx in range(-1, 2):
                 for dy in range(-1, 2):
@@ -44,19 +59,24 @@ class River:
             df.set_tile(tile)
 
     @staticmethod
-    def propose_river(df, diameter=2):
-        start_coords = (
+    def propose_river(df: DungeonFloor, diameter: int = 2) -> River:
+        start_coords: tuple[float, float] = (
             2 + random.random() * (df.width - 4),
             2 + random.random() * (df.height - 4),
         )
-        start_angle = random.random() * math.pi
-        river_core_coords = set()
-        sin_period = 2 + random.random() * 7
-        sin_amplitude = 1.5 * random.random() / sin_period
-        sin_offset = random.random() * 2 * math.pi
-        jitter_level = random.random() / 5.0
+        start_angle: float = random.random() * math.pi
+        river_core_coords: set[tuple[int, int]] = set()
+        sin_period: float = 2 + random.random() * 7
+        sin_amplitude: float = 1.5 * random.random() / sin_period
+        sin_offset: float = random.random() * 2 * math.pi
+        jitter_level: float = random.random() / 5.0
 
-        def step(coords, angle, stepix, d):
+        def step(
+            coords: tuple[float, float],
+            angle: float,
+            stepix: int,
+            d: float,
+        ) -> tuple[tuple[float, float], float, bool]:
             angle += (random.random() - 0.5) * jitter_level * d
             angle += (
                 sin_amplitude
@@ -76,8 +96,8 @@ class River:
             )
             return (coords, angle, done)
 
-        coords = start_coords
-        angle = start_angle
+        coords: tuple[float, float] = start_coords
+        angle: float = start_angle
         for ix in range(10000):
             coords, angle, done = step(coords, angle, ix, 0.1)
             if done:
@@ -88,9 +108,9 @@ class River:
             coords, angle, done = step(coords, angle, ix, -0.1)
             if done:
                 break
-        rlo = -math.floor((diameter - 1) / 2)
-        rhi = math.ceil((diameter - 1) / 2) + 1
-        river_tile_coords = set()
+        rlo: int = -math.floor((diameter - 1) / 2)
+        rhi: int = math.ceil((diameter - 1) / 2) + 1
+        river_tile_coords: set[tuple[int, int]] = set()
         for x, y in river_core_coords:
             for dx in range(rlo, rhi):
                 for dy in range(rlo, rhi):
@@ -105,9 +125,9 @@ class River:
 
         return River(diameter=diameter, river_tile_coords=river_tile_coords)
 
-    def tts_fog_bits(self, df):
+    def tts_fog_bits(self, df: DungeonFloor) -> list[tts.TTSFogBit]:
         """returns a list of fog bits: all small ones probably."""
-        fogs = []
+        fogs: list[tts.TTSFogBit] = []
         coords = set(self.river_tile_coords).union(self.adjacent_coords_set)
         for x, y in coords:
             tile = df.get_tile(x=x, y=y)

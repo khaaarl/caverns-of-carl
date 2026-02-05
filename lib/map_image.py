@@ -45,7 +45,6 @@ def _load_tile(name):
     return _tile_image_cache[name]
 
 
-
 def _door_tile_name(df, x, y):
     """Determine the correct door tile image name based on orientation,
     width (how many adjacent door tiles), and position within the group.
@@ -128,7 +127,13 @@ def _select_floor_image(tile, rng):
 
 
 # Tile types that are RGBA overlays composited on top of the floor
-_OVERLAY_TYPES = (ChestTile, BookshelfTile, MimicTile, LadderUpTile, LadderDownTile)
+_OVERLAY_TYPES = (
+    ChestTile,
+    BookshelfTile,
+    MimicTile,
+    LadderUpTile,
+    LadderDownTile,
+)
 
 
 def _select_wall_image(tile):

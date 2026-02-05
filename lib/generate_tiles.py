@@ -85,8 +85,16 @@ def _draw_cavern_floor_texture(draw, variant=0):
     # Slightly shift base color per variant
     base_offsets = [0, 5, -5, 3, -3, 7]
     d = base_offsets[variant % len(base_offsets)]
-    base = (CAVERN_FLOOR_COLOR[0] + d, CAVERN_FLOOR_COLOR[1] + d, CAVERN_FLOOR_COLOR[2] + d)
-    dark = (CAVERN_FLOOR_DARK[0] + d, CAVERN_FLOOR_DARK[1] + d, CAVERN_FLOOR_DARK[2] + d)
+    base = (
+        CAVERN_FLOOR_COLOR[0] + d,
+        CAVERN_FLOOR_COLOR[1] + d,
+        CAVERN_FLOOR_COLOR[2] + d,
+    )
+    dark = (
+        CAVERN_FLOOR_DARK[0] + d,
+        CAVERN_FLOOR_DARK[1] + d,
+        CAVERN_FLOOR_DARK[2] + d,
+    )
     draw.rectangle([0, 0, TILE_SIZE, TILE_SIZE], fill=base)
     rng = random.Random(99 + variant * 137)
     # Scattered speckles
@@ -261,10 +269,13 @@ def generate_door_horizontal_2(position):
         # Seam line at right edge
         draw.line(
             [(TILE_SIZE - 1, 7), (TILE_SIZE - 1, TILE_SIZE - 8)],
-            fill=CHEST_DARK, width=2,
+            fill=CHEST_DARK,
+            width=2,
         )
         # Handle near the seam
-        draw.ellipse([TILE_SIZE - 14, 28, TILE_SIZE - 6, 36], fill=(80, 80, 80))
+        draw.ellipse(
+            [TILE_SIZE - 14, 28, TILE_SIZE - 6, 36], fill=(80, 80, 80)
+        )
     else:
         # Door plank: right edge has frame, left edge extends to tile boundary
         draw.rectangle([0, 7, TILE_SIZE - 9, TILE_SIZE - 8], fill=DOOR_COLOR)
@@ -296,9 +307,12 @@ def generate_door_vertical_2(position):
         # Seam line at bottom edge
         draw.line(
             [(7, TILE_SIZE - 1), (TILE_SIZE - 8, TILE_SIZE - 1)],
-            fill=CHEST_DARK, width=2,
+            fill=CHEST_DARK,
+            width=2,
         )
-        draw.ellipse([28, TILE_SIZE - 14, 36, TILE_SIZE - 6], fill=(80, 80, 80))
+        draw.ellipse(
+            [28, TILE_SIZE - 14, 36, TILE_SIZE - 6], fill=(80, 80, 80)
+        )
     else:
         draw.rectangle([7, 0, TILE_SIZE - 8, TILE_SIZE - 9], fill=DOOR_COLOR)
         for y in [12, 28, 44]:
@@ -326,7 +340,8 @@ def generate_door_horizontal_3(position):
             draw.line([(x, 8), (x, TILE_SIZE - 9)], fill=CHEST_DARK, width=1)
         draw.line(
             [(TILE_SIZE - 1, 7), (TILE_SIZE - 1, TILE_SIZE - 8)],
-            fill=CHEST_DARK, width=2,
+            fill=CHEST_DARK,
+            width=2,
         )
     elif position == "center":
         draw.rectangle([0, 7, TILE_SIZE - 1, TILE_SIZE - 8], fill=DOOR_COLOR)
@@ -335,7 +350,8 @@ def generate_door_horizontal_3(position):
         draw.line([(0, 7), (0, TILE_SIZE - 8)], fill=CHEST_DARK, width=2)
         draw.line(
             [(TILE_SIZE - 1, 7), (TILE_SIZE - 1, TILE_SIZE - 8)],
-            fill=CHEST_DARK, width=2,
+            fill=CHEST_DARK,
+            width=2,
         )
         draw.ellipse([28, 28, 36, 36], fill=(80, 80, 80))
     else:
@@ -363,7 +379,8 @@ def generate_door_vertical_3(position):
             draw.line([(8, y), (TILE_SIZE - 9, y)], fill=CHEST_DARK, width=1)
         draw.line(
             [(7, TILE_SIZE - 1), (TILE_SIZE - 8, TILE_SIZE - 1)],
-            fill=CHEST_DARK, width=2,
+            fill=CHEST_DARK,
+            width=2,
         )
     elif position == "center":
         draw.rectangle([7, 0, TILE_SIZE - 8, TILE_SIZE - 1], fill=DOOR_COLOR)
@@ -372,7 +389,8 @@ def generate_door_vertical_3(position):
         draw.line([(7, 0), (TILE_SIZE - 8, 0)], fill=CHEST_DARK, width=2)
         draw.line(
             [(7, TILE_SIZE - 1), (TILE_SIZE - 8, TILE_SIZE - 1)],
-            fill=CHEST_DARK, width=2,
+            fill=CHEST_DARK,
+            width=2,
         )
         draw.ellipse([28, 28, 36, 36], fill=(80, 80, 80))
     else:
