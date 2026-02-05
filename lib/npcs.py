@@ -95,19 +95,19 @@ class Npc:
             else:
                 b = f"+{b}"
             n = str(value)
-            l = max(len(h), len(b), len(n))
-            while len(h) < l:
-                if (l - len(h)) % 2 == 1:
+            max_len = max(len(h), len(b), len(n))
+            while len(h) < max_len:
+                if (max_len - len(h)) % 2 == 1:
                     h = h + " "
                 else:
                     h = " " + h
-            while len(b) < l:
-                if (l - len(b)) % 2 == 1:
+            while len(b) < max_len:
+                if (max_len - len(b)) % 2 == 1:
                     b = b + " "
                 else:
                     b = " " + b
-            while len(n) < l:
-                if (l - len(n)) % 2 == 1:
+            while len(n) < max_len:
+                if (max_len - len(n)) % 2 == 1:
                     n = n + " "
                 else:
                     n = " " + n
@@ -116,7 +116,7 @@ class Npc:
             nl.append(n)
         return Doc(
             header="Ability Scores",
-            body="\n".join([" ".join(l) for l in [hl, bl, nl]]),
+            body="\n".join([" ".join(row) for row in [hl, bl, nl]]),
         )
 
     def _overview_doc(self):

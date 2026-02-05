@@ -197,13 +197,13 @@ class DungeonConfig:
             self.tk_labels[k] = tk.Label(parent, text=self.tk_label_texts[k])
             var = None
             ty = self.tk_types[k]
-            if ty == str:
+            if ty is str:
                 var = tk.StringVar()
-            elif ty == int:
+            elif ty is int:
                 var = tk.IntVar()
-            elif ty == float:
+            elif ty is float:
                 var = tk.DoubleVar()
-            elif ty == bool:
+            elif ty is bool:
                 var = tk.BooleanVar()
             assert var
             var.set(v)
@@ -216,7 +216,7 @@ class DungeonConfig:
                 combobox["values"] = tuple(self.tk_combobox_values[k])
                 combobox.current(list(self.tk_combobox_values[k]).index(v))
                 self.tk_entries[k] = combobox
-            elif ty == bool:
+            elif ty is bool:
                 self.tk_entries[k] = tk.Checkbutton(parent, variable=var)
             else:
                 if self.tk_is_long[k]:

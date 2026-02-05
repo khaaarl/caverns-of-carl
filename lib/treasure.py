@@ -145,12 +145,12 @@ class TreasureLibrary:
             if random.random() < 0.25:
                 contents.append(
                     "Adventuring Gear: "
-                    + self.roll_on_table(f"PHB Adventuring Gear")
+                    + self.roll_on_table("PHB Adventuring Gear")
                 )
         if random.random() < 0.1:
-            contents.append("Trinket: " + self.roll_on_table(f"PHB Trinkets"))
+            contents.append("Trinket: " + self.roll_on_table("PHB Trinkets"))
         if random.random() < 0.1:
-            contents.append("Trinket: " + self.roll_on_table(f"EE Trinkets"))
+            contents.append("Trinket: " + self.roll_on_table("EE Trinkets"))
         if random.random() < 0.7:
             contents += self.gold_to_treasure(
                 self._hoard_gp_quantity(level, num_player_characters)

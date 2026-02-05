@@ -16,7 +16,7 @@ try:
     from reportlab.pdfbase.pdfmetrics import stringWidth
 
     LOADED_PDFLAB = True
-except:
+except ImportError:
     print("Failed to import reportlab.")
 
 
@@ -189,7 +189,6 @@ def docs_to_pages(docs, start_page_num):
 
 
 def draw_map_page(canvas, df, pagenum):
-    sizes = [(20, 12), (15, 9), (10, 6), (5, 3)]
     chosen_size, chosen_width = 5, 3
     while (df.height <= max_rows(chosen_size + 5)) and (
         df.width <= max_cols(chosen_width + 3)

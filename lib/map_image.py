@@ -13,7 +13,6 @@ from lib.tile import (
     ChestTile,
     CorridorFloorTile,
     DoorTile,
-    FloorTile,
     LadderDownTile,
     LadderUpTile,
     MimicTile,

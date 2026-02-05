@@ -289,9 +289,9 @@ def expr_match_keywords(expr: Any, keywords: list[str] | set[str]) -> bool:
 
 def eval_dice(e: int | float | str) -> int:
     e = str(e).strip().replace("-", "+-")
-    l = [x.strip() for x in e.split("+") if x.strip()]
+    terms = [x.strip() for x in e.split("+") if x.strip()]
     total = 0
-    for s in l:
+    for s in terms:
         subtract = False
         if s.startswith("-"):
             s = s[1:].strip()
@@ -364,12 +364,12 @@ def dfs(
 def neighbor_coords(
     x: int, y: int, cardinal: bool = True, diagonal: bool = False
 ) -> Any:
-    l: list[tuple[int, int]] = []
+    offsets: list[tuple[int, int]] = []
     if cardinal:
-        l += [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        offsets += [(-1, 0), (1, 0), (0, -1), (0, 1)]
     if diagonal:
-        l += [(-1, -1), (1, -1), (-1, 1), (1, 1)]
-    for dx, dy in l:
+        offsets += [(-1, -1), (1, -1), (-1, 1), (1, 1)]
+    for dx, dy in offsets:
         yield (x + dx, y + dy)
 
 
@@ -490,10 +490,10 @@ class StyledString:
         self.chars = [StyledChar(x) for x in chars or []]
 
     def unstyled(self) -> str:
-        l: list[str] = []
+        char_strings: list[str] = []
         for c in self.chars:
-            l.append(c.c)
-        return "".join(l)
+            char_strings.append(c.c)
+        return "".join(char_strings)
 
     def __str__(self) -> str:
         return "".join([str(x) for x in self.chars])

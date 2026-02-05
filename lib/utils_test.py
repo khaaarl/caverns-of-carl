@@ -1,4 +1,3 @@
-import functools
 import os
 import sys
 import unittest
@@ -7,7 +6,8 @@ _ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 if _ROOT not in sys.path:
     sys.path.append(_ROOT)
 
-from lib.utils import expr_match_keywords, parse_keyword_expr
+# noqa: E402 - Must set sys.path before importing local modules
+from lib.utils import expr_match_keywords, parse_keyword_expr  # noqa: E402
 
 
 class CustomExprParseAssertions:

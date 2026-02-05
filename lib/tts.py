@@ -88,9 +88,9 @@ def recurse_bag(obj):
                 yield o2
         return
     yield obj
-    l = list(obj.get("ContainedObjects", []))
-    l.sort(key=lambda x: x.get("Nickname") or chr(255) * 30)
-    for o in recurse_bag(l):
+    contained_objects = list(obj.get("ContainedObjects", []))
+    contained_objects.sort(key=lambda x: x.get("Nickname") or chr(255) * 30)
+    for o in recurse_bag(contained_objects):
         yield o
 
 
@@ -112,14 +112,14 @@ def _normalize_nickname(nickname):
 @functools.cache
 def reference_objects():
     d = {}
-    l = list(reference_save_json()["ObjectStates"])
-    l = [x for x in l if x.get("Nickname")]
-    l.sort(key=lambda x: x["Nickname"])
-    for obj in l:
+    objects = list(reference_save_json()["ObjectStates"])
+    objects = [x for x in objects if x.get("Nickname")]
+    objects.sort(key=lambda x: x["Nickname"])
+    for obj in objects:
         name = _normalize_nickname(obj["Nickname"])
         if name and name not in d:
             d[name] = obj
-    for obj in l:
+    for obj in objects:
         if obj["Nickname"].startswith("Reference Bag"):
             for o2 in recurse_bag(obj):
                 name = _normalize_nickname(o2.get("Nickname", ""))
@@ -282,9 +282,9 @@ class TTSFogBit:
         for bit in fog_bits:
             groups[bit.room_corridor_signature()].append(bit)
         output: list[TTSFogBit] = []
-        for l in groups.values():
+        for bits in groups.values():
             singletons: dict[tuple[int, int], TTSFogBit] = {
-                (bit.x1, bit.y1): bit for bit in l
+                (bit.x1, bit.y1): bit for bit in bits
             }
             while len(singletons) > 0:
                 # get the highest priority thing which isn't maximally expanded

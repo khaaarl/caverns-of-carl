@@ -1,6 +1,5 @@
 import datetime
 import random
-import re
 import tkinter as tk
 import tkinter.font
 import traceback
@@ -148,7 +147,7 @@ def run_ui():
                 text_output.append(f"***{doc.flat_header()}***")
                 text_output.append(doc.flat_body(separator="\n\n"))
                 text_output.append("")
-        except Exception as e:
+        except Exception:
             err = traceback.format_exc()
         if err:
             text_output = [err]
@@ -194,7 +193,7 @@ def run_ui():
                     text_output.append(f"Saved map image to {map_filename}")
                 if not map_filenames:
                     text_output.append("Failed to produce map images.")
-        except Exception as e:
+        except Exception:
             text_output.append("\n")
             text_output.append(traceback.format_exc())
         chest_info_text.insert(
@@ -248,6 +247,6 @@ def run_ui():
 
     try:
         root.state("zoomed")
-    except:
+    except Exception:
         pass
     root.mainloop()

@@ -15,8 +15,9 @@ _ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 if _ROOT not in sys.path:
     sys.path.append(_ROOT)
 
-import lib.tts as tts
-from lib.utils import (
+# noqa: E402 - Must set sys.path before importing local modules
+import lib.tts as tts  # noqa: E402
+from lib.utils import (  # noqa: E402
     COC_ROOT_DIR,
     Doc,
     choice,

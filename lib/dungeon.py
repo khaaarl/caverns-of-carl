@@ -137,11 +137,11 @@ class DungeonFloor:
         return self.tiles[x][y]
 
     def get_tiles(self):
-        l = []
+        tiles = []
         for x in range(self.width):
             for y in range(self.height):
-                l.append(self.tiles[x][y])
-        return l
+                tiles.append(self.tiles[x][y])
+        return tiles
 
     def neighbor_tiles(
         self, x, y=None, default=None, cardinal=True, diagonal=False
@@ -241,8 +241,8 @@ class DungeonFloor:
             for dx, c in enumerate(num_s):
                 chars[x + dx][y] = "[1;97m" + c
         if not colors:
-            for x, l in enumerate(chars):
-                for y, c in enumerate(l):
+            for x, row in enumerate(chars):
+                for y, c in enumerate(row):
                     chars[x][y] = c[-1]
         o = []
         for t in self.tile_iter():
@@ -423,8 +423,8 @@ def place_maze_in_biome(df, biome):
                 room.rh += 2
         room_ps.append((mx, my))
         maze_grid[mx][my] = room
-    for l in maze_grid:
-        for item in l:
+    for row in maze_grid:
+        for item in row:
             if isinstance(item, Room):
                 item.in_maze = True
                 df.add_room(item)
@@ -923,8 +923,8 @@ def place_ladders_in_dungeon(df):
                     biome_down_ladders[None].append(tup)
             ladder_room_ixs.add(room.ix)
     tups_seen = set()
-    for l in biome_up_ladders.values():
-        for tup in l:
+    for ladder_tups in biome_up_ladders.values():
+        for tup in ladder_tups:
             if tup in tups_seen:
                 continue
             tups_seen.add(tup)
@@ -934,8 +934,8 @@ def place_ladders_in_dungeon(df):
                 LadderUpTile(roomix, biome_name=room.biome_name), x=x, y=y
             )
             room.has_up_ladder = True
-    for l in biome_down_ladders.values():
-        for tup in l:
+    for ladder_tups in biome_down_ladders.values():
+        for tup in ladder_tups:
             if tup in tups_seen:
                 continue
             tups_seen.add(tup)
@@ -1242,19 +1242,19 @@ def place_traps_in_dungeon(df):
 def place_lights_in_dungeon(df):
     thing_tiles = []
     for room in df.rooms:
-        l = []
+        tile_infos = []
         for x, y in room.tile_coords():
             tile = df.tiles[x][y]
-            l.append((tile, x, y))
-        thing_tiles.append((room, l))
+            tile_infos.append((tile, x, y))
+        thing_tiles.append((room, tile_infos))
     for corridor in df.corridors:
-        l = []
+        tile_infos = []
         for x, y in corridor.tile_coords(df, include_doors=True):
             tile = df.tiles[x][y]
-            l.append((tile, x, y))
-        thing_tiles.append((corridor, l))
-    for thing, l in thing_tiles:
-        for tile, x, y in l:
+            tile_infos.append((tile, x, y))
+        thing_tiles.append((corridor, tile_infos))
+    for thing, tile_infos in thing_tiles:
+        for tile, x, y in tile_infos:
             tile.light_level = thing.light_level
         if thing.light_level == "dark":
             continue
@@ -1262,7 +1262,7 @@ def place_lights_in_dungeon(df):
         if isinstance(thing, CavernousRoom) or isinstance(
             thing, CavernousCorridor
         ):
-            cs = [x for x in l if not isinstance(x[0], DoorTile)]
+            cs = [x for x in tile_infos if not isinstance(x[0], DoorTile)]
             random.shuffle(cs)
             denom = 20.0
             if thing.light_level == "bright":
@@ -1271,7 +1271,7 @@ def place_lights_in_dungeon(df):
                 thing_lights.append(lib.lights.GlowingMushrooms(x, y))
         else:
             cs = []
-            for tile, x, y in l:
+            for tile, x, y in tile_infos:
                 num_near_walls = 0
                 for nt in df.neighbor_tiles(x, y, WallTile):
                     if isinstance(nt, WallTile):
