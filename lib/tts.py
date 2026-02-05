@@ -17,13 +17,29 @@ TTS_SPAWNED_TAG = "Spawned by Caverns of Carl"
 
 def tts_default_save_location():
     if sys.platform == "linux" or sys.platform == "linux2":
-        return os.path.join(
-            str(pathlib.Path.home()),
-            ".local",
-            "share",
-            "Tabletop Simulator",
-            "Saves",
-        )
+        candidates = [
+            os.path.join(
+                str(pathlib.Path.home()),
+                ".local",
+                "share",
+                "Tabletop Simulator",
+                "Saves",
+            ),
+            os.path.join(
+                str(pathlib.Path.home()),
+                "snap",
+                "steam",
+                "common",
+                ".local",
+                "share",
+                "Tabletop Simulator",
+                "Saves",
+            ),
+        ]
+        for path in candidates:
+            if os.path.isdir(path):
+                return path
+        return candidates[0]
     elif sys.platform == "darwin":  # mac osx
         return os.path.join(
             str(pathlib.Path.home()), "Library", "Tabletop Simulator", "Saves"
