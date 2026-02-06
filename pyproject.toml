@@ -4,3 +4,9 @@ line-length = 79
 [tool.isort]
 profile = "black"
 line_length = 79
+
+[tool.ruff]
+exclude = ["*/*_test.py"]
+
+[tool.ty.src]
+exclude = ["*/*_test.py"]

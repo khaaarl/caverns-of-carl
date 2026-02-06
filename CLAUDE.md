@@ -13,7 +13,14 @@ Caverns of Carl is a D&D 5e random dungeon generator with a Tkinter GUI. It outp
 python caverns_of_carl.py
 
 # Run tests
-python -m unittest lib.utils_test
+python -m unittest lib.dungeon_test -v     # New: comprehensive dungeon tests (45 tests)
+python -m unittest lib.utils_test -v       # Existing: keyword expression tests
+python -m unittest discover -s lib -p "*_test.py" -v  # Run all tests
+
+# Check test coverage
+python -m coverage run -m unittest discover -s lib -p "*_test.py"
+python -m coverage report lib/dungeon.py   # Report for specific module
+python -m coverage html                    # Generate HTML report in htmlcov/
 
 # Regenerate tile sprite PNGs (standalone, no tkinter needed)
 python -m lib.generate_tiles
@@ -27,7 +34,7 @@ pre-commit run --all-files
 
 # Install dependencies
 pip install -r requirements.txt         # runtime: reportlab, pillow
-pip install -r requirements-dev.txt     # dev: black, isort, pre-commit, ruff, ty
+pip install -r requirements-dev.txt     # dev: black, isort, pre-commit, ruff, ty, coverage
 ```
 
 ## Architecture
@@ -73,9 +80,65 @@ pip install -r requirements-dev.txt     # dev: black, isort, pre-commit, ruff, t
 
 ## Testing Notes
 
-- Only `lib/utils_test.py` exists (keyword expression parser tests).
-- Tkinter is unavailable in headless environments. To test code that imports config, mock tkinter with `types.ModuleType('tkinter')` and stub `StringVar`, `IntVar`, `DoubleVar`, `BooleanVar`.
-- `lib/generate_tiles.py` and `lib/map_image.py` work without tkinter.
+### Test Files
+- `lib/dungeon_test.py` (NEW): Comprehensive unit tests for `lib/dungeon.py`
+  - 45 tests across 7 test classes
+  - Covers: room generation, room/corridor addition, tile operations, monster placement, ASCII output
+  - Uses `unittest.mock.patch` to mock randomness for deterministic testing
+- `lib/utils_test.py`: Existing tests for keyword expression parser
+
+### Running Tests
+```bash
+# Run all dungeon tests
+python -m unittest lib.dungeon_test -v
+
+# Run specific test class
+python -m unittest lib.dungeon_test.TestDungeonFloorRandomRoom -v
+
+# Run single test
+python -m unittest lib.dungeon_test.TestDungeonFloorRandomRoom.test_random_room_returns_room_object
+```
+
+### Headless Testing & Tkinter Mocking
+Tkinter is unavailable in CI/headless environments. Both test files handle this:
+- `lib/dungeon_test.py` includes `mock_tkinter()` function that creates minimal mocks for:
+  - `StringVar`, `IntVar`, `DoubleVar`, `BooleanVar` (get/set methods)
+  - UI classes: `Label`, `Frame`, `Button`, `Entry`, `Text`, `Canvas`, etc.
+  - `tkinter.ttk.Combobox` and `tkinter.font`
+- Call `mock_tkinter()` before importing `lib.config` to ensure mocks are in place
+- Pattern: See top of `lib/dungeon_test.py` for example
+
+### Test Organization
+Tests follow the naming pattern: `lib/{module}_test.py` parallel to `lib/{module}.py`
+- `lib/utils.py` → `lib/utils_test.py` (existing)
+- `lib/dungeon.py` → `lib/dungeon_test.py` (new)
+- Use `unittest.TestCase` as base class with `setUp()` for fixtures
+
+### Test Coverage (Current)
+- **lib/dungeon.py**: 15% (155 / 1,028 statements)
+- **Overall project**: 24% (1,362 / 5,688 statements)
+- Run `python -m coverage report lib/dungeon.py` to check coverage
+
+### Random Number Mocking
+Tests that need deterministic behavior use `@patch` decorator:
+```python
+from unittest.mock import patch
+
+# Mock random.randrange() for specific coordinate selection
+with patch("random.randrange") as mock_randrange:
+    mock_randrange.side_effect = [10, 10]  # Returns (10, 10) for next calls
+    room = dungeon.random_room()
+
+# Mock random.random() for probability-based choices
+with patch("random.random") as mock_random:
+    mock_random.return_value = 0.25  # Returns 0.25 for next call
+    room = dungeon.random_room()
+```
+
+### Modules Without Tests
+- `lib/generate_tiles.py` and `lib/map_image.py` are standalone and can run without GUI
+- UI code (`lib/ui.py`) is difficult to test; focus on testing business logic in dungeon.py, room.py, etc.
+- Output generators (`lib/tts.py`, `lib/pdf.py`) tested manually; consider integration tests later
 
 ## Data Files
 

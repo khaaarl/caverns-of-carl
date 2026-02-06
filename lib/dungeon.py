@@ -92,6 +92,13 @@ class DungeonFloor:
         return (tts_x, tts_z)
 
     def random_room(self):
+        """
+        Generate a random room proposal.
+
+        This is not guaranteed to be valid in any way other than fitting
+        within the dungeon bounds, and is may be rejected many times
+        before a valid room is found.
+        """
         x = random.randrange(2, self.width - 3)
         y = random.randrange(2, self.height - 3)
         tile = self.tiles[x][y]
