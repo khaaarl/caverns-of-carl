@@ -424,8 +424,10 @@ def summarize_monsters(monsters):
 
 
 def _build_encounter_single_attempt(
-    monster_infos, target_xp, variety, prev_monster_counts={}, max_space=None
+    monster_infos, target_xp, variety, prev_monster_counts=None, max_space=None
 ):
+    if prev_monster_counts is None:
+        prev_monster_counts = {}
     used_infos = {}  # name -> info
     encounter = Encounter()
     prev_xp = -1000000
@@ -541,9 +543,11 @@ def build_encounter(
     monster_infos,
     target_xp,
     variety=None,
-    prev_monster_counts={},
+    prev_monster_counts=None,
     max_space=None,
 ):
+    if prev_monster_counts is None:
+        prev_monster_counts = {}
     if not variety:
         varieties = [1, 2, 2, 3, 3, 3, 4, 4]
         variety = random.choice(varieties)

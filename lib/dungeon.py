@@ -524,23 +524,21 @@ def place_rooms_in_dungeon(df):
     # sort rooms from top to bottom so their indices are more human comprehensible maybe
     rooms = [r for r in df.rooms if not r.is_trivial()]
     rooms.sort(key=lambda r: (-r.y, r.x))
-    # time for a crappy sort
-    num_reorderings = 1
-    while num_reorderings > 0:
-        num_reorderings = 0
-        for ix in range(len(rooms) - 1):
-            for ix2 in range(ix + 1, len(rooms)):
-                room1 = rooms[ix]
-                room2 = rooms[ix2]
-                if room1.y + room1.rh < room2.y - room2.rh:
-                    continue
-                if room1.y - room1.rh > room2.y + room2.rh:
-                    continue
-                if room1.x <= room2.x:
-                    continue
-                num_reorderings += 1
-                rooms[ix] = room2
-                rooms[ix2] = room1
+    # Refine ordering: among rooms that overlap vertically, sort left-to-right.
+    # This comparison is not transitive, so we swap until stable rather than
+    # using a standard sort.
+    changed = True
+    while changed:
+        changed = False
+        for i in range(len(rooms) - 1):
+            for j in range(i + 1, len(rooms)):
+                r1, r2 = rooms[i], rooms[j]
+                y_overlaps = not (
+                    r1.y + r1.rh < r2.y - r2.rh or r1.y - r1.rh > r2.y + r2.rh
+                )
+                if y_overlaps and r1.x > r2.x:
+                    rooms[i], rooms[j] = r2, r1
+                    changed = True
     for ix, room in enumerate(rooms):
         room.name_num = ix + 1
 

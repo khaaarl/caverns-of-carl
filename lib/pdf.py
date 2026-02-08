@@ -65,9 +65,9 @@ def draw_pagenum(canvas, pagenum):
 
 
 class Page:
-    def __init__(self, pagenum, lines=[]):
+    def __init__(self, pagenum, lines=None):
         self.pagenum = pagenum
-        self.lines = list(lines)
+        self.lines = list(lines) if lines else []
 
     def bookmark_names(self):
         bookmark_names = set()
@@ -77,7 +77,9 @@ class Page:
                     bookmark_names.add(c.bookmark_name)
         return bookmark_names
 
-    def render(self, canvas, accumulated_bookmark_names=set()):
+    def render(self, canvas, accumulated_bookmark_names=None):
+        if accumulated_bookmark_names is None:
+            accumulated_bookmark_names = set()
         canvas.setFont(font_normal(), _FONT_SIZE)
         for lineix, line in enumerate(self.lines):
             y = int(_DOC_PAGE_TOP - (lineix + 0.5) * _FONT_SIZE)

@@ -51,7 +51,7 @@ class SpecialFeature:
     def allows_enemies(self):
         return False
 
-    def allows_other_features(self, other_features=[]):
+    def allows_other_features(self, other_features=None):
         return False
 
     def allows_treasure(self):

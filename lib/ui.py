@@ -14,7 +14,9 @@ import lib.tts as tts
 from lib.utils import StyledString
 
 
-def set_tk_text(tk_text, s, default_tag_kwargs={}, style_newlines=False):
+def set_tk_text(tk_text, s, default_tag_kwargs=None, style_newlines=False):
+    if default_tag_kwargs is None:
+        default_tag_kwargs = {}
     tk_text.delete("1.0", tk.END)
     for tag in tk_text.tag_names():
         tk_text.tag_delete(tag)
