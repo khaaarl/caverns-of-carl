@@ -37,6 +37,27 @@ from lib.utils import (
     samples,
 )
 
+# Column placement thresholds
+MIN_ROOM_RADIUS_FOR_COLUMNS = 4
+COLUMN_WALL_INSET = 2
+MIN_COLUMN_SPAN_FOR_CENTER = 8
+
+# Light placement: fraction denominators (1/N tiles get a light source)
+CAVERN_DIM_LIGHT_DENOM = 20.0
+CAVERN_BRIGHT_LIGHT_DENOM = 10.0
+ROOM_DIM_LIGHT_DENOM = 6.0
+ROOM_BRIGHT_LIGHT_DENOM = 3.0
+
+# Treasure/feature placement
+DEAD_END_ROOM_WEIGHT = 5
+PLACEMENT_ATTEMPT_MULTIPLIER = 10
+
+# Max monster CR as a multiple of character level (~1.4x)
+MAX_CR_SCALING_FACTOR = 7.0 / 5.0
+
+# Minimum neighbor proportion to adopt a tile style
+STYLE_ADOPTION_THRESHOLD = 0.7
+
 
 class RetriableDungeonographyException(Exception):
     pass
@@ -960,22 +981,23 @@ def place_columns_in_dungeon(df):
             continue
         if not isinstance(room, RectRoom) or isinstance(room, MazeJunction):
             continue
-        if room.rw < 4 or room.rh < 4:
+        if (
+            room.rw < MIN_ROOM_RADIUS_FOR_COLUMNS
+            or room.rh < MIN_ROOM_RADIUS_FOR_COLUMNS
+        ):
             continue
         biome = df.config.get_biome(room.biome_name)
         if random.random() * 100 >= biome.column_percent:
             continue
-        # Compute symmetric column positions, inset 2 from walls
-        inset = 2
-        x_lo = room.x - room.rw + inset
-        x_hi = room.x + room.rw - inset
-        y_lo = room.y - room.rh + inset
-        y_hi = room.y + room.rh - inset
+        x_lo = room.x - room.rw + COLUMN_WALL_INSET
+        x_hi = room.x + room.rw - COLUMN_WALL_INSET
+        y_lo = room.y - room.rh + COLUMN_WALL_INSET
+        y_hi = room.y + room.rh - COLUMN_WALL_INSET
         x_positions = [x_lo, x_hi]
         y_positions = [y_lo, y_hi]
-        if x_hi - x_lo >= 8:
+        if x_hi - x_lo >= MIN_COLUMN_SPAN_FOR_CENTER:
             x_positions.append(room.x)
-        if y_hi - y_lo >= 8:
+        if y_hi - y_lo >= MIN_COLUMN_SPAN_FOR_CENTER:
             y_positions.append(room.y)
         for x in x_positions:
             for y in y_positions:
@@ -1091,14 +1113,14 @@ def place_treasure_in_biome(df, biome, rooms, lib, mimic_info):
             continue
         weight = 1
         if len(room.corridorixs) == 1:
-            weight *= 5
+            weight *= DEAD_END_ROOM_WEIGHT
         weight *= math.sqrt(room.total_space())
         eligible_rooms.append(room)
         eligible_room_weights.append(weight)
         if room.allows_bookshelf(df):
             bookshelf_rooms.append(room)
             bookshelf_room_weights.append(weight)
-    for _ in range(target_num_treasures * 10):
+    for _ in range(target_num_treasures * PLACEMENT_ATTEMPT_MULTIPLIER):
         if not eligible_rooms or num_treasures >= target_num_treasures:
             break
         room = random.choices(eligible_rooms, eligible_room_weights)[0]
@@ -1119,7 +1141,7 @@ def place_treasure_in_biome(df, biome, rooms, lib, mimic_info):
         )
         df.set_tile(new_tile, x=x, y=y)
         num_treasures += 1
-    for _ in range(target_num_mimics * 10):
+    for _ in range(target_num_mimics * PLACEMENT_ATTEMPT_MULTIPLIER):
         if not eligible_rooms or num_mimics >= target_num_mimics:
             break
         room = random.choices(eligible_rooms, eligible_room_weights)[0]
@@ -1134,7 +1156,7 @@ def place_treasure_in_biome(df, biome, rooms, lib, mimic_info):
         nt = MimicTile(room.ix, biome_name=room.biome_name, monster=monster)
         df.set_tile(nt, x=x, y=y)
         num_mimics += 1
-    for _ in range(target_num_bookshelves * 10):
+    for _ in range(target_num_bookshelves * PLACEMENT_ATTEMPT_MULTIPLIER):
         if not bookshelf_rooms or num_bookshelves >= target_num_bookshelves:
             break
         room = random.choices(bookshelf_rooms, bookshelf_room_weights)[0]
@@ -1168,7 +1190,9 @@ def place_monsters_in_dungeon(df):
 
 
 def place_monsters_in_biome(df, biome, rooms, monster_counts):
-    max_cr = int(math.ceil(biome.target_character_level * 7.0 / 5.0))
+    max_cr = int(
+        math.ceil(biome.target_character_level * MAX_CR_SCALING_FACTOR)
+    )
     monster_infos = get_monster_library("dnd 5e monsters").get_monster_infos(
         filter=biome.monster_filter,
         max_challenge_rating=max_cr,
@@ -1308,9 +1332,9 @@ def place_lights_in_dungeon(df):
         ):
             cs = [x for x in tile_infos if not isinstance(x[0], DoorTile)]
             random.shuffle(cs)
-            denom = 20.0
+            denom = CAVERN_DIM_LIGHT_DENOM
             if thing.light_level == "bright":
-                denom = 10.0
+                denom = CAVERN_BRIGHT_LIGHT_DENOM
             for tile, x, y in cs[: max(1, int(len(cs) / denom))]:
                 thing_lights.append(lib.lights.GlowingMushrooms(x, y))
         else:
@@ -1326,9 +1350,9 @@ def place_lights_in_dungeon(df):
                     continue
                 cs.append((tile, x, y))
             random.shuffle(cs)
-            denom = 6.0
+            denom = ROOM_DIM_LIGHT_DENOM
             if thing.light_level == "bright":
-                denom = 3.0
+                denom = ROOM_BRIGHT_LIGHT_DENOM
             for tile, x, y in cs[: max(1, int(len(cs) / denom))]:
                 thing_lights.append(lib.lights.WallSconce(x, y))
         for light in thing_lights:
@@ -1378,7 +1402,7 @@ def stylize_tiles_in_dungeon(df):
             m = max(style_counts.values())
             style_counts = list(style_counts.items())
             style_counts.sort(key=lambda x: x[1])
-            if m / n > 0.7:
+            if m / n > STYLE_ADOPTION_THRESHOLD:
                 tile.tile_style = style_counts[-1][0]
             else:
                 p = random.randrange(n)
