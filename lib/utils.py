@@ -17,6 +17,7 @@ def choice(
     weights: list[float] | None = None,
     cum_weights: list[float] | None = None,
 ) -> Any:
+    """Pick a single random element from seq, with optional weighting."""
     if cum_weights is not None:
         return random.choices(seq, cum_weights=cum_weights, k=1)[0]
     if weights is not None:
@@ -25,6 +26,13 @@ def choice(
 
 
 class WeightTreeNode:
+    """Binary tree for weighted sampling without replacement.
+
+    Used by samples() to efficiently draw multiple unique elements from
+    a weighted sequence. Each draw removes the chosen element's weight
+    from the tree, preventing it from being selected again.
+    """
+
     def __init__(
         self,
         left_weight: float,
@@ -73,6 +81,7 @@ class WeightTreeNode:
 
 
 def samples(seq: Any, k: int = 1, weights: list[float] | None = None) -> Any:
+    """Yield k unique elements from seq via weighted sampling without replacement."""
     if k <= 0:
         return []
     elif k == 1:
@@ -271,12 +280,22 @@ class KeywordExprRule(EitherRule):
 
 @functools.cache
 def parse_keyword_expr(s: str) -> Any:
+    """Parse a keyword filter expression into a matchable rule tree.
+
+    Supports AND, OR, NOT, and parentheses. Example:
+    parse_keyword_expr("undead OR (beast AND NOT flying)")
+    """
     tokens = re.split("([() ])", s.upper().strip())
     tokens = [x.strip() for x in tokens if x.strip()]
     return KeywordExprRule().parse(tokens)
 
 
 def expr_match_keywords(expr: Any, keywords: list[str] | set[str]) -> bool:
+    """Test whether a set of keywords matches a filter expression.
+
+    expr can be a parsed rule tree or a string (which will be parsed).
+    A falsy/blank expression matches everything.
+    """
     if not expr:
         return True
     keywords = {x.upper() for x in keywords}
@@ -288,6 +307,11 @@ def expr_match_keywords(expr: Any, keywords: list[str] | set[str]) -> bool:
 
 
 def eval_dice(e: int | float | str) -> int:
+    """Evaluate a D&D dice notation string and return the rolled total.
+
+    Supports standard notation: "2d6+3", "d20", "4d8-2", "10".
+    Numeric inputs are returned as-is (converted to int).
+    """
     e = str(e).strip().replace("-", "+-")
     terms = [x.strip() for x in e.split("+") if x.strip()]
     total = 0
@@ -315,6 +339,11 @@ def bfs(
     start: Any,
     max_depth: int | None = None,
 ) -> list[set[Any]]:
+    """Breadth-first search on an adjacency dict.
+
+    Returns a list of sets, one per depth level: [depth_0, depth_1, ...].
+    d maps each node to its neighbors.
+    """
     if max_depth is not None and max_depth < 0:
         return []
     output: list[set[Any]] = [set([start])]
@@ -344,6 +373,12 @@ def dfs(
     include_previous: bool = False,
     randomize: bool = False,
 ) -> list[Any]:
+    """Depth-first search on an adjacency dict.
+
+    Returns nodes in visit order. If include_previous is True, returns
+    (parent, node) tuples instead. If randomize is True, shuffles
+    neighbor order at each step.
+    """
     accum = accum or []
     seen = seen or set()
     seen.add(start)
@@ -364,6 +399,7 @@ def dfs(
 def neighbor_coords(
     x: int, y: int, cardinal: bool = True, diagonal: bool = False
 ) -> Any:
+    """Yield (x, y) coordinates of neighboring grid positions."""
     offsets: list[tuple[int, int]] = []
     if cardinal:
         offsets += [(-1, 0), (1, 0), (0, -1), (0, 1)]
@@ -375,6 +411,12 @@ def neighbor_coords(
 
 @functools.total_ordering
 class CharStyle:
+    """RGB color and formatting (bold/underline) for a single character.
+
+    Supports ordering, hashing, and conversion to hex color strings.
+    Can be parsed from ANSI escape codes via CharStyle.from_ansi().
+    """
+
     def __init__(
         self,
         r: int,
@@ -475,6 +517,13 @@ class StyledChar:
 
 
 class StyledString:
+    """A string with per-character styling (color, bold, underline).
+
+    Can be constructed from a plain str (with optional embedded ANSI codes),
+    another StyledString, a StyledChar, or a list of StyledChars. Supports
+    split, join, and unstyled() for plain text output.
+    """
+
     def __init__(
         self, chars: StyledString | str | StyledChar | list[Any] | None = None
     ) -> None:
@@ -577,6 +626,13 @@ class DocBookmark:
 
 
 class Doc:
+    """A structured document with optional header and body.
+
+    Content can be strings, StyledStrings, DocLinks, DocBookmarks,
+    nested Docs, or lists thereof. Use flat_str() to render to a
+    StyledString, or str() for plain text.
+    """
+
     def __init__(
         self,
         *args: Any,
@@ -645,6 +701,7 @@ class Doc:
 
 
 def random_dc(level: int) -> int:
+    """Generate a random D&D difficulty class (DC) appropriate for a given level."""
     lo = int(math.floor(level * 0.7 + 8))
     hi = int(math.ceil(level * 0.8 + 12))
     return random.randrange(lo, hi + 1)
