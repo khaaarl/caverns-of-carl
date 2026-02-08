@@ -140,6 +140,49 @@ with patch("random.random") as mock_random:
 - UI code (`lib/ui.py`) is difficult to test; focus on testing business logic in dungeon.py, room.py, etc.
 - Output generators (`lib/tts.py`, `lib/pdf.py`) tested manually; consider integration tests later
 
+## Feature Development Workflow
+
+When starting work on a new feature, follow this workflow exactly:
+
+### 1. Create a Feature Branch First
+Before anything else — before planning, exploring, or writing code — create and switch to a new feature branch off of `main`:
+```bash
+git checkout main
+git pull
+git checkout -b feature-name
+```
+
+### 2. Develop Freely on the Feature Branch
+Commit freely on the feature branch without asking for permission. Make as many commits as needed during development.
+
+### 3. Merge to Main (After User Approval)
+Once the feature is complete and the user has given explicit permission to merge:
+1. Switch to `main` and pull to get any upstream updates:
+   ```bash
+   git checkout main
+   git pull
+   ```
+2. Create a rebase branch off the feature branch:
+   ```bash
+   git checkout feature-name
+   git checkout -b feature-name-rebase
+   ```
+3. Squash all feature commits into a single commit:
+   ```bash
+   git reset --soft main
+   git commit -m "Description of the feature"
+   ```
+4. Rebase onto `main` and fix any conflicts:
+   ```bash
+   git rebase main
+   ```
+5. Merge into `main` (fast-forward) and clean up:
+   ```bash
+   git checkout main
+   git merge feature-name-rebase
+   git branch -d feature-name-rebase
+   ```
+
 ## Data Files
 
 - `reference_info/monsters/dnd 5e monsters.json`: D&D 5e monster library
