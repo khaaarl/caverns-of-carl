@@ -140,48 +140,60 @@ with patch("random.random") as mock_random:
 - UI code (`lib/ui.py`) is difficult to test; focus on testing business logic in dungeon.py, room.py, etc.
 - Output generators (`lib/tts.py`, `lib/pdf.py`) tested manually; consider integration tests later
 
-## Feature Development Workflow
+## Branching (CRITICAL — DO THIS FIRST)
 
-When starting work on a new feature, follow this workflow exactly:
+**NEVER make code changes directly on `main`.** Before writing ANY code, you MUST:
 
-### 1. Create a Feature Branch First
-Before anything else — before planning, exploring, or writing code — create and switch to a new feature branch off of `main`:
+1. Create a feature branch: `git checkout -b <descriptive-branch-name>`
+2. Verify you are on the feature branch: `git branch --show-current`
+3. ONLY THEN start making changes
+
+**This is non-negotiable.** If you realize you are on `main` and have already made changes, STOP immediately and ask the user how to proceed — do NOT commit to `main`.
+
+The only exception is editing `CLAUDE.md` itself, which can be done on `main` if explicitly requested. However, do NOT commit or push CLAUDE.md changes until the user explicitly says to — they may want to review or iterate first.
+
+## Committing Code
+
+ALWAYS ASK FOR PERMISSION BEFORE COMMITTING TO MAIN/MASTER, BUT COMMITTING TO FEATURE BRANCHES DOES NOT REQUIRE PERMISSION.
+
+## Merging to Main
+
+When the user asks to merge a feature branch to main, follow this procedure:
+
 ```bash
+# 1. Create a temporary branch and squash all feature commits into one
+#    (This way conflicts only need to be resolved once, not per-commit)
+git checkout -b feature/my-branch-rebase feature/my-branch
+git reset --soft $(git merge-base main feature/my-branch-rebase)
+git commit -m "Squashed feature commit"
+
+# 2. Pull latest main
+git checkout main && git pull
+
+# 3. Rebase the single squashed commit onto main (conflict detection here)
+git checkout feature/my-branch-rebase
+git rebase main
+# If conflicts arise, resolve them carefully, then: git add <files> && git rebase --continue
+
+# 4. Fast-forward merge into main
 git checkout main
-git pull
-git checkout -b feature-name
+git merge feature/my-branch-rebase
+
+# 5. Push and clean up
+git push
+git branch -d feature/my-branch-rebase
 ```
 
-### 2. Develop Freely on the Feature Branch
-Commit freely on the feature branch without asking for permission. Make as many commits as needed during development.
+**Why squash first, then rebase?** Rebasing a multi-commit branch onto main can require resolving the same conflict repeatedly (once per commit). By squashing into one commit first, you only resolve conflicts once. The `git reset --soft $(git merge-base ...)` in step 1 is safe — it collapses our own feature commits back to the branch point, without touching main's state. The rebase in step 3 then does proper 3-way conflict detection against latest main.
 
-### 3. Merge to Main (After User Approval)
-Once the feature is complete and the user has given explicit permission to merge:
-1. Switch to `main` and pull to get any upstream updates:
-   ```bash
-   git checkout main
-   git pull
-   ```
-2. Create a rebase branch off the feature branch:
-   ```bash
-   git checkout feature-name
-   git checkout -b feature-name-rebase
-   ```
-3. Squash all feature commits into a single commit:
-   ```bash
-   git reset --soft main
-   git commit -m "Description of the feature"
-   ```
-4. Rebase onto `main` and fix any conflicts:
-   ```bash
-   git rebase main
-   ```
-5. Merge into `main` (fast-forward) and clean up:
-   ```bash
-   git checkout main
-   git merge feature-name-rebase
-   git branch -d feature-name-rebase
-   ```
+**Handling rebase conflicts:** When `git rebase main` reports conflicts:
+1. Run `git status` to see which files conflict
+2. Read the conflicting files — look for `<<<<<<<`, `=======`, `>>>>>>>` markers
+3. Resolve by editing to keep the correct version of each section
+4. `git add <resolved-files> && git rebase --continue`
+5. After rebase completes, verify the code still works (run tests)
+
+The squashed commit message should summarize the entire feature, not repeat individual commit messages. Always ask the user before pushing to main.
 
 ## Data Files
 
