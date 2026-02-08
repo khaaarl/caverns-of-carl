@@ -72,6 +72,7 @@ class DungeonConfig:
         self.blacksmith_percent: float = 0.0
         self.kryxix_altar_percent: float = 0.0
         self.ssarthaxx_altar_percent: float = 0.0
+        self.column_percent: float = 0.0
         self.num_misc_NPCs: str = ""
         self.tts_fog_of_war: bool = False
         self.tts_hidden_zones: bool = False
@@ -138,6 +139,7 @@ class DungeonConfig:
         self.add_var("blacksmith_percent", 30.0)
         self.add_var("kryxix_altar_percent", 30.0)
         self.add_var("ssarthaxx_altar_percent", 30.0)
+        self.add_var("column_percent", 50.0)
         self.add_var("num_misc_NPCs", "1d6-1", in_biome=False)
         self.add_var("tts_fog_of_war", False, in_biome=False)
         self.add_var("tts_hidden_zones", True, in_biome=False)

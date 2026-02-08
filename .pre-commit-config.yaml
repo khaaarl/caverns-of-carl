@@ -14,21 +14,21 @@ repos:
     hooks:
       - id: ruff
         name: ruff
-        entry: ruff check
+        entry: venv/bin/ruff check
         language: system
         types: [python]
         pass_filenames: false
 
       - id: ty
         name: ty
-        entry: ty check
+        entry: venv/bin/ty check
         language: system
         types: [python]
         pass_filenames: false
 
       - id: unittest
         name: Python unit tests
-        entry: python -m unittest discover -s lib -p "*_test.py"
+        entry: venv/bin/python -m unittest discover -s lib -p "*_test.py"
         language: system
         types: [python]
         pass_filenames: false

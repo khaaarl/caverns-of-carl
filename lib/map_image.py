@@ -12,6 +12,7 @@ from PIL import Image, ImageDraw, ImageFont
 from lib.tile import (
     BookshelfTile,
     ChestTile,
+    ColumnTile,
     CorridorFloorTile,
     DoorTile,
     LadderDownTile,
@@ -179,6 +180,7 @@ _OVERLAY_TYPES = (
     MimicTile,
     LadderUpTile,
     LadderDownTile,
+    ColumnTile,
 )
 
 
@@ -230,6 +232,9 @@ def _select_tile_image(tile, df, player_map=False):
 
     if isinstance(tile, RoomFloorTile):
         return _select_floor_image(tile, rng), None
+
+    if isinstance(tile, ColumnTile):
+        return _select_floor_image(tile, rng), _load_tile("column")
 
     if isinstance(tile, WallTile):
         return _select_wall_image(tile)

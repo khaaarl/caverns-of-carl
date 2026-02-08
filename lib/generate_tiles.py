@@ -505,6 +505,20 @@ def generate_ladder_up():
     return img
 
 
+def generate_column():
+    img = Image.new("RGBA", (TILE_SIZE, TILE_SIZE), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    # Shadow ring
+    draw.ellipse([14, 14, 50, 50], fill=(40, 40, 45))
+    # Column base
+    draw.ellipse([16, 16, 48, 48], fill=(80, 80, 85))
+    # Column body (lighter stone)
+    draw.ellipse([19, 19, 45, 45], fill=WALL_LINE_COLOR)
+    # Highlight
+    draw.ellipse([22, 22, 38, 38], fill=(100, 100, 105))
+    return img
+
+
 def generate_ladder_down():
     img = Image.new("RGBA", (TILE_SIZE, TILE_SIZE), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
@@ -578,6 +592,7 @@ def generate_all_tiles():
         "mimic": generate_mimic(),
         "ladder_up": generate_ladder_up(),
         "ladder_down": generate_ladder_down(),
+        "column": generate_column(),
     }
 
     for name, img in tiles.items():

@@ -63,6 +63,9 @@ class Tile:
     def is_door(self):
         return False
 
+    def is_column(self):
+        return False
+
     def blocks_line_of_sight(self):
         return False
 
@@ -271,6 +274,21 @@ class WallTile(Tile):
 
     def tts_objects(self, df):
         return [self._floor_tile_tts_object(df), self._wall_tts_object(df)]
+
+
+class ColumnTile(WallTile):
+    def __init__(self, roomix=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.roomix = roomix
+
+    def is_column(self):
+        return True
+
+    def is_feature(self):
+        return True
+
+    def to_char(self):
+        return "[0;97mO"
 
 
 class FloorTile(Tile):

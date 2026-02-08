@@ -15,6 +15,7 @@ from lib.room import CavernousRoom, MazeJunction, RectRoom, Room
 from lib.tile import (
     BookshelfTile,
     ChestTile,
+    ColumnTile,
     CorridorFloorTile,
     DoorTile,
     LadderDownTile,
@@ -296,6 +297,7 @@ def generate_random_dungeon(config=None, errors=None):
             place_rivers_in_dungeon(df)
             place_doors_in_dungeon(df)
             place_ladders_in_dungeon(df)
+            place_columns_in_dungeon(df)
             place_special_features_in_dungeon(df)
             place_treasure_in_dungeon(df)
             place_monsters_in_dungeon(df)
@@ -952,6 +954,43 @@ def place_ladders_in_dungeon(df):
                 LadderDownTile(roomix, biome_name=room.biome_name), x=x, y=y
             )
             room.has_down_ladder = True
+
+
+def place_columns_in_dungeon(df):
+    for room in df.rooms:
+        if room.is_trivial():
+            continue
+        if not isinstance(room, RectRoom) or isinstance(room, MazeJunction):
+            continue
+        if room.rw < 4 or room.rh < 4:
+            continue
+        biome = df.config.get_biome(room.biome_name)
+        if random.random() * 100 >= biome.column_percent:
+            continue
+        # Compute symmetric column positions, inset 2 from walls
+        inset = 2
+        x_lo = room.x - room.rw + inset
+        x_hi = room.x + room.rw - inset
+        y_lo = room.y - room.rh + inset
+        y_hi = room.y + room.rh - inset
+        x_positions = [x_lo, x_hi]
+        y_positions = [y_lo, y_hi]
+        if x_hi - x_lo >= 8:
+            x_positions.append(room.x)
+        if y_hi - y_lo >= 8:
+            y_positions.append(room.y)
+        for x in x_positions:
+            for y in y_positions:
+                tile = df.tiles[x][y]
+                if not isinstance(tile, RoomFloorTile):
+                    continue
+                if tile.is_feature() or tile.is_ladder():
+                    continue
+                df.set_tile(
+                    ColumnTile(roomix=room.ix, biome_name=room.biome_name),
+                    x=x,
+                    y=y,
+                )
 
 
 def place_special_features_in_dungeon(df):
