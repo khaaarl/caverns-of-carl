@@ -275,7 +275,7 @@ def draw_dm_map_image_page(canvas, name, pagenum):
 
         draw_pagenum(canvas, pagenum)
         canvas.showPage()
-    except Exception as e:
+    except (OSError, ValueError) as e:
         print(f"Failed to draw DM map image page: {e}")
 
 

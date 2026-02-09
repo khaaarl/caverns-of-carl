@@ -149,7 +149,7 @@ def run_ui():
                 text_output.append(f"***{doc.flat_header()}***")
                 text_output.append(doc.flat_body(separator="\n\n"))
                 text_output.append("")
-        except Exception:
+        except Exception:  # Top-level GUI boundary: show any error to user
             err = traceback.format_exc()
         if err:
             text_output = [err]
@@ -195,7 +195,7 @@ def run_ui():
             blob = tts.dungeon_to_tts_blob(df, name, pdf_filename=pdf_filename)
             tts_filename = tts.save_tts_blob(blob)
             text_output.append(f"Saved TTS file to {tts_filename}")
-        except Exception:
+        except Exception:  # Top-level GUI boundary: show any error to user
             text_output.append("\n")
             text_output.append(traceback.format_exc())
         chest_info_text.insert(
@@ -249,6 +249,6 @@ def run_ui():
 
     try:
         root.state("zoomed")
-    except Exception:
-        pass
+    except tk.TclError:
+        pass  # "zoomed" state only supported on Windows
     root.mainloop()

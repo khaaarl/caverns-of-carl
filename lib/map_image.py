@@ -48,7 +48,7 @@ try:
     ROOM_NUMBER_FONT = ImageFont.truetype(
         vera_font_path, ROOM_NUMBER_FONT_SIZE
     )
-except Exception:
+except OSError:
     # Fallback to default font if Vera not available
     ROOM_NUMBER_FONT = ImageFont.load_default()
 
@@ -358,12 +358,12 @@ def produce_map_images_if_possible(df, name, format="png"):
         try:
             path = produce_map_image(df, name, format, player_map=player_map)
             results.append(path)
-        except Exception as e:
+        except (OSError, ValueError) as e:
             label = "player" if player_map else "DM"
             print(f"Failed to produce {label} map image: {e}")
     try:
         path = produce_dm_overlay_image(df, name, format)
         results.append(path)
-    except Exception as e:
+    except (OSError, ValueError) as e:
         print(f"Failed to produce DM overlay image: {e}")
     return results
