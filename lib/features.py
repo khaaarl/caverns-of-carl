@@ -9,6 +9,8 @@ from lib.utils import COC_ROOT_DIR, Doc
 
 
 class SpecialFeature:
+    """Base class for special room features (altars, blacksmiths, etc.)."""
+
     def __init__(self, biome_name=None):
         self.roomix = None
         self.rand = random.random()
@@ -71,6 +73,8 @@ class SpecialFeature:
 
 
 class Blacksmith(SpecialFeature):
+    """A blacksmith NPC with forge and anvil placement logic."""
+
     def description(self, df, verbose=False):
         return "The blacksmith Andrus of Eastora has set up shop here."
 
@@ -156,6 +160,7 @@ class Blacksmith(SpecialFeature):
 
 @functools.cache
 def deity_library():
+    """Load and cache the deity library as {name: Deity}."""
     filename = os.path.join(
         COC_ROOT_DIR, "reference_info", "misc", "deities.json"
     )
@@ -168,6 +173,8 @@ def deity_library():
 
 
 class Deity:
+    """Data class for a deity loaded from the deities JSON."""
+
     def __init__(self, blob):
         self.name = blob["Name"]
         self.full_title = blob.get("FullTitle", self.name)
@@ -181,6 +188,8 @@ class Deity:
 
 
 class Altar(SpecialFeature):
+    """A deity altar with a request/boon quest placed in a scored room."""
+
     def __init__(self, deity_name, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.deity_name = deity_name

@@ -11,6 +11,7 @@ from lib.utils import COC_ROOT_DIR, eval_dice
 
 @functools.cache
 def get_treasure_library(name):
+    """Load and cache a TreasureLibrary by name."""
     tl = TreasureLibrary(name=name)
     tl.load()
     return tl
@@ -18,6 +19,7 @@ def get_treasure_library(name):
 
 @functools.cache
 def book_library():
+    """Load and cache the book library as {title: Book}."""
     filename = os.path.join(
         COC_ROOT_DIR, "reference_info", "misc", "books.json"
     )
@@ -43,6 +45,8 @@ def book_list():
 
 
 class Book:
+    """A book that can appear on bookshelves, with title, author, and content."""
+
     def __init__(self, obj):
         self.title = obj.get("Title")
         self.author = obj.get("Author")
@@ -85,6 +89,8 @@ class Book:
 
 
 class TreasureLibrary:
+    """Treasure generation system with rollable tables, items, and variants."""
+
     def __init__(self, name):
         self.name = name
         self.tables = []
@@ -118,6 +124,7 @@ class TreasureLibrary:
             json.dump(self.to_blob(), f, indent=2)
 
     def gen_horde(self, level, num_player_characters):
+        """Generate a list of treasure items for a chest based on party level."""
         table_use = [
             ("A", 80),
             ("B", min(20 + level * 5, 50)),
@@ -161,6 +168,7 @@ class TreasureLibrary:
         return contents
 
     def gold_to_treasure(self, gp: float) -> list[str]:
+        """Convert a gold value into gemstones or art objects of similar worth."""
         keys: list[int] = []
         treasure_type, d = random.choice(
             [("Gemstone", self.gemstones), ("Art Object", self.art_objects)]
@@ -213,6 +221,7 @@ class TreasureLibrary:
     def gen_bookshelf_horde(
         self, level: int, num_player_characters: int
     ) -> list[str]:
+        """Generate spell scrolls and books for a bookshelf."""
         clvl = (level + 1) / 2
         freq = 50
         scroll_names = [
@@ -255,6 +264,7 @@ class TreasureLibrary:
         return contents
 
     def roll_on_table(self, table_name, d=100):
+        """Roll on a named treasure table and return the expanded item."""
         table = None
         for t in self.tables:
             if t["name"].upper() == table_name.upper():
@@ -274,6 +284,7 @@ class TreasureLibrary:
         return self.expand_item(item or "")
 
     def expand_item(self, item):
+        """Resolve an item name into a specific variant if one exists."""
         for i in self.items:
             if i["name"].upper() != item.upper():
                 continue
@@ -282,6 +293,7 @@ class TreasureLibrary:
         return self.expand_variant(item)
 
     def expand_variant(self, item):
+        """Replace {placeholder} tokens in an item string with random variants."""
         o = []
         for bit in re.split("({[^}]+})", item):
             if bit.startswith("{") and bit.endswith("}"):

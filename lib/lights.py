@@ -7,6 +7,8 @@ from lib.tile import (
 
 
 class LightSource:
+    """Base class for light sources placed in the dungeon."""
+
     def __init__(self, x, y):
         self.x, self.y = x, y
         self.roomix = None
@@ -18,6 +20,8 @@ class LightSource:
 
 
 class WallSconce(LightSource):
+    """Candle sconce placed against a wall in structured rooms."""
+
     def tts_object(self, df):
         obj = tts.reference_object("Horn Candle Sconce")
         df.tts_xz(self.x, self.y, obj)
@@ -44,6 +48,8 @@ class WallSconce(LightSource):
 
 
 class GlowingMushrooms(LightSource):
+    """Bioluminescent mushrooms used as light in cavern areas."""
+
     def tts_object(self, df):
         obj = tts.reference_object("Blue Mushrooms for Glowing")
         df.tts_xz(self.x, self.y, obj)

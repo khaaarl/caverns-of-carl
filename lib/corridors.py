@@ -17,6 +17,8 @@ if TYPE_CHECKING:
 
 
 class CorridorWalker:
+    """Iterator that yields (x, y) coordinates along a corridor's path."""
+
     def __init__(
         self, corridor: Corridor, max_width_iter: int | None = None
     ) -> None:
@@ -77,6 +79,8 @@ class CorridorWalker:
 
 
 class Corridor:
+    """An L-shaped passage connecting two rooms, with configurable width."""
+
     def __init__(
         self,
         room1ix: int,
@@ -254,6 +258,8 @@ class Corridor:
 
 
 class CavernousCorridor(Corridor):
+    """Corridor with cavern styling; never has doors."""
+
     def is_fully_enclosed_by_doors(self) -> bool:
         return False
 
@@ -262,6 +268,8 @@ class CavernousCorridor(Corridor):
 
 
 class Door:
+    """A door placed at a corridor-room boundary, with type, lock, and secret status."""
+
     def __init__(
         self,
         door_type: str,
@@ -370,6 +378,7 @@ class Door:
 
     @staticmethod
     def pick_type(config: Any) -> str:
+        """Randomly select a door type scaled to the party's level."""
         lvl = config.target_character_level - 5 + eval_dice("1d20")
         max_ix = len(Door.door_type_table) - 1
         ix = min(int(lvl * max_ix / 30.0), max_ix)

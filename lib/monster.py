@@ -29,12 +29,15 @@ from lib.utils import (  # noqa: E402
 
 @functools.cache
 def get_monster_library(name: str) -> MonsterLibrary:
+    """Load and cache a MonsterLibrary by name (e.g. 'dnd 5e monsters')."""
     ml = MonsterLibrary(name=name)
     ml.load()
     return ml
 
 
 class MonsterLibrary:
+    """Collection of MonsterInfo entries loaded from a JSON file."""
+
     def __init__(self, name: str) -> None:
         self.name: str = name
         self.monster_infos: list[MonsterInfo] = []
@@ -71,6 +74,7 @@ class MonsterLibrary:
         max_challenge_rating: float | None = None,
         has_tts: bool = False,
     ) -> list[MonsterInfo]:
+        """Return monster infos matching the given filter and CR range."""
         output = []
         for m in self.monster_infos:
             if has_tts and not (
@@ -96,6 +100,7 @@ class MonsterLibrary:
         return output
 
     def ingest_5e_tools_json(self, filename: str) -> None:
+        """Import monster data from a 5e.tools bestiary JSON export."""
         infos: dict[str, MonsterInfo] = collections.defaultdict(MonsterInfo)
         for mi in self.monster_infos:
             infos[mi.name] = mi
@@ -242,6 +247,8 @@ _CR_TO_XP = {
 
 
 class MonsterInfo:
+    """Static data about a monster type (stats, CR, keywords, size)."""
+
     _KEYS_DEFAULTS: dict[str, Any] = {
         "name": "Unnamed Monster",
         "keywords": [],
@@ -303,6 +310,8 @@ class MonsterInfo:
 
 
 class Monster:
+    """An individual monster instance placed on the dungeon floor."""
+
     def __init__(
         self, monster_info, name=None, health=None, x=0, y=0, roomix=None
     ):
@@ -324,6 +333,7 @@ class Monster:
         return self.monster_info.ascii_char
 
     def adjust_cr(self, new_cr):
+        """Scale this monster's stats to a new challenge rating."""
         old_cr = self.monster_info.challenge_rating
         if new_cr == old_cr:
             return
@@ -377,10 +387,13 @@ class Monster:
 
 
 class Encounter:
+    """A group of monsters forming a combat encounter for a room."""
+
     def __init__(self, monsters=None):
         self.monsters = monsters or []
 
     def total_xp(self):
+        """Calculate effective XP accounting for multi-monster multipliers."""
         tmp_sum = sum([m.monster_info.xp for m in self.monsters])
         # Count up the monsters, but monsters significantly lower CR
         # don't count as much. I'm attenuating by the square root of
@@ -412,6 +425,7 @@ class Encounter:
 
 
 def summarize_monsters(monsters):
+    """Return a text summary of monster counts by type."""
     monster_counts = collections.defaultdict(int)
     infos = {}
     for monster in monsters:
@@ -493,6 +507,7 @@ def _build_encounter_single_attempt(
 
 
 def score_encounter(encounter, target_xp, prev_monster_counts):
+    """Score an encounter based on XP accuracy, synergies, and variety."""
     xp = encounter.total_xp()
     score = 1.0 - abs(xp - target_xp) / target_xp
     monster_infos = {}  # name -> info
@@ -546,6 +561,7 @@ def build_encounter(
     prev_monster_counts=None,
     max_space=None,
 ):
+    """Build the best encounter from 100 random attempts near target_xp."""
     if prev_monster_counts is None:
         prev_monster_counts = {}
     if not variety:
@@ -569,6 +585,7 @@ def build_encounter(
 
 
 def med_target_xp(config):
+    """Return the DMG 'Medium' encounter XP threshold for the party."""
     med_xp_per_char = {
         1: 50,
         2: 100,

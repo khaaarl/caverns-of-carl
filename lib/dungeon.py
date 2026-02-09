@@ -60,6 +60,8 @@ STYLE_ADOPTION_THRESHOLD = 0.7
 
 
 class RetriableDungeonographyException(Exception):
+    """Generation failed but can be retried with a new random seed."""
+
     pass
 
 
@@ -76,6 +78,12 @@ class RetriableFeaturePlacementException(RetriableDungeonographyException):
 
 
 class DungeonFloor:
+    """Central data structure for a generated dungeon floor.
+
+    Holds the tile grid (tiles[x][y]), rooms, corridors, monsters, traps,
+    and all other dungeon contents. Coordinate system: y=0 is south (bottom).
+    """
+
     def __init__(self, config):
         self.config = config
         self.width = config.width
@@ -139,6 +147,7 @@ class DungeonFloor:
                 yield self.tiles[x][y]
 
     def set_tile(self, tile, x=None, y=None):
+        """Place a tile on the grid, inheriting room/corridor from the previous tile."""
         if x is not None:
             tile.x = x
         if y is not None:
@@ -156,6 +165,7 @@ class DungeonFloor:
         return tile
 
     def get_tile(self, x, y, default=None):
+        """Get tile at (x, y), returning default if out of bounds."""
         if x < 0 or x >= self.width or y < 0 or y >= self.height:
             if default is None:
                 return None
@@ -231,6 +241,7 @@ class DungeonFloor:
         self.traps.append(trap)
 
     def ascii(self, colors=False):
+        """Render the dungeon as an ASCII string, optionally with ANSI colors."""
         chars = [
             [self.tiles[x][y].to_char() for y in range(self.height)]
             for x in range(self.width)
@@ -282,6 +293,7 @@ class DungeonFloor:
 
 
 def is_room_valid(room, df, rooms, ix_to_ignore=None):
+    """Check if a room fits within bounds and doesn't overlap existing rooms."""
     if (
         room.x - room.rw < 1
         or room.y - room.rh < 1
@@ -304,6 +316,7 @@ def is_room_valid(room, df, rooms, ix_to_ignore=None):
 
 
 def generate_random_dungeon(config=None, errors=None):
+    """Generate a complete dungeon floor. Retries up to 100 times on failure."""
     config = config or lib.config.DungeonConfig()
     errors = errors or []
     successful = False
@@ -338,6 +351,7 @@ def generate_random_dungeon(config=None, errors=None):
 
 
 def place_biomes_in_dungeon(df):
+    """Assign each tile a biome based on directional weights."""
     for tile in df.get_tiles():
         biome_weight_names = []
         for biome in df.config.biomes:
@@ -354,12 +368,14 @@ def place_biomes_in_dungeon(df):
 
 
 def place_mazes_in_dungeon(df):
+    """Create maze layouts for biomes configured to use them."""
     for biome in df.config.biomes + [df.config]:
         if biome.use_maze_layout:
             place_maze_in_biome(df, biome)
 
 
 def place_maze_in_biome(df, biome):
+    """Build a DFS-based maze of junctions and rooms within a single biome."""
     maze_corridor_width = 3
     maze_width = int((df.width + 1) / (maze_corridor_width * 2))
     maze_height = int((df.height + 1) / (maze_corridor_width * 2))
@@ -488,6 +504,7 @@ def place_maze_in_biome(df, biome):
 
 
 def place_rooms_in_dungeon(df):
+    """Place, embiggen, wiggle, and number rooms on the dungeon floor."""
     num_rooms_already = 0
     for room in df.rooms:
         if not room.is_trivial():
@@ -565,6 +582,7 @@ def place_rooms_in_dungeon(df):
 
 
 def erode_cavernous_rooms_in_dungeon(df):
+    """Apply erosion passes to all cavernous rooms for organic shapes."""
     for room in df.rooms:
         if isinstance(room, CavernousRoom):
             room.erode(df, num_iterations=df.config.num_erosion_steps)
@@ -579,6 +597,7 @@ def carve_corridor(
     biome_name,
     force_trivial=False,
 ):
+    """Create a corridor between two rooms, or None if the path is invalid."""
     cls = Corridor
     if isinstance(room1, CavernousRoom) and isinstance(room2, CavernousRoom):
         cls = CavernousCorridor
@@ -657,6 +676,7 @@ def carve_corridor(
 
 
 def place_corridors_in_dungeon(df):
+    """Connect rooms with corridors, aiming for full connectivity."""
     config = df.config
     is_fully_connected = False
     prev_attempts = set()
@@ -724,6 +744,7 @@ def place_corridors_in_dungeon(df):
 
 
 def place_rivers_in_dungeon(df):
+    """Place rivers across the dungeon, respecting biome constraints."""
     for attempt_ix in range(100):
         rivers = []
         biome_river_counts = collections.defaultdict(int)
@@ -760,6 +781,7 @@ def place_rivers_in_dungeon(df):
 
 
 def place_doors_in_dungeon(df):
+    """Add doors (and secret doors) at room-corridor boundaries."""
     for corridor in df.corridors:
         if isinstance(corridor, CavernousCorridor):
             continue  # caverns don't have doors
@@ -866,6 +888,7 @@ def place_doors_in_dungeon(df):
 
 
 def place_ladders_in_dungeon(df):
+    """Place up and down ladders, keeping them separated by BFS distance."""
     max_depth = df.config.min_ladder_distance - 1
     ladder_room_ixs = set()
     rooms = [x for x in df.rooms if not x.is_trivial()]
@@ -976,6 +999,7 @@ def place_ladders_in_dungeon(df):
 
 
 def place_columns_in_dungeon(df):
+    """Add decorative columns to sufficiently large rectangular rooms."""
     for room in df.rooms:
         if room.is_trivial():
             continue
@@ -1014,6 +1038,7 @@ def place_columns_in_dungeon(df):
 
 
 def place_special_features_in_dungeon(df):
+    """Place blacksmiths, altars, and other special features in scored rooms."""
     features = []
     for biome in df.config.biomes + [df.config]:
         if random.random() * 100 < biome.blacksmith_percent:
@@ -1083,6 +1108,7 @@ def place_special_features_in_dungeon(df):
 
 
 def place_treasure_in_dungeon(df):
+    """Place chests, mimics, and bookshelves in eligible rooms by biome."""
     lib = get_treasure_library("dnd 5e treasure")
     mimic_info = get_monster_library("dnd 5e monsters").get_monster_infos(
         "Mimic"
@@ -1180,6 +1206,7 @@ def place_treasure_in_biome(df, biome, rooms, lib, mimic_info):
 
 
 def place_monsters_in_dungeon(df):
+    """Generate and place monster encounters in rooms by biome."""
     room_biome_names = collections.defaultdict(list)
     for room in df.rooms:
         room_biome_names[room.biome_name].append(room)
@@ -1257,6 +1284,7 @@ def place_monsters_in_biome(df, biome, rooms, monster_counts):
 
 
 def place_traps_in_dungeon(df):
+    """Place traps on rooms, corridors, doors, and chests."""
     for room in df.rooms:
         if not room.allows_traps(df):
             continue
@@ -1308,6 +1336,7 @@ def place_traps_in_dungeon(df):
 
 
 def place_lights_in_dungeon(df):
+    """Place wall sconces and glowing mushrooms based on light levels."""
     thing_tiles = []
     for room in df.rooms:
         tile_infos = []
@@ -1364,6 +1393,7 @@ def place_lights_in_dungeon(df):
 
 
 def stylize_tiles_in_dungeon(df):
+    """Propagate tile styles (dungeon/cavern) from rooms and corridors to walls."""
     for room in df.rooms:
         for x, y in room.tile_coords():
             df.tiles[x][y].tile_style = room.tile_style()
@@ -1417,6 +1447,7 @@ def stylize_tiles_in_dungeon(df):
 
 
 def add_npcs_to_dungeon(df):
+    """Add random NPCs from the NPC library to the dungeon."""
     num_npcs = eval_dice(df.config.num_misc_NPCs)
     npc_list = list(lib.npcs.npc_library().values())
     num_npcs = min(num_npcs, len(npc_list))

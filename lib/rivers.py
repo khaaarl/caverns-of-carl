@@ -13,6 +13,8 @@ if TYPE_CHECKING:
 
 
 class River:
+    """A sinusoidal river that carves water tiles across the dungeon."""
+
     def __init__(
         self,
         diameter: int,
@@ -40,6 +42,7 @@ class River:
         return adjacent_coords
 
     def carve_into_dungeon(self, df: DungeonFloor) -> None:
+        """Replace tiles along the river's path with WaterTiles."""
         adjacent_coords: set[tuple[int, int]] = set()
         for x, y in self.river_tile_coords:
             for dx in range(-1, 2):
@@ -60,6 +63,7 @@ class River:
 
     @staticmethod
     def propose_river(df: DungeonFloor, diameter: int = 2) -> River:
+        """Generate a random sinusoidal river path across the dungeon."""
         start_coords: tuple[float, float] = (
             2 + random.random() * (df.width - 4),
             2 + random.random() * (df.height - 4),

@@ -9,6 +9,7 @@ from lib.utils import COC_ROOT_DIR, Doc
 
 @functools.cache
 def npc_library():
+    """Load and cache the NPC library as {name: Npc}."""
     filename = os.path.join(
         COC_ROOT_DIR, "reference_info", "npcs", "npcs.json"
     )
@@ -23,6 +24,8 @@ def npc_library():
 
 
 class Npc:
+    """A non-player character with stats, personality, and TTS representation."""
+
     def __init__(self, blob):
         self.x = None
         self.y = None

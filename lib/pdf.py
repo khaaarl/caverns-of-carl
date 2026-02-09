@@ -65,6 +65,8 @@ def draw_pagenum(canvas, pagenum):
 
 
 class Page:
+    """A single PDF page containing styled text lines with bookmarks and links."""
+
     def __init__(self, pagenum, lines=None):
         self.pagenum = pagenum
         self.lines = list(lines) if lines else []
@@ -154,6 +156,7 @@ class Page:
 
 
 def docs_to_pages(docs, start_page_num):
+    """Paginate a list of Doc objects into Pages with word wrapping."""
     pages = [Page(pagenum=start_page_num)]
     for doc in docs:
         s = doc.flat_str(separator="\n\n")
@@ -193,6 +196,7 @@ def docs_to_pages(docs, start_page_num):
 
 
 def draw_map_page(canvas, df, pagenum):
+    """Render the ASCII dungeon map onto a PDF page with auto-scaling."""
     chosen_size, chosen_width = 5, 3
     while (df.height <= max_rows(chosen_size + 5)) and (
         df.width <= max_cols(chosen_width + 3)
@@ -280,6 +284,7 @@ def draw_dm_map_image_page(canvas, name, pagenum):
 
 
 def produce_pdf(df, name):
+    """Generate the full PDF: ASCII map, DM map image, and room descriptions."""
     assert stringWidth("m", font_normal(), _FONT_SIZE) == _FONT_CHAR_WIDTH
     assert stringWidth("m", font_bold(), _FONT_SIZE) == _FONT_CHAR_WIDTH
     pdf_dir = os.path.join(COC_ROOT_DIR, "output", "pdfs")

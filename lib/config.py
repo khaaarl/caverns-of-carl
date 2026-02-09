@@ -7,6 +7,12 @@ from typing import Any
 
 
 class DungeonConfig:
+    """All dungeon generation parameters. Also serves as biome sub-configs.
+
+    Each parameter is backed by a tkinter var for the GUI. Biomes are
+    child DungeonConfig instances with biome-specific overrides.
+    """
+
     def __init__(self, biome_name: str | None = None) -> None:
         self.biome_name: str | None = biome_name
         self.biomes: list[DungeonConfig] = []
@@ -159,6 +165,7 @@ class DungeonConfig:
         biome_only: bool = False,
         combobox_values: list[str] | None = None,
     ) -> None:
+        """Register a config variable with its default value and UI metadata."""
         assert k not in self.var_keys
         assert type(v) in [int, float, str, bool]
         if not tk_label:
@@ -184,6 +191,7 @@ class DungeonConfig:
             self.tk_combobox_values[k] = combobox_values
 
     def make_tk_labels_and_entries(self, parent: Any) -> None:
+        """Create tkinter label and entry widgets for all config variables."""
         row = 0
         group = 0
         for op, k in self.ui_ops:
@@ -243,12 +251,14 @@ class DungeonConfig:
                 row += 1
 
     def load_from_tk_entries(self) -> None:
+        """Sync config values from the tkinter UI vars."""
         for k, var in self.tk_vars.items():
             self.__dict__[k] = var.get()
         for biome in self.biomes:
             biome.load_from_tk_entries()
 
     def add_biome(self, biome_name: str) -> DungeonConfig:
+        """Create a child biome config inheriting current values."""
         assert biome_name
         biome = DungeonConfig(biome_name=biome_name)
         for k in self.var_keys:
@@ -257,6 +267,7 @@ class DungeonConfig:
         return biome
 
     def get_biome(self, biome_name: str | None) -> DungeonConfig:
+        """Look up a biome by name, or return self if biome_name is None."""
         if biome_name is None:
             return self
         for biome in self.biomes:

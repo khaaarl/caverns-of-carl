@@ -92,6 +92,8 @@ _DAMAGE_TYPE_DEFAULT_DICE["cold"] = 8
 
 
 class Trap:
+    """Base class for dungeon traps with trigger, effect, and DC generation."""
+
     def __init__(self, config):
         self.config = config
         self.level = config.target_character_level
@@ -106,6 +108,7 @@ class Trap:
         return f"Trap (find DC:{self.notice_dc}, disarm DC:{self.disarm_dc})\nTrigger: {self.trigger}\n{self.effect}"
 
     def eval_trap_expr(self, s):
+        """Expand template tokens like {DC}, {DAM:fire}, {AREA} in a trap string."""
         num_dams = len(re.findall("({DAM[^}]*})", s))
         o = []
         for bit in re.split("({[^}]+})", s):
@@ -198,6 +201,8 @@ class Trap:
 
 
 class ChestTrap(Trap):
+    """Trap triggered by opening or tampering with a chest."""
+
     def __init__(self, config, x, y):
         super().__init__(config)
         self.x = x
@@ -221,6 +226,8 @@ class ChestTrap(Trap):
 
 
 class RoomTrap(Trap):
+    """Area trap that activates when entering a room."""
+
     def __init__(self, config, roomix):
         super().__init__(config)
         self.roomix = roomix
@@ -252,6 +259,8 @@ class RoomTrap(Trap):
 
 
 class CorridorTrap(Trap):
+    """Trap placed in a corridor, possibly triggered by movement."""
+
     def __init__(self, config, corridorix):
         super().__init__(config)
         self.corridorix = corridorix
@@ -285,6 +294,8 @@ class CorridorTrap(Trap):
 
 
 class DoorTrap(Trap):
+    """Trap triggered by opening or tampering with a door."""
+
     def __init__(self, config, doorix, x, y):
         super().__init__(config)
         self.doorix = doorix

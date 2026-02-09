@@ -6,6 +6,8 @@ import lib.tts as tts
 
 
 class Tile:
+    """Base class for all dungeon tiles. Tracks position, style, and associations."""
+
     def __init__(
         self,
         x: int | None = None,
@@ -259,6 +261,8 @@ class Tile:
 
 
 class WallTile(Tile):
+    """Impassable wall tile. Blocks movement and line of sight."""
+
     def is_wall(self):
         return True
 
@@ -277,6 +281,8 @@ class WallTile(Tile):
 
 
 class ColumnTile(WallTile):
+    """Decorative column placed in large rooms. Blocks movement."""
+
     def __init__(self, roomix=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.roomix = roomix
@@ -292,6 +298,8 @@ class ColumnTile(WallTile):
 
 
 class FloorTile(Tile):
+    """Base class for walkable floor tiles."""
+
     def tts_objects(self, df):
         return [self._floor_tile_tts_object(df)]
 
@@ -300,6 +308,8 @@ class FloorTile(Tile):
 
 
 class RoomFloorTile(FloorTile):
+    """Floor tile belonging to a room."""
+
     def __init__(self, roomix, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.roomix = roomix
@@ -311,6 +321,8 @@ class RoomFloorTile(FloorTile):
 
 
 class CorridorFloorTile(FloorTile):
+    """Floor tile belonging to a corridor."""
+
     def __init__(self, corridorix, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.corridorix = corridorix
@@ -322,6 +334,8 @@ class CorridorFloorTile(FloorTile):
 
 
 class DoorTile(CorridorFloorTile):
+    """A door between a room and a corridor. Blocks movement and line of sight."""
+
     def __init__(self, corridorix, doorix=None, *args, **kwargs):
         super().__init__(corridorix, *args, **kwargs)
         self.doorix = doorix
@@ -370,6 +384,8 @@ class DoorTile(CorridorFloorTile):
 
 
 class SecretDoorTile(DoorTile):
+    """A hidden door that appears as a wall until discovered."""
+
     def __init__(self, corridorix, doorix=None, *args, **kwargs):
         super().__init__(corridorix, *args, **kwargs)
         self.doorix = doorix
@@ -387,6 +403,8 @@ class SecretDoorTile(DoorTile):
 
 
 class LadderUpTile(RoomFloorTile):
+    """A ladder leading up to the previous floor."""
+
     def to_char(self):
         return "[1;97m<"
 
@@ -406,6 +424,8 @@ class LadderUpTile(RoomFloorTile):
 
 
 class LadderDownTile(RoomFloorTile):
+    """A hatch leading down to the next floor."""
+
     def to_char(self):
         return "[1;97m>"
 
@@ -424,6 +444,7 @@ class LadderDownTile(RoomFloorTile):
 
 
 def rotY_away_from_wall(df, x: int, y: int, original: int = 0) -> int | None:
+    """Return a Y rotation that faces away from an adjacent wall, or None."""
     posrots = [(0, 1, 0), (1, 0, 90), (0, -1, 180), (-1, 0, 270)]
     random.shuffle(posrots)
     for dx, dy, r in posrots:
@@ -433,6 +454,8 @@ def rotY_away_from_wall(df, x: int, y: int, original: int = 0) -> int | None:
 
 
 class ChestTile(RoomFloorTile):
+    """A treasure chest placed in a room. Contains loot described in contents."""
+
     def __init__(self, roomix, contents="", *args, **kwargs):
         super().__init__(roomix, *args, **kwargs)
         self.contents = contents
@@ -511,6 +534,8 @@ class ChestTile(RoomFloorTile):
 
 
 class BookshelfTile(ChestTile):
+    """A bookshelf that may contain scrolls and books. Does not block movement."""
+
     def is_move_blocking(self):
         return False
 
@@ -533,6 +558,8 @@ class BookshelfTile(ChestTile):
 
 
 class MimicTile(ChestTile):
+    """A chest that is actually a mimic monster in disguise."""
+
     def __init__(self, roomix, monster, *args, **kwargs):
         # Ensure contents is not duplicated in kwargs
         contents = kwargs.pop("contents", "")
@@ -556,6 +583,8 @@ class MimicTile(ChestTile):
 
 
 class WaterTile(Tile):
+    """A water tile placed by rivers. Not walkable."""
+
     def is_water(self):
         return True
 

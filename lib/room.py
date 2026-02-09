@@ -14,6 +14,8 @@ from lib.utils import Doc, DocBookmark, DocLink
 
 
 class Room:
+    """Base class for dungeon rooms. Centered at (x, y) with radius rw x rh."""
+
     def __init__(self, x, y, rw=1, rh=1, biome_name=None):
         self.x = x
         self.y = y
@@ -33,6 +35,7 @@ class Room:
         self.name_num = None
 
     def embiggened(self):
+        """Return a copy with randomly increased width or height."""
         return self.__class__(
             self.x,
             self.y,
@@ -42,6 +45,7 @@ class Room:
         )
 
     def wiggled(self):
+        """Return a copy shifted by up to 1 tile in each direction."""
         return self.__class__(
             self.x + random.randrange(-1, 2),
             self.y + random.randrange(-1, 2),
@@ -112,6 +116,7 @@ class Room:
         avoid_wall=False,
         diameter=1,
     ):
+        """Pick a random tile in this room matching the given constraints, or None."""
         coords = list(self.tile_coords())
         for _ in range(100):
             x, y = random.choice(coords)
@@ -259,6 +264,8 @@ class Room:
 
 
 class RectRoom(Room):
+    """Standard rectangular room."""
+
     def tile_coords(self):
         for x in range(self.x - self.rw, self.x + self.rw + 1):
             for y in range(self.y - self.rh, self.y + self.rh + 1):
@@ -272,6 +279,8 @@ class RectRoom(Room):
 
 
 class MazeJunction(RectRoom):
+    """Small trivial room used as a junction point in maze layouts."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.maze_x = None
@@ -297,6 +306,8 @@ class MazeJunction(RectRoom):
 
 
 class CavernousRoom(Room):
+    """Irregularly shaped cavern room with elliptical base and erosion."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.explicit_tile_coords: list[tuple[int, int]] | None = None
@@ -322,6 +333,7 @@ class CavernousRoom(Room):
         return False
 
     def erode(self, df, num_iterations=5, per_tile_chance=0.25):
+        """Randomly expand the room into adjacent walls for an organic shape."""
         for _ in range(num_iterations):
             self._erode_single(df, per_tile_chance)
 
