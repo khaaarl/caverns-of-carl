@@ -175,6 +175,8 @@ ALWAYS ASK FOR PERMISSION BEFORE COMMITTING TO MAIN/MASTER, BUT COMMITTING TO FE
 
 ## Merging to Main
 
+**ALWAYS ask for explicit permission before merging anything into main.** Never merge to main on your own initiative, even for trivial fixes. Wait for the user to say to merge.
+
 When the user asks to merge a feature branch to main, follow this procedure:
 
 ```bash
