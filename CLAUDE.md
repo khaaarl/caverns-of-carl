@@ -6,6 +6,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Caverns of Carl is a D&D 5e random dungeon generator with a Tkinter GUI. It outputs Tabletop Simulator (TTS) save files, PDF documents, and 2D map images (PNG).
 
+## Virtual Environment (CRITICAL)
+
+**Always use the project virtualenv.** Never install packages system-wide or use bare `python`/`pip` outside the venv.
+
+```bash
+# Set up the venv (if it doesn't already exist)
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+
+# Activate the venv (if it already exists)
+source venv/bin/activate
+```
+
+Before running ANY Python command (`python`, `pip`, `black`, `isort`, `pre-commit`, etc.), ensure the venv is active. If unsure, run `source venv/bin/activate` first. If the venv isn't activated, use the full path: `venv/bin/python`, `venv/bin/black`, etc.
+
 ## Commands
 
 ```bash
