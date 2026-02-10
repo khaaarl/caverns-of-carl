@@ -259,6 +259,22 @@ class Room:
     def is_fully_enclosed_by_doors(self):
         return self.doorixs and len(self.doorixs) == len(self.corridorixs)
 
+    def wall_attachment_points(self, df):
+        """Return floor tiles adjacent to a wall in a cardinal direction.
+
+        Each result is (x, y) suitable as a corridor start/end point.
+        """
+        points = []
+        for x, y in self.tile_coords():
+            tile = df.get_tile(x, y)
+            if not tile or tile.is_move_blocking():
+                continue
+            for ntile in df.neighbor_tiles(x, y):
+                if isinstance(ntile, WallTile):
+                    points.append((x, y))
+                    break
+        return points
+
     def desires_doors(self):
         return NotImplementedError()
 

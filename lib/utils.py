@@ -396,6 +396,91 @@ def dfs(
     return accum
 
 
+def astar_corridor_path(
+    tiles: Any,
+    x1: int,
+    y1: int,
+    x2: int,
+    y2: int,
+    max_steps: int = 200,
+    turn_penalty: int = 2,
+) -> list[tuple[int, int]] | None:
+    """Find a cardinal-movement path from (x1,y1) to (x2,y2) through WallTile only.
+
+    Returns a list of (x, y) coordinates, or None if no path exists.
+    Uses A* with Manhattan distance heuristic and a turn penalty to
+    prefer straighter paths.
+    """
+    import heapq
+
+    from lib.tile import WallTile
+
+    width = len(tiles)
+    height = len(tiles[0])
+
+    def heuristic(x: int, y: int) -> int:
+        return abs(x - x2) + abs(y - y2)
+
+    # (f_score, g_score, x, y, prev_dx, prev_dy)
+    start_entry = (heuristic(x1, y1), 0, x1, y1, 0, 0)
+    open_set: list[tuple[int, int, int, int, int, int]] = [start_entry]
+    came_from: dict[tuple[int, int], tuple[int, int]] = {}
+    g_scores: dict[tuple[int, int], int] = {(x1, y1): 0}
+
+    while open_set:
+        _, g, x, y, pdx, pdy = heapq.heappop(open_set)
+        if x == x2 and y == y2:
+            # Reconstruct path
+            path = [(x, y)]
+            while (x, y) in came_from:
+                x, y = came_from[(x, y)]
+                path.append((x, y))
+            path.reverse()
+            return path
+        if g > max_steps:
+            continue
+        if g > g_scores.get((x, y), max_steps + 1):
+            continue
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            nx, ny = x + dx, y + dy
+            if nx < 0 or nx >= width or ny < 0 or ny >= height:
+                continue
+            # Allow walking through walls and the destination (which may
+            # be a room floor tile)
+            tile = tiles[nx][ny]
+            is_dest = nx == x2 and ny == y2
+            if not isinstance(tile, WallTile) and not is_dest:
+                continue
+            cost = 1
+            if pdx != 0 or pdy != 0:
+                if dx != pdx or dy != pdy:
+                    cost += turn_penalty
+            new_g = g + cost
+            if new_g < g_scores.get((nx, ny), max_steps + 1):
+                g_scores[(nx, ny)] = new_g
+                f = new_g + heuristic(nx, ny)
+                heapq.heappush(open_set, (f, new_g, nx, ny, dx, dy))
+                came_from[(nx, ny)] = (x, y)
+    return None
+
+
+def _path_to_waypoints(path: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    """Convert a raw A* path into a list of waypoints at direction changes."""
+    if len(path) <= 2:
+        return path
+    waypoints = [path[0]]
+    for i in range(1, len(path) - 1):
+        px, py = path[i - 1]
+        x, y = path[i]
+        nx, ny = path[i + 1]
+        dx1, dy1 = x - px, y - py
+        dx2, dy2 = nx - x, ny - y
+        if dx1 != dx2 or dy1 != dy2:
+            waypoints.append((x, y))
+    waypoints.append(path[-1])
+    return waypoints
+
+
 def neighbor_coords(
     x: int, y: int, cardinal: bool = True, diagonal: bool = False
 ) -> Any:

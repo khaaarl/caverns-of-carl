@@ -8,7 +8,7 @@ import lib.lights
 import lib.monster
 import lib.npcs
 import lib.trap
-from lib.corridors import CavernousCorridor, Corridor, Door
+from lib.corridors import CavernousCorridor, Corridor, Door, WaypointCorridor
 from lib.monster import Monster, get_monster_library
 from lib.rivers import River
 from lib.room import CavernousRoom, MazeJunction, RectRoom, Room
@@ -28,6 +28,8 @@ from lib.tile import (
 )
 from lib.treasure import get_treasure_library
 from lib.utils import (
+    _path_to_waypoints,
+    astar_corridor_path,
     bfs,
     choice,
     dfs,
@@ -588,6 +590,26 @@ def erode_cavernous_rooms_in_dungeon(df):
             room.erode(df, num_iterations=df.config.num_erosion_steps)
 
 
+def _generate_s_curve_waypoints(x1, y1, x2, y2, is_horizontal_first):
+    """Generate waypoints for an S-curve/Z-shape corridor path."""
+    if x1 == x2 or y1 == y2:
+        return None  # Straight line, can't make S-curve
+    if is_horizontal_first:
+        # Horizontal-first S-curve: split the horizontal span
+        dx = x2 - x1
+        mid_x = x1 + int(dx * (0.33 + random.random() * 0.34))
+        if mid_x == x1 or mid_x == x2:
+            return None
+        return [(x1, y1), (mid_x, y1), (mid_x, y2), (x2, y2)]
+    else:
+        # Vertical-first S-curve: split the vertical span
+        dy = y2 - y1
+        mid_y = y1 + int(dy * (0.33 + random.random() * 0.34))
+        if mid_y == y1 or mid_y == y2:
+            return None
+        return [(x1, y1), (x1, mid_y), (x2, mid_y), (x2, y2)]
+
+
 def carve_corridor(
     df,
     room1,
@@ -596,23 +618,39 @@ def carve_corridor(
     is_horizontal_first,
     biome_name,
     force_trivial=False,
+    start_xy=None,
+    end_xy=None,
+    waypoints=None,
 ):
     """Create a corridor between two rooms, or None if the path is invalid."""
-    cls = Corridor
-    if isinstance(room1, CavernousRoom) and isinstance(room2, CavernousRoom):
-        cls = CavernousCorridor
-    corridor = cls(
-        room1.ix,
-        room2.ix,
-        room1.x,
-        room1.y,
-        room2.x,
-        room2.y,
-        is_horizontal_first,
-        width=width,
-        biome_name=biome_name,
-        force_trivial=force_trivial,
+    x1, y1 = start_xy if start_xy else (room1.x, room1.y)
+    x2, y2 = end_xy if end_xy else (room2.x, room2.y)
+    is_cavernous = isinstance(room1, CavernousRoom) and isinstance(
+        room2, CavernousRoom
     )
+    if waypoints and not is_cavernous:
+        corridor = WaypointCorridor(
+            room1.ix,
+            room2.ix,
+            waypoints,
+            width=width,
+            biome_name=biome_name,
+            force_trivial=force_trivial,
+        )
+    else:
+        cls = CavernousCorridor if is_cavernous else Corridor
+        corridor = cls(
+            room1.ix,
+            room2.ix,
+            x1,
+            y1,
+            x2,
+            y2,
+            is_horizontal_first,
+            width=width,
+            biome_name=biome_name,
+            force_trivial=force_trivial,
+        )
     wall_entries = 0
     corridor_coords = list(corridor.walk())
     for ix in range(1, len(corridor_coords) - 1):
@@ -675,24 +713,42 @@ def carve_corridor(
     return corridor
 
 
+def _pick_corridor_room_pair(df, is_fully_connected):
+    """Pick a room pair to connect, prioritizing disconnected components."""
+    n = len(df.rooms)
+    if not is_fully_connected and n > 1:
+        # Find the connected component containing room 0
+        main_component = dfs(df.room_neighbors, 0)
+        if len(main_component) < n:
+            disconnected = [i for i in range(n) if i not in main_component]
+            # Pick one room from each side to bridge the gap
+            room1ix = random.choice(list(main_component))
+            room2ix = random.choice(disconnected)
+            return tuple(sorted([room1ix, room2ix]))
+    # Fully connected (or single room): pick a random pair
+    room1ix = random.randrange(n)
+    room2ix = random.randrange(n)
+    if room1ix == room2ix:
+        return None
+    return tuple(sorted([room1ix, room2ix]))
+
+
 def place_corridors_in_dungeon(df):
     """Connect rooms with corridors, aiming for full connectivity."""
     config = df.config
-    is_fully_connected = False
+    is_fully_connected = len(df.rooms) <= 1
     prev_attempts = set()
     for _ in range(config.max_corridor_attempts):
         if (is_fully_connected or not config.prefer_full_connection) and len(
             df.corridors
         ) >= len(df.rooms) * config.min_corridors_per_room:
             break
-        room1ix = random.randrange(len(df.rooms))
-        room2ix = random.randrange(len(df.rooms))
-        if room1ix == room2ix:
+        pair = _pick_corridor_room_pair(df, is_fully_connected)
+        if pair is None:
             continue
-        room1ix, room2ix = sorted([room1ix, room2ix])
+        room1ix, room2ix = pair
         if room2ix in df.room_neighbors[room1ix]:
             continue
-        is_horizontal_first = random.randrange(2)
 
         room1 = df.rooms[room1ix]
         room2 = df.rooms[room2ix]
@@ -712,22 +768,94 @@ def place_corridors_in_dungeon(df):
         )
         if room1.in_maze or room2.in_maze:
             width = 3
-        signature = (room1ix, room2ix, width, is_horizontal_first)
-        if signature in prev_attempts:
-            continue
-        prev_attempts.add(signature)
         if room1.biome_name == room2.biome_name and room1.in_maze:
             continue
-        corridor = carve_corridor(
-            df, room1, room2, width, is_horizontal_first, biome_name
-        )
-        if not corridor:
-            continue
-        df.add_corridor(corridor)
-        if not is_fully_connected and len(
-            dfs(df.room_neighbors, room1ix)
-        ) == len(df.rooms):
-            is_fully_connected = True
+        # Pick attachment points (center or off-center)
+        off_center_pct = biome.corridor_off_center_percent / 100.0
+        start_xy = None
+        end_xy = None
+        if random.random() < off_center_pct:
+            pts = room1.wall_attachment_points(df)
+            if pts:
+                start_xy = random.choice(pts)
+        if random.random() < off_center_pct:
+            pts = room2.wall_attachment_points(df)
+            if pts:
+                end_xy = random.choice(pts)
+        # Try both L-orientations before giving up on this pair
+        is_horizontal_first = random.randrange(2)
+        for orientation in [is_horizontal_first, 1 - is_horizontal_first]:
+            signature = (room1ix, room2ix, width, orientation)
+            if signature in prev_attempts:
+                continue
+            prev_attempts.add(signature)
+            # Decide whether to try a multi-turn path
+            sx, sy = start_xy if start_xy else (room1.x, room1.y)
+            ex, ey = end_xy if end_xy else (room2.x, room2.y)
+            multi_turn_pct = biome.corridor_multi_turn_percent / 100.0
+            waypoints = None
+            if width == 1 and random.random() < multi_turn_pct:
+                waypoints = _generate_s_curve_waypoints(
+                    sx, sy, ex, ey, orientation
+                )
+            corridor = carve_corridor(
+                df,
+                room1,
+                room2,
+                width,
+                orientation,
+                biome_name,
+                start_xy=start_xy,
+                end_xy=end_xy,
+                waypoints=waypoints,
+            )
+            if corridor:
+                df.add_corridor(corridor)
+                if not is_fully_connected and len(
+                    dfs(df.room_neighbors, room1ix)
+                ) == len(df.rooms):
+                    is_fully_connected = True
+                break
+    # A* pathfinding fallback for remaining disconnected rooms
+    if (
+        config.prefer_full_connection
+        and config.use_pathfinding_fallback
+        and len(dfs(df.room_neighbors, 0)) < len(df.rooms)
+    ):
+        main_component = set(dfs(df.room_neighbors, 0))
+        disconnected = [
+            i for i in range(len(df.rooms)) if i not in main_component
+        ]
+        for room2ix in disconnected:
+            room2 = df.rooms[room2ix]
+            # Try connecting to each room in the main component
+            candidates = sorted(
+                main_component,
+                key=lambda ix: abs(df.rooms[ix].x - room2.x)
+                + abs(df.rooms[ix].y - room2.y),
+            )
+            for room1ix in candidates[:5]:
+                room1 = df.rooms[room1ix]
+                path = astar_corridor_path(
+                    df.tiles, room1.x, room1.y, room2.x, room2.y
+                )
+                if not path:
+                    continue
+                waypoints = _path_to_waypoints(path)
+                biome_name = room1.biome_name
+                corridor = carve_corridor(
+                    df,
+                    room1,
+                    room2,
+                    1,
+                    True,
+                    biome_name,
+                    waypoints=waypoints,
+                )
+                if corridor:
+                    df.add_corridor(corridor)
+                    main_component = set(dfs(df.room_neighbors, 0))
+                    break
     if config.prefer_full_connection and len(dfs(df.room_neighbors, 0)) < len(
         df.rooms
     ):

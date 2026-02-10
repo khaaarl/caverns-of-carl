@@ -52,6 +52,9 @@ class DungeonConfig:
         self.corridor_width_1_ratio: float = 0.0
         self.corridor_width_2_ratio: float = 0.0
         self.corridor_width_3_ratio: float = 0.0
+        self.corridor_off_center_percent: float = 0.0
+        self.corridor_multi_turn_percent: float = 0.0
+        self.use_pathfinding_fallback: bool = False
         self.num_rivers: int = 0
         self.min_num_rivers: int = 0
         self.max_num_rivers: int = 0
@@ -118,6 +121,9 @@ class DungeonConfig:
         self.add_var("corridor_width_1_ratio", 1.0)
         self.add_var("corridor_width_2_ratio", 5.0)
         self.add_var("corridor_width_3_ratio", 2.0)
+        self.add_var("corridor_off_center_percent", 50.0)
+        self.add_var("corridor_multi_turn_percent", 30.0)
+        self.add_var("use_pathfinding_fallback", True, in_biome=False)
         self.add_var("num_rivers", 0, in_biome=False)
         self.add_var("min_num_rivers", 0, biome_only=True)
         self.add_var("max_num_rivers", 9, biome_only=True)

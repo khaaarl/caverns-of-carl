@@ -116,7 +116,9 @@ class Corridor:
     def tile_style(self) -> str:
         return "dungeon"
 
-    def walk(self, max_width_iter: int | None = None) -> CorridorWalker:
+    def walk(
+        self, max_width_iter: int | None = None
+    ) -> Iterator[tuple[int, int]]:
         return CorridorWalker(self, max_width_iter=max_width_iter)
 
     def tile_coords(
@@ -167,8 +169,9 @@ class Corridor:
             }
             for doorix in self.doorixs:
                 door = df.doors[doorix]
-                assert len(door.roomixs) == 1
-                roomix_doors[list(door.roomixs)[0]] = door
+                for roomix in door.roomixs:
+                    if roomix in roomix_doors:
+                        roomix_doors[roomix] = door
             for roomix, door in roomix_doors.items():
                 way = "Passage"
                 if door:
@@ -255,6 +258,90 @@ class Corridor:
         if num_blank_corridor_tiles == 0:
             return []
         return fogs
+
+
+class WaypointCorridorWalker:
+    """Iterator yielding (x, y) along a multi-segment axis-aligned path."""
+
+    def __init__(
+        self, corridor: WaypointCorridor, max_width_iter: int | None = None
+    ) -> None:
+        self.waypoints: list[tuple[int, int]] = corridor.waypoints
+        self.width: int = corridor.width
+        self.max_width_iter: int = (
+            corridor.width if max_width_iter is None else max_width_iter
+        )
+        self.width_iter: int = 0
+        self._seg_index: int = 0
+        self._x: int = self.waypoints[0][0]
+        self._y: int = self.waypoints[0][1]
+        self._started: bool = False
+
+    def __iter__(self) -> WaypointCorridorWalker:
+        return self
+
+    def __next__(self) -> tuple[int, int]:
+        while True:
+            if self._seg_index >= len(self.waypoints) - 1:
+                # Finished all segments for this width iteration
+                self.width_iter += 1
+                if self.width_iter >= self.max_width_iter:
+                    raise StopIteration
+                self._seg_index = 0
+                self._x = self.waypoints[0][0]
+                self._y = self.waypoints[0][1]
+                self._started = False
+            tx, ty = self.waypoints[self._seg_index + 1]
+            if self._x == tx and self._y == ty:
+                # Reached end of this segment, move to next
+                self._seg_index += 1
+                continue
+            # Step toward the target
+            if not self._started:
+                self._started = True
+            if self._x != tx:
+                self._x += 1 if tx > self._x else -1
+            else:
+                self._y += 1 if ty > self._y else -1
+            return (self._x, self._y)
+
+
+class WaypointCorridor(Corridor):
+    """A multi-turn corridor defined by a list of axis-aligned waypoints."""
+
+    def __init__(
+        self,
+        room1ix: int,
+        room2ix: int,
+        waypoints: list[tuple[int, int]],
+        width: int = 1,
+        biome_name: str | None = None,
+        force_trivial: bool = False,
+    ) -> None:
+        self.waypoints: list[tuple[int, int]] = waypoints
+        x1, y1 = waypoints[0]
+        x2, y2 = waypoints[-1]
+        # Derive is_horizontal_first from first segment direction
+        is_horizontal_first = True
+        if len(waypoints) >= 2:
+            is_horizontal_first = waypoints[0][0] != waypoints[1][0]
+        super().__init__(
+            room1ix,
+            room2ix,
+            x1,
+            y1,
+            x2,
+            y2,
+            is_horizontal_first,
+            width=width,
+            biome_name=biome_name,
+            force_trivial=force_trivial,
+        )
+
+    def walk(
+        self, max_width_iter: int | None = None
+    ) -> Iterator[tuple[int, int]]:
+        return WaypointCorridorWalker(self, max_width_iter=max_width_iter)
 
 
 class CavernousCorridor(Corridor):
