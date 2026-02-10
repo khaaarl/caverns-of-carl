@@ -703,7 +703,8 @@ def carve_corridor(
                     for y2 in range(-1, 2):
                         reqd_walls.append((x + x2, y + y2))
             for x2, y2 in reqd_walls:
-                if not isinstance(df.tiles[x2][y2], WallTile):
+                t = df.get_tile(x2, y2)
+                if not isinstance(t, WallTile):
                     return None
     # set light level to in between the two rooms
     light_levels = sorted([room1.light_level, room2.light_level])
