@@ -48,7 +48,15 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2393359134
 https://aos-tts.github.io/Stormvault/
 """
 
+import os
 import sys
+
+# PyInstaller --windowed sets stdout/stderr to None on Windows.
+# Redirect to devnull so print() calls don't crash.
+if sys.stdout is None:
+    sys.stdout = open(os.devnull, "w")
+if sys.stderr is None:
+    sys.stderr = open(os.devnull, "w")
 
 try:
     import tkinter as _tk_test  # noqa: F401
