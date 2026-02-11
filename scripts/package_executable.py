@@ -160,7 +160,6 @@ def run_pyinstaller(name: str) -> bool:
         "-m",
         "PyInstaller",
         "--onefile",
-        "--windowed",
         "--name",
         pyinstaller_name,
         # Add reference_info/ data directory into the bundle
@@ -183,8 +182,11 @@ def run_pyinstaller(name: str) -> bool:
         str(REPO_ROOT / "build" / "pyinstaller"),
     ]
 
-    # --strip is only available on Unix
-    if not IS_WINDOWS:
+    # --windowed suppresses the console window (Windows only; on macOS
+    # it creates a .app bundle which breaks single-file distribution)
+    if IS_WINDOWS:
+        cmd.append("--windowed")
+    else:
         cmd.append("--strip")
 
     cmd.append(str(REPO_ROOT / "caverns_of_carl.py"))
