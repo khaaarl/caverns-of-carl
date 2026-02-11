@@ -65,19 +65,17 @@ def run_ui():
 
     root = tk.Tk()
     root.title("Caverns of Carl")
-    root.columnconfigure(0, weight=1)
-    root.columnconfigure(1, weight=1)
-    root.columnconfigure(2, weight=1)
-    root.rowconfigure(0, weight=1)
-    left_frame = tk.Frame(root, borderwidth=2, relief="groove")
-    middle_frame = tk.Frame(root, borderwidth=2, relief="groove")
-    right_frame = tk.Frame(root, borderwidth=2, relief="groove")
-    left_frame.grid(row=0, column=0, sticky="nsew")
-    middle_frame.grid(row=0, column=1, sticky="nsew")
-    right_frame.grid(row=0, column=2, sticky="nsew")
+    paned = ttk.PanedWindow(root, orient=tk.HORIZONTAL)
+    paned.pack(fill="both", expand=True)
+    left_frame = tk.Frame(paned, borderwidth=2, relief="groove")
+    middle_frame = tk.Frame(paned, borderwidth=2, relief="groove")
+    right_frame = tk.Frame(paned, borderwidth=2, relief="groove")
+    paned.add(left_frame, weight=0)
+    paned.add(middle_frame, weight=1)
+    paned.add(right_frame, weight=1)
 
     # Configuration Frame
-    config_label = tk.Label(left_frame, text="Configuration", width=70)
+    config_label = tk.Label(left_frame, text="Configuration")
     config_label.pack(pady=5)
     Tooltip(
         config_label,

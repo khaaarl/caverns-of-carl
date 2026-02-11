@@ -72,14 +72,12 @@ class DungeonConfig:
             ("cavernous_room_percent", "num_erosion_steps"),
             ("structure_style",),
             ("cavern_style",),
-            ("room_bright_ratio",),
-            ("room_dim_ratio",),
-            ("room_dark_ratio",),
-            ("corridor_width_1_ratio",),
-            ("corridor_width_2_ratio",),
-            ("corridor_width_3_ratio",),
-            ("corridor_off_center_percent", "corridor_multi_turn_percent"),
-            ("num_up_ladders", "num_down_ladders"),
+            # Left column: room config | Right column: corridor config
+            ("room_bright_ratio", "corridor_width_1_ratio"),
+            ("room_dim_ratio", "corridor_width_2_ratio"),
+            ("room_dark_ratio", "corridor_width_3_ratio"),
+            ("num_up_ladders", "corridor_off_center_percent"),
+            ("num_down_ladders", "corridor_multi_turn_percent"),
             ("column_percent",),
             # Biome-specific (spacer rows in Overall)
             ("biome_northness", "biome_southness"),
@@ -468,7 +466,7 @@ class DungeonConfig:
 
         Each entry in *layout* is a tuple of key names:
         - 2-tuple → two widgets side by side
-        - 1-tuple → single widget (full width if long, left column if short)
+        - 1-tuple → single widget (spans both columns if long, left column if short)
 
         Keys present in the layout but absent from *available_keys* produce
         empty spacer rows so that Overall and biome tabs stay aligned.
@@ -496,20 +494,17 @@ class DungeonConfig:
                     if result is not None:
                         label, entry = result
                         if is_long:
-                            label.grid(
-                                row=row, column=0, columnspan=4, sticky="w"
-                            )
-                            row += 1
+                            label.grid(row=row, column=0, sticky="e")
                             entry.grid(
-                                row=row, column=0, columnspan=4, sticky="ew"
+                                row=row,
+                                column=1,
+                                columnspan=3,
+                                sticky="ew",
                             )
                         else:
                             label.grid(row=row, column=0, sticky="e")
                             entry.grid(row=row, column=1, sticky="w")
                 else:
-                    if is_long:
-                        parent.grid_rowconfigure(row, minsize=28)
-                        row += 1
                     parent.grid_rowconfigure(row, minsize=28)
                 row += 1
 
