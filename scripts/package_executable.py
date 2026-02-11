@@ -160,6 +160,7 @@ def run_pyinstaller(name: str) -> bool:
         "-m",
         "PyInstaller",
         "--onefile",
+        "--windowed",
         "--name",
         pyinstaller_name,
         # Add reference_info/ data directory into the bundle
