@@ -2,19 +2,40 @@
 
 A (very inchoate) tool to generate random D&D 5e dungeons, and produce save games for Tabletop Simulator additive load. This is partially inspired by classic Roguelike games such as ADOM.
 
+**[Download the latest release](https://github.com/khaaarl/caverns-of-carl/releases/latest)** — pre-built executables are available for Windows, macOS (Apple Silicon), and Linux. No Python installation required, just download and run.
+
+> **Note:** Because the executables aren't signed, your OS may show a warning
+> the first time you run it. This is normal for independent software.
+> - **Windows:** If you see "Windows protected your PC", click **More info**,
+>   then **Run anyway**.
+> - **macOS:** If you see "can't be opened because it is from an unidentified
+>   developer", right-click (or Control-click) the app and choose **Open**,
+>   then click **Open** in the dialog.
+
 UI Example Screenshot  |  In-TTS Player Screenshot  |  In-TTS DM Screenshot
 :-------------------------:|:-------------------------:|:-------------------------:
 ![UI Screenshot](https://raw.githubusercontent.com/khaaarl/caverns-of-carl/screenshots/docs/screenshots/Screenshot%202024-01-12%20202845.jpg)  |  ![TTS Player Screenshot](https://raw.githubusercontent.com/khaaarl/caverns-of-carl/screenshots/docs/screenshots/20240105213607_1.jpg)  |  ![TTS DM Screenshot](https://raw.githubusercontent.com/khaaarl/caverns-of-carl/screenshots/docs/screenshots/20240111154709_1.jpg)
 
 ## How to Use
 
-1. [Download the Caverns of Carl zip archive](https://github.com/khaaarl/caverns-of-carl/zipball/main/) (or click the green Code button, then Download Zip), then unzip it.
-2. [Install Python](https://www.python.org/downloads/) if you haven't already, at least version 3.6.
+### From a packaged executable
+
+Download a pre-built binary for your platform from the
+[latest release](https://github.com/khaaarl/caverns-of-carl/releases/latest).
+Run it directly — no Python installation needed.
+
+### From source
+
+1. [Install Python](https://www.python.org/downloads/) if you haven't already, at least version 3.12.
+2. Clone or [download the source](https://github.com/khaaarl/caverns-of-carl/zipball/main/) and unzip it.
 3. Run `caverns_of_carl.py`.
-4. Adjust the configuration fields on the left if desired.
-5. Click the Generate button in the bottom left, as many times as you want.
-6. Click the Save to TTS button to create a save game in Tabletop Simulator. This will be in your saves directory, assuming it is in the default location. If it is not in the default location ... maybe I'll fix that in a future version sorry.
-7. From whichever D&D table you prefer in Tabletop Simulator, additively load your new Caverns of Carl save game.
+
+### Using the app
+
+1. Adjust the configuration fields on the left if desired.
+2. Click the Generate button in the bottom left, as many times as you want.
+3. Click the Save to TTS button to create a save game in Tabletop Simulator. This will be in your saves directory, assuming it is in the default location. If it is not in the default location ... maybe I'll fix that in a future version sorry.
+4. From whichever D&D table you prefer in Tabletop Simulator, additively load your new Caverns of Carl save game.
 
 ### As a Dungeon Master / Game Master (DM/GM)
 
