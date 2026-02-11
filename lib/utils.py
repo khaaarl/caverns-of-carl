@@ -6,10 +6,19 @@ import math
 import os
 import random
 import re
+import sys
 import unicodedata
 from typing import Any
 
-COC_ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+# When running from a PyInstaller bundle, reference data lives inside the
+# temporary extraction directory (sys._MEIPASS).  Output files should be
+# written next to the executable instead.
+if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+    COC_ROOT_DIR = sys._MEIPASS
+    COC_OUTPUT_DIR = os.path.dirname(sys.executable)
+else:
+    COC_ROOT_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    COC_OUTPUT_DIR = COC_ROOT_DIR
 
 
 def choice(

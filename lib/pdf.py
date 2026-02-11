@@ -8,7 +8,7 @@ import os
 
 from PIL import Image
 
-from lib.utils import COC_ROOT_DIR, CharStyle, StyledString
+from lib.utils import COC_OUTPUT_DIR, CharStyle, StyledString
 
 LOADED_PDFLAB = False
 
@@ -240,7 +240,7 @@ def draw_map_page(canvas, df, pagenum):
 
 def draw_dm_map_image_page(canvas, name, pagenum):
     """Draw the DM map image on its own page, scaled to fit the letter page."""
-    maps_dir = os.path.join(COC_ROOT_DIR, "output", "maps")
+    maps_dir = os.path.join(COC_OUTPUT_DIR, "output", "maps")
     safe_name = "".join(c if c.isalnum() or c in " -_" else "_" for c in name)
     map_image_path = os.path.join(maps_dir, f"{safe_name} (DM).png")
 
@@ -287,7 +287,7 @@ def produce_pdf(df, name):
     """Generate the full PDF: ASCII map, DM map image, and room descriptions."""
     assert stringWidth("m", font_normal(), _FONT_SIZE) == _FONT_CHAR_WIDTH
     assert stringWidth("m", font_bold(), _FONT_SIZE) == _FONT_CHAR_WIDTH
-    pdf_dir = os.path.join(COC_ROOT_DIR, "output", "pdfs")
+    pdf_dir = os.path.join(COC_OUTPUT_DIR, "output", "pdfs")
     os.makedirs(pdf_dir, exist_ok=True)
     pdf_filename = os.path.join(pdf_dir, f"{name}.pdf")
     canvas = reportlab.pdfgen.canvas.Canvas(

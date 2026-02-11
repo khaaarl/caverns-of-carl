@@ -23,11 +23,11 @@ from lib.tile import (
     WallTile,
     WaterTile,
 )
-from lib.utils import COC_ROOT_DIR
+from lib.utils import COC_OUTPUT_DIR, COC_ROOT_DIR
 
 TILE_SIZE = 64
 TILES_DIR = os.path.join(COC_ROOT_DIR, "reference_info", "tiles")
-OUTPUT_DIR = os.path.join(COC_ROOT_DIR, "output", "maps")
+OUTPUT_DIR = os.path.join(COC_OUTPUT_DIR, "output", "maps")
 
 # Cache for loaded tile images
 _tile_image_cache = {}
