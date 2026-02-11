@@ -10,21 +10,26 @@ Steps:
   3. Run PyInstaller with --onefile, bundling reference_info/ data
   4. Verify output exists, report file size
 
-Output naming:
+Output naming (without --version):
   caverns-of-carl-linux-x86_64
-  caverns-of-carl-linux-arm64
   caverns-of-carl-mac-arm64
-  caverns-of-carl-mac-x86_64
   caverns-of-carl-windows-x86_64.exe
+
+Output naming (with --version v20260211-143025):
+  caverns-of-carl-v20260211-143025-linux-x86_64
+  caverns-of-carl-v20260211-143025-mac-arm64
+  caverns-of-carl-v20260211-143025-windows-x86_64.exe
 
 Usage:
   python scripts/package_executable.py
+  python scripts/package_executable.py --version v20260211-143025
 
 Exit codes:
   0 = packaging succeeded
   1 = any step failed
 """
 
+import argparse
 import os
 import platform
 import subprocess
@@ -64,11 +69,18 @@ def _os_name() -> str:
     return s.lower()
 
 
-def executable_name() -> str:
-    """Build the output executable name for this platform."""
-    name = (
-        f"caverns-of-carl-{_os_name()}-{_normalize_arch(platform.machine())}"
-    )
+def executable_name(version: str | None = None) -> str:
+    """Build the output executable name for this platform.
+
+    If *version* is given (e.g. "v20260211-143025"), the name becomes
+    ``caverns-of-carl-v20260211-143025-linux-x86_64``.  Without a version it
+    stays ``caverns-of-carl-linux-x86_64`` for backward-compatibility.
+    """
+    parts = ["caverns-of-carl"]
+    if version:
+        parts.append(version)
+    parts.append(f"{_os_name()}-{_normalize_arch(platform.machine())}")
+    name = "-".join(parts)
     if IS_WINDOWS:
         name += ".exe"
     return name
@@ -135,10 +147,9 @@ def ensure_pyinstaller() -> bool:
     return True
 
 
-def run_pyinstaller() -> bool:
+def run_pyinstaller(name: str) -> bool:
     log.step("Running PyInstaller")
 
-    name = executable_name()
     pyinstaller_name = name.removesuffix(".exe")
 
     # Path separator for --add-data is ; on Windows, : on Unix
@@ -187,10 +198,9 @@ def run_pyinstaller() -> bool:
     return True
 
 
-def verify_output() -> bool:
+def verify_output(name: str) -> bool:
     log.step("Verifying output")
 
-    name = executable_name()
     output = REPO_ROOT / "dist" / name
 
     if not output.exists():
@@ -216,7 +226,18 @@ def verify_output() -> bool:
 
 
 def main() -> int:
-    name = executable_name()
+    parser = argparse.ArgumentParser(
+        description="Package Caverns of Carl as a single-file executable"
+    )
+    parser.add_argument(
+        "--version",
+        type=str,
+        default=None,
+        help="Version tag to embed in the executable name (e.g. v20260211-143025)",
+    )
+    args = parser.parse_args()
+
+    name = executable_name(args.version)
     log.step(f"Packaging Caverns of Carl: {name}")
     log.info(f"repo_root: {REPO_ROOT}")
 
@@ -226,10 +247,10 @@ def main() -> int:
     if not ensure_pyinstaller():
         return 1
 
-    if not run_pyinstaller():
+    if not run_pyinstaller(name):
         return 1
 
-    if not verify_output():
+    if not verify_output(name):
         return 1
 
     log.step("\u2713 Packaging complete!")
