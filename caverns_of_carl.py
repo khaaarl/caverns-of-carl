@@ -48,6 +48,8 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2393359134
 https://aos-tts.github.io/Stormvault/
 """
 
+import sys
+
 try:
     import tkinter as _tk_test  # noqa: F401
 except (ImportError, ModuleNotFoundError):
@@ -55,10 +57,10 @@ except (ImportError, ModuleNotFoundError):
         "Failed to load tcl/tk. You may need to install additional modules (e.g. python3-tk if you are on Ubuntu)\nPress enter to exit"
     )
     input()
-    exit()
+    sys.exit()
 
 import lib.ui
 
 if __name__ == "__main__":
     lib.ui.run_ui()
-    exit()
+    sys.exit()
