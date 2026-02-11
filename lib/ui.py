@@ -11,6 +11,7 @@ import lib.map_image
 import lib.monster
 import lib.pdf
 import lib.tts as tts
+from lib.config import Tooltip
 from lib.utils import StyledString
 
 
@@ -77,14 +78,48 @@ def run_ui():
 
     # Configuration Frame
     config_label = tk.Label(left_frame, text="Configuration", width=70)
-    config_label.pack()
+    config_label.pack(pady=5)
+    Tooltip(
+        config_label,
+        "Global settings apply to all biomes; per-biome settings are in the tabs below",
+    )
+
+    # Global settings (not per-biome)
+    global_frame = tk.Frame(left_frame, borderwidth=1, relief="groove")
+    global_frame.pack(fill="x", padx=5, pady=5)
+    config.make_global_widgets(global_frame)
 
     # dungeon config notebook
     config_notebook = ttk.Notebook(left_frame)
     config_notebook.pack(expand=True, fill="both")
     default_config_frame = ttk.Frame(config_notebook)
     config_notebook.add(default_config_frame, text="Overall")
-    config.make_tk_labels_and_entries(default_config_frame)
+    subtab_notebooks = []
+    nb = config.make_tk_labels_and_entries(default_config_frame)
+    subtab_notebooks.append(nb)
+
+    # Synchronize subtab selection across all biome tabs
+    _syncing_subtabs = False
+
+    def on_subtab_changed(event):
+        nonlocal _syncing_subtabs
+        if _syncing_subtabs:
+            return
+        source = event.widget
+        try:
+            idx = source.index(source.select())
+        except Exception:
+            return
+        _syncing_subtabs = True
+        for other_nb in subtab_notebooks:
+            if other_nb is not source:
+                try:
+                    other_nb.select(idx)
+                except Exception:
+                    pass
+        _syncing_subtabs = False
+
+    nb.bind("<<NotebookTabChanged>>", on_subtab_changed)
 
     def add_biome(*args, **kwargs):
         switch_to_tab = kwargs.get("switch_to_tab", True)
@@ -102,9 +137,27 @@ def run_ui():
         biome_config.ssarthaxx_altar_percent = 0
         biome_config_frame = ttk.Frame(config_notebook)
         config_notebook.add(biome_config_frame, text=biome_name)
-        biome_config.make_tk_labels_and_entries(biome_config_frame)
+        biome_nb = biome_config.make_tk_labels_and_entries(biome_config_frame)
+        subtab_notebooks.append(biome_nb)
+        biome_nb.bind("<<NotebookTabChanged>>", on_subtab_changed)
+        # Sync new biome's subtab to match current selection
+        if len(subtab_notebooks) > 1:
+            try:
+                current_idx = subtab_notebooks[0].index(
+                    subtab_notebooks[0].select()
+                )
+                biome_nb.select(current_idx)
+            except Exception:
+                pass
         if switch_to_tab:
             config_notebook.select(len(config.biomes))
+
+    # +Biome button overlaid on the notebook tab bar
+    add_biome_button = tk.Button(
+        config_notebook, text="+Biome", command=add_biome
+    )
+    add_biome_button.place(relx=1.0, x=-5, y=2, anchor="ne")
+    Tooltip(add_biome_button, "Add a new biome region with its own settings")
 
     def new_preview(*args, **kwargs):
         set_tk_text(ascii_map_text, "")
@@ -204,27 +257,29 @@ def run_ui():
         chest_info_text.see(tk.END)
 
     operation_frame = tk.Frame(left_frame)
-    add_biome_button = tk.Button(
-        operation_frame, text="Add Biome", command=add_biome
-    )
-    add_biome_button.grid(row=0, column=0)
     generate_button = tk.Button(
         operation_frame, text="Generate", command=new_preview
     )
-    generate_button.grid(row=0, column=1)
+    generate_button.grid(row=0, column=0)
+    Tooltip(generate_button, "Generate a new random dungeon preview")
     save_button = tk.Button(
         operation_frame, text="Save to TTS", command=save_dungeon
     )
-    save_button.grid(row=0, column=2)
-    operation_frame.pack(pady=10)
+    save_button.grid(row=0, column=1)
+    Tooltip(
+        save_button,
+        "Export to Tabletop Simulator, PDF, and map images",
+    )
+    operation_frame.pack(pady=5)
 
     ascii_map_label = tk.Label(middle_frame, text="ASCII Map")
-    ascii_map_label.pack(pady=10)
+    ascii_map_label.pack(pady=5)
+    Tooltip(ascii_map_label, "Preview of the generated dungeon layout")
     ascii_map_text = scrolledtext.ScrolledText(
         middle_frame,
         wrap=tk.NONE,
         width=57,
-        height=35,
+        height=31,
         foreground="#fff",
         background="#000",
     )
@@ -238,7 +293,11 @@ def run_ui():
     ascii_map_text.pack(expand=True, fill="both")
 
     chest_info_label = tk.Label(right_frame, text="Logs and Information")
-    chest_info_label.pack(pady=10)
+    chest_info_label.pack(pady=5)
+    Tooltip(
+        chest_info_label,
+        "Room descriptions, encounters, and export logs",
+    )
 
     chest_info_text = scrolledtext.ScrolledText(
         right_frame, foreground="#fff", background="#000"
@@ -247,8 +306,4 @@ def run_ui():
 
     new_preview()
 
-    try:
-        root.state("zoomed")
-    except tk.TclError:
-        pass  # "zoomed" state only supported on Windows
     root.mainloop()

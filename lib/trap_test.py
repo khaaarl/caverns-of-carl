@@ -94,6 +94,8 @@ def mock_tkinter():
         tk_mock.scrolledtext = MagicMock()
 
         ttk_mock.Combobox = MagicMock()
+        ttk_mock.Notebook = MagicMock()
+        ttk_mock.Frame = MagicMock()
         ttk_mock.Style = MagicMock()
 
         tk_mock.ttk = ttk_mock
