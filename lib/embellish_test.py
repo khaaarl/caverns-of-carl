@@ -100,15 +100,22 @@ from lib.config import DungeonConfig
 
 # Now import the modules under test
 from lib.embellish import (
+    _FEW_SHOT_EXAMPLES,
     PROVIDER_MODELS,
     AnthropicProvider,
     EmbellishmentResult,
     EmbellishmentScope,
     _direction_from_point,
     _extract_api_error_message,
+    _extract_biome_section,
     _format_monsters,
+    _gather_biome_stats,
+    _get_few_shot_examples,
+    _inject_atmosphere,
     _parse_book_response,
+    _system_prompt,
     apply_embellishments,
+    build_atmosphere_prompt,
     build_book_prompt,
     build_corridor_prompt,
     build_room_prompt,
@@ -222,6 +229,14 @@ class TestEmbellishScope(unittest.TestCase):
         )
         self.assertEqual(scope.count_api_calls(self.df), 0)
 
+    def test_count_includes_atmosphere_call(self):
+        scope = EmbellishmentScope(
+            rooms=True, corridors=False, traps=False, books=False
+        )
+        elements = scope.count_elements(self.df)
+        # API calls = element count + 1 for atmosphere brief
+        self.assertEqual(scope.count_api_calls(self.df), elements["room"] + 1)
+
     def test_cost_estimate_positive(self):
         scope = EmbellishmentScope(rooms=True)
         cost = scope.estimate_cost_usd(self.df, "claude-sonnet-4-5-20250929")
@@ -231,6 +246,12 @@ class TestEmbellishScope(unittest.TestCase):
         scope = EmbellishmentScope(rooms=True)
         time_s = scope.estimate_time_seconds(self.df)
         self.assertGreater(time_s, 0)
+
+    def test_time_estimate_includes_atmosphere_overhead(self):
+        scope = EmbellishmentScope(rooms=True)
+        time_s = scope.estimate_time_seconds(self.df)
+        # Should include 3s for atmosphere brief
+        self.assertGreaterEqual(time_s, 3.0)
 
     def test_haiku_cheaper_than_sonnet(self):
         scope = EmbellishmentScope(rooms=True)
@@ -839,6 +860,201 @@ class TestWriteLogFile(unittest.TestCase):
                 ok_entry = json.loads(lines[0])
                 self.assertIsNone(ok_entry["error"])
                 self.assertEqual(ok_entry["response"], "The air crackles.")
+
+
+# -----------------------------------------------------------------------
+# Few-shot examples tests
+# -----------------------------------------------------------------------
+
+
+class TestFewShotExamples(unittest.TestCase):
+    """Tests for few-shot example infrastructure."""
+
+    def test_all_preset_tones_have_examples(self):
+        for tone in ("Classic D&D", "Grimdark", "Whimsical", "Lovecraftian"):
+            examples = _get_few_shot_examples(tone)
+            self.assertEqual(len(examples), 2, f"Missing examples for {tone}")
+
+    def test_each_example_has_user_and_assistant(self):
+        for tone, examples in _FEW_SHOT_EXAMPLES.items():
+            for i, ex in enumerate(examples):
+                self.assertIn("user", ex, f"{tone} example {i} missing user")
+                self.assertIn(
+                    "assistant", ex, f"{tone} example {i} missing assistant"
+                )
+                self.assertTrue(
+                    len(ex["user"]) > 20,
+                    f"{tone} example {i} user too short",
+                )
+                self.assertTrue(
+                    len(ex["assistant"]) > 20,
+                    f"{tone} example {i} assistant too short",
+                )
+
+    def test_custom_tone_falls_back_to_classic(self):
+        custom = _get_few_shot_examples("Custom spooky tone")
+        classic = _get_few_shot_examples("Classic D&D")
+        self.assertEqual(custom, classic)
+
+    def test_system_prompt_includes_examples(self):
+        prompt = _system_prompt("Grimdark")
+        self.assertIn("--- Example 1 ---", prompt)
+        self.assertIn("--- Example 2 ---", prompt)
+        self.assertIn("User:", prompt)
+        self.assertIn("Assistant:", prompt)
+
+    def test_examples_have_room_and_corridor(self):
+        for tone, examples in _FEW_SHOT_EXAMPLES.items():
+            has_room = any("Room:" in ex["user"] for ex in examples)
+            has_corridor = any("Corridor:" in ex["user"] for ex in examples)
+            self.assertTrue(has_room, f"{tone} missing room example")
+            self.assertTrue(has_corridor, f"{tone} missing corridor example")
+
+
+# -----------------------------------------------------------------------
+# Atmosphere brief tests
+# -----------------------------------------------------------------------
+
+
+class TestGatherBiomeStats(unittest.TestCase):
+    """Tests for _gather_biome_stats()."""
+
+    def setUp(self):
+        self.config = DungeonConfig()
+        self.df = DungeonFloor(self.config)
+
+    def test_single_biome_stats(self):
+        room = RectRoom(15, 15, rw=3, rh=3)
+        room.light_level = "dim"
+        self.df.add_room(room)
+        stats = _gather_biome_stats(self.df)
+        # None biome_name for rooms without biome
+        self.assertIn(None, stats)
+        self.assertEqual(stats[None]["room_count"], 1)
+        self.assertEqual(stats[None]["room_types"]["rectangular"], 1)
+        self.assertEqual(stats[None]["light_counts"]["dim"], 1)
+
+    def test_cavernous_room_counted(self):
+        room = CavernousRoom(15, 15, rw=4, rh=4)
+        room.light_level = "dark"
+        self.df.add_room(room)
+        stats = _gather_biome_stats(self.df)
+        self.assertEqual(stats[None]["room_types"]["cavernous"], 1)
+
+    def test_multi_biome_stats(self):
+        biome = self.config.add_biome("Frozen Depths")
+        room1 = RectRoom(10, 10, rw=3, rh=3)
+        room1.light_level = "bright"
+        self.df.add_room(room1)
+        room2 = RectRoom(25, 25, rw=3, rh=3, biome_name="Frozen Depths")
+        room2.light_level = "dark"
+        self.df.add_room(room2)
+        stats = _gather_biome_stats(self.df)
+        self.assertIn(None, stats)
+        self.assertIn("Frozen Depths", stats)
+        self.assertEqual(stats[None]["room_count"], 1)
+        self.assertEqual(stats["Frozen Depths"]["room_count"], 1)
+
+    def test_monsters_collected(self):
+        room = RectRoom(15, 15, rw=3, rh=3)
+        room.light_level = "bright"
+        encounter = MagicMock()
+        m1 = MagicMock()
+        m1.name = "Skeleton"
+        m2 = MagicMock()
+        m2.name = "Zombie"
+        encounter.monsters = [m1, m2]
+        room.encounter = encounter
+        self.df.add_room(room)
+        stats = _gather_biome_stats(self.df)
+        self.assertIn("Skeleton", stats[None]["monster_names"])
+        self.assertIn("Zombie", stats[None]["monster_names"])
+
+    def test_trivial_rooms_excluded(self):
+        from lib.room import MazeJunction
+
+        room = MazeJunction(15, 15, rw=1, rh=1)
+        self.df.add_room(room)
+        stats = _gather_biome_stats(self.df)
+        # Maze junctions are trivial so shouldn't add their biome
+        for s in stats.values():
+            self.assertEqual(s["room_count"], 0)
+
+
+class TestBuildAtmospherePrompt(unittest.TestCase):
+    """Tests for build_atmosphere_prompt()."""
+
+    def setUp(self):
+        self.config = DungeonConfig()
+        self.df = DungeonFloor(self.config)
+        room = RectRoom(15, 15, rw=3, rh=3)
+        room.light_level = "dim"
+        self.df.add_room(room)
+
+    def test_includes_dimensions_in_feet(self):
+        sys_p, usr_p = build_atmosphere_prompt(self.df, "Classic D&D")
+        self.assertIn("ft", usr_p)
+
+    def test_includes_room_count(self):
+        sys_p, usr_p = build_atmosphere_prompt(self.df, "Classic D&D")
+        self.assertIn("Rooms: 1", usr_p)
+
+    def test_includes_tone_description(self):
+        sys_p, usr_p = build_atmosphere_prompt(self.df, "Grimdark")
+        self.assertIn("bleak", sys_p)
+
+    def test_multi_biome_mentions_regions(self):
+        self.config.add_biome("Frozen Depths")
+        room2 = RectRoom(25, 25, rw=3, rh=3, biome_name="Frozen Depths")
+        room2.light_level = "dark"
+        self.df.add_room(room2)
+        sys_p, usr_p = build_atmosphere_prompt(self.df, "Classic D&D")
+        self.assertIn("Frozen Depths", usr_p)
+        self.assertIn("multiple distinct regions", sys_p)
+
+
+class TestInjectAtmosphere(unittest.TestCase):
+    """Tests for _inject_atmosphere() and _extract_biome_section()."""
+
+    def test_prepends_when_brief_exists(self):
+        result = _inject_atmosphere(
+            "Write about this room.", "Dark and damp.", None
+        )
+        self.assertTrue(result.startswith("Dungeon atmosphere context:"))
+        self.assertIn("Dark and damp.", result)
+        self.assertIn("Write about this room.", result)
+
+    def test_returns_original_when_none(self):
+        result = _inject_atmosphere("Write about this room.", None, None)
+        self.assertEqual(result, "Write about this room.")
+
+    def test_extract_biome_section_with_marker(self):
+        brief = (
+            "[Dungeon]\nDark stone halls.\n\n"
+            "[Cavern]\nDripping stalactites."
+        )
+        section = _extract_biome_section(brief, "Cavern")
+        self.assertIn("Dripping stalactites", section)
+        self.assertNotIn("Dark stone halls", section)
+
+    def test_extract_biome_section_no_marker(self):
+        brief = "Just a general description of the dungeon."
+        section = _extract_biome_section(brief, "Missing Biome")
+        self.assertEqual(section, brief)
+
+    def test_extract_biome_section_none_biome(self):
+        brief = "[Dungeon]\nDark halls.\n[Cavern]\nDripping water."
+        section = _extract_biome_section(brief, None)
+        self.assertEqual(section, brief)
+
+    def test_inject_extracts_correct_biome(self):
+        brief = (
+            "[Frozen Depths]\nIce-covered walls.\n\n"
+            "[Fire Pits]\nLava flows below."
+        )
+        result = _inject_atmosphere("Room prompt here.", brief, "Fire Pits")
+        self.assertIn("Lava flows below", result)
+        self.assertNotIn("Ice-covered walls", result)
 
 
 if __name__ == "__main__":
