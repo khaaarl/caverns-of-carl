@@ -5,6 +5,19 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any
 
+REGION_NAMES = ["NW", "N", "NE", "W", "C", "E", "SW", "S", "SE"]
+REGION_COORDS = {
+    "NW": (0.0, 1.0),
+    "N": (0.5, 1.0),
+    "NE": (1.0, 1.0),
+    "W": (0.0, 0.5),
+    "C": (0.5, 0.5),
+    "E": (1.0, 0.5),
+    "SW": (0.0, 0.0),
+    "S": (0.5, 0.0),
+    "SE": (1.0, 0.0),
+}
+
 
 class Tooltip:
     """Hover tooltip for tkinter widgets."""
@@ -79,9 +92,6 @@ class DungeonConfig:
             ("num_up_ladders", "corridor_off_center_percent"),
             ("num_down_ladders", "corridor_multi_turn_percent"),
             ("column_percent",),
-            # Biome-specific (spacer rows in Overall)
-            ("biome_northness", "biome_southness"),
-            ("biome_westness", "biome_eastness"),
             ("min_num_rivers", "max_num_rivers"),
         ],
         "Combat": [
@@ -121,10 +131,6 @@ class DungeonConfig:
         "tts_notecards": "Create notecards with room info in TTS export",
         "save_map_image": "Save 2D map image (PNG) when exporting",
         # -- Terrain --
-        "biome_northness": "Weight for this biome to appear in the north of the map",
-        "biome_southness": "Weight for this biome to appear in the south of the map",
-        "biome_westness": "Weight for this biome to appear in the west of the map",
-        "biome_eastness": "Weight for this biome to appear in the east of the map",
         "min_room_radius": "Minimum room radius in tiles (before embiggen)",
         "use_maze_layout": "Use maze-style room layout (small connected junctions instead of open rooms)",
         "cavernous_room_percent": "Percent chance each room is cavernous (irregular shape via erosion)",
@@ -205,10 +211,8 @@ class DungeonConfig:
         self.save_map_image: bool = False
 
         # -- Terrain --
-        self.biome_northness: float = 0.0
-        self.biome_southness: float = 0.0
-        self.biome_westness: float = 0.0
-        self.biome_eastness: float = 0.0
+        self.biome_regions: set[str] = set()
+        self.biome_region_vars: dict[str, Any] = {}
         self.min_room_radius: int = 0
         self.use_maze_layout: bool = False
         self.cavernous_room_percent: float = 0.0
@@ -271,18 +275,6 @@ class DungeonConfig:
         self.add_var("save_map_image", True, in_biome=False)
 
         # --- Terrain subtab ---
-        self.add_var(
-            "biome_northness", 5.0, biome_only=True, tab_group="Terrain"
-        )
-        self.add_var(
-            "biome_southness", 5.0, biome_only=True, tab_group="Terrain"
-        )
-        self.add_var(
-            "biome_westness", 5.0, biome_only=True, tab_group="Terrain"
-        )
-        self.add_var(
-            "biome_eastness", 5.0, biome_only=True, tab_group="Terrain"
-        )
         self.add_var("min_room_radius", 1, tab_group="Terrain")
         self.add_var("use_maze_layout", False, tab_group="Terrain")
         self.add_var("cavernous_room_percent", 50.0, tab_group="Terrain")
@@ -461,7 +453,7 @@ class DungeonConfig:
         layout: list[tuple[str, ...]],
         parent: Any,
         available_keys: set[str],
-    ) -> None:
+    ) -> int:
         """Lay out config widgets according to an explicit row layout.
 
         Each entry in *layout* is a tuple of key names:
@@ -507,6 +499,34 @@ class DungeonConfig:
                 else:
                     parent.grid_rowconfigure(row, minsize=28)
                 row += 1
+        return row
+
+    def _add_region_grid(self, parent, start_row, on_toggle):
+        """Create a 3x3 checkbox grid for map region selection."""
+        frame = tk.LabelFrame(parent, text="Map Regions")
+        frame.grid(row=start_row, column=0, columnspan=4, sticky="ew", pady=4)
+        Tooltip(
+            frame,
+            "Select which map regions this biome occupies. "
+            "Each region can only belong to one biome.",
+        )
+        grid_labels = [
+            ["NW", "N", "NE"],
+            ["W", "C", "E"],
+            ["SW", "S", "SE"],
+        ]
+        for row_idx, row_names in enumerate(grid_labels):
+            for col_idx, name in enumerate(row_names):
+                var = tk.BooleanVar()
+                var.set(name in self.biome_regions)
+                self.biome_region_vars[name] = var
+                cb = tk.Checkbutton(
+                    frame,
+                    text=name,
+                    variable=var,
+                    command=lambda n=name: on_toggle(self, n),
+                )
+                cb.grid(row=row_idx, column=col_idx, padx=2, pady=1)
 
     def make_global_widgets(self, parent: Any) -> None:
         """Create and grid global config widgets in a 2-wide layout."""
@@ -517,7 +537,9 @@ class DungeonConfig:
         ]
         self._grid_2wide(keys, parent)
 
-    def make_tk_labels_and_entries(self, parent: Any) -> Any:
+    def make_tk_labels_and_entries(
+        self, parent: Any, on_region_toggle=None
+    ) -> Any:
         """Create nested subtab notebook with laid-out grids per group.
 
         Returns the subtab notebook widget so callers can synchronize
@@ -539,7 +561,13 @@ class DungeonConfig:
             frame = ttk.Frame(subtab_notebook)
             subtab_notebook.add(frame, text=group_name)
             layout = self.TAB_GROUP_LAYOUTS[group_name]
-            self._grid_layout(layout, frame, available)
+            next_row = self._grid_layout(layout, frame, available)
+            if (
+                group_name == "Terrain"
+                and self.biome_name is not None
+                and on_region_toggle is not None
+            ):
+                self._add_region_grid(frame, next_row, on_region_toggle)
 
         return subtab_notebook
 
@@ -547,6 +575,10 @@ class DungeonConfig:
         """Sync config values from the tkinter UI vars."""
         for k, var in self.tk_vars.items():
             self.__dict__[k] = var.get()
+        if self.biome_region_vars:
+            self.biome_regions = {
+                r for r, var in self.biome_region_vars.items() if var.get()
+            }
         for biome in self.biomes:
             biome.load_from_tk_entries()
 

@@ -11,8 +11,42 @@ import lib.map_image
 import lib.monster
 import lib.pdf
 import lib.tts as tts
-from lib.config import Tooltip
+from lib.config import REGION_COORDS, REGION_NAMES, Tooltip
 from lib.utils import StyledString
+
+
+def _split_regions(source, target):
+    """Split source biome's regions, giving roughly half to target.
+
+    Splits along the longest axis of the source's region bounding box.
+    """
+    if len(source.biome_regions) < 2:
+        return
+    coords = [REGION_COORDS[r] for r in source.biome_regions]
+    xs = [c[0] for c in coords]
+    ys = [c[1] for c in coords]
+    x_span = max(xs) - min(xs)
+    y_span = max(ys) - min(ys)
+
+    regions = sorted(source.biome_regions, key=lambda r: REGION_COORDS[r])
+    if y_span >= x_span:
+        # Split along Y (N/S): sort by Y, give bottom half to target
+        regions.sort(key=lambda r: REGION_COORDS[r][1])
+    else:
+        # Split along X (E/W): sort by X, give left half to target
+        regions.sort(key=lambda r: REGION_COORDS[r][0])
+
+    split = len(regions) // 2
+    give_away = set(regions[:split])
+
+    source.biome_regions -= give_away
+    target.biome_regions = give_away
+
+    for r in REGION_NAMES:
+        if r in source.biome_region_vars:
+            source.biome_region_vars[r].set(r in source.biome_regions)
+        if r in target.biome_region_vars:
+            target.biome_region_vars[r].set(r in target.biome_regions)
 
 
 def set_tk_text(tk_text, s, default_tag_kwargs=None, style_newlines=False):
@@ -79,7 +113,7 @@ def run_ui():
     config_label.pack(pady=5)
     Tooltip(
         config_label,
-        "Global settings apply to all biomes; per-biome settings are in the tabs below",
+        "Global settings apply to all biomes; per-biome settings are in the biome tabs below",
     )
 
     # Global settings (not per-biome)
@@ -90,11 +124,7 @@ def run_ui():
     # dungeon config notebook
     config_notebook = ttk.Notebook(left_frame)
     config_notebook.pack(expand=True, fill="both")
-    default_config_frame = ttk.Frame(config_notebook)
-    config_notebook.add(default_config_frame, text="Overall")
     subtab_notebooks = []
-    nb = config.make_tk_labels_and_entries(default_config_frame)
-    subtab_notebooks.append(nb)
 
     # Synchronize subtab selection across all biome tabs
     _syncing_subtabs = False
@@ -117,17 +147,32 @@ def run_ui():
                     pass
         _syncing_subtabs = False
 
-    nb.bind("<<NotebookTabChanged>>", on_subtab_changed)
+    def on_region_toggled(changed_biome, region):
+        """Enforce exclusive region ownership across biomes."""
+        if changed_biome.biome_region_vars[region].get():
+            # Checked: uncheck this region in all other biomes
+            for other in config.biomes:
+                if (
+                    other is not changed_biome
+                    and region in other.biome_region_vars
+                ):
+                    other.biome_region_vars[region].set(False)
 
     def add_biome(*args, **kwargs):
         switch_to_tab = kwargs.get("switch_to_tab", True)
         biome_name = f"Biome {1+len(config.biomes)}"
         config.load_from_tk_entries()
+        # Determine source biome to split regions from
+        source_biome = None
+        try:
+            tab_idx = config_notebook.index(config_notebook.select())
+            if tab_idx < len(config.biomes):
+                source_biome = config.biomes[tab_idx]
+        except Exception:
+            pass
+        if source_biome is None and config.biomes:
+            source_biome = config.biomes[-1]
         biome_config = config.add_biome(biome_name=biome_name)
-        biome_config.biome_northness = float(random.randrange(1, 10))
-        biome_config.biome_southness = float(random.randrange(1, 10))
-        biome_config.biome_westness = float(random.randrange(1, 10))
-        biome_config.biome_eastness = float(random.randrange(1, 10))
         biome_config.num_up_ladders = 0
         biome_config.num_down_ladders = 0
         biome_config.blacksmith_percent = 0
@@ -135,7 +180,11 @@ def run_ui():
         biome_config.ssarthaxx_altar_percent = 0
         biome_config_frame = ttk.Frame(config_notebook)
         config_notebook.add(biome_config_frame, text=biome_name)
-        biome_nb = biome_config.make_tk_labels_and_entries(biome_config_frame)
+        biome_nb = biome_config.make_tk_labels_and_entries(
+            biome_config_frame, on_region_toggle=on_region_toggled
+        )
+        if source_biome is not None:
+            _split_regions(source_biome, biome_config)
         subtab_notebooks.append(biome_nb)
         biome_nb.bind("<<NotebookTabChanged>>", on_subtab_changed)
         # Sync new biome's subtab to match current selection
@@ -148,7 +197,7 @@ def run_ui():
             except Exception:
                 pass
         if switch_to_tab:
-            config_notebook.select(len(config.biomes))
+            config_notebook.select(len(config.biomes) - 1)
 
     # +Biome button overlaid on the notebook tab bar
     add_biome_button = tk.Button(
@@ -156,6 +205,13 @@ def run_ui():
     )
     add_biome_button.place(relx=1.0, x=-5, y=2, anchor="ne")
     Tooltip(add_biome_button, "Add a new biome region with its own settings")
+
+    # Auto-create Biome 1 with all 9 regions
+    add_biome(switch_to_tab=False)
+    config.biomes[0].biome_regions = set(REGION_NAMES)
+    for r in REGION_NAMES:
+        if r in config.biomes[0].biome_region_vars:
+            config.biomes[0].biome_region_vars[r].set(True)
 
     def new_preview(*args, **kwargs):
         set_tk_text(ascii_map_text, "")

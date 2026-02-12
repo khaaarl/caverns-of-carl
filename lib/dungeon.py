@@ -352,21 +352,70 @@ def generate_random_dungeon(config=None, errors=None):
     raise errors[-1]
 
 
+def biome_weight_at(biome_regions, tx, ty):
+    """Compute biome weight at normalized tile position (tx, ty) in [0,1].
+
+    The 9 regions form a 2x2 grid of cells. Each region is a corner of
+    one or more cells. We bilinear-interpolate the 4 corner values
+    (1.0 if owned, 0.0 if not) of the cell containing (tx, ty).
+    """
+    # Map normalized coords to grid coords in [0, 2]
+    gx = tx * 2.0
+    gy = ty * 2.0
+
+    # Determine which cell we're in (0 or 1 along each axis)
+    cx = min(int(gx), 1)
+    cy = min(int(gy), 1)
+
+    # Local coords within the cell, in [0, 1]
+    lx = gx - cx
+    ly = gy - cy
+
+    # Corner region names for this cell
+    # Grid layout (row, col) where row 0 = south, row 2 = north:
+    #   row 2: NW  N  NE    (y=1.0)
+    #   row 1: W   C  E     (y=0.5)
+    #   row 0: SW  S  SE    (y=0.0)
+    # col:    0   1   2
+    grid = [
+        ["SW", "S", "SE"],
+        ["W", "C", "E"],
+        ["NW", "N", "NE"],
+    ]
+
+    # Four corners of the cell: (col, row) indices into the grid
+    bl = grid[cy][cx]  # bottom-left
+    br = grid[cy][cx + 1]  # bottom-right
+    tl = grid[cy + 1][cx]  # top-left
+    tr = grid[cy + 1][cx + 1]  # top-right
+
+    def val(name):
+        return 1.0 if name in biome_regions else 0.0
+
+    # Bilinear interpolation
+    bottom = val(bl) * (1 - lx) + val(br) * lx
+    top = val(tl) * (1 - lx) + val(tr) * lx
+    return bottom * (1 - ly) + top * ly
+
+
 def place_biomes_in_dungeon(df):
-    """Assign each tile a biome based on directional weights."""
+    """Assign each tile a biome using bilinear interpolation over region grid."""
+    if not df.config.biomes:
+        return
     for tile in df.get_tiles():
-        biome_weight_names = []
+        best_weight = -1.0
+        best_biome = None
         for biome in df.config.biomes:
-            weight = 0.0
-            weight += (tile.y / df.height) * biome.biome_northness
-            weight += (1 - tile.y / df.height) * biome.biome_southness
-            weight += (tile.x / df.width) * biome.biome_eastness
-            weight += (1 - tile.x / df.width) * biome.biome_westness
-            weight += random.random()
-            biome_weight_names.append((weight, biome.biome_name))
-        if len(df.config.biomes) < 2:
-            biome_weight_names.append((3.0 + random.random(), None))
-        tile.biome_name = sorted(biome_weight_names)[-1][1]
+            if not biome.biome_regions:
+                continue
+            tx = tile.x / max(df.width - 1, 1)
+            ty = tile.y / max(df.height - 1, 1)
+            weight = biome_weight_at(biome.biome_regions, tx, ty)
+            weight += random.random() * 0.1
+            if weight > best_weight:
+                best_weight = weight
+                best_biome = biome.biome_name
+        tile.biome_name = best_biome
 
 
 def place_mazes_in_dungeon(df):

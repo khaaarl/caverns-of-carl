@@ -977,5 +977,129 @@ class TestDungeonGenerationIntegration(unittest.TestCase):
         self.assertEqual(len(self.dungeon.monster_locations), 1)
 
 
+class TestBiomeWeightAt(unittest.TestCase):
+    """Tests for biome_weight_at() bilinear interpolation function."""
+
+    def test_owned_corner_returns_one(self):
+        """A point exactly at an owned region corner should return 1.0."""
+        from lib.dungeon import biome_weight_at
+
+        regions = {"NW"}
+        # NW is at (0.0, 1.0)
+        self.assertAlmostEqual(biome_weight_at(regions, 0.0, 1.0), 1.0)
+
+    def test_unowned_corner_returns_zero(self):
+        """A point at an unowned region corner should return 0.0."""
+        from lib.dungeon import biome_weight_at
+
+        regions = {"NW"}
+        # SE is at (1.0, 0.0) - not owned
+        self.assertAlmostEqual(biome_weight_at(regions, 1.0, 0.0), 0.0)
+
+    def test_all_regions_returns_one_everywhere(self):
+        """With all 9 regions owned, weight should be 1.0 everywhere."""
+        from lib.dungeon import biome_weight_at
+
+        all_regions = {"NW", "N", "NE", "W", "C", "E", "SW", "S", "SE"}
+        for tx in [0.0, 0.25, 0.5, 0.75, 1.0]:
+            for ty in [0.0, 0.25, 0.5, 0.75, 1.0]:
+                self.assertAlmostEqual(
+                    biome_weight_at(all_regions, tx, ty),
+                    1.0,
+                    msg=f"Failed at ({tx}, {ty})",
+                )
+
+    def test_no_regions_returns_zero_everywhere(self):
+        """With no regions owned, weight should be 0.0 everywhere."""
+        from lib.dungeon import biome_weight_at
+
+        for tx in [0.0, 0.25, 0.5, 0.75, 1.0]:
+            for ty in [0.0, 0.25, 0.5, 0.75, 1.0]:
+                self.assertAlmostEqual(
+                    biome_weight_at(set(), tx, ty),
+                    0.0,
+                    msg=f"Failed at ({tx}, {ty})",
+                )
+
+    def test_top_row_gradient(self):
+        """Top row owned should produce gradient from 1.0 at top to 0.0 at bottom."""
+        from lib.dungeon import biome_weight_at
+
+        regions = {"NW", "N", "NE"}
+        # At top (y=1.0), should be 1.0
+        self.assertAlmostEqual(biome_weight_at(regions, 0.5, 1.0), 1.0)
+        # At center (y=0.5), should be 0.5 (interpolated between 1.0 top and 0.0 middle)
+        self.assertAlmostEqual(biome_weight_at(regions, 0.5, 0.5), 0.0)
+        # At bottom (y=0.0), should be 0.0
+        self.assertAlmostEqual(biome_weight_at(regions, 0.5, 0.0), 0.0)
+
+    def test_center_only(self):
+        """Center region only should have weight 1.0 at center and 0 at corners."""
+        from lib.dungeon import biome_weight_at
+
+        regions = {"C"}
+        self.assertAlmostEqual(biome_weight_at(regions, 0.5, 0.5), 1.0)
+        self.assertAlmostEqual(biome_weight_at(regions, 0.0, 0.0), 0.0)
+        self.assertAlmostEqual(biome_weight_at(regions, 1.0, 1.0), 0.0)
+
+
+class TestPlaceBiomesRegionGrid(unittest.TestCase):
+    """Tests for place_biomes_in_dungeon() with region grid."""
+
+    def test_single_biome_all_regions(self):
+        """Single biome with all regions should own every tile."""
+        from lib.dungeon import place_biomes_in_dungeon
+
+        config = DungeonConfig()
+        biome = config.add_biome("Biome 1")
+        biome.biome_regions = {"NW", "N", "NE", "W", "C", "E", "SW", "S", "SE"}
+        df = DungeonFloor(config)
+        place_biomes_in_dungeon(df)
+        for tile in df.get_tiles():
+            self.assertEqual(tile.biome_name, "Biome 1")
+
+    def test_two_biomes_east_west_split(self):
+        """Two biomes split E/W should assign edge tiles correctly."""
+        from lib.dungeon import place_biomes_in_dungeon
+
+        config = DungeonConfig()
+        config.width = 21
+        config.height = 21
+        west = config.add_biome("West")
+        west.biome_regions = {"NW", "W", "SW"}
+        east = config.add_biome("East")
+        east.biome_regions = {"NE", "E", "SE"}
+
+        df = DungeonFloor(config)
+        # Seed for determinism
+        random.seed(42)
+        place_biomes_in_dungeon(df)
+
+        # Far-left tiles (x=0) should be "West"
+        for y in range(df.height):
+            self.assertEqual(
+                df.tiles[0][y].biome_name,
+                "West",
+                f"Tile (0, {y}) should be West",
+            )
+        # Far-right tiles (x=width-1) should be "East"
+        for y in range(df.height):
+            self.assertEqual(
+                df.tiles[df.width - 1][y].biome_name,
+                "East",
+                f"Tile ({df.width - 1}, {y}) should be East",
+            )
+
+    def test_no_biomes_tiles_remain_none(self):
+        """With no biomes configured, all tiles should have biome_name=None."""
+        from lib.dungeon import place_biomes_in_dungeon
+
+        config = DungeonConfig()
+        df = DungeonFloor(config)
+        place_biomes_in_dungeon(df)
+        for tile in df.get_tiles():
+            self.assertIsNone(tile.biome_name)
+
+
 if __name__ == "__main__":
     unittest.main()
