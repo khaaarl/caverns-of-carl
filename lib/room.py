@@ -33,6 +33,7 @@ class Room:
         self.biome_name = biome_name
         self.in_maze = False
         self.name_num = None
+        self.flavor_text = None
 
     def embiggened(self):
         """Return a copy with randomly increased width or height."""
@@ -185,6 +186,8 @@ class Room:
 
     def description(self, df, verbose=False):
         o = []
+        if self.flavor_text:
+            o.append(self.flavor_text)
         if self.has_down_ladder:
             o.append("Down ladder")
         if self.has_up_ladder:

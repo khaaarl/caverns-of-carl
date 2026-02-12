@@ -7,6 +7,8 @@ from tkinter import scrolledtext, ttk
 
 import lib.config
 import lib.dungeon
+import lib.embellish
+import lib.embellish_dialog
 import lib.map_image
 import lib.monster
 import lib.pdf
@@ -213,6 +215,43 @@ def run_ui():
         if r in config.biomes[0].biome_region_vars:
             config.biomes[0].biome_region_vars[r].set(True)
 
+    def _render_dungeon_info(df):
+        """Render the info pane for a dungeon floor."""
+        text_output = []
+        text_output.append("Floor monster counts:")
+        text_output.append(lib.monster.summarize_monsters(df.monsters))
+        text_output.append("")
+        total_xp = 0
+        for room in df.rooms:
+            if room.encounter:
+                total_xp += room.encounter.total_xp()
+        xp_per_player = int(total_xp / config.num_player_characters)
+        text_output.append(
+            f"Total floor encounter xp: ~{total_xp:,} (~{xp_per_player:,} per player)"
+        )
+        text_output.append("")
+        rooms = [r for r in df.rooms if r.name_num is not None]
+        for room in sorted(rooms, key=lambda r: r.name_num):
+            if room.is_trivial():
+                continue
+            doc = room.description(df, verbose=True)
+            text_output.append(f"***{doc.flat_header()}***")
+            text_output.append(doc.flat_body(separator="\n\n"))
+            text_output.append("")
+        for corridor in sorted(df.corridors, key=lambda x: x.name or ""):
+            if not corridor.is_nontrivial(df):
+                continue
+            doc = corridor.description(df, verbose=True)
+            text_output.append(f"***{doc.flat_header()}***")
+            text_output.append(doc.flat_body(separator="\n\n"))
+            text_output.append("")
+        for npc in sorted(df.npcs, key=lambda x: x.name):
+            doc = npc.doc()
+            text_output.append(f"***{doc.flat_header()}***")
+            text_output.append(doc.flat_body(separator="\n\n"))
+            text_output.append("")
+        return text_output
+
     def new_preview(*args, **kwargs):
         set_tk_text(ascii_map_text, "")
         set_tk_text(chest_info_text, "")
@@ -223,39 +262,7 @@ def run_ui():
             config.load_from_tk_entries()
             df = lib.dungeon.generate_random_dungeon(config)
             dungeon_history.append(df)
-
-            text_output.append("Floor monster counts:")
-            text_output.append(lib.monster.summarize_monsters(df.monsters))
-            text_output.append("")
-            total_xp = 0
-            for room in df.rooms:
-                if room.encounter:
-                    total_xp += room.encounter.total_xp()
-            xp_per_player = int(total_xp / config.num_player_characters)
-            text_output.append(
-                f"Total floor encounter xp: ~{total_xp:,} (~{xp_per_player:,} per player)"
-            )
-            text_output.append("")
-            rooms = [r for r in df.rooms if r.name_num is not None]
-            for room in sorted(rooms, key=lambda r: r.name_num):
-                if room.is_trivial():
-                    continue
-                doc = room.description(df, verbose=True)
-                text_output.append(f"***{doc.flat_header()}***")
-                text_output.append(doc.flat_body(separator="\n\n"))
-                text_output.append("")
-            for corridor in sorted(df.corridors, key=lambda x: x.name or ""):
-                if not corridor.is_nontrivial(df):
-                    continue
-                doc = corridor.description(df, verbose=True)
-                text_output.append(f"***{doc.flat_header()}***")
-                text_output.append(doc.flat_body(separator="\n\n"))
-                text_output.append("")
-            for npc in sorted(df.npcs, key=lambda x: x.name):
-                doc = npc.doc()
-                text_output.append(f"***{doc.flat_header()}***")
-                text_output.append(doc.flat_body(separator="\n\n"))
-                text_output.append("")
+            text_output = _render_dungeon_info(df)
         except Exception:  # Top-level GUI boundary: show any error to user
             err = traceback.format_exc()
         if err:
@@ -310,6 +317,22 @@ def run_ui():
         )
         chest_info_text.see(tk.END)
 
+    def embellish_dungeon_action(*args, **kwargs):
+        if not dungeon_history:
+            return
+        df = dungeon_history[-1]
+        dialog = lib.embellish_dialog.EmbellishDialog(root, df)
+        results = dialog.show()
+        if not results:
+            return
+        lib.embellish.apply_embellishments(df, results)
+        text_output = _render_dungeon_info(df)
+        set_tk_text(
+            chest_info_text,
+            StyledString("\n").join(text_output),
+            {"foreground": "#fff", "background": "#000"},
+        )
+
     operation_frame = tk.Frame(left_frame)
     generate_button = tk.Button(
         operation_frame, text="Generate", command=new_preview
@@ -323,6 +346,14 @@ def run_ui():
     Tooltip(
         save_button,
         "Export to Tabletop Simulator, PDF, and map images",
+    )
+    embellish_button = tk.Button(
+        operation_frame, text="Embellish", command=embellish_dungeon_action
+    )
+    embellish_button.grid(row=0, column=2)
+    Tooltip(
+        embellish_button,
+        "Use an LLM to generate atmospheric flavor text for rooms, corridors, traps, and books",
     )
     operation_frame.pack(pady=5)
 

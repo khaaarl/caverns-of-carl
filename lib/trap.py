@@ -103,9 +103,18 @@ class Trap:
         self.effect = ""
         self.corridorix = None
         self.roomIx = None
+        self.flavor_text = None
 
     def description(self):
-        return f"Trap (find DC:{self.notice_dc}, disarm DC:{self.disarm_dc})\nTrigger: {self.trigger}\n{self.effect}"
+        parts = []
+        if self.flavor_text:
+            parts.append(self.flavor_text)
+        parts.append(
+            f"Trap (find DC:{self.notice_dc}, disarm DC:{self.disarm_dc})"
+        )
+        parts.append(f"Trigger: {self.trigger}")
+        parts.append(self.effect)
+        return "\n".join(parts)
 
     def eval_trap_expr(self, s):
         """Expand template tokens like {DC}, {DAM:fire}, {AREA} in a trap string."""

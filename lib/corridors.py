@@ -109,6 +109,7 @@ class Corridor:
         self.name: str | None = None
         self.biome_name: str | None = biome_name
         self.force_trivial: bool = force_trivial
+        self.flavor_text: str | None = None
 
     def is_fully_enclosed_by_doors(self) -> bool:
         return len(self.doorixs) >= 2
@@ -159,6 +160,8 @@ class Corridor:
 
     def description(self, df: DungeonFloor, verbose: bool = False) -> Doc:
         o: list[Any] = []
+        if self.flavor_text:
+            o.append(self.flavor_text)
         for trapix in self.trapixs:
             o.append(df.traps[trapix].description())
         o.append(f"Light level: {self.light_level.capitalize()}")

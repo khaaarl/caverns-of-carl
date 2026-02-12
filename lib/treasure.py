@@ -55,6 +55,7 @@ class Book:
         self.excerpt = obj.get("Excerpt")
         self.author_background = obj.get("AuthorBackground")
         self.keywords = set(obj.get("Keywords") or [])
+        self.flavor_text = None
 
     def tts_nickname(self):
         s = f"[u]{self.title}[/u]"
